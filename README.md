@@ -1,1 +1,1 @@
-# application-gatway
+# application-gateway
