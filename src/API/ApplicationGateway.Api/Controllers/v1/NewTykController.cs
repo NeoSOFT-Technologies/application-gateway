@@ -17,27 +17,51 @@ namespace ApplicationGateway.Api.Controllers
     public class NewTykController : ControllerBase
     {
         [HttpPost("createApi")]
-        public ActionResult CreateApi(CreateRequest request)
-        {
-            string requestJson = JsonConvert.SerializeObject(request);
-            string transformer = System.IO.File.ReadAllText(@"E:\Projects\Tyk Repository\ApplicationGateway\ApplicationGateway\docs\CreateTransformer.json");
-            string transformed = new JsonTransformer().Transform(transformer, requestJson);
-            JObject finalJson = JObject.Parse(transformed);
-            finalJson.Add("api_id", Guid.NewGuid());
-            using (HttpClient httpClient = new HttpClient())
+        public async Task<ActionResult> CreateApi(CreateRequest[] request)
+        {    
+            //Check for repeated listen path in request
+            if (request.DistinctBy(p => p.listenPath.Trim('/')).Count() != request.Count())
             {
-                StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse = httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent).Result;
-                HotReload();
-                //  httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
+                return BadRequest("Listen path should be unique in array");
+            }
 
-                if (!httpResponse.IsSuccessStatusCode)
+            //Check for repeated listen path in existing APIs
+            JArray allApi = JArray.Parse(await GetApi());
+            foreach (var obj in request)
+            {
+                foreach (var api in allApi)
                 {
-                    return NotFound();
+                    string listen_path = api["proxy"]["listen_path"].ToString();
+                    if (obj.listenPath.Trim('/') == listen_path.Trim('/'))
+                    {
+                        return BadRequest("listen path already exists");
+                    }
                 }
             }
-            return Ok();
+
+
+            string transformer = System.IO.File.ReadAllText(@"E:\Projects\Tyk Repository\ApplicationGateway\ApplicationGateway\docs\CreateTransformer.json");
+
+            foreach (var obj in request)
+            {
+                string requestJson = JsonConvert.SerializeObject(obj);
+                string transformed = new JsonTransformer().Transform(transformer, requestJson);
+                JObject finalJson = JObject.Parse(transformed);
+                finalJson.Add("api_id", Guid.NewGuid());
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
+                    httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
+                    HttpResponseMessage httpResponse = httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent).Result;
+                    HotReload();
+                    if (!httpResponse.IsSuccessStatusCode)
+                    {
+                        return NotFound();
+                    }
+                }
+
+            }
+            return Ok("APIs from API array created successfully");
         }
 
         [HttpPut("updateapi")]
@@ -133,14 +157,16 @@ namespace ApplicationGateway.Api.Controllers
         }
 
         [HttpGet(Name = "getApi")]
-        public ActionResult GetApi()
+        public async Task<string> GetApi()
         {
+            string result;
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/apis").Result;
+                HttpResponseMessage httpResponse = await httpClient.GetAsync("http://localhost:8080/tyk/apis");
+                result = await httpResponse.Content.ReadAsStringAsync();
             }
-            return Ok();
+            return result;
         }
         [HttpGet]
         public async Task<dynamic> GetApiById(string api_id)
