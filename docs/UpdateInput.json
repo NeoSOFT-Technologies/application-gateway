@@ -1,0 +1,21 @@
+{
+  "id": "demo",
+  "name": "Test-Boilerplate",
+  "listenPath": "/test/",
+  "targetUrl": "http://host.docker.internal:5000/api/v1/",
+  "rateLimit": {
+    "rate": 2,
+    "per": 5
+  },
+  "blacklist": ["12.12.12.12", "12.12.12.13", "12.12.12.14"],
+  "whitelist": ["12.12.12.12", "12.12.12.13", "12.12.12.14"],
+  "defaultVersion": "v1",
+  "versions": [
+    {
+      "name": "v1"
+    },
+    {
+      "name": "v2"
+    }
+  ]
+}

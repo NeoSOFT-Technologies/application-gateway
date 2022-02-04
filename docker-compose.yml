@@ -1,0 +1,18 @@
+﻿version: "3.7"
+
+networks:
+  clean-network:
+  
+services:
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5430:5432"
+    networks:
+      - clean-network
+
+  

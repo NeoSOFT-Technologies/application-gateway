@@ -1,0 +1,41 @@
+{
+  "name": "#valueof(name)",
+  "api_id": "#valueof(id)",
+  "use_keyless": true,
+  "active": true,
+  "proxy": {
+    "listen_path": "#valueof(listenPath)",
+    "target_url": "#valueof(targetUrl)",
+    "strip_listen_path": true
+  },
+  "global_rate_limit": {
+    "rate": "#valueof(rateLimit.rate)",
+    "per": "#valueof(rateLimit.per)"
+  },
+  "disable_rate_limit": "#ifcondition(#exists($.rateLimit),true,#toboolean(false),#toboolean(true))",
+  "enable_ip_whitelisting": "#ifcondition(#exists($.whitelist),true,#toboolean(true),#toboolean(false))",
+  "allowed_ips": "#valueof(whitelist)",
+  "enable_ip_blacklisting": "#ifcondition(#exists($.blacklist),true,#toboolean(true),#toboolean(false))",
+  "blacklisted_ips": "#valueof(blacklist)",
+  "version_data": {
+    "not_versioned": "#ifcondition(#length(#valueof($.versions)),0,#toboolean(true),#toboolean(false))",
+    "default_version": "#valueof(defaultVersion)",
+    "versions": {
+      "Default": {
+        "name": "Default",
+        "use_extended_paths": true
+      }
+    }
+  },
+  "CORS": {
+    "enable": "#valueof(enable)",
+    "allowed_origins": "#valueof(allowed_origins)",
+    "allowed_methods": "#valueof(allowed_methods)",
+    "allowed_headers": "#valueof(allowed_headers)",
+    "exposed_headers": "#valueof(exposed_headers)",
+    "allow_credentials": "#valueof(allow_credentials)",
+    "max_age": "#valueof(max_age)",
+    "options_passthrough": "#valueof(options_passthrough)",
+    "debug": "#valueof(debug)"
+  }
+}

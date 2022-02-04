@@ -1,0 +1,14 @@
+{
+  "access_rights": {},
+  "active": "#valueof(active)",
+  "is_inactive ": "#valueof(keysInactive)",
+  "name": "#valueof(name)",
+  "quota_max": "#valueof(maxQuota)",
+  "quota_renewal_rate": "#valueof(quotaRate)",
+  "rate": "#valueof(rate)",
+  "per": "#valueof(per)",
+  "throttle_interval": "#valueof(throttleInterval)",
+  "throttle_retry_limit": "#valueof(throttleRetries)",
+  "state": "#valueof(state)",
+  "tags": "#valueof(tags)"
+}
