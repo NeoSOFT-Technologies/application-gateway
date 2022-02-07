@@ -76,11 +76,15 @@ namespace ApplicationGateway.Domain.TykData
     public class UpdateRequest : CreateRequest
     {
         public Guid id { get; set; }
-        public RateLimit rateLimit { get; set; }
-        public List<string> blacklist { get; set; }
-        public List<string> whitelist { get; set; }
+        public RateLimit? rateLimit { get; set; }
+        public List<string>? blacklist { get; set; }
+        public List<string>? whitelist { get; set; }
         public string defaultVersion { get; set; }
         public List<VersionModel> versions { get; set; }
+        public string authType { get; set; }
+        public OpenIdOptions? openidOptions { get; set; }
+        public VersioningInfo versioningInfo { get; set; }
+        public List<string>? loadBalancingTargets { get; set; }
     }
     public class AccessRightsModel
     {
@@ -94,9 +98,16 @@ namespace ApplicationGateway.Domain.TykData
         public int per { get; set; }
     }
 
+    public class VersioningInfo
+    {
+        public string location { get; set; }
+        public string key { get; set; }
+    }
+
     public class VersionModel
     {
         public string name { get; set; }
+        public string? overrideTarget { get; set; }
     }
 
     public class CircuitBreakerRequest
@@ -109,6 +120,23 @@ namespace ApplicationGateway.Domain.TykData
         public double threshold_percent { get; set; }
         public int cooldownTime { get; set; }
         public bool disable_half_open_state { get; set; }
+    }
+
+    public class OpenIdOptions
+    {
+        public List<Provider> providers { get; set; }
+    }
+
+    public class Provider
+    {
+        public string issuer { get; set; }
+        public List<ClientPolicy> client_ids { get; set; }
+    }
+
+    public class ClientPolicy
+    {
+        public string clientId { get; set; }
+        public string policy { get; set; }
     }
 
     public class CreateKeyRequest

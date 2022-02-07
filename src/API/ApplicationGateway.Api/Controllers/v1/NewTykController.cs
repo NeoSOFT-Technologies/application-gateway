@@ -9,15 +9,17 @@ using Newtonsoft.Json;
 using JUST;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace ApplicationGateway.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [ApiVersion("1")]
+    [Route("api/v1/[controller]/[action]")]
     [ApiController]
     public class NewTykController : ControllerBase
     {
         [HttpPost("createApi")]
-        public async Task<ActionResult> CreateApi(CreateRequest[] request)
+        public async Task<ActionResult> CreateApi(List<CreateRequest> request)
         {    
             //Check for repeated listen path in request
             if (request.DistinctBy(p => p.listenPath.Trim('/')).Count() != request.Count())
@@ -27,9 +29,9 @@ namespace ApplicationGateway.Api.Controllers
 
             //Check for repeated listen path in existing APIs
             JArray allApi = JArray.Parse(await GetApi());
-            foreach (var obj in request)
+            foreach (CreateRequest obj in request)
             {
-                foreach (var api in allApi)
+                foreach (JToken api in allApi)
                 {
                     string listen_path = api["proxy"]["listen_path"].ToString();
                     if (obj.listenPath.Trim('/') == listen_path.Trim('/'))
@@ -39,10 +41,10 @@ namespace ApplicationGateway.Api.Controllers
                 }
             }
 
+            string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
 
-            string transformer = System.IO.File.ReadAllText(@"E:\Projects\Tyk Repository\ApplicationGateway\ApplicationGateway\docs\CreateTransformer.json");
-
-            foreach (var obj in request)
+            foreach (CreateRequest obj in request)
             {
                 string requestJson = JsonConvert.SerializeObject(obj);
                 string transformed = new JsonTransformer().Transform(transformer, requestJson);
@@ -59,16 +61,16 @@ namespace ApplicationGateway.Api.Controllers
                         return NotFound();
                     }
                 }
-
             }
             return Ok("APIs from API array created successfully");
         }
 
         [HttpPut("updateapi")]
-        public ActionResult updateApi(UpdateRequest request)
+        public ActionResult UpdateApi(UpdateRequest request)
         {
             string requestJson = JsonConvert.SerializeObject(request);
-            string transformer = System.IO.File.ReadAllText(@"E:\Projects\Tyk Repository\ApplicationGateway\ApplicationGateway\docs\UpdateTransformer.json");
+            string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\UpdateApiTransformer.json");
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
             JObject inputObject = JObject.Parse(requestJson);
@@ -76,10 +78,32 @@ namespace ApplicationGateway.Api.Controllers
             if (inputObject["versions"].Count() != 0)
             {
                 transformedObject["version_data"]["versions"] = new JObject();
-                foreach (var version in inputObject["versions"])
+                foreach (JToken version in inputObject["versions"])
                 {
                     (version as JObject).Add("use_extended_paths", true);
+                    JArray removeGlobalHeaders = new JArray();
+                    removeGlobalHeaders.Add("Authorization");
+                    (version as JObject).Add("global_headers_remove", removeGlobalHeaders);
                     (transformedObject["version_data"]["versions"] as JObject).Add($"{version["name"]}", version);
+                    (transformedObject["version_data"]["versions"][$"{version["name"]}"] as JObject).Add("override_target", version["overrideTarget"]);
+                }
+            }
+
+            if (inputObject["authType"].ToString() == "openid")
+            {
+                transformedObject["openid_options"]["providers"] = new JArray();
+                foreach (JToken provider in inputObject["openidOptions"]["providers"])
+                {
+                    JObject newProvider = new JObject();
+                    newProvider.Add("issuer", provider["issuer"]);
+                    JObject newClient = new JObject();
+                    foreach (JToken client in provider["client_ids"])
+                    {
+                        string base64ClientId = Convert.ToBase64String(Encoding.UTF8.GetBytes(client["clientId"].ToString()));
+                        newClient.Add(base64ClientId, client["policy"]);
+                    }
+                    newProvider.Add("client_ids", newClient);
+                    (transformedObject["openid_options"]["providers"] as JArray).Add(newProvider);
                 }
             }
 
@@ -111,7 +135,6 @@ namespace ApplicationGateway.Api.Controllers
                 {
                     return NotFound();
                 }
-
             }
             return NoContent();
         }
@@ -150,8 +173,6 @@ namespace ApplicationGateway.Api.Controllers
             {
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
                 HttpResponseMessage httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
-               
-
             }
             return Ok();
         }
@@ -168,6 +189,7 @@ namespace ApplicationGateway.Api.Controllers
             }
             return result;
         }
+
         [HttpGet]
         public async Task<dynamic> GetApiById(string api_id)
         {
@@ -175,12 +197,11 @@ namespace ApplicationGateway.Api.Controllers
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                var httpResponse =await httpClient.GetAsync($"http://localhost:8080/tyk/apis/{api_id}");
-                var content =await httpResponse.Content.ReadAsStringAsync();
+                HttpResponseMessage httpResponse =await httpClient.GetAsync($"http://localhost:8080/tyk/apis/{api_id}");
+                string content =await httpResponse.Content.ReadAsStringAsync();
                 obj = JObject.Parse(content);
             }
             return obj.ToString();
         }
-
     }
 }
