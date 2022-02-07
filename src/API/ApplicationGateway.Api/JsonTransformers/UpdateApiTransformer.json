@@ -13,7 +13,9 @@
   "proxy": {
     "listen_path": "#valueof(listenPath)",
     "target_url": "#valueof(targetUrl)",
-    "strip_listen_path": true
+    "strip_listen_path": true,
+    "enable_load_balancing": "#ifcondition(#length(#valueof($.loadBalancingTargets)),0,#toboolean(false),#toboolean(true))",
+    "target_list": "#valueof(loadBalancingTargets)"
   },
   "global_rate_limit": {
     "rate": "#valueof(rateLimit.rate)",
@@ -24,13 +26,19 @@
   "allowed_ips": "#valueof(whitelist)",
   "enable_ip_blacklisting": "#ifcondition(#valueof($.blacklist),null,#toboolean(false),#toboolean(true))",
   "blacklisted_ips": "#valueof(blacklist)",
+  "definition": {
+    "location": "#valueof(versioningInfo.location)",
+    "key": "#valueof(versioningInfo.key)",
+    "strip_path": false
+  },
   "version_data": {
     "not_versioned": "#ifcondition(#length(#valueof($.versions)),0,#toboolean(true),#toboolean(false))",
     "default_version": "#valueof(defaultVersion)",
     "versions": {
       "Default": {
         "name": "Default",
-        "use_extended_paths": true
+        "use_extended_paths": true,
+        "override_target": ""
       }
     }
   },

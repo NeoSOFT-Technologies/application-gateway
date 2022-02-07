@@ -84,6 +84,7 @@ namespace ApplicationGateway.Api.Controllers
                     removeGlobalHeaders.Add("Authorization");
                     (version as JObject).Add("global_headers_remove", removeGlobalHeaders);
                     (transformedObject["version_data"]["versions"] as JObject).Add($"{version["name"]}", version);
+                    (transformedObject["version_data"]["versions"][$"{version["name"]}"] as JObject).Add("override_target", version["overrideTarget"]);
                 }
             }
 

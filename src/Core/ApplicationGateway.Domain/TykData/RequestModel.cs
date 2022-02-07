@@ -83,6 +83,8 @@ namespace ApplicationGateway.Domain.TykData
         public List<VersionModel> versions { get; set; }
         public string authType { get; set; }
         public OpenIdOptions? openidOptions { get; set; }
+        public VersioningInfo versioningInfo { get; set; }
+        public List<string> loadBalancingTargets { get; set; }
     }
 
     public class RateLimit
@@ -91,9 +93,16 @@ namespace ApplicationGateway.Domain.TykData
         public int per { get; set; }
     }
 
+    public class VersioningInfo
+    {
+        public string location { get; set; }
+        public string key { get; set; }
+    }
+
     public class VersionModel
     {
         public string name { get; set; }
+        public string overrideTarget { get; set; }
     }
 
     public class CircuitBreakerRequest
