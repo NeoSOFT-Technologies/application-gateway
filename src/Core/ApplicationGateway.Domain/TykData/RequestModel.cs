@@ -82,7 +82,12 @@ namespace ApplicationGateway.Domain.TykData
         public string defaultVersion { get; set; }
         public List<VersionModel> versions { get; set; }
     }
-
+    public class AccessRightsModel
+    {
+        public string apiId { get; set; }
+        public string apiName { get; set; }
+        public List<VersionModel> versions { get; set; }
+    }
     public class RateLimit
     {
         public int rate { get; set; }
@@ -104,5 +109,17 @@ namespace ApplicationGateway.Domain.TykData
         public double threshold_percent { get; set; }
         public int cooldownTime { get; set; }
         public bool disable_half_open_state { get; set; }
+    }
+
+    public class CreateKeyRequest
+    {
+        public int rate{ get; set;}
+        public int perSec { get; set; }
+        public int quota { get; set; }
+        public int quotaRenewalRate { get; set; }
+        public List<AccessRightsModel> accessRights { get; set; }
+        public string policyId{ get; set; }
+        public int expires { get; set; }
+
     }
 }
