@@ -76,11 +76,13 @@ namespace ApplicationGateway.Domain.TykData
     public class UpdateRequest : CreateRequest
     {
         public Guid id { get; set; }
-        public RateLimit rateLimit { get; set; }
-        public List<string> blacklist { get; set; }
-        public List<string> whitelist { get; set; }
+        public RateLimit? rateLimit { get; set; }
+        public List<string>? blacklist { get; set; }
+        public List<string>? whitelist { get; set; }
         public string defaultVersion { get; set; }
         public List<VersionModel> versions { get; set; }
+        public string authType { get; set; }
+        public OpenIdOptions? openidOptions { get; set; }
     }
 
     public class RateLimit
@@ -104,5 +106,22 @@ namespace ApplicationGateway.Domain.TykData
         public double threshold_percent { get; set; }
         public int cooldownTime { get; set; }
         public bool disable_half_open_state { get; set; }
+    }
+
+    public class OpenIdOptions
+    {
+        public List<Provider> providers { get; set; }
+    }
+
+    public class Provider
+    {
+        public string issuer { get; set; }
+        public List<ClientPolicy> client_ids { get; set; }
+    }
+
+    public class ClientPolicy
+    {
+        public string clientId { get; set; }
+        public string policy { get; set; }
     }
 }
