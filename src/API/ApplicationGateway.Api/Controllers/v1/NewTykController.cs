@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using JUST;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -98,7 +99,8 @@ namespace ApplicationGateway.Api.Controllers
                     JObject newClient = new JObject();
                     foreach (JToken client in provider["client_ids"])
                     {
-                        newClient.Add(client["clientId"].ToString(), client["policy"]);
+                        string base64ClientId = Convert.ToBase64String(Encoding.UTF8.GetBytes(client["clientId"].ToString()));
+                        newClient.Add(base64ClientId, client["policy"]);
                     }
                     newProvider.Add("client_ids", newClient);
                     (transformedObject["openid_options"]["providers"] as JArray).Add(newProvider);
