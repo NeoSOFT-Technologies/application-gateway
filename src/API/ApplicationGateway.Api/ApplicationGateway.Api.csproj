@@ -53,4 +53,14 @@
     <ProjectReference Include="..\..\Infrastructure\ApplicationGateway.Persistence\ApplicationGateway.Persistence.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="JsonTransformers\CreateApiTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\UpdateApiTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -40,7 +40,8 @@ namespace ApplicationGateway.Api.Controllers
                 }
             }
 
-            string transformer = System.IO.File.ReadAllText(@"C:\Playground\JsonMapper\Json Configurations\CreateTransformer.json");
+            string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
 
             foreach (CreateRequest obj in request)
             {
@@ -64,10 +65,11 @@ namespace ApplicationGateway.Api.Controllers
         }
 
         [HttpPut("updateapi")]
-        public ActionResult updateApi(UpdateRequest request)
+        public ActionResult UpdateApi(UpdateRequest request)
         {
             string requestJson = JsonConvert.SerializeObject(request);
-            string transformer = System.IO.File.ReadAllText(@"C:\Playground\JsonMapper\Json Configurations\UpdateTransformer.json");
+            string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\UpdateApiTransformer.json");
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
             JObject inputObject = JObject.Parse(requestJson);
