@@ -10,6 +10,22 @@ namespace ApplicationGateway.Api.Controllers.v1
     [Route("api/[controller]/[action]")]
     public class KeyController : ControllerBase
     {
+        [HttpGet]
+        public async Task<ActionResult<dynamic>> GetKey(string keyId)
+        {
+            dynamic key;
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
+                HttpResponseMessage httpResponse = await httpClient.GetAsync("http://localhost:8080/tyk/keys/" + keyId);
+                if (!httpResponse.IsSuccessStatusCode)
+                    return NotFound("Failed to get key");
+                key = await httpResponse.Content.ReadAsStringAsync();
+                HotReload();
+            }
+            return Ok(key);
+        }
+
         [HttpPost]
         public async Task<ActionResult<string>> CreateKey(CreateKeyRequest request)
         {
@@ -102,7 +118,7 @@ namespace ApplicationGateway.Api.Controllers.v1
                 key = await httpResponse.Content.ReadAsStringAsync();
             }
 
-            return key;
+            return Ok(key);
 
         }
 
