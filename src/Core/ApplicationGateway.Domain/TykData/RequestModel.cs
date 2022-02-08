@@ -90,7 +90,7 @@ namespace ApplicationGateway.Domain.TykData
     {
         public string apiId { get; set; }
         public string apiName { get; set; }
-        public List<VersionModel> versions { get; set; }
+        public List<string> versions { get; set; }
     }
     public class RateLimit
     {
@@ -149,5 +149,11 @@ namespace ApplicationGateway.Domain.TykData
         public string policyId{ get; set; }
         public int expires { get; set; }
 
+
+    }
+
+    public class UpdateKeyRequest:CreateKeyRequest
+    {
+        public string keyId { get; set; }
     }
 }

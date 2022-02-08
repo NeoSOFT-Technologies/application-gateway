@@ -1,0 +1,15 @@
+{
+    "rate": "#valueof(rate)",
+    "per": "#valueof(perSec)",
+    "expires": "#valueof(expires)",
+    "quota_max": "#valueof(quota)",
+    "quota_renewal_rate": "#valueof(quotaRenewalRate)",
+    "access_rights": {
+        "Default": {
+            "api_name": "",
+            "api_id": "",
+            "versions": ""
+        }
+    },
+    "apply_policies": ["#valueof(policyId)"]
+}
