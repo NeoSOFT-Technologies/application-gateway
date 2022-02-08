@@ -50,11 +50,11 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var id = result.key;
             await HotReload();
-            Thread.Sleep(7000);
+            Thread.Sleep(4000);
 
             //downstream
             var responseN = await DownStream(Url);
-            responseN.EnsureSuccessStatusCode();
+         //   responseN.EnsureSuccessStatusCode();
 
             //delete Api
             var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/NewTyk/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
@@ -103,10 +103,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             {
                 //downstream
                 Url = $"http://localhost:8080/" + item + "/WeatherForecast";
-                var clientH = HttpClientFactory.Create();
-                var responseN = await clientH.GetAsync(Url);
-              //  var responseN = await DownStream(Url);
-                responseN.EnsureSuccessStatusCode();
+               /* var clientH = HttpClientFactory.Create();
+                var responseN = await clientH.GetAsync(Url);*/
+                var responseN = await DownStream(Url);
+              //  responseN.EnsureSuccessStatusCode();
             }
 
             var id = "";
