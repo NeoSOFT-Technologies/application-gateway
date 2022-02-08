@@ -58,6 +58,9 @@
     <Content Update="JsonTransformers\CreateApiTransformer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="JsonTransformers\PolicyTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="JsonTransformers\UpdateApiTransformer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
