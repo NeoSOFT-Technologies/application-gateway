@@ -92,7 +92,7 @@ namespace ApplicationGateway.Api.Controllers.v1
             {
                 StringContent stringContent = new StringContent(jsonObj.ToString(), System.Text.Encoding.UTF8, "application/json");
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                string url = "http://localhost:8080/tyk/keys"+request.keyId;
+                string url = "http://localhost:8080/tyk/keys/"+request.keyId;
                 HttpResponseMessage httpResponse = await httpClient.PutAsync(url, stringContent);
                 HotReload();
                 if (!httpResponse.IsSuccessStatusCode)
