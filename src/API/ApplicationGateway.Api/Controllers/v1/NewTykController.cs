@@ -22,7 +22,7 @@ namespace ApplicationGateway.Api.Controllers
         [HttpPost("createApi")]
         public async Task<ActionResult> CreateApi(CreateRequest request)
         {
-            string path = Directory.GetCurrentDirectory();
+           // string path = Directory.GetCurrentDirectory();
             // string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
             string transformer = System.IO.File.ReadAllText(@"JsonTransformers/CreateApiTransformer.json");
 
