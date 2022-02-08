@@ -13,7 +13,10 @@ namespace ApplicationGateway.Api.Controllers.v1
         [HttpPost]
         public async Task<ActionResult<string>> CreateKey(CreateKeyRequest request)
         {
-            string transformer = System.IO.File.ReadAllText(@"E:\Projects\Tyk Repository\ApplicationGateway\ApplicationGateway\docs\CreateKeyTransformer.json");
+            string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateKeyTransformer.json");
+
+            //string transformer = System.IO.File.ReadAllText(@"E:\Projects\Tyk Repository\ApplicationGateway\ApplicationGateway\docs\CreateKeyTransformer.json");
             //jsonObj.Add("apply_policies", new JArray() {policyId});orm(transformer, requestJson);
             string requestString = JsonConvert.SerializeObject(request);
             JObject inputObject = JObject.Parse(requestString);
