@@ -18,8 +18,32 @@ namespace ApplicationGateway.Api.Controllers
     [ApiController]
     public class NewTykController : ControllerBase
     {
+
         [HttpPost("createApi")]
-        public async Task<ActionResult> CreateApi(List<CreateRequest> request)
+        public async Task<ActionResult> CreateApi(CreateRequest request)
+        {
+            string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
+            string requestJson = JsonConvert.SerializeObject(request);
+            string transformed = new JsonTransformer().Transform(transformer, requestJson);
+            JObject finalJson = JObject.Parse(transformed);
+            finalJson.Add("api_id", Guid.NewGuid());
+            using (HttpClient httpClient = new HttpClient())
+            {
+                StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
+                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
+                HttpResponseMessage httpResponse =await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
+                HotReload();
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    return NotFound();
+                }
+            }
+            return Ok("Api created successfully");
+
+        }
+        [HttpPost("createMultipleApi")]
+        public async Task<ActionResult> CreateMultipleApi(List<CreateRequest> request)
         {    
             //Check for repeated listen path in request
             if (request.DistinctBy(p => p.listenPath.Trim('/')).Count() != request.Count())
@@ -54,7 +78,7 @@ namespace ApplicationGateway.Api.Controllers
                 {
                     StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
                     httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                    HttpResponseMessage httpResponse = httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent).Result;
+                    HttpResponseMessage httpResponse = await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
                     HotReload();
                     if (!httpResponse.IsSuccessStatusCode)
                     {

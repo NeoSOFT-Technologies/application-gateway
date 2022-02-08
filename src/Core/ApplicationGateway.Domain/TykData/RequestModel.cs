@@ -86,7 +86,12 @@ namespace ApplicationGateway.Domain.TykData
         public VersioningInfo versioningInfo { get; set; }
         public List<string>? loadBalancingTargets { get; set; }
     }
-
+    public class AccessRightsModel
+    {
+        public string apiId { get; set; }
+        public string apiName { get; set; }
+        public List<VersionModel> versions { get; set; }
+    }
     public class RateLimit
     {
         public int rate { get; set; }
@@ -132,5 +137,17 @@ namespace ApplicationGateway.Domain.TykData
     {
         public string clientId { get; set; }
         public string policy { get; set; }
+    }
+
+    public class CreateKeyRequest
+    {
+        public int rate{ get; set;}
+        public int perSec { get; set; }
+        public int quota { get; set; }
+        public int quotaRenewalRate { get; set; }
+        public List<AccessRightsModel> accessRights { get; set; }
+        public string policyId{ get; set; }
+        public int expires { get; set; }
+
     }
 }
