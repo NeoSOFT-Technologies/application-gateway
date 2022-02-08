@@ -103,7 +103,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             {
                 //downstream
                 Url = $"http://localhost:8080/" + item + "/WeatherForecast";
-                var responseN = await DownStream(Url);
+                var clientH = HttpClientFactory.Create();
+                var responseN = await clientH.GetAsync(Url);
+              //  var responseN = await DownStream(Url);
                 responseN.EnsureSuccessStatusCode();
             }
 
