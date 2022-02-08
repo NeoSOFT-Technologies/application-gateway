@@ -50,7 +50,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var id = result.key;
             await HotReload();
-            Thread.Sleep(5000);
+            Thread.Sleep(8000);
 
             //downstream
             var responseN = await DownStream(Url);
@@ -96,7 +96,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
 
             await HotReload();
-            Thread.Sleep(5000);
+            Thread.Sleep(8000);
 
 
             foreach (var item in path)
