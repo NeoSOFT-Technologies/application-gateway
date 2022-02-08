@@ -45,19 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Downstream", "Downstream", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownstreamApi", "Downstream\DownstreamApi\DownstreamApi.csproj", "{8DB6F8A2-2796-4673-8099-8CA8F2B2FD2C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tyk-gateway-docker", "tyk-gateway-docker", "{3D65CB54-8029-4448-9F0F-DFFD44BC6353}"
-	ProjectSection(SolutionItems) = preProject
-		tyk-gateway-docker\.gitignore = tyk-gateway-docker\.gitignore
-		tyk-gateway-docker\Dockerfile = tyk-gateway-docker\Dockerfile
-		tyk-gateway-docker\entrypoint.sh = tyk-gateway-docker\entrypoint.sh
-		tyk-gateway-docker\README.md = tyk-gateway-docker\README.md
-		tyk-gateway-docker\Tyk Gateway API Collection.postman_collection.json = tyk-gateway-docker\Tyk Gateway API Collection.postman_collection.json
-		tyk-gateway-docker\tyk.hybrid.conf = tyk-gateway-docker\tyk.hybrid.conf
-		tyk-gateway-docker\tyk.standalone.conf = tyk-gateway-docker\tyk.standalone.conf
-		tyk-gateway-docker\tyk.standalone.tls.conf = tyk-gateway-docker\tyk.standalone.tls.conf
-		tyk-gateway-docker\tyk.with_dashboard.conf = tyk-gateway-docker\tyk.with_dashboard.conf
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
