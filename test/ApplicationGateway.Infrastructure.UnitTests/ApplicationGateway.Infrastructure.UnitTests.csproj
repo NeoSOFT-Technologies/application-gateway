@@ -30,4 +30,8 @@
     <ProjectReference Include="..\..\src\Infrastructure\ApplicationGateway.Infrastructure\ApplicationGateway.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FileExport\" />
+  </ItemGroup>
+
 </Project>

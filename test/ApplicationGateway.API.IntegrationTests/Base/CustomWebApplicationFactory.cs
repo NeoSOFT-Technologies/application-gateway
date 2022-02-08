@@ -19,14 +19,14 @@ namespace ApplicationGateway.API.IntegrationTests.Base
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.UseEnvironment("Test"); 
-            builder.ConfigureAppConfiguration((context, config) =>
-            {
-                config.AddInMemoryCollection(new[]
-                {
-                    new KeyValuePair<string, string>(
-                        "ConnectionStrings:ApplicationConnectionString", _dbFixture.ApplicationConnString),
-                });
-            });
+            //builder.ConfigureAppConfiguration((context, config) =>
+            //{
+            //    config.AddInMemoryCollection(new[]
+            //    {
+            //        new KeyValuePair<string, string>(
+            //            "ConnectionStrings:ApplicationConnectionString", _dbFixture.ApplicationConnString),
+            //    });
+            //});
             builder.ConfigureAppConfiguration((context, config) =>
             {
                 config.AddInMemoryCollection(new[]
