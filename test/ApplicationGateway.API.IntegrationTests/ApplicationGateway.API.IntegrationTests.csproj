@@ -7,12 +7,21 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="JsonData\masterJson.json" />
+    <None Remove="JsonData\masterVersion.json" />
+    <None Remove="JsonData\rateLimitData.json" />
+    <None Remove="JsonData\Versioning.json" />
+    <None Remove="JsonData\Versioning_url.json" />
+  </ItemGroup>
+
 <ItemGroup>
   <InternalsVisibleTo Include="ApplicationGateway.API.IntegrationTests" />
 </ItemGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />

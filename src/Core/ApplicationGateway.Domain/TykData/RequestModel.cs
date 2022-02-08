@@ -65,7 +65,14 @@ namespace ApplicationGateway.Domain.TykData
         public VersionData Version_data { get; set; }
         public global_rate_limit global_rate_limit { get; set; }
     }
+    public class ResponseModel
+    {
 
+        public string key { get; set; }
+        public string status { get; set; }
+        public string action { get; set; }
+
+    }
     public class CreateRequest
     {
         public string name { get; set; }

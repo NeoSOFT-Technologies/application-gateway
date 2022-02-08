@@ -28,20 +28,30 @@ namespace ApplicationGateway.Api.Controllers
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
             JObject finalJson = JObject.Parse(transformed);
             finalJson.Add("api_id", Guid.NewGuid());
+            ResponseModel result;
             using (HttpClient httpClient = new HttpClient())
             {
                 StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
                 HttpResponseMessage httpResponse =await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
                 HotReload();
+
+                //read response
+                var jsonString = httpResponse.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
+
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     return NotFound();
                 }
             }
-            return Ok("Api created successfully");
+            return Ok(result);  //"Api created successfully"
 
         }
+
+
+
+
         [HttpPost("createMultipleApi")]
         public async Task<ActionResult> CreateMultipleApi(List<CreateRequest> request)
         {    
@@ -67,6 +77,7 @@ namespace ApplicationGateway.Api.Controllers
 
             string path = Directory.GetCurrentDirectory();
             string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
+            List<ResponseModel> resultList = new List<ResponseModel>();
 
             foreach (CreateRequest obj in request)
             {
@@ -80,14 +91,22 @@ namespace ApplicationGateway.Api.Controllers
                     httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
                     HttpResponseMessage httpResponse = await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
                     HotReload();
+
+                    //read response
+                    var jsonString = httpResponse.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
+                    resultList.Add(result);
+
                     if (!httpResponse.IsSuccessStatusCode)
                     {
                         return NotFound();
                     }
                 }
             }
-            return Ok("APIs from API array created successfully");
+            return Ok(resultList);    //"APIs from API array created successfully"
         }
+
+
 
         [HttpPut("updateapi")]
         public ActionResult UpdateApi(UpdateRequest request)
@@ -141,6 +160,8 @@ namespace ApplicationGateway.Api.Controllers
             }
             return Ok();
         }
+
+
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

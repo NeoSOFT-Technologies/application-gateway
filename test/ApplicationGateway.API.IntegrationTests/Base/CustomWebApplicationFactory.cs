@@ -11,7 +11,7 @@ namespace ApplicationGateway.API.IntegrationTests.Base
     [Collection("Database")]
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
-        private readonly DbFixture _dbFixture;
+        /*private readonly DbFixture _dbFixture;
 
         public CustomWebApplicationFactory(DbFixture dbFixture)
             => _dbFixture = dbFixture;
@@ -27,14 +27,14 @@ namespace ApplicationGateway.API.IntegrationTests.Base
             //            "ConnectionStrings:ApplicationConnectionString", _dbFixture.ApplicationConnString),
             //    });
             //});
-            builder.ConfigureAppConfiguration((context, config) =>
+          *//*  builder.ConfigureAppConfiguration((context, config) =>
             {
                 config.AddInMemoryCollection(new[]
                 {
                     new KeyValuePair<string, string>(
                         "ConnectionStrings:IdentityConnectionString", _dbFixture.IdentityConnString)
                 });
-            });
+            });*//*
             builder.ConfigureAppConfiguration((context, config) =>
             {
                 config.AddInMemoryCollection(new[]
@@ -59,6 +59,6 @@ namespace ApplicationGateway.API.IntegrationTests.Base
                         "CacheConfiguration:SlidingExpirationInMinutes", "30")
                 });
             });
-        }
+        }*/
     }
 }

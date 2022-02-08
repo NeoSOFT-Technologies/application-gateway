@@ -1,0 +1,44 @@
+{
+  "name": "loadAPI",
+  "api_id": "loadAPI",
+  "use_keyless": true,
+  "active": true,
+  "proxy": {
+    "listen_path": "/loadAPI/",
+    "target_url": "http://host.docker.internal:5000", //http://host.docker.internal:5000/api/v1
+    "strip_listen_path": true
+
+  },
+
+  "version_data": {
+    "not_versioned": false,
+    "default_version": "V1",
+    "versions": {
+      "V1": {
+        "name": "V1",
+        "expires": "",
+        "use_extended_paths": true,
+        "override_target": "http://host.docker.internal:5000" //http://host.docker.internal:5000/api/v1
+      },
+      "V2": {
+        "name": "V2",
+        "expires": "",
+        "use_extended_paths": true,
+        "override_target": "http://host.docker.internal:5000"
+      }
+
+    }
+  },
+  "definition": {
+    "location": "header",
+    "key": "x-tyk-api-version",
+    "strip_path": false
+  },
+
+  //rate limit
+  "global_rate_limit": {
+    "rate": 0,
+    "per": 0
+  }
+
+}
