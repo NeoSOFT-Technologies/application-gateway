@@ -1,6 +1,6 @@
 {
     "name": "new",
     "listenPath": "new",
-    "targetUrl": "http://downstreamapi1:5000"
+    "targetUrl": "http://localhost:5000"
 
 }
