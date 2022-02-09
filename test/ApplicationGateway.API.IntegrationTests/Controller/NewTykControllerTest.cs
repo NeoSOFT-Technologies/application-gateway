@@ -31,7 +31,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/"+newid.ToString()+ "/WeatherForecast";
+            string Url = $"http://localhost:8080/"+newid.ToString()+ "/GetWeatherForecast";
 
             //read json file 
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
