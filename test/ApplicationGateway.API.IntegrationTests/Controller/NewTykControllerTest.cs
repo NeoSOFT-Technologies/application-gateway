@@ -28,7 +28,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         [Fact]
         public async Task Post_CreateApi_ReturnsSuccessResult()
         {
-
+            Console.WriteLine("test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = $"http://localhost:8080/"+newid.ToString()+ "/weatherforecast";
@@ -66,7 +66,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         [Fact]
         public async Task downstream()
         {
-
+            Console.WriteLine("downstream test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = $"http://localhost:5000/weatherforecast";
@@ -77,7 +77,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             var responseN = await DownStream(Url);
             responseN.EnsureSuccessStatusCode();
-
+            Console.WriteLine("downstream test finish");
 
         }
 
