@@ -31,7 +31,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/"+newid.ToString()+ "/get";
+            string Url = $"http://localhost:8080/"+newid.ToString()+ "/weatherforecast";
 
             //read json file 
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
@@ -60,6 +60,24 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/NewTyk/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             await HotReload();
+
+        }
+
+        [Fact]
+        public async Task downstream()
+        {
+
+            var client = _factory.CreateClient();
+            Guid newid = Guid.NewGuid();
+            string Url = $"http://localhost:5000/weatherforecast";
+
+            //read json file 
+           
+
+            //downstream
+            var responseN = await DownStream(Url);
+            responseN.EnsureSuccessStatusCode();
+
 
         }
 
