@@ -11,5 +11,6 @@
   "throttle_retry_limit": "#valueof(ThrottleRetries)",
   "state": "#valueof(State)",
   "tags": "#valueof(Tags)",
+  "key_expires_in": "#valueof(KeyExpiresIn)",
   "partitions": "#valueof(Partitions)"
 }
