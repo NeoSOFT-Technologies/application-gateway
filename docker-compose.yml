@@ -43,7 +43,7 @@ services:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
       context: .
-      dockerfile: Downstream/DownstreamApi//Dockerfile
+      dockerfile: Downstream/DownstreamApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
