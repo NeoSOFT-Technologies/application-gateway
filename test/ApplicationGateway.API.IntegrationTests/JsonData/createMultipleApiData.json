@@ -3,14 +3,14 @@
 
     "name": "new",
     "listenPath": "new",
-    "targetUrl": "http://host.docker.internal:5000"
+    "targetUrl": "http://downstreamapi1:5000"
 
   },
   {
 
     "name": "new1",
     "listenPath": "new1",
-    "targetUrl": "http://host.docker.internal:5000"
+    "targetUrl": "http://downstreamapi1:5000"
 
   }
 ]
