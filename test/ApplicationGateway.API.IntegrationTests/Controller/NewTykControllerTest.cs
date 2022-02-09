@@ -102,7 +102,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             foreach (var item in path)
             {
                 //downstream
-                Url = $"http://tyk-gateway:8080/" + item + "/WeatherForecast";
+                Url = $"http://localhost:8080/" + item + "/WeatherForecast";
                /* var clientH = HttpClientFactory.Create();
                 var responseN = await clientH.GetAsync(Url);*/
                 var responseN = await DownStream(Url);
