@@ -53,8 +53,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Thread.Sleep(4000);
 
             //downstream
-            var responseN = await DownStream(Url);
-            responseN.EnsureSuccessStatusCode();
+            // var responseN = await DownStream(Url);
+            // responseN.EnsureSuccessStatusCode();
 
             //delete Api
             var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/NewTyk/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
