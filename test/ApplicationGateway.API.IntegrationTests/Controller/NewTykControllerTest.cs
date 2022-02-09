@@ -145,9 +145,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         public async Task<HttpResponseMessage> DownStream(string path)
         {
-            var client = HttpClientFactory.Create();
-            var response = await client.GetAsync(path);
-            return response;
+            try
+            {
+                var client = HttpClientFactory.Create();
+                var response = await client.GetAsync(path);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+     
         }
 
 
