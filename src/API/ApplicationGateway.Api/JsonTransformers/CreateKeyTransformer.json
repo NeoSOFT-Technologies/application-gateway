@@ -3,17 +3,8 @@
     "per": "#valueof(perSec)",
     "expires": "#valueof(expires)",
     "quota_max": "#valueof(quota)",
-    "org_id": "",
     "quota_remaining": "#valueof(quota)",
     "quota_renewal_rate": "#valueof(quotaRenewalRate)",
-    "access_rights": {
-      "{Default}": {
-        "api_id": "{Default}",
-        "api_name": "{Default}",
-        "versions": ["Default"]
-      }
-    },
-    "apply_policies": [
-        "#valueof(policyId)"
-      ]
+    "access_rights": {},
+    "apply_policies": null
 }
