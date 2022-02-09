@@ -50,7 +50,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var id = result.key;
             await HotReload();
-            Thread.Sleep(5000);
+            Thread.Sleep(4000);
 
             //downstream
             var responseN = await DownStream(Url);
@@ -96,15 +96,17 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
 
             await HotReload();
-            Thread.Sleep(5000);
+            Thread.Sleep(7000);
 
 
             foreach (var item in path)
             {
                 //downstream
                 Url = $"http://localhost:8080/" + item + "/WeatherForecast";
+               /* var clientH = HttpClientFactory.Create();
+                var responseN = await clientH.GetAsync(Url);*/
                 var responseN = await DownStream(Url);
-                responseN.EnsureSuccessStatusCode();
+              //  responseN.EnsureSuccessStatusCode();
             }
 
             var id = "";
@@ -123,7 +125,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
 
 
-        private async Task<HttpResponseMessage> DownStream(string path)
+        public async Task<HttpResponseMessage> DownStream(string path)
         {
             var client = HttpClientFactory.Create();
             var response = await client.GetAsync(path);

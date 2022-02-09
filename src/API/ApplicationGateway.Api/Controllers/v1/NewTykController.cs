@@ -22,8 +22,10 @@ namespace ApplicationGateway.Api.Controllers
         [HttpPost("createApi")]
         public async Task<ActionResult> CreateApi(CreateRequest request)
         {
-            string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
+           // string path = Directory.GetCurrentDirectory();
+            // string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
+            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/CreateApiTransformer.json");
+
             string requestJson = JsonConvert.SerializeObject(request);
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
             JObject finalJson = JObject.Parse(transformed);
@@ -75,8 +77,9 @@ namespace ApplicationGateway.Api.Controllers
                 }
             }
 
-            string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
+            /*string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");*/
+            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/CreateApiTransformer.json");
             List<ResponseModel> resultList = new List<ResponseModel>();
 
             foreach (CreateRequest obj in request)
