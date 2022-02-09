@@ -11,9 +11,9 @@ namespace ApplicationGateway.Api.Controllers.v1
     public class KeyController : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<dynamic>> GetKey(string keyId)
+        public async Task<ActionResult<string>> GetKey(string keyId)
         {
-            dynamic key;
+            string key;
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
@@ -35,14 +35,16 @@ namespace ApplicationGateway.Api.Controllers.v1
             JObject inputObject = JObject.Parse(requestString);
             string transformedObj = new JsonTransformer().Transform(transformer, requestString);
             JObject jsonObj = JObject.Parse(transformedObj);
-            if (request.accessRights != null)
+            jsonObj["access_rights"] = new JObject();
+            if (request.policyId.Any())
             {
-                jsonObj["access_rights"] = new JObject();
-                if (request.policyId == "")
-                {
-                    jsonObj.Remove("apply_policies");
-                }
-                foreach(var api in request.accessRights)
+                JArray policies = new JArray();
+                request.policyId.ForEach(policy=> policies.Add(policy));
+                jsonObj["apply_policies"] = policies;
+            }
+            if (request.accessRights.Any())
+            {
+                foreach (var api in request.accessRights)
                 {
                     string jsonString = JsonConvert.SerializeObject(api);
                     JObject obj = JObject.Parse(jsonString);
@@ -55,18 +57,18 @@ namespace ApplicationGateway.Api.Controllers.v1
                     (jsonObj["access_rights"] as JObject).Add(obj["apiId"].ToString(),accObj);
                 }
             }
-            dynamic key;
+           dynamic key;
             using (HttpClient httpClient = new HttpClient())
             {
                 StringContent stringContent = new StringContent(jsonObj.ToString(), System.Text.Encoding.UTF8, "application/json");
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
                 string url = "http://localhost:8080/tyk/keys";
                 HttpResponseMessage httpResponse = await httpClient.PostAsync(url,stringContent);
-                HotReload();
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     return NotFound();
                 }
+                HotReload();
                 key = await httpResponse.Content.ReadAsStringAsync();
             }
 
@@ -75,7 +77,7 @@ namespace ApplicationGateway.Api.Controllers.v1
 
 
         [HttpPut]
-        public async Task<ActionResult<dynamic>> UpdateKey(UpdateKeyRequest request)
+        public async Task<ActionResult<string>> UpdateKey(UpdateKeyRequest request)
         {
             string path = Directory.GetCurrentDirectory();
             string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\UpdateKeyTransformer.json");
@@ -83,13 +85,15 @@ namespace ApplicationGateway.Api.Controllers.v1
 
             string transformedObj = new JsonTransformer().Transform(transformer, requestString);
             JObject jsonObj = JObject.Parse(transformedObj);
-            if (request.accessRights != null)
+            if (request.policyId.Any())
+            {
+                JArray policies = new JArray();
+                request.policyId.ForEach(policy => policies.Add(policy));
+                jsonObj["apply_policies"] = policies;
+            }
+            if (request.accessRights.Any())
             {
                 jsonObj["access_rights"] = new JObject();
-                if (request.policyId == "")
-                {
-                    jsonObj.Remove("apply_policies");
-                }
                 foreach (var api in request.accessRights)
                 {
                     string jsonString = JsonConvert.SerializeObject(api);
@@ -103,7 +107,7 @@ namespace ApplicationGateway.Api.Controllers.v1
                     (jsonObj["access_rights"] as JObject).Add(obj["apiId"].ToString(), accObj);
                 }
             }
-            dynamic key;
+            string key;
             using (HttpClient httpClient = new HttpClient())
             {
                 StringContent stringContent = new StringContent(jsonObj.ToString(), System.Text.Encoding.UTF8, "application/json");

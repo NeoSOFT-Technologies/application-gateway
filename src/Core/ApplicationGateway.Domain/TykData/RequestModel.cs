@@ -146,7 +146,7 @@ namespace ApplicationGateway.Domain.TykData
         public int quota { get; set; }
         public int quotaRenewalRate { get; set; }
         public List<AccessRightsModel> accessRights { get; set; }
-        public string policyId{ get; set; }
+        public List<string> policyId{ get; set; }
         public int expires { get; set; }
 
 
