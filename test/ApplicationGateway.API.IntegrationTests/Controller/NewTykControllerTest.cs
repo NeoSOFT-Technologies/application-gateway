@@ -30,10 +30,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         [Fact]
         public async Task Post_CreateApi_ReturnsSuccessResult()
         {
-
+            Console.WriteLine("test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/"+newid.ToString()+"/WeatherForecast";
+            string Url = $"http://localhost:8080/"+newid.ToString()+ "/weatherforecast";
 
             //read json file 
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
@@ -63,7 +63,27 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
 
         }
+
+        [Fact]
+        public async Task downstream()
+        {
+            Console.WriteLine("downstream test started");
+            var client = _factory.CreateClient();
+            Guid newid = Guid.NewGuid();
+            string Url = $"http://localhost:5000/weatherforecast";
+
+            //read json file 
+           
        
+
+
+            //downstream
+            var responseN = await DownStream(Url);
+            responseN.EnsureSuccessStatusCode();
+            Console.WriteLine("downstream test finish");
+
+        }
+
 
 
         [Fact]
@@ -107,7 +127,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                /* var clientH = HttpClientFactory.Create();
                 var responseN = await clientH.GetAsync(Url);*/
                 var responseN = await DownStream(Url);
-              //  responseN.EnsureSuccessStatusCode();
+                responseN.EnsureSuccessStatusCode();
             }
 
             var id = "";
@@ -253,9 +273,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         public async Task<HttpResponseMessage> DownStream(string path)
         {
-            var client = HttpClientFactory.Create();
-            var response = await client.GetAsync(path);
-            return response;
+            try
+            {
+                var client = HttpClientFactory.Create();
+                var response = await client.GetAsync(path);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+     
         }
 
         public async Task<Docker> getsOrigin(string path)
