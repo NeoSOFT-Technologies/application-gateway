@@ -13,11 +13,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
+
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
     public class NewTykControllerTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
+      
         public NewTykControllerTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
@@ -37,7 +39,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid.ToString()}/";
+            requestModel1.listenPath = $"/{newid}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -45,7 +47,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var response = await client.PostAsync("/api/v1/NewTyk/CreateApi/createApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
             ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
 
             var id = result.key;
@@ -54,7 +55,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //downstream
             var responseN = await DownStream(Url);
-         //   responseN.EnsureSuccessStatusCode();
+            responseN.EnsureSuccessStatusCode();
 
             //delete Api
             var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/NewTyk/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
@@ -62,7 +63,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
 
         }
-
+       
 
 
         [Fact]
@@ -118,12 +119,137 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
                 await HotReload();
             }
-
-
-
         }
 
 
+        [Fact]
+        public async Task Blacklisting()
+        {
+            var client = _factory.CreateClient();
+            Guid newid = Guid.NewGuid();
+            string Url = $"http://localhost:8080/"+newid.ToString()+"/WeatherForecast";
+            string OriginUrl = $"http://localhost:8080/"+newid.ToString()+"/";
+            //read json file 
+            var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
+            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
+            requestModel1.name = newid.ToString();
+            requestModel1.listenPath = $"/{newid.ToString()}/";
+            requestModel1.targetUrl = "http://httpbin.org/get";
+            //create Api
+            var RequestJson = JsonConvert.SerializeObject(requestModel1);
+            HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("/api/v1/NewTyk/CreateApi/createApi", content);
+            response.EnsureSuccessStatusCode();
+            var jsonString = response.Content.ReadAsStringAsync();
+
+            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
+
+            var id = result.key;
+            await HotReload();
+            Thread.Sleep(2000);
+
+            //getorigin
+            var ipaddress = await getsOrigin(OriginUrl);
+            var ip = ipaddress.origin;
+            string[] values = ip.Split(',');
+            for (int i = 0; i < values.Length; i++)
+            {
+                values[i] = values[i].Trim();
+            }
+            var ipvalue = values[0];
+            //read update json file
+            var myupdateJsonString = File.ReadAllText("../../../JsonData/updateApiData.json");
+            UpdateRequest updaterequestModel1 = JsonConvert.DeserializeObject<UpdateRequest>(myupdateJsonString);
+            updaterequestModel1.name = newid.ToString();
+            updaterequestModel1.listenPath = $"/{newid.ToString()}/";
+            updaterequestModel1.id = new Guid(id);
+            updaterequestModel1.blacklist = new List<string>
+            {
+                ipvalue
+            };
+            //updateappi
+            var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
+            HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
+            var updateresponse = await client.PutAsync("/api/v1/NewTyk/UpdateApi/updateapi", updatecontent);
+            updateresponse.EnsureSuccessStatusCode();
+            await HotReload();
+            Thread.Sleep(2000);
+
+        
+            //downstream
+            var downstreamResponse = await DownStream(Url);
+            downstreamResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
+
+            //delete Api
+            var deleteResponse = await DeleteApi(id);
+            deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
+            await HotReload();
+        }
+
+        [Fact]
+        public async Task Whitelisting()
+        {
+            
+            var client = _factory.CreateClient();
+            Guid newid = Guid.NewGuid();
+            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string OriginUrl = $"http://localhost:8080/" + newid.ToString() + "/";
+            //read json file 
+            var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
+            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
+            requestModel1.name = newid.ToString();
+            requestModel1.listenPath = $"/{newid}/";
+            requestModel1.targetUrl = "http://httpbin.org/get";
+            //create Api
+            var RequestJson = JsonConvert.SerializeObject(requestModel1);
+            HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("/api/v1/NewTyk/CreateApi/createApi", content);
+            response.EnsureSuccessStatusCode();
+            var jsonString = response.Content.ReadAsStringAsync();
+
+            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
+
+            var id = result.key;
+            await HotReload();
+            Thread.Sleep(4000);
+
+            //getorigin
+            var ipaddress = await getsOrigin(OriginUrl);
+            var ip = ipaddress.origin;
+            string[] values = ip.Split(',');
+            for (int i = 0; i < values.Length; i++)
+            {
+                values[i] = values[i].Trim();
+            }
+            var ipvalue = values[0];
+
+            //read update json file
+            var myupdateJsonString = File.ReadAllText("../../../JsonData/updateApiData.json");
+            UpdateRequest updaterequestModel1 = JsonConvert.DeserializeObject<UpdateRequest>(myupdateJsonString);
+            updaterequestModel1.name = newid.ToString();
+            updaterequestModel1.listenPath = $"/{newid}/";
+            updaterequestModel1.id = new Guid(id);
+            updaterequestModel1.whitelist = new List<string>
+            {
+                ipvalue
+            };
+            //updateappi
+            var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
+            HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
+            var updateresponse = await client.PutAsync("/api/v1/NewTyk/UpdateApi/updateapi", updatecontent);
+            updateresponse.EnsureSuccessStatusCode();
+            await HotReload();
+            Thread.Sleep(4000);
+
+            //downstream
+            var downstreamResponse = await DownStream(Url);
+            downstreamResponse.EnsureSuccessStatusCode();
+
+            //delete Api
+            var deleteResponse = await DeleteApi(id);
+            deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
+            await HotReload();
+        }
 
         public async Task<HttpResponseMessage> DownStream(string path)
         {
@@ -132,6 +258,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             return response;
         }
 
+        public async Task<Docker> getsOrigin(string path)
+        {
+            var client = HttpClientFactory.Create();
+            var response = await client.GetAsync(path);
+            var jsonString = response.Content.ReadAsStringAsync();
+            Docker result = JsonConvert.DeserializeObject<Docker>(jsonString.Result);
+            return result;
+        }
 
         private async Task HotReload()
         {
