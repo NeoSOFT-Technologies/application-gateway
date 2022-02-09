@@ -6,13 +6,13 @@ using System.Text;
 
 namespace ApplicationGateway.Domain.TykData
 {
-      public class Proxy
+    public class Proxy
     {
         public string listen_path { get; set; }
         public string target_url { get; set; }
         public bool strip_listen_path { get; set; }
-       /* public bool enable_load_balancing { get; set; }
-        public List<string> target_list { get; set; }*/
+        /* public bool enable_load_balancing { get; set; }
+         public List<string> target_list { get; set; }*/
     }
 
 
@@ -56,7 +56,7 @@ namespace ApplicationGateway.Domain.TykData
     }
     public class RateLimit_RequestModel
     {
-      
+
         public string name { get; set; }
         public string api_id { get; set; }
         public bool use_keyless { get; set; }
@@ -124,7 +124,7 @@ namespace ApplicationGateway.Domain.TykData
         public string version { get; set; }
         public string method { get; set; }
         public string path { get; set; }
-        public int samples { get; set; } 
+        public int samples { get; set; }
         public double threshold_percent { get; set; }
         public int cooldownTime { get; set; }
         public bool disable_half_open_state { get; set; }
@@ -149,13 +149,39 @@ namespace ApplicationGateway.Domain.TykData
 
     public class CreateKeyRequest
     {
-        public int rate{ get; set;}
+        public int rate { get; set; }
         public int perSec { get; set; }
         public int quota { get; set; }
         public int quotaRenewalRate { get; set; }
         public List<AccessRightsModel> accessRights { get; set; }
-        public string policyId{ get; set; }
+        public string policyId { get; set; }
         public int expires { get; set; }
+
+    }
+
+    //to get docker ip address from httporgbin/get
+    public class Docker
+    {
+        public args? args { get; set; }
+        public headers? headers { get; set; }
+        public string origin { get; set; }
+        public string url { get; set; }
+
+    }
+
+    public class args
+    {
+
+    }
+
+    public class headers
+    {
+        public string Accept { get; set; }
+        public string Accept_Encoding { get; set; }
+        public string Host { get; set; }
+        public string Postman_Token { get; set; }
+        public string User_Agent { get; set; }
+        public string X_Amzn_Trace_Id { get; set; }
 
     }
 }

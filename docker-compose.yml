@@ -43,7 +43,7 @@ services:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
       context: .
-      dockerfile: Downstream/DownstreamApi//Dockerfile
+      dockerfile: Downstream/DownstreamApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -52,6 +52,8 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - clean-network
 
   downstreamapi2:
     image: ${DOCKER_REGISTRY-}downstreamapi
@@ -66,5 +68,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-
+    networks:
+      - clean-network
   
