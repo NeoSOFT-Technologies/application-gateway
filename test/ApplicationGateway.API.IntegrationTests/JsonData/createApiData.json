@@ -1,6 +1,6 @@
 {
     "name": "new",
     "listenPath": "new",
-    "targetUrl": "http://host.docker.internal:5000"
+    "targetUrl": "http://httpbin.org"
 
 }
