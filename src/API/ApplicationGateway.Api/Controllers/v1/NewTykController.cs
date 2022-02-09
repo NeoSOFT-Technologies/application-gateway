@@ -14,8 +14,8 @@ using System.Text;
 namespace ApplicationGateway.Api.Controllers
 {
     [ApiVersion("1")]
-    [Route("api/v1/[controller]/[action]")]
-    [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+     [ApiController]
     public class NewTykController : ControllerBase
     {
 
@@ -115,8 +115,9 @@ namespace ApplicationGateway.Api.Controllers
         public ActionResult UpdateApi(UpdateRequest request)
         {
             string requestJson = JsonConvert.SerializeObject(request);
-            string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\UpdateApiTransformer.json");
+            //    string path = Directory.GetCurrentDirectory();
+            //   string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\UpdateApiTransformer.json");
+            string transformer = System.IO.File.ReadAllText( @"JsonTransformers/UpdateApiTransformer.json");
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
             JObject inputObject = JObject.Parse(requestJson);

@@ -19,11 +19,12 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
     public class NewTykControllerTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-      
+
         public NewTykControllerTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
         }
+
 
 
 
@@ -65,9 +66,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         }
 
 
-
-
-
         [Fact]
         public async Task Post_CreateMultipleApis_ReturnsSuccessResult()
         {
@@ -106,7 +104,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             {
                 //downstream
                 Url = $"http://localhost:8080/" + item + "/WeatherForecast";
-                
+
                 var responseN = await DownStream(Url);
                 responseN.EnsureSuccessStatusCode();
             }
@@ -128,8 +126,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/"+newid.ToString()+"/WeatherForecast";
-            string OriginUrl = $"http://localhost:8080/"+newid.ToString()+"/";
+            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string OriginUrl = $"http://localhost:8080/" + newid.ToString() + "/";
             //read json file 
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
@@ -176,11 +174,17 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
             Thread.Sleep(2000);
 
-        
+
             //downstream
             var downstreamResponse = await DownStream(Url);
             downstreamResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
-}
+            //delete Api
+            var deleteResponse = await DeleteApi(id);
+            deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
+            await HotReload();
+        }
+
+
         [Fact]
         public async Task Update_Versioning_byHeader()
         {
@@ -251,6 +255,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
+
         [Fact]
         public async Task Update_Versioning_byQueryParam()
         {
@@ -315,6 +320,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
 
         }
+
 
         [Fact]
         public async Task Update_Versioning_byUrl()
@@ -381,6 +387,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
 
         }
+
 
         [Fact]
         public async Task Update_loadBalancing()
@@ -524,12 +531,11 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
-        
 
         [Fact]
         public async Task Whitelisting()
         {
-            
+
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
@@ -591,6 +597,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
         }
 
+
+
         public async Task<HttpResponseMessage> DownStream(string path)
         {
 
@@ -624,8 +632,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             response.EnsureSuccessStatusCode();
         }
 
-
-
         private async Task<HttpResponseMessage> DeleteApi(string id)
         {
             var client = _factory.CreateClient();
@@ -635,25 +641,25 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         }
 
 
-    [Fact]
-    public async Task downstream()
-    {
-        Console.WriteLine("downstream test started");
-        var client = _factory.CreateClient();
-        Guid newid = Guid.NewGuid();
-        string Url = $"http://localhost:5000/weatherforecast";
+        [Fact]
+        public async Task downstream()
+        {
+            Console.WriteLine("downstream test started");
+            var client = _factory.CreateClient();
+            Guid newid = Guid.NewGuid();
+            string Url = $"http://localhost:5000/weatherforecast";
 
-        //read json file 
-
-
+            //read json file 
 
 
-        //downstream
-        var responseN = await DownStream(Url);
-        responseN.EnsureSuccessStatusCode();
-        Console.WriteLine("downstream test finish");
+
+
+            //downstream
+            var responseN = await DownStream(Url);
+            responseN.EnsureSuccessStatusCode();
+            Console.WriteLine("downstream test finish");
+
+        }
 
     }
-
-}
 }
