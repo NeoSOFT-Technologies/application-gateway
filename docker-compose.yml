@@ -68,4 +68,9 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+   httpbin:
+    image: kennethreitz/httpbin
+    networks:
+      - tyk
+      - es
   
