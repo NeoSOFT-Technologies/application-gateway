@@ -31,7 +31,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:5000/WeatherForecast";
+            string Url = $"http://localhost:8080/"+newid.ToString()+ "/WeatherForecast";
 
             //read json file 
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
@@ -65,7 +65,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
 
 
-        //[Fact]
+       // [Fact]
         public async Task Post_CreateMultipleApis_ReturnsSuccessResult()
         {
             var client = _factory.CreateClient();
@@ -102,7 +102,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             foreach (var item in path)
             {
                 //downstream
-                Url = $"http://localhost:8080/" + item + "/WeatherForecast";
+                Url = $"http://tyk-gateway:8080/" + item + "/WeatherForecast";
                /* var clientH = HttpClientFactory.Create();
                 var responseN = await clientH.GetAsync(Url);*/
                 var responseN = await DownStream(Url);
