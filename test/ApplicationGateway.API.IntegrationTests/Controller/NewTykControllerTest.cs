@@ -83,7 +83,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
 
 
-       // [Fact]
+        [Fact]
         public async Task Post_CreateMultipleApis_ReturnsSuccessResult()
         {
             var client = _factory.CreateClient();
