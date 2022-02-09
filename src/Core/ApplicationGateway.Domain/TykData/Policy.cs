@@ -19,6 +19,7 @@ namespace ApplicationGateway.Domain.TykData
         public int ThrottleInterval { get; set; }
         public int ThrottleRetries { get; set; }
         public string State { get; set; }
+        public int KeyExpiresIn { get; set; }
         public List<string> Tags { get; set; }
         public List<PolicyApi> APIs { get; set; }
         public Partition? Partitions { get; set; }
