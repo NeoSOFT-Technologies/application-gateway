@@ -8,9 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="JsonData\masterJson.json" />
-    <None Remove="JsonData\masterVersion.json" />
     <None Remove="JsonData\rateLimitData.json" />
+    <None Remove="JsonData\requestDemomodel.json" />
     <None Remove="JsonData\Versioning.json" />
     <None Remove="JsonData\Versioning_url.json" />
   </ItemGroup>

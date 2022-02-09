@@ -109,6 +109,7 @@ namespace ApplicationGateway.Domain.TykData
     {
         public string location { get; set; }
         public string key { get; set; }
+        public bool strip_path { get; set; }
     }
 
     public class VersionModel
