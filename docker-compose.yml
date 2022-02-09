@@ -52,9 +52,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    networks:
-      - clean-network
-
+   
   downstreamapi2:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
@@ -68,6 +66,4 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    networks:
-      - clean-network
   

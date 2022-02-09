@@ -33,7 +33,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Console.WriteLine("test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/"+newid.ToString()+ "/weatherforecast";
             string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
 
             //read json file 
@@ -57,7 +56,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             var responseN = await DownStream(Url);
             responseN.EnsureSuccessStatusCode();
-            //   responseN.EnsureSuccessStatusCode();
 
             //delete Api
             var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/NewTyk/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
@@ -66,25 +64,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
-        [Fact]
-        public async Task downstream()
-        {
-            Console.WriteLine("downstream test started");
-            var client = _factory.CreateClient();
-            Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:5000/weatherforecast";
 
-            //read json file 
-           
-       
-
-
-            //downstream
-            var responseN = await DownStream(Url);
-            responseN.EnsureSuccessStatusCode();
-            Console.WriteLine("downstream test finish");
-
-        }
 
 
 
@@ -126,11 +106,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             {
                 //downstream
                 Url = $"http://localhost:8080/" + item + "/WeatherForecast";
-                /* var clientH = HttpClientFactory.Create();
-                 var responseN = await clientH.GetAsync(Url);*/
+                
                 var responseN = await DownStream(Url);
                 responseN.EnsureSuccessStatusCode();
-                //  responseN.EnsureSuccessStatusCode();
             }
 
             var id = "";
@@ -202,7 +180,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             var downstreamResponse = await DownStream(Url);
             downstreamResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
-
+}
         [Fact]
         public async Task Update_Versioning_byHeader()
         {
@@ -546,12 +524,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
-
-            //delete Api
-            var deleteResponse = await DeleteApi(id);
-            deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
-        }
+        
 
         [Fact]
         public async Task Whitelisting()
@@ -620,6 +593,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         public async Task<HttpResponseMessage> DownStream(string path)
         {
+
             try
             {
                 var client = HttpClientFactory.Create();
@@ -631,7 +605,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 Console.WriteLine(ex.Message);
                 throw;
             }
-     
+
         }
 
         public async Task<Docker> getsOrigin(string path)
@@ -660,5 +634,26 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             return response;
         }
 
+
+    [Fact]
+    public async Task downstream()
+    {
+        Console.WriteLine("downstream test started");
+        var client = _factory.CreateClient();
+        Guid newid = Guid.NewGuid();
+        string Url = $"http://localhost:5000/weatherforecast";
+
+        //read json file 
+
+
+
+
+        //downstream
+        var responseN = await DownStream(Url);
+        responseN.EnsureSuccessStatusCode();
+        Console.WriteLine("downstream test finish");
+
     }
+
+}
 }
