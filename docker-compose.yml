@@ -44,6 +44,7 @@ services:
     build:
       context: .
       dockerfile: Downstream/DownstreamApi/Dockerfile
+    domainname: weather.test
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -52,11 +53,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    hostname: downstreamapi1.local
-    networks:
-       tyk:    
-          aliases:
-            - downstreamapi1.local
 
    
   downstreamapi2:
