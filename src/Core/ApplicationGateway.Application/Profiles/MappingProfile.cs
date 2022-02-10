@@ -10,10 +10,10 @@ namespace ApplicationGateway.Application.Profiles
         {
             CreateMap<Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Policy, CreatePolicyDto>().ReverseMap();
-            CreateMap<Domain.TykData.PolicyApi, Features.Policy.Commands.CreatePolicyCommand.PolicyApi>().ReverseMap();
-            CreateMap<Domain.TykData.Partition, Features.Policy.Commands.CreatePolicyCommand.Partition>().ReverseMap();
-            CreateMap<Domain.TykData.AllowedUrl, Features.Policy.Commands.CreatePolicyCommand.AllowedUrl>().ReverseMap();
-            CreateMap<Domain.TykData.PerApiLimit, Features.Policy.Commands.CreatePolicyCommand.PerApiLimit>().ReverseMap();
+            CreateMap<PolicyApi, CreatePolicyApi>().ReverseMap();
+            CreateMap<Partition, CreatePartition>().ReverseMap();
+            CreateMap<AllowedUrl, CreateAllowedUrl>().ReverseMap();
+            CreateMap<PerApiLimit, CreatePerApiLimit>().ReverseMap();
         }
     }
 }

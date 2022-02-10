@@ -3,6 +3,9 @@ using Newtonsoft.Json.Linq;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
 using MediatR;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.TykData;
+using Newtonsoft.Json;
+using JUST;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -70,64 +73,64 @@ namespace ApplicationGateway.Api.Controllers
             return Ok(response);
         }
 
-        //[HttpPut]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[ProducesDefaultResponseType]
-        //public async Task<ActionResult> UpdatePolicy(Policy request)
-        //{
-        //    string requestJson = JsonConvert.SerializeObject(request);
-        //    string path = Directory.GetCurrentDirectory();
-        //    string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\PolicyTransformer.json");
-        //    string transformed = new JsonTransformer().Transform(transformer, requestJson);
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> UpdatePolicy(Policy request)
+        {
+            string requestJson = JsonConvert.SerializeObject(request);
+            string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\PolicyTransformer.json");
+            string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
-        //    JObject inputObject = JObject.Parse(requestJson);
-        //    JObject transformedObject = JObject.Parse(transformed);
-        //    if (inputObject["APIs"].Count() != 0)
-        //    {
-        //        transformedObject["access_rights"] = new JObject();
-        //        foreach (var api in inputObject["APIs"])
-        //        {
-        //            var apiObject = new JObject()
-        //            {
-        //                { "api_id", api["Id"] },
-        //                { "api_name", api["Name"] },
-        //                { "versions", api["Versions"] },
-        //                { "allowed_urls", api["AllowedUrls"] },
-        //                { "limit", api["Limit"] }
-        //            };
-        //            (transformedObject["access_rights"] as JObject).Add($"{api["Id"]}", apiObject);
-        //        }
-        //    }
+            JObject inputObject = JObject.Parse(requestJson);
+            JObject transformedObject = JObject.Parse(transformed);
+            if (inputObject["APIs"].Count() != 0)
+            {
+                transformedObject["access_rights"] = new JObject();
+                foreach (var api in inputObject["APIs"])
+                {
+                    var apiObject = new JObject()
+                    {
+                        { "api_id", api["Id"] },
+                        { "api_name", api["Name"] },
+                        { "versions", api["Versions"] },
+                        { "allowed_urls", api["AllowedUrls"] },
+                        { "limit", api["Limit"] }
+                    };
+                    (transformedObject["access_rights"] as JObject).Add($"{api["Id"]}", apiObject);
+                }
+            }
 
-        //    string folderPath = @"C:\Projects\tyk\tyk-gateway-docker\policies";
-        //    if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
-        //    {
-        //        return NotFound("Policies not found");
-        //    }
+            string folderPath = @"C:\Projects\tyk\tyk-gateway-docker\policies";
+            if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
+            {
+                return NotFound("Policies not found");
+            }
 
-        //    string policiesJson = System.IO.File.ReadAllText(folderPath + @"\policies.json");
-        //    JObject policiesObject = JObject.Parse(policiesJson);
-        //    string policyId = request.PolicyId.ToString();
-        //    if (!policiesObject.ContainsKey(policyId))
-        //    {
-        //        return NotFound($"Policy with id: {policyId} was not found");
-        //    }
+            string policiesJson = System.IO.File.ReadAllText(folderPath + @"\policies.json");
+            JObject policiesObject = JObject.Parse(policiesJson);
+            string policyId = request.PolicyId.ToString();
+            if (!policiesObject.ContainsKey(policyId))
+            {
+                return NotFound($"Policy with id: {policyId} was not found");
+            }
 
-        //    policiesObject.Remove(policyId);
-        //    policiesObject.Add(policyId, transformedObject);
+            policiesObject.Remove(policyId);
+            policiesObject.Add(policyId, transformedObject);
 
-        //    System.IO.File.WriteAllText(@"C:\Projects\tyk\tyk-gateway-docker\policies\policies.json", policiesObject.ToString());
+            System.IO.File.WriteAllText(@"C:\Projects\tyk\tyk-gateway-docker\policies\policies.json", policiesObject.ToString());
 
-        //    using (HttpClient httpClient = new HttpClient())
-        //    {
-        //        httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-        //        HttpResponseMessage httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
-        //    }
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
+                HttpResponseMessage httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
+            }
 
-        //    return Ok($"Policy with PolicyId: {policyId} updated successfully");
-        //}
+            return Ok($"Policy with PolicyId: {policyId} updated successfully");
+        }
 
         [HttpDelete("{policyId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
