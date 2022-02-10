@@ -49,6 +49,8 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "5000:80"
+    extra-hosts:
+     - "host.docker.internal:host.gateway"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
