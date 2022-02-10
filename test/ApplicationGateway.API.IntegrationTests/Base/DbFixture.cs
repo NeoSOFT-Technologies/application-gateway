@@ -19,9 +19,9 @@ namespace ApplicationGateway.API.IntegrationTests.Base
         public DbFixture()
         {
             var identityBuilder = new DbContextOptionsBuilder<IdentityDbContext>();
-                    IdentityConnString = $"Server=localhost;Port=5430;Database={IdentityDbName};User Id=root;Password=root;CommandTimeout = 300;";
+                    IdentityConnString = $"Server=localhost;Port=5432;Database={IdentityDbName};User Id=root;Password=root;CommandTimeout = 300;";
 
-                    HealthCheckConnString = $"Server=localhost;Port=5430;Database={HealthCheckDbName};User Id=root;Password=root;CommandTimeout = 300;";
+                    HealthCheckConnString = $"Server=localhost;Port=5432;Database={HealthCheckDbName};User Id=root;Password=root;CommandTimeout = 300;";
                     identityBuilder.UseNpgsql(IdentityConnString);
 
             _identityDbContext = new IdentityDbContext(identityBuilder.Options);
