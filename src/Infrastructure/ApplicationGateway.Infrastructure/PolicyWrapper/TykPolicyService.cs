@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.Tyk;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.PolicyWrapper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.TykData;
 using JUST;

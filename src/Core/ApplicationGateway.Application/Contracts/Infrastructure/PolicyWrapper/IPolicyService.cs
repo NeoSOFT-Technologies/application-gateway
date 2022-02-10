@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Domain.TykData;
 
-namespace ApplicationGateway.Application.Contracts.Infrastructure.Tyk
+namespace ApplicationGateway.Application.Contracts.Infrastructure.PolicyWrapper
 {
     public interface IPolicyService
     {

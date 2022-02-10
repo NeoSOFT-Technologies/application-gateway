@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure;
-using ApplicationGateway.Application.Contracts.Infrastructure.Tyk;
+using ApplicationGateway.Application.Contracts.Infrastructure.PolicyWrapper;
 using ApplicationGateway.Application.Models.Cache;
 using ApplicationGateway.Application.Models.Mail;
 using ApplicationGateway.Application.Models.Tyk;
