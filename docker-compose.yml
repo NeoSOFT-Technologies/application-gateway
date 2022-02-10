@@ -35,41 +35,21 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     ports:
-      - "5430:5432"
+      - "5430:5430"
     networks:
       - clean-network
    
 
-  downstreamapi1:
+  downstreamapi:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
       context: .
       dockerfile: Downstream/DownstreamApi/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5000:5000"
     networks:
       - clean-network
-    ports:
-      - "5000:80"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-
+    
    
-  downstreamapi2:
-    image: ${DOCKER_REGISTRY-}downstreamapi
-    build:
-      context: .
-      dockerfile: Downstream/DownstreamApi/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-    networks:
-      - clean-network
-    ports:
-      - "5001:80"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  
   
