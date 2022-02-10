@@ -647,7 +647,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Console.WriteLine("downstream test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/new/weatherforecast";
+            string Url = $"http://localhost:5000/weatherforecast";
 
             //read json file 
 
