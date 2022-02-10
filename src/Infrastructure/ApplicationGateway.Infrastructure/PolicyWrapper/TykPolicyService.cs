@@ -1,34 +1,32 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Tyk;
 using ApplicationGateway.Application.Models.Tyk;
+using ApplicationGateway.Domain.TykData;
 using JUST;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ApplicationGateway.Infrastructure.Tyk
+namespace ApplicationGateway.Infrastructure.PolicyWrapper
 {
-    public class PolicyService : IPolicyService
+    public class TykPolicyService : IPolicyService
     {
         private readonly TykConfiguration _tykConfiguration;
-        private readonly ILogger<PolicyService> _logger;
-        private readonly RestClient<string> _restClient;
-        private readonly Dictionary<string, string> _headers;
-        public PolicyService(ILogger<PolicyService> logger, IOptions<TykConfiguration> tykConfiguration)
+        private readonly ILogger<TykPolicyService> _logger;
+
+        public TykPolicyService(ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration)
         {
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
-            _headers = new Dictionary<string, string>()
-            {
-                { "x-tyk-authorization", "foo" }
-            };
-            _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/reload/group", _headers);
         }
 
-        public async Task<string> CreatePolicy(string requestJson)
+        public async Task<Policy> CreatePolicy(Policy policy)
         {
             _logger.LogInformation("CreatePolicy Initiated");
+            policy.PolicyId = Guid.NewGuid();
+            string requestJson = JsonConvert.SerializeObject(policy);
             string path = Directory.GetCurrentDirectory();
-            string transformer = await File.ReadAllTextAsync(path + @"\JsonTransformers\PolicyTransformer.json");
+            string transformer = await File.ReadAllTextAsync(path + @"\JsonTransformers\Tyk\PolicyTransformer.json");
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
             JObject inputObject = JObject.Parse(requestJson);
@@ -36,9 +34,9 @@ namespace ApplicationGateway.Infrastructure.Tyk
             if (inputObject["APIs"].Count() != 0)
             {
                 transformedObject["access_rights"] = new JObject();
-                foreach (var api in inputObject["APIs"])
+                foreach (JToken api in inputObject["APIs"])
                 {
-                    var apiObject = new JObject()
+                    JObject apiObject = new JObject()
                     {
                         { "api_id", api["Id"] },
                         { "api_name", api["Name"] },
@@ -56,21 +54,19 @@ namespace ApplicationGateway.Infrastructure.Tyk
             }
             if (!File.Exists(policiesFolderPath + @"\policies.json"))
             {
-                var sw = File.CreateText(policiesFolderPath + @"\policies.json");
+                StreamWriter sw = File.CreateText(policiesFolderPath + @"\policies.json");
                 await sw.WriteLineAsync("{}");
                 sw.Dispose();
             }
             string policiesJson = await File.ReadAllTextAsync(policiesFolderPath + @"\policies.json");
             JObject policiesObject = JObject.Parse(policiesJson);
-            string policyId = Guid.NewGuid().ToString();
-            policiesObject.Add(policyId, transformedObject);
+            policiesObject.Add(policy.PolicyId.ToString(), transformedObject);
 
             await File.WriteAllTextAsync(policiesFolderPath + @"\policies.json", policiesObject.ToString());
 
-            await _restClient.GetAsync(null);
-
+            _logger.LogInformation("HotReload Completed");
             _logger.LogInformation("CreatePolicy Completed");
-            return policyId;
+            return policy;
         }
     }
 }

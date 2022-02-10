@@ -55,13 +55,19 @@
 
 
   <ItemGroup>
-    <Content Update="JsonTransformers\CreateApiTransformer.json">
+    <Content Update="JsonTransformers\Tyk\CreateApiTransformer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\PolicyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\CreateKeyTransformer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\UpdateApiTransformer.json">
+    <Content Update="JsonTransformers\Tyk\PolicyTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\UpdateApiTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\UpdateKeyTransformer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

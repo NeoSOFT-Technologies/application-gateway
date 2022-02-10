@@ -1,4 +1,4 @@
-﻿namespace ApplicationGateway.Infrastructure.Tyk
+﻿namespace ApplicationGateway.Application.Helper
 {
 	public class RestClient<TIdentifier> : IDisposable
 	{
@@ -17,7 +17,7 @@
 		{
 			httpClient = new HttpClient();
 			httpClient.BaseAddress = new Uri(serviceBaseAddress);
-            foreach (var header in headers)
+            foreach (KeyValuePair<string, string> header in headers)
             {
 				httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
             }
@@ -26,7 +26,7 @@
 		public async Task<string> GetAsync(TIdentifier? identifier)
 		{
 			string address = identifier is not null ? _addressSuffix + identifier.ToString() : _addressSuffix;
-			var responseMessage = await httpClient.GetAsync(address);
+			HttpResponseMessage responseMessage = await httpClient.GetAsync(address);
 			responseMessage.EnsureSuccessStatusCode();
 			return await responseMessage.Content.ReadAsStringAsync();
 		}

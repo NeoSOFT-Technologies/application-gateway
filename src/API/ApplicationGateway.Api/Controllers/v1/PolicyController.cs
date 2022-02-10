@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
 using MediatR;
+using ApplicationGateway.Application.Responses;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -64,7 +65,7 @@ namespace ApplicationGateway.Api.Controllers
         public async Task<ActionResult> CreatePolicy(CreatePolicyCommand createPolicyCommand)
         {
             _logger.LogInformation("CreatePolicy Initiated");
-            var response = await _mediator.Send(createPolicyCommand);
+            Response<CreatePolicyDto> response = await _mediator.Send(createPolicyCommand);
             _logger.LogInformation("CreatePolicy Completed");
             return Ok(response);
         }
@@ -78,7 +79,7 @@ namespace ApplicationGateway.Api.Controllers
         //{
         //    string requestJson = JsonConvert.SerializeObject(request);
         //    string path = Directory.GetCurrentDirectory();
-        //    string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\PolicyTransformer.json");
+        //    string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\PolicyTransformer.json");
         //    string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
         //    JObject inputObject = JObject.Parse(requestJson);

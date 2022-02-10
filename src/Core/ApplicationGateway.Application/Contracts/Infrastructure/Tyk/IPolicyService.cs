@@ -1,7 +1,9 @@
-﻿namespace ApplicationGateway.Application.Contracts.Infrastructure.Tyk
+﻿using ApplicationGateway.Domain.TykData;
+
+namespace ApplicationGateway.Application.Contracts.Infrastructure.Tyk
 {
     public interface IPolicyService
     {
-        Task<string> CreatePolicy(string requestJson);
+        Task<Policy> CreatePolicy(Policy policy);
     }
 }

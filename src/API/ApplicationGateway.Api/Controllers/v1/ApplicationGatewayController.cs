@@ -16,14 +16,14 @@ namespace ApplicationGateway.Api.Controllers
     [ApiVersion("1")]
     [Route("api/v1/[controller]/[action]")]
     [ApiController]
-    public class NewTykController : ControllerBase
+    public class ApplicationGatewayController : ControllerBase
     {
 
         [HttpPost("createApi")]
         public async Task<ActionResult> CreateApi(CreateRequest request)
         {
             string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\CreateApiTransformer.json");
             string requestJson = JsonConvert.SerializeObject(request);
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
             JObject finalJson = JObject.Parse(transformed);
@@ -66,7 +66,7 @@ namespace ApplicationGateway.Api.Controllers
             }
 
             string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateApiTransformer.json");
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\CreateApiTransformer.json");
 
             foreach (CreateRequest obj in request)
             {
@@ -94,7 +94,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             string requestJson = JsonConvert.SerializeObject(request);
             string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\UpdateApiTransformer.json");
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\UpdateApiTransformer.json");
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
             JObject inputObject = JObject.Parse(requestJson);

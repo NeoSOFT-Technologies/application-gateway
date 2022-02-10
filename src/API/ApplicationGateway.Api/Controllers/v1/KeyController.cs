@@ -30,7 +30,7 @@ namespace ApplicationGateway.Api.Controllers.v1
         public async Task<ActionResult<string>> CreateKey(CreateKeyRequest request)
         {
             string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\CreateKeyTransformer.json");
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\CreateKeyTransformer.json");
             string requestString = JsonConvert.SerializeObject(request);
             JObject inputObject = JObject.Parse(requestString);
             string transformedObj = new JsonTransformer().Transform(transformer, requestString);
@@ -80,7 +80,7 @@ namespace ApplicationGateway.Api.Controllers.v1
         public async Task<ActionResult<string>> UpdateKey(UpdateKeyRequest request)
         {
             string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\UpdateKeyTransformer.json");
+            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\UpdateKeyTransformer.json");
             string requestString = JsonConvert.SerializeObject(request);
 
             string transformedObj = new JsonTransformer().Transform(transformer, requestString);
