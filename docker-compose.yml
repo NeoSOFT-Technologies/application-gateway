@@ -20,8 +20,7 @@ services:
       - TYK_GW_SECRET=foo
     depends_on:
       - tyk-redis
-    links:
-      - downstreamapi1
+ 
 
   tyk-redis:
     image: redis:5.0-alpine
