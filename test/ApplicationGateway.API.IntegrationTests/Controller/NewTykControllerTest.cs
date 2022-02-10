@@ -611,7 +611,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                throw;
+                throw ex;
             }
 
         }
