@@ -52,8 +52,11 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    hostname: downstreamapi1.local
     networks:
-      - tyk
+       tyk:    
+          aliases:
+            - downstreamapi1.local
 
    
   downstreamapi2:
