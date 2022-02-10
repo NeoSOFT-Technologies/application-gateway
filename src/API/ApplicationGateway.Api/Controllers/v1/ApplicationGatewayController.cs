@@ -14,7 +14,7 @@ using System.Text;
 namespace ApplicationGateway.Api.Controllers
 {
     [ApiVersion("1")]
-    [Route("api/v1/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [ApiController]
     public class ApplicationGatewayController : ControllerBase
     {
@@ -23,23 +23,29 @@ namespace ApplicationGateway.Api.Controllers
         public async Task<ActionResult> CreateApi(CreateRequest request)
         {
             string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\CreateApiTransformer.json");
+            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/Tyk/CreateApiTransformer.json");
             string requestJson = JsonConvert.SerializeObject(request);
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
             JObject finalJson = JObject.Parse(transformed);
             finalJson.Add("api_id", Guid.NewGuid());
+            ResponseModel result;
             using (HttpClient httpClient = new HttpClient())
             {
                 StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
                 HttpResponseMessage httpResponse =await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
                 HotReload();
+
+                //read response
+                var jsonString = httpResponse.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
+
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     return NotFound();
                 }
             }
-            return Ok("Api created successfully");
+            return Ok(result);
 
         }
         [HttpPost("createMultipleApi")]
@@ -65,8 +71,9 @@ namespace ApplicationGateway.Api.Controllers
                 }
             }
 
-            string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\CreateApiTransformer.json");
+           // string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/Tyk/CreateApiTransformer.json");
+            List<ResponseModel> resultList = new List<ResponseModel>();
 
             foreach (CreateRequest obj in request)
             {
@@ -74,27 +81,34 @@ namespace ApplicationGateway.Api.Controllers
                 string transformed = new JsonTransformer().Transform(transformer, requestJson);
                 JObject finalJson = JObject.Parse(transformed);
                 finalJson.Add("api_id", Guid.NewGuid());
+
                 using (HttpClient httpClient = new HttpClient())
                 {
                     StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
                     httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
                     HttpResponseMessage httpResponse = await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
                     HotReload();
+
+                    //read response
+                    var jsonString = httpResponse.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
+                    resultList.Add(result);
+
                     if (!httpResponse.IsSuccessStatusCode)
                     {
                         return NotFound();
                     }
                 }
             }
-            return Ok("APIs from API array created successfully");
+            return Ok(resultList);
         }
 
         [HttpPut("updateapi")]
         public ActionResult UpdateApi(UpdateRequest request)
         {
             string requestJson = JsonConvert.SerializeObject(request);
-            string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(path + @"\JsonTransformers\Tyk\UpdateApiTransformer.json");
+        //    string path = Directory.GetCurrentDirectory();
+            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/Tyk/UpdateApiTransformer.json");
             string transformed = new JsonTransformer().Transform(transformer, requestJson);
 
             JObject inputObject = JObject.Parse(requestJson);

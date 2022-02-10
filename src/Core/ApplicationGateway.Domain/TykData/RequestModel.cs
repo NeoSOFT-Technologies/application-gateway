@@ -156,4 +156,39 @@ namespace ApplicationGateway.Domain.TykData
     {
         public string keyId { get; set; }
     }
+
+
+    //to get docker ip address from httporgbin/get
+    public class Docker
+    {
+        public args? args { get; set; }
+        public headers? headers { get; set; }
+        public string origin { get; set; }
+        public string url { get; set; }
+
+    }
+
+    public class args
+    {
+
+    }
+
+    public class headers
+    {
+        public string Accept { get; set; }
+        public string Accept_Encoding { get; set; }
+        public string Host { get; set; }
+        public string Postman_Token { get; set; }
+        public string User_Agent { get; set; }
+        public string X_Amzn_Trace_Id { get; set; }
+
+    }
+    public class ResponseModel
+    {
+
+        public string key { get; set; }
+        public string status { get; set; }
+        public string action { get; set; }
+
+    }
 }
