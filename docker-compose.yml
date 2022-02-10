@@ -18,6 +18,8 @@ services:
       - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
     environment:
       - TYK_GW_SECRET=foo
+     extra-hosts:
+     - "host.docker.internal:host.gateway"
     depends_on:
       - tyk-redis
 
@@ -49,8 +51,6 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "5000:80"
-    extra-hosts:
-     - "host.docker.internal:host.gateway"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
