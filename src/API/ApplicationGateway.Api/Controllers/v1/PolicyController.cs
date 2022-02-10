@@ -64,7 +64,7 @@ namespace ApplicationGateway.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreatePolicy(CreatePolicyCommand createPolicyCommand)
         {
-            _logger.LogInformation("CreatePolicy Initiated");
+            _logger.LogInformation("CreatePolicy Initiated with {@CreatePolicyCommand}", createPolicyCommand);
             Response<CreatePolicyDto> response = await _mediator.Send(createPolicyCommand);
             _logger.LogInformation("CreatePolicy Completed");
             return Ok(response);

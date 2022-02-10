@@ -1,7 +1,7 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.PolicyWrapper;
+using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.TykData;
-using JUST;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -13,24 +13,27 @@ namespace ApplicationGateway.Infrastructure.PolicyWrapper
     {
         private readonly TykConfiguration _tykConfiguration;
         private readonly ILogger<TykPolicyService> _logger;
+        private readonly FileOperator _fileOperator;
 
         public TykPolicyService(ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration)
         {
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
+            _fileOperator = new FileOperator();
         }
 
         public async Task<Policy> CreatePolicy(Policy policy)
         {
-            _logger.LogInformation("CreatePolicy Initiated");
+            _logger.LogInformation("CreatePolicy Initiated with {@Policy}", policy);
+
             policy.PolicyId = Guid.NewGuid();
             string requestJson = JsonConvert.SerializeObject(policy);
-            string path = Directory.GetCurrentDirectory();
-            string transformer = await File.ReadAllTextAsync(path + @"\JsonTransformers\Tyk\PolicyTransformer.json");
-            string transformed = new JsonTransformer().Transform(transformer, requestJson);
+            string transformed = await _fileOperator.Transform(requestJson, "PolicyTransformer");
 
             JObject inputObject = JObject.Parse(requestJson);
             JObject transformedObject = JObject.Parse(transformed);
+
+            #region Add Access Rights to Policy
             if (inputObject["APIs"].Count() != 0)
             {
                 transformedObject["access_rights"] = new JObject();
@@ -47,22 +50,15 @@ namespace ApplicationGateway.Infrastructure.PolicyWrapper
                     (transformedObject["access_rights"] as JObject).Add($"{api["Id"]}", apiObject);
                 }
             }
-            string policiesFolderPath = _tykConfiguration.PoliciesFolderPath;
-            if (!Directory.Exists(policiesFolderPath))
-            {
-                Directory.CreateDirectory(policiesFolderPath);
-            }
-            if (!File.Exists(policiesFolderPath + @"\policies.json"))
-            {
-                StreamWriter sw = File.CreateText(policiesFolderPath + @"\policies.json");
-                await sw.WriteLineAsync("{}");
-                sw.Dispose();
-            }
-            string policiesJson = await File.ReadAllTextAsync(policiesFolderPath + @"\policies.json");
+            #endregion
+
+            #region Add Policy to policies.json
+            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
             policiesObject.Add(policy.PolicyId.ToString(), transformedObject);
 
-            await File.WriteAllTextAsync(policiesFolderPath + @"\policies.json", policiesObject.ToString());
+            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            #endregion
 
             _logger.LogInformation("HotReload Completed");
             _logger.LogInformation("CreatePolicy Completed");
