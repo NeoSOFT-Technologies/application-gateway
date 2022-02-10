@@ -37,7 +37,7 @@ services:
       - "5430:5432"
     networks:
       - clean-network
-
+   
 
   downstreamapi1:
     image: ${DOCKER_REGISTRY-}downstreamapi
@@ -52,7 +52,8 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    
+    networks:
+      - tyk
 
    
   downstreamapi2:
