@@ -29,7 +29,7 @@
   "definition": {
     "location": "#valueof(versioningInfo.location)",
     "key": "#valueof(versioningInfo.key)",
-    "strip_path": false
+    "strip_path": "#ifcondition(#valueof($.key),null,#toboolean(false),#toboolean(true))"
   },
   "version_data": {
     "not_versioned": "#ifcondition(#length(#valueof($.versions)),0,#toboolean(true),#toboolean(false))",

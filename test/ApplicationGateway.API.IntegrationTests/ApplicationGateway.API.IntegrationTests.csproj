@@ -13,6 +13,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
@@ -33,9 +34,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\API\ApplicationGateway.Api\ApplicationGateway.Api.csproj" />
     <ProjectReference Include="..\..\src\Core\ApplicationGateway.Application\ApplicationGateway.Application.csproj" />
-    <ProjectReference Include="..\..\src\Infrastructure\ApplicationGateway.Identity\ApplicationGateway.Identity.csproj" />
+   <!-- <ProjectReference Include="..\..\src\Infrastructure\ApplicationGateway.Identity\ApplicationGateway.Identity.csproj" />
     <ProjectReference Include="..\..\src\Infrastructure\ApplicationGateway.Infrastructure\ApplicationGateway.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\Infrastructure\ApplicationGateway.Persistence\ApplicationGateway.Persistence.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\ApplicationGateway.Persistence\ApplicationGateway.Persistence.csproj" />-->
   </ItemGroup>
 
   <ItemGroup>

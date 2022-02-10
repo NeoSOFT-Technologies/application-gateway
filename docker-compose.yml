@@ -2,8 +2,31 @@
 
 networks:
   clean-network:
+  tyk:
   
 services:
+  tyk-gateway:
+    image: docker.tyk.io/tyk-gateway/tyk-gateway:v3.2.1
+    ports:
+      - 8080:8080
+    networks:
+      - tyk
+    volumes:
+      - ./tyk-gateway-docker/tyk-gateway-docker/tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
+      - ./tyk-gateway-docker/tyk-gateway-docker/apps:/opt/tyk-gateway/apps
+      - ./tyk-gateway-docker/tyk-gateway-docker/middleware:/opt/tyk-gateway/middleware
+      - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
+    environment:
+      - TYK_GW_SECRET=foo
+    depends_on:
+      - tyk-redis
+
+  tyk-redis:
+    image: redis:5.0-alpine
+    networks:
+      - tyk
+    ports:
+      - 6379:6379
 
   postgres:
     image: postgres
@@ -15,4 +38,32 @@ services:
     networks:
       - clean-network
 
+
+  downstreamapi1:
+    image: ${DOCKER_REGISTRY-}downstreamapi
+    build:
+      context: .
+      dockerfile: Downstream/DownstreamApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5000:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+   
+  downstreamapi2:
+    image: ${DOCKER_REGISTRY-}downstreamapi
+    build:
+      context: .
+      dockerfile: Downstream/DownstreamApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5001:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   
