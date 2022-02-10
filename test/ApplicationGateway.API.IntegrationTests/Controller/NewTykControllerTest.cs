@@ -557,7 +557,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var id = result.key;
             await HotReload();
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
 
             //getorigin
             var ipaddress = await getsOrigin(OriginUrl);
@@ -585,7 +585,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var updateresponse = await client.PutAsync("/api/v1/NewTyk/UpdateApi/updateapi", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
             await HotReload();
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
 
             //downstream
             var downstreamResponse = await DownStream(Url);
