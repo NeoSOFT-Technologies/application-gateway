@@ -18,8 +18,6 @@ services:
       - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
     environment:
       - TYK_GW_SECRET=foo
-    extra-hosts:
-     - "host.docker.internal:host.gateway"
     depends_on:
       - tyk-redis
 
