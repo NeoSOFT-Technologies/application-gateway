@@ -42,7 +42,6 @@ services:
 
   downstreamapi1:
     image: ${DOCKER_REGISTRY-}downstreamapi
-    hostname: api1
     build:
       context: .
       dockerfile: Downstream/DownstreamApi/Dockerfile
