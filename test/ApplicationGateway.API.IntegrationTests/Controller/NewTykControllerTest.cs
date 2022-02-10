@@ -34,7 +34,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Console.WriteLine("test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://tyk-gateway:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
 
             //read json file 
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
