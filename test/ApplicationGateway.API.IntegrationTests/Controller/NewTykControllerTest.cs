@@ -31,9 +31,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         [Fact]
         public async Task Post_CreateApi_ReturnsSuccessResult()
         {
-            string id = "";
-            try
-            {
             Console.WriteLine("test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
@@ -53,18 +50,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
             ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
 
-            id = result.key;
+            var id = result.key;
             await HotReload();
             Thread.Sleep(4000);
 
             //downstream
             var responseN = await DownStream(Url);
             responseN.EnsureSuccessStatusCode();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            
             //delete Api
             var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/NewTyk/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
