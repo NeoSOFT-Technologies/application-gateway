@@ -26,14 +26,14 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
             _tykConfiguration = tykConfiguration.Value;
             _headers = new Dictionary<string, string>()
             {
-                { "x-tyk-authorization", "foo" }
+                { "x-tyk-authorization", _tykConfiguration.Secret }
             };
             _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/reload/group", _headers);
         }
 
         public async Task<Response<CreatePolicyDto>> Handle(CreatePolicyCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Handler Initiated");
+            _logger.LogInformation("Handler Initiated with {@CreatePolicyCommand}", request);
             Domain.TykData.Policy policy = _mapper.Map<Domain.TykData.Policy>(request);
             Domain.TykData.Policy newPolicy = await _policyService.CreatePolicy(policy);
 

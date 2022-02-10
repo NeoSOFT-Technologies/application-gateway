@@ -17,26 +17,26 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         public string State { get; set; }
         public int KeyExpiresIn { get; set; }
         public List<string> Tags { get; set; }
-        public List<PolicyApi> APIs { get; set; }
-        public Partition? Partitions { get; set; }
+        public List<CreatePolicyApi> APIs { get; set; }
+        public CreatePartition? Partitions { get; set; }
     }
 
-    public class PolicyApi
+    public class CreatePolicyApi
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public List<string> Versions { get; set; }
-        public List<AllowedUrl> AllowedUrls { get; set; }
-        public PerApiLimit? Limit { get; set; }
+        public List<CreateAllowedUrl> AllowedUrls { get; set; }
+        public CreatePerApiLimit? Limit { get; set; }
     }
 
-    public class AllowedUrl
+    public class CreateAllowedUrl
     {
         public string url { get; set; }
         public List<string> methods { get; set; }
     }
 
-    public class PerApiLimit
+    public class CreatePerApiLimit
     {
         public int rate { get; set; }
         public int per { get; set; }
@@ -50,7 +50,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         public bool set_by_policy { get; set; }
     }
 
-    public class Partition
+    public class CreatePartition
     {
         public bool quota { get; set; }
         public bool rate_limit { get; set; }
