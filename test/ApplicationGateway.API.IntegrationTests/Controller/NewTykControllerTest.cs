@@ -61,9 +61,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var responseN = await DownStream(Url);
             responseN.EnsureSuccessStatusCode();
             }
-            Catch(Exception ex)
+            catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
             //delete Api
             var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/NewTyk/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
