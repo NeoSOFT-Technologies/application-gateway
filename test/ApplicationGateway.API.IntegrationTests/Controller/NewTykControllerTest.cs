@@ -34,13 +34,13 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Console.WriteLine("test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/new/WeatherForecast";
+            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
 
             //read json file 
             var myJsonString = File.ReadAllText("../../../JsonData/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
-            //requestModel1.listenPath = $"/{newid}/";
+            requestModel1.listenPath = $"/{newid}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
