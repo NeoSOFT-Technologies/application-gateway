@@ -31,25 +31,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         public async Task CreateMultipleApis_ReturnsSuccessResult()
         {
             var client = _factory.CreateClient();
-            Guid newid;
-            IList<string> path = new List<string>();
             string Url;
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createMultipleApiData.json");
             IList<CreateRequest> requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
-
-            foreach (CreateRequest obj in requestModel1)
-            {
-                newid = Guid.NewGuid();
-                obj.name = newid.ToString();
-                obj.listenPath = $"/{newid}/";
-                path.Add(newid.ToString());
-            }
 
             //create Apis
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApi/createMultipleApi", content);
-
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
             IList<ResponseModel> responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
@@ -57,29 +46,19 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
             Thread.Sleep(5000);
 
-
-            foreach (var item in path)
-            {
-                //downstream
-                Url = ApplicationConstants.TYK_BASE_URL + item + "/WeatherForecast";
-
-                var responseN = await DownStream(Url);
-                responseN.EnsureSuccessStatusCode();
-            }
-
+            //downstream
             foreach (var item in requestModel1)
             {
-                //downstream
-                Url = ApplicationConstants.TYK_BASE_URL + item.listenPath + "/WeatherForecast";
+                var path1 = item.listenPath.Trim(new char[] { '/' });
+                Url = ApplicationConstants.TYK_BASE_URL + path1 + "/WeatherForecast";
                 var responseN = await DownStream(Url);
                 responseN.EnsureSuccessStatusCode();
             }
 
+            //delete Api
             foreach (ResponseModel obj in responseModel)
             {
-                //delete Api
-                var id = obj.key;
-                var deleteResponse = await DeleteApi(id);
+                var deleteResponse = await DeleteApi(obj.key);
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
                 await HotReload();
             }

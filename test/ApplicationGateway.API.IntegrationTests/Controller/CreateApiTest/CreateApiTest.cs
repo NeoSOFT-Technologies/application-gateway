@@ -30,14 +30,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             Console.WriteLine("test started");
             var client = _factory.CreateClient();
-            Guid newid = Guid.NewGuid();
-            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/CreateApiTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -52,6 +48,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Thread.Sleep(4000);
 
             //downstream
+            var listenpath = requestModel1.listenPath.Trim(new char[] { '/' });
+            string Url = ApplicationConstants.TYK_BASE_URL + listenpath + "/WeatherForecast";
             var responseN = await DownStream(Url);
             responseN.EnsureSuccessStatusCode();
 
@@ -90,7 +88,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
-           // await HotReload();
+            // await HotReload();
             return response;
         }
     }
