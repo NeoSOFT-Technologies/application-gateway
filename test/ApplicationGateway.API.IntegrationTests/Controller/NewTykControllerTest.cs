@@ -26,8 +26,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         }
 
 
-     //test comment
-
         [Fact]
         public async Task Post_CreateApi_ReturnsSuccessResult()
         {
@@ -638,27 +636,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var response = await client.DeleteAsync("/api/v1/NewTyk/DeleteApi/deleteApi?apiId=" + id);
             // await HotReload();
             return response;
-        }
-
-
-        [Fact]
-        public async Task downstream()
-        {
-            Console.WriteLine("downstream test started");
-            var client = _factory.CreateClient();
-            Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:5000/weatherforecast";
-
-            //read json file 
-
-
-
-
-            //downstream
-            var responseN = await DownStream(Url);
-            responseN.EnsureSuccessStatusCode();
-            Console.WriteLine("downstream test finish");
-
         }
 
     }
