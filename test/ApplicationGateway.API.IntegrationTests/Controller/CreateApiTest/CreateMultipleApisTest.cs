@@ -33,10 +33,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var client = _factory.CreateClient();
             Guid newid;
             IList<string> path = new List<string>();
-            string Url = "";
-            IList<CreateRequest> requestModel1 = new List<CreateRequest>();
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/CreateApiTest/createMultipleApiData.json");
-            requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
+            string Url;
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createMultipleApiData.json");
+            IList<CreateRequest> requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
 
             foreach (CreateRequest obj in requestModel1)
             {
@@ -53,12 +52,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
-            IList<ResponseModel> responseModel = new List<ResponseModel>();
-            responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
+            IList<ResponseModel> responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
 
             await HotReload();
-            Thread.Sleep(7000);
+            Thread.Sleep(5000);
 
 
             foreach (var item in path)
@@ -70,11 +67,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 responseN.EnsureSuccessStatusCode();
             }
 
-            var id = "";
+            foreach (var item in requestModel1)
+            {
+                //downstream
+                Url = ApplicationConstants.TYK_BASE_URL + item.listenPath + "/WeatherForecast";
+                var responseN = await DownStream(Url);
+                responseN.EnsureSuccessStatusCode();
+            }
+
             foreach (ResponseModel obj in responseModel)
             {
                 //delete Api
-                id = obj.key;
+                var id = obj.key;
                 var deleteResponse = await DeleteApi(id);
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
                 await HotReload();
@@ -103,8 +107,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         private async Task HotReload()
         {
-            var client = _factory.CreateClient(); 
-             var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
             response.EnsureSuccessStatusCode();
         }
 

@@ -33,7 +33,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/LoadBalancingTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/LoadBalancingTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid.ToString()}/";
@@ -49,20 +49,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var id = result.key;
             await HotReload();
-            // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/LoadBalancingTest/masterJson.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/LoadBalancingTest/loadBalancingData.json");
 
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
-            data.targetUrl = "http://host.docker.internal:5000";
-            data.loadBalancingTargets = new List<string>() {
-                "http://host.docker.internal:5001",
-                "http://host.docker.internal:5000" };
-
 
             // Update_Api
             var RequestJson1 = JsonConvert.SerializeObject(data);
@@ -72,14 +66,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
             Thread.Sleep(5000);
 
-
-            // Thread.Sleep(5000);
-
             // downstream
             for (int i = 1; i < 8; i++)
             {
-                /* var clientN = HttpClientFactory.Create();
-                 var responseN = await clientN.GetAsync(Url);*/
                 var responseN = await DownStream(Url);
                 responseN.EnsureSuccessStatusCode();
             }
@@ -119,7 +108,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
-            // await HotReload();
+            await HotReload();
             return response;
         }
     }

@@ -56,7 +56,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             responseN.EnsureSuccessStatusCode();
 
             //delete Api
-            var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/AppplicationGateway/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
+            var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             await HotReload();
 
@@ -90,7 +90,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
-            // await HotReload();
+           // await HotReload();
             return response;
         }
     }

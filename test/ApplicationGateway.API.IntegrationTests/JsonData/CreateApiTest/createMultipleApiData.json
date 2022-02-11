@@ -1,16 +1,12 @@
 [
   {
-
-    "name": "new",
-    "listenPath": "new",
+    "name": "new1",
+    "listenPath": "newPath1",
     "targetUrl": "http://host.docker.internal:5000"
-
   },
   {
-
-    "name": "new1",
-    "listenPath": "new1",
+    "name": "new2",
+    "listenPath": "newPath2",
     "targetUrl": "http://host.docker.internal:5000"
-
   }
 ]

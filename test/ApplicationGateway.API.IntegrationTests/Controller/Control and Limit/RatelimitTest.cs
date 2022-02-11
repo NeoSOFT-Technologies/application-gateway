@@ -49,19 +49,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
             var id = result.key;
             await HotReload();
-            // Thread.Sleep(4000);
-
             //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/ControlandLimit/masterJson.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+ "/ControlandLimit/rateLimitData.json");
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
             data.targetUrl = ApplicationConstants.TARGET_URL;
-            data.rateLimit.rate = 8;
-            data.rateLimit.per = 10;
-
-
+            
             // Update_Api
             var RequestJson1 = JsonConvert.SerializeObject(data);
             HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");

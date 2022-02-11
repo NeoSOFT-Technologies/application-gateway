@@ -10,13 +10,17 @@
   "blacklist": [
   ],
   "whitelist": [
-
+    
   ],
-  "defaultVersion": "string",
+  "defaultVersion": "V1",
   "versions": [
     {
-      "name": "string",
-      "overrideTarget": ""
+      "name": "V1",
+      "overrideTarget": "http://host.docker.internal:5000"
+    },
+    {
+      "name": "V2",
+      "overrideTarget": "http://host.docker.internal:5000"
     }
   ],
   "authType": "keyless",
@@ -34,31 +38,11 @@
     ]
   },
   "versioningInfo": {
-    "location": "header",
-    "key": "x-tyk-api-version",
-    "strip_path": false
+    "location": "url",
+    "key": "",
+    "strip_path": true
   },
   "loadBalancingTargets": [
-
+    
   ]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

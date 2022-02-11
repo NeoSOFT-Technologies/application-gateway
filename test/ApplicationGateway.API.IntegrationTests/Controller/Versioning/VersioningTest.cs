@@ -49,20 +49,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var id = result.key;
             await HotReload();
-            // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/masterVersion.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+ "/Versioning/Header_Version.json");
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
 
-            data.defaultVersion = "V1";
-
-            data.versioningInfo.location = "header";
-            data.versioningInfo.key = "x-tyk-api-version";
-            // data.versioningInfo.strip_path = false;
             // Update_Api
             var RequestJson1 = JsonConvert.SerializeObject(data);
             HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
@@ -70,12 +64,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             response1.EnsureSuccessStatusCode();
             await HotReload();
             Thread.Sleep(5000);
-
-            //  for Version1
-            /* var clientV = HttpClientFactory.Create();
-             clientV.DefaultRequestHeaders.Add(data.versioningInfo.key, data.defaultVersion);
-             var responseV = await clientV.GetAsync(Url);
-             responseV.EnsureSuccessStatusCode();*/
 
             foreach (VersionModel obj in data.versions)
             {
@@ -99,7 +87,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = "";
+            string Url;
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/createApiData.json");
@@ -121,18 +109,13 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/masterVersion.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/QueryParam_Version.json");
 
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
 
-            data.defaultVersion = "V1";
-
-            data.versioningInfo.location = "url-param";
-            data.versioningInfo.key = "x-tyk-api-version";
-            //   data.versioningInfo.strip_path = false;
             // Update_Api
             var RequestJson1 = JsonConvert.SerializeObject(data);
             HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
@@ -180,23 +163,16 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
 
             ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
             var id = result.key;
             await HotReload();
-            // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/masterVersion.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+ "/Versioning/Url_Version.json");
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
 
-            data.defaultVersion = "V1";
-
-            data.versioningInfo.location = "url";
-            data.versioningInfo.key = "";
-            // data.versioningInfo.strip_path = true;
             // Update_Api
             var RequestJson1 = JsonConvert.SerializeObject(data);
             HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
