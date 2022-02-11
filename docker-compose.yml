@@ -48,6 +48,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - clean-network
     ports:
@@ -65,6 +67,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - clean-network
     ports:
