@@ -6,6 +6,8 @@ using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using JUST;
+using ApplicationGateway.Application.Models.Tyk;
+using Microsoft.Extensions.Options;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -16,18 +18,20 @@ namespace ApplicationGateway.Api.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<PolicyController> _logger;
+        private readonly TykConfiguration _tykConfiguration;
 
-        public PolicyController(IMediator mediator, ILogger<PolicyController> logger)
+        public PolicyController(IMediator mediator, ILogger<PolicyController> logger, IOptions<TykConfiguration> tykConfiguration)
         {
             _mediator = mediator;
             _logger = logger;
+            _tykConfiguration = tykConfiguration.Value;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> GetAllPolicies()
         {
-            string folderPath = @"C:\Projects\tyk\tyk-gateway-docker\policies";
+            string folderPath = _tykConfiguration.PoliciesFolderPath;
             if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
             {
                 return NotFound("Policies not found");
@@ -44,7 +48,7 @@ namespace ApplicationGateway.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> GetPolicyByid(Guid policyId)
         {
-            string folderPath = @"C:\Projects\tyk\tyk-gateway-docker\policies";
+            string folderPath = _tykConfiguration.PoliciesFolderPath;
             if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
             {
                 return NotFound("Policies not found");
@@ -104,7 +108,7 @@ namespace ApplicationGateway.Api.Controllers
                 }
             }
 
-            string folderPath = @"C:\Projects\tyk\tyk-gateway-docker\policies";
+            string folderPath = _tykConfiguration.PoliciesFolderPath;
             if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
             {
                 return NotFound("Policies not found");
@@ -121,7 +125,7 @@ namespace ApplicationGateway.Api.Controllers
             policiesObject.Remove(policyId);
             policiesObject.Add(policyId, transformedObject);
 
-            System.IO.File.WriteAllText(@"C:\Projects\tyk\tyk-gateway-docker\policies\policies.json", policiesObject.ToString());
+            System.IO.File.WriteAllText(folderPath + @"\policies.json", policiesObject.ToString());
 
             using (HttpClient httpClient = new HttpClient())
             {
@@ -138,7 +142,7 @@ namespace ApplicationGateway.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeletePolicy(Guid policyId)
         {
-            string folderPath = @"C:\Projects\tyk\tyk-gateway-docker\policies";
+            string folderPath = _tykConfiguration.PoliciesFolderPath;
             if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
             {
                 return NotFound("Policies not found");
@@ -153,7 +157,7 @@ namespace ApplicationGateway.Api.Controllers
 
             policiesObject.Remove(policyId.ToString());
 
-            System.IO.File.WriteAllText(@"C:\Projects\tyk\tyk-gateway-docker\policies\policies.json", policiesObject.ToString());
+            System.IO.File.WriteAllText(folderPath + @"\policies.json", policiesObject.ToString());
 
             using (HttpClient httpClient = new HttpClient())
             {
