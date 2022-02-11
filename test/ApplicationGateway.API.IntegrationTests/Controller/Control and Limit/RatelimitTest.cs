@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
+using ApplicationGateway.API.IntegrationTests.Helper;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -31,10 +32,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/ControlandLimit/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/ControlandLimit/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid.ToString()}/";
@@ -45,22 +46,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
             ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
             var id = result.key;
             await HotReload();
             // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText("../../../JsonData/ControlandLimit/masterJson.json");
-
-            UpdateRequest data =
-                JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/ControlandLimit/masterJson.json");
+            UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
-            data.targetUrl = "http://host.docker.internal:5000";
+            data.targetUrl = ApplicationConstants.TARGET_URL;
             data.rateLimit.rate = 8;
             data.rateLimit.per = 10;
 

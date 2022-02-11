@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-
+using ApplicationGateway.API.IntegrationTests.Helper;
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
     public class VersioningTest : IClassFixture<CustomWebApplicationFactory>
@@ -30,10 +30,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/Versioning/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid.ToString()}/";
@@ -52,7 +52,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText("../../../JsonData/Versioning/masterVersion.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/masterVersion.json");
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
@@ -102,7 +102,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = "";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/Versioning/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid.ToString()}/";
@@ -121,10 +121,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText("../../../JsonData/Versioning/masterVersion.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/masterVersion.json");
 
-            UpdateRequest data =
-                JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
+            UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
@@ -146,7 +145,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             foreach (VersionModel obj in data.versions)
             {
-                Url = $"http://localhost:8080/" + newid.ToString() + $"/WeatherForecast?{data.versioningInfo.key}={obj.name}";
+                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + $"/WeatherForecast?{data.versioningInfo.key}={obj.name}";
                 var responseV = await DownStream(Url);
                 responseV.EnsureSuccessStatusCode();
             }
@@ -168,10 +167,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = "";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/Versioning/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid.ToString()}/";
+            requestModel1.listenPath = $"/{newid}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -187,7 +186,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText("../../../JsonData/Versioning/masterVersion.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/masterVersion.json");
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
@@ -210,7 +209,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             foreach (VersionModel version in data.versions)
             {
-                Url = $"http://localhost:8080/" + newid.ToString() + "/" + version.name + "/WeatherForecast";
+                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/" + version.name + "/WeatherForecast";
                 var responseV = await DownStream(Url);
                 responseV.EnsureSuccessStatusCode();
                 Thread.Sleep(2000);

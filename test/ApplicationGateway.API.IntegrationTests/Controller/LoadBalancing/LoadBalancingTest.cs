@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-
+using ApplicationGateway.API.IntegrationTests.Helper;
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
     public class LoadBalancingTest : IClassFixture<CustomWebApplicationFactory>
@@ -30,10 +30,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/LoadBalancingTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/LoadBalancingTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid.ToString()}/";
@@ -52,10 +52,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             // Thread.Sleep(4000);
 
             //Read Json
-            var myJsonString1 = File.ReadAllText("../../../JsonData/LoadBalancingTest/masterJson.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+"/LoadBalancingTest/masterJson.json");
 
-            UpdateRequest data =
-                JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
+            UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);

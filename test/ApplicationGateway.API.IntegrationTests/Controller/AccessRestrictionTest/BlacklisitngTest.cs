@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
+using ApplicationGateway.API.IntegrationTests.Helper;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -29,23 +30,23 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
-            string OriginUrl = $"http://localhost:8080/" + newid.ToString() + "/";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
+            string OriginUrl = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/";
+
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/AccessRestrictionTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"AccessRestrictionTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid.ToString()}/";
-            requestModel1.targetUrl = "http://httpbin.org/get";
+            requestModel1.listenPath = $"/{newid}/";
+            requestModel1.targetUrl = ApplicationConstants.ORIGIN_IP_URL;
+
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
             ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
             var id = result.key;
             await HotReload();
             Thread.Sleep(2000);
@@ -60,7 +61,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             }
             var ipvalue = values[0];
             //read update json file
-            var myupdateJsonString = File.ReadAllText("../../../JsonData/AccessRestrictionTest/updateApiData.json");
+            var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/AccessRestrictionTest/updateApiData.json");
             UpdateRequest updaterequestModel1 = JsonConvert.DeserializeObject<UpdateRequest>(myupdateJsonString);
             updaterequestModel1.name = newid.ToString();
             updaterequestModel1.listenPath = $"/{newid.ToString()}/";
@@ -69,6 +70,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             {
                 ipvalue
             };
+
             //updateappi
             var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
@@ -81,6 +83,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             var downstreamResponse = await DownStream(Url);
             downstreamResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
+
             //delete Api
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);

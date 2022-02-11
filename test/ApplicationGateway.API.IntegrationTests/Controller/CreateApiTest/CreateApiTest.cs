@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
+using ApplicationGateway.API.IntegrationTests.Helper;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -30,10 +31,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Console.WriteLine("test started");
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/CreateApiTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/CreateApiTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid}/";

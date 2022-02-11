@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
+using ApplicationGateway.API.IntegrationTests.Helper;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,14 +35,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             IList<string> path = new List<string>();
             string Url = "";
             IList<CreateRequest> requestModel1 = new List<CreateRequest>();
-            var myJsonString = File.ReadAllText("../../../JsonData/CreateApiTest/createMultipleApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/CreateApiTest/createMultipleApiData.json");
             requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
 
             foreach (CreateRequest obj in requestModel1)
             {
                 newid = Guid.NewGuid();
                 obj.name = newid.ToString();
-                obj.listenPath = $"/{newid.ToString()}/";
+                obj.listenPath = $"/{newid}/";
                 path.Add(newid.ToString());
             }
 
@@ -63,7 +64,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             foreach (var item in path)
             {
                 //downstream
-                Url = $"http://localhost:8080/" + item + "/WeatherForecast";
+                Url = ApplicationConstants.TYK_BASE_URL + item + "/WeatherForecast";
 
                 var responseN = await DownStream(Url);
                 responseN.EnsureSuccessStatusCode();

@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.Logging;
+using ApplicationGateway.API.IntegrationTests.Helper;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
@@ -29,10 +30,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/keyTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/keyTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid}/";
@@ -50,7 +51,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Thread.Sleep(4000);
 
             //read update json file
-            var myupdateJsonString = File.ReadAllText("../../../JsonData/KeyTest/updateApiData.json");
+            var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/KeyTest/updateApiData.json");
             UpdateRequest updaterequestModel1 = JsonConvert.DeserializeObject<UpdateRequest>(myupdateJsonString);
             updaterequestModel1.name = newid.ToString();
             updaterequestModel1.listenPath = $"/{newid}/";
@@ -65,7 +66,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Thread.Sleep(2000);
 
             //read json file 
-            var myJsonStringKey = File.ReadAllText("../../../JsonData/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
             //CreateKeyRequest keyrequestModel = JsonConvert.DeserializeObject<CreateKeyRequest>(myJsonStringKey);
             //foreach(var x in keyrequestModel.accessRights)
             //{
