@@ -15,28 +15,28 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class CreateApiControllerTest : IClassFixture<CustomWebApplicationFactory>
+    public class LoadBalancingTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
 
-        public CreateApiControllerTest(CustomWebApplicationFactory factory)
+        public LoadBalancingTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
         }
 
         [Fact]
-        public async Task CreateApi_ReturnsSuccessResult()
+        public async Task loadBalancing()
         {
-            Console.WriteLine("test started");
+
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText("../../../JsonData/CreateApiTest/createApiData.json");
+            var myJsonString = File.ReadAllText("../../../JsonData/LoadBalancingTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid}/";
+            requestModel1.listenPath = $"/{newid.ToString()}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -44,18 +44,49 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
+
             ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
 
             var id = result.key;
             await HotReload();
-            Thread.Sleep(4000);
+            // Thread.Sleep(4000);
 
-            //downstream
-            var responseN = await DownStream(Url);
-            responseN.EnsureSuccessStatusCode();
+            //Read Json
+            var myJsonString1 = File.ReadAllText("../../../JsonData/LoadBalancingTest/masterJson.json");
+
+            UpdateRequest data =
+                JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
+            data.name = newid.ToString();
+            data.listenPath = $"/{newid.ToString()}/";
+            data.id = Guid.Parse(id);
+            data.targetUrl = "http://host.docker.internal:5000";
+            data.loadBalancingTargets = new List<string>() {
+                "http://host.docker.internal:5001",
+                "http://host.docker.internal:5000" };
+
+
+            // Update_Api
+            var RequestJson1 = JsonConvert.SerializeObject(data);
+            HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
+            var response1 = await client.PutAsync("/api/v1/ApplicationGateway/UpdateApi/updateapi", content1);
+            response1.EnsureSuccessStatusCode();
+            await HotReload();
+            Thread.Sleep(5000);
+
+
+            // Thread.Sleep(5000);
+
+            // downstream
+            for (int i = 1; i < 8; i++)
+            {
+                /* var clientN = HttpClientFactory.Create();
+                 var responseN = await clientN.GetAsync(Url);*/
+                var responseN = await DownStream(Url);
+                responseN.EnsureSuccessStatusCode();
+            }
 
             //delete Api
-            var deleteResponse = await DeleteApi(id);  // await client.DeleteAsync("/api/AppplicationGateway/deleteApi?apiId=" + requestModel1.api_id);//await DeleteApi(Request.api_id);
+            var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             await HotReload();
 
