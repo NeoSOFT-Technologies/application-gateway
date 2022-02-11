@@ -34,7 +34,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string OriginUrl = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/";
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"AccessRestrictionTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/AccessRestrictionTest/createApiData.json");
             CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
             requestModel1.name = newid.ToString();
             requestModel1.listenPath = $"/{newid}/";
