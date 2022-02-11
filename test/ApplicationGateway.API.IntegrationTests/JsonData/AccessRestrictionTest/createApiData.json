@@ -1,0 +1,5 @@
+{
+    "name": "new",
+    "listenPath": "new",
+    "targetUrl": "http://gateway.docker.internal:5000"
+}
