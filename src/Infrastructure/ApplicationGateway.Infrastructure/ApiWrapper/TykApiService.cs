@@ -32,13 +32,14 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
         public async Task<Api> CreateApi(Api api)
         {
             _logger.LogInformation("CreateApi Initiated with {@Api}", api);
-
             api.ApiId = Guid.NewGuid();
             string requestJson = JsonConvert.SerializeObject(api);
             string transformed = await _fileOperator.Transform(requestJson, "CreateApiTransformer");
 
+            #region Add ApiId to Api
             JObject transformedObject = JObject.Parse(transformed);
             transformedObject.Add("api_id", Guid.NewGuid());
+            #endregion
 
             await _restClient.PostAsync(transformedObject);
 

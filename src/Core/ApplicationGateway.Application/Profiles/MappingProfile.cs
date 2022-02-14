@@ -2,6 +2,7 @@
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
 using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
+using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -11,6 +12,8 @@ namespace ApplicationGateway.Application.Profiles
         {
             CreateMap<Api, CreateApiCommand>().ReverseMap();
             CreateMap<Api, CreateApiDto>().ReverseMap();
+            CreateMap<Api, MultipleApiModel>().ReverseMap();
+            CreateMap<Api, MultipleApiModelDto>().ReverseMap();
 
             CreateMap<Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Policy, CreatePolicyDto>().ReverseMap();

@@ -15,6 +15,7 @@ using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Responses;
 using Microsoft.Extensions.Options;
+using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -45,7 +46,7 @@ namespace ApplicationGateway.Api.Controllers
             return result;
         }
 
-        [HttpGet("{policyId}")]
+        [HttpGet("{apiId}")]
         public async Task<dynamic> GetApiById(string api_id)
         {
             JObject obj = new JObject();
@@ -72,58 +73,12 @@ namespace ApplicationGateway.Api.Controllers
         }
 
         [HttpPost("createMultipleApi")]
-        public async Task<ActionResult> CreateMultipleApi(List<CreateRequest> request)
-        {    
-            //Check for repeated listen path in request
-            if (request.DistinctBy(p => p.listenPath.Trim('/')).Count() != request.Count())
-            {
-                return BadRequest("Listen path should be unique in array");
-            }
-
-            //Check for repeated listen path in existing APIs
-            JArray allApi = JArray.Parse(await GetApi());
-            foreach (CreateRequest obj in request)
-            {
-                foreach (JToken api in allApi)
-                {
-                    string listen_path = api["proxy"]["listen_path"].ToString();
-                    if (obj.listenPath.Trim('/') == listen_path.Trim('/'))
-                    {
-                        return BadRequest("listen path already exists");
-                    }
-                }
-            }
-
-           // string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/Tyk/CreateApiTransformer.json");
-            List<ResponseModel> resultList = new List<ResponseModel>();
-
-            foreach (CreateRequest obj in request)
-            {
-                string requestJson = JsonConvert.SerializeObject(obj);
-                string transformed = new JsonTransformer().Transform(transformer, requestJson);
-                JObject finalJson = JObject.Parse(transformed);
-                finalJson.Add("api_id", Guid.NewGuid());
-
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
-                    httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                    HttpResponseMessage httpResponse = await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
-                    HotReload();
-
-                    //read response
-                    var jsonString = httpResponse.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-                    resultList.Add(result);
-
-                    if (!httpResponse.IsSuccessStatusCode)
-                    {
-                        return NotFound();
-                    }
-                }
-            }
-            return Ok(resultList);
+        public async Task<ActionResult> CreateMultipleApi(CreateMultipleApisCommand createMultipleApisCommand)
+        {
+            _logger.LogInformation("CreateMultipleApisCommand Initiated with {@CreateMultipleApisCommand}", createMultipleApisCommand);
+            Response<CreateMultipleApisDto> response = await _mediator.Send(createMultipleApisCommand);
+            _logger.LogInformation("CreateApi Completed");
+            return Ok(response);
         }
 
         [HttpPut("updateapi")]
