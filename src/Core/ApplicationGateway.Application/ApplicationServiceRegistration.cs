@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ApplicationGateway.Application.Helper;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,6 +11,7 @@ namespace ApplicationGateway.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddScoped<FileOperator>();
 
             return services;
         }

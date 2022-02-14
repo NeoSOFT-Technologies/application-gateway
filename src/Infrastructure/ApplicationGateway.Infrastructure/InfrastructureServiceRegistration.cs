@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SendGrid.Extensions.DependencyInjection;
 using ApplicationGateway.Infrastructure.PolicyWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper;
+using ApplicationGateway.Infrastructure.ApiWrapper;
 
 namespace ApplicationGateway.Infrastructure
 {
@@ -22,6 +24,7 @@ namespace ApplicationGateway.Infrastructure
             services.AddMemoryCache();
             services.AddTransient<ICacheService, MemoryCacheService>();
             services.AddTransient<IPolicyService, TykPolicyService>();
+            services.AddTransient<IApiService, TykApiService>();
             services.Configure<TykConfiguration>(configuration.GetSection("TykConfiguration"));
             services.AddSendGrid(options => { options.ApiKey = configuration.GetValue<string>("EmailSettings:ApiKey"); });
             return services;

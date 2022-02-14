@@ -10,44 +10,67 @@ using JUST;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using MediatR;
+using ApplicationGateway.Application.Models.Tyk;
+using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
+using ApplicationGateway.Application.Responses;
+using Microsoft.Extensions.Options;
 
 namespace ApplicationGateway.Api.Controllers
 {
     [ApiVersion("1")]
-    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ApplicationGatewayController : ControllerBase
     {
+        private readonly IMediator _mediator;
+        private readonly ILogger<ApplicationGatewayController> _logger;
 
-        [HttpPost("createApi")]
-        public async Task<ActionResult> CreateApi(CreateRequest request)
+        public ApplicationGatewayController(IMediator mediator, ILogger<ApplicationGatewayController> logger)
         {
-            string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/Tyk/CreateApiTransformer.json");
-            string requestJson = JsonConvert.SerializeObject(request);
-            string transformed = new JsonTransformer().Transform(transformer, requestJson);
-            JObject finalJson = JObject.Parse(transformed);
-            finalJson.Add("api_id", Guid.NewGuid());
-            ResponseModel result;
+            _mediator = mediator;
+            _logger = logger;
+        }
+
+        [HttpGet]
+        public async Task<string> GetApi()
+        {
+            string result;
             using (HttpClient httpClient = new HttpClient())
             {
-                StringContent stringContent = new StringContent(finalJson.ToString(), System.Text.Encoding.UTF8, "text/plain");
                 httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse =await httpClient.PostAsync("http://localhost:8080/tyk/apis", stringContent);
-                HotReload();
-
-                //read response
-                var jsonString = httpResponse.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
-                if (!httpResponse.IsSuccessStatusCode)
-                {
-                    return NotFound();
-                }
+                HttpResponseMessage httpResponse = await httpClient.GetAsync("http://localhost:8080/tyk/apis");
+                result = await httpResponse.Content.ReadAsStringAsync();
             }
-            return Ok(result);
+            return result;
+        }
+
+        [HttpGet("{policyId}")]
+        public async Task<dynamic> GetApiById(string api_id)
+        {
+            JObject obj = new JObject();
+            using (HttpClient httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
+                HttpResponseMessage httpResponse = await httpClient.GetAsync($"http://localhost:8080/tyk/apis/{api_id}");
+                string content = await httpResponse.Content.ReadAsStringAsync();
+                obj = JObject.Parse(content);
+            }
+            return obj.ToString();
+        }
+
+        [HttpPost("CreateApi")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CreateApi(CreateApiCommand createApiCommand)
+        {
+            _logger.LogInformation("CreateApi Initiated with {@CreateApiCommand}", createApiCommand);
+            Response<CreateApiDto> response = await _mediator.Send(createApiCommand);
+            _logger.LogInformation("CreateApi Completed");
+            return Ok(response);
 
         }
+
         [HttpPost("createMultipleApi")]
         public async Task<ActionResult> CreateMultipleApi(List<CreateRequest> request)
         {    
@@ -213,33 +236,6 @@ namespace ApplicationGateway.Api.Controllers
                 HttpResponseMessage httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
             }
             return Ok();
-        }
-
-        [HttpGet(Name = "getApi")]
-        public async Task<string> GetApi()
-        {
-            string result;
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse = await httpClient.GetAsync("http://localhost:8080/tyk/apis");
-                result = await httpResponse.Content.ReadAsStringAsync();
-            }
-            return result;
-        }
-
-        [HttpGet]
-        public async Task<dynamic> GetApiById(string api_id)
-        {
-            JObject obj = new JObject();
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse =await httpClient.GetAsync($"http://localhost:8080/tyk/apis/{api_id}");
-                string content =await httpResponse.Content.ReadAsStringAsync();
-                obj = JObject.Parse(content);
-            }
-            return obj.ToString();
         }
     }
 }

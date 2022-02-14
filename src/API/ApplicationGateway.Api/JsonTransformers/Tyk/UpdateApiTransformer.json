@@ -1,6 +1,6 @@
 {
   "name": "#valueof(name)",
-  "api_id": "#valueof(id)",
+  "api_id": "#valueof(apiId)",
   "use_keyless": "#ifcondition(#valueof($.authType),keyless,#toboolean(true),#toboolean(false))",
   "use_basic": "#ifcondition(#valueof($.authType),basic,#toboolean(true),#toboolean(false))",
   "use_standard_auth": "#ifcondition(#valueof($.authType),standard,#toboolean(true),#toboolean(false))",

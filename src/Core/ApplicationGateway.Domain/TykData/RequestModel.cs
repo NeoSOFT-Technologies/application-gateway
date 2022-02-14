@@ -92,23 +92,23 @@ namespace ApplicationGateway.Domain.TykData
         public string apiName { get; set; }
         public List<string> versions { get; set; }
     }
-    public class RateLimit
-    {
-        public int rate { get; set; }
-        public int per { get; set; }
-    }
+    //public class RateLimit
+    //{
+    //    public int rate { get; set; }
+    //    public int per { get; set; }
+    //}
 
-    public class VersioningInfo
-    {
-        public string location { get; set; }
-        public string key { get; set; }
-    }
+    //public class VersioningInfo
+    //{
+    //    public string location { get; set; }
+    //    public string key { get; set; }
+    //}
 
-    public class VersionModel
-    {
-        public string name { get; set; }
-        public string? overrideTarget { get; set; }
-    }
+    //public class VersionModel
+    //{
+    //    public string name { get; set; }
+    //    public string? overrideTarget { get; set; }
+    //}
 
     public class CircuitBreakerRequest
     {
@@ -122,10 +122,10 @@ namespace ApplicationGateway.Domain.TykData
         public bool disable_half_open_state { get; set; }
     }
 
-    public class OpenIdOptions
-    {
-        public List<Provider> providers { get; set; }
-    }
+    //public class OpenIdOptions
+    //{
+    //    public List<Provider> providers { get; set; }
+    //}
 
     public class Provider
     {

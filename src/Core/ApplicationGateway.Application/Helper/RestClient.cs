@@ -1,4 +1,6 @@
-﻿namespace ApplicationGateway.Application.Helper
+﻿using Newtonsoft.Json.Linq;
+
+namespace ApplicationGateway.Application.Helper
 {
 	public class RestClient<TIdentifier> : IDisposable
 	{
@@ -27,6 +29,15 @@
 		{
 			string address = identifier is not null ? _addressSuffix + identifier.ToString() : _addressSuffix;
 			HttpResponseMessage responseMessage = await httpClient.GetAsync(address);
+			responseMessage.EnsureSuccessStatusCode();
+			return await responseMessage.Content.ReadAsStringAsync();
+		}
+
+		public async Task<string> PostAsync(JObject createObject)
+		{
+			StringContent stringContent = new StringContent(createObject.ToString(), System.Text.Encoding.UTF8, "text/plain");
+			string address = _addressSuffix;
+			HttpResponseMessage responseMessage = await httpClient.PostAsync(address, stringContent);
 			responseMessage.EnsureSuccessStatusCode();
 			return await responseMessage.Content.ReadAsStringAsync();
 		}
