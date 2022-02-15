@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -36,16 +37,13 @@ namespace ApplicationGateway.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<string> GetApi()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetAllApis()
         {
-            string result;
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse = await httpClient.GetAsync("http://localhost:8080/tyk/apis");
-                result = await httpResponse.Content.ReadAsStringAsync();
-            }
-            return result;
+            _logger.LogInformation("GetAllApis Initiated");
+            Response<GetAllApisDto> response = await _mediator.Send(new GetAllApisQuery());
+            _logger.LogInformation("GetAllApis Completed");
+            return Ok(response);
         }
 
         [HttpGet("{apiId}")]
@@ -85,7 +83,7 @@ namespace ApplicationGateway.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPut("UpdateApi")]
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

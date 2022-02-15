@@ -30,6 +30,36 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
             _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/apis", _headers);
         }
 
+        public async Task<List<Api>> GetAllApisAsync()
+        {
+            _logger.LogInformation("GetAllApisAsync Initiated");
+            string inputJson = await _restClient.GetAsync(null);
+            JArray inputObject = JArray.Parse(inputJson);
+            JArray transformedObject = new JArray();
+
+            #region Transorm individual api
+            foreach (var inputApi in inputObject)
+            {
+                string transformed = await _fileOperator.Transform(inputApi.ToString(), "GetApiTransformer");
+                JObject apiObject = JObject.Parse(transformed);
+
+                apiObject = GetApiVersioning(apiObject, inputApi as JObject);
+                apiObject = GetAuthType(apiObject, inputApi as JObject);
+
+                if (inputApi["openid_options"]["providers"] as JArray is not null)
+                {
+                    apiObject = GetOIDC(apiObject, inputApi as JObject);
+                }
+
+                transformedObject.Add(apiObject);
+            }
+            #endregion
+
+            List<Api> apiList = JsonConvert.DeserializeObject<List<Api>>(transformedObject.ToString());
+            _logger.LogInformation("GetAllApisAsync Completed");
+            return apiList;
+        }
+
         public async Task<Api> CreateApiAsync(Api api)
         {
             _logger.LogInformation("CreateApiAsync Initiated with {@Api}", api);
@@ -104,6 +134,65 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
             _logger.LogInformation("UpdateApiAsync Initiated with {@Guid}", apiId);
             await _restClient.DeleteAsync(apiId.ToString());
             _logger.LogInformation("UpdateApiAsync Completed");
+        }
+
+        private static JObject GetApiVersioning(JObject apiObject, JObject inputApi)
+        {
+            apiObject["versions"] = new JArray();
+            JObject versionDataObject = inputApi["version_data"]["versions"] as JObject;
+            foreach (var item in versionDataObject)
+            {
+                JObject tempObj = new JObject();
+                tempObj.Add("name", item.Key);
+                tempObj.Add("overrideTarget", item.Value["override_target"]);
+                (apiObject["versions"] as JArray).Add(tempObj);
+            }
+            return apiObject;
+        }
+
+        private static JObject GetAuthType(JObject apiObject, JObject inputApi)
+        {
+            if (inputApi.Value<bool>("use_keyless") == true)
+            {
+                apiObject["authType"] = "keyless";
+            }
+            else if (inputApi.Value<bool>("use_basic_auth") == true)
+            {
+                apiObject["authType"] = "basic";
+            }
+            else if (inputApi.Value<bool>("use_standard_auth") == true)
+            {
+                apiObject["authType"] = "standard";
+            }
+            else if (inputApi.Value<bool>("use_openid") == true)
+            {
+                apiObject["authType"] = "openid";
+            }
+            return apiObject;
+        }
+
+        private static JObject GetOIDC(JObject apiObject, JObject inputApi)
+        {
+            apiObject["openidOptions"]["providers"] = new JArray();
+            JArray openIdProviders = inputApi["openid_options"]["providers"] as JArray;
+            foreach (var item in openIdProviders)
+            {
+                var tempObj = new JObject();
+                tempObj.Add("issuer", item["issuer"]);
+                tempObj.Add("client_ids", new JArray());
+                foreach (var innerItem in item["client_ids"] as JObject)
+                {
+                    JObject clientObj = new JObject();
+                    byte[] decodedBytes = Convert.FromBase64String(innerItem.Key.ToString());
+                    string decodedText = Encoding.UTF8.GetString(decodedBytes);
+                    clientObj.Add("clientId", decodedText);
+                    clientObj.Add("policy", innerItem.Value);
+                    (tempObj["client_ids"] as JArray).Add(clientObj);
+                }
+
+                (apiObject["openidOptions"]["providers"] as JArray).Add(tempObj);
+            }
+            return apiObject;
         }
     }
 }

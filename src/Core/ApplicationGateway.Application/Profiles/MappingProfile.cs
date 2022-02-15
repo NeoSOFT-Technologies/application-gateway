@@ -4,6 +4,7 @@ using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -23,6 +24,13 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<OpenIdOptions, UpdateOpenIdOptions>().ReverseMap();
             CreateMap<Provider, UpdateProvider>().ReverseMap();
             CreateMap<ClientPolicy, UpdateClientPolicy>().ReverseMap();
+            CreateMap<Api, GetAllApiModel>().ReverseMap();
+            CreateMap<RateLimit, GetAllRateLimit>().ReverseMap();
+            CreateMap<VersioningInfo, GetAllVersioningInfo>().ReverseMap();
+            CreateMap<VersionModel, GetAllVersionModel>().ReverseMap();
+            CreateMap<OpenIdOptions, GetAllOpenIdOptions>().ReverseMap();
+            CreateMap<Provider, GetAllProvider>().ReverseMap();
+            CreateMap<ClientPolicy, GetAllClientPolicy>().ReverseMap();
 
             CreateMap<Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Policy, CreatePolicyDto>().ReverseMap();
