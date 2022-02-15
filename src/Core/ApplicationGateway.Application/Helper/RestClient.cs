@@ -27,9 +27,8 @@ namespace ApplicationGateway.Application.Helper
 		}
 		public async Task<string> GetAsync(TIdentifier? identifier)
 		{
-			string address = identifier is not null ? _addressSuffix + identifier.ToString() : _addressSuffix;
+			string address = identifier is not null ? $"{_addressSuffix}/{identifier.ToString()}" : _addressSuffix;
 			HttpResponseMessage responseMessage = await httpClient.GetAsync(address);
-			responseMessage.EnsureSuccessStatusCode();
 			return await responseMessage.Content.ReadAsStringAsync();
 		}
 
@@ -39,6 +38,13 @@ namespace ApplicationGateway.Application.Helper
 			string address = _addressSuffix;
 			HttpResponseMessage responseMessage = await httpClient.PostAsync(address, stringContent);
 			responseMessage.EnsureSuccessStatusCode();
+			return await responseMessage.Content.ReadAsStringAsync();
+		}
+
+		public async Task<string> DeleteAsync(TIdentifier identifier)
+		{
+			string address = $"{_addressSuffix}/{identifier.ToString()}";
+			HttpResponseMessage responseMessage = await httpClient.DeleteAsync(address);
 			return await responseMessage.Content.ReadAsStringAsync();
 		}
 

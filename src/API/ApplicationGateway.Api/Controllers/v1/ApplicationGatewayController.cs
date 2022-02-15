@@ -16,6 +16,7 @@ using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Responses;
 using Microsoft.Extensions.Options;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
+using ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -134,24 +135,14 @@ namespace ApplicationGateway.Api.Controllers
             return Ok();
         }
 
+        [HttpDelete("{apiId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        [HttpDelete("deleteApi")]
-        public ActionResult DeleteApi(string apiId)
+        public async Task<ActionResult> DeleteApi(Guid apiId)
         {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                string url = "http://localhost:8080/tyk/apis/" + apiId;
-                HttpResponseMessage httpResponse = httpClient.DeleteAsync(url).Result;
-                HotReload();
-                //    HttpResponseMessage httpResponse1 = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
-                if (!httpResponse.IsSuccessStatusCode)
-                {
-                    return NotFound();
-                }
-            }
+            _logger.LogInformation("DeleteApi Initiated with {@ApiId}", apiId);
+            await _mediator.Send(new DeleteApiCommand() { ApiId = apiId });
+            _logger.LogInformation("DeleteApi Completed");
             return NoContent();
         }
 

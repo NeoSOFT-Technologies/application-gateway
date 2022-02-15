@@ -29,7 +29,7 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
             _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/apis", _headers);
         }
 
-        public async Task<Api> CreateApi(Api api)
+        public async Task<Api> CreateApiAsync(Api api)
         {
             _logger.LogInformation("CreateApi Initiated with {@Api}", api);
             api.ApiId = Guid.NewGuid();
@@ -45,6 +45,11 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
 
             _logger.LogInformation("CreateApi Completed");
             return api;
+        }
+
+        public async Task DeleteApiAsync(Guid apiId)
+        {
+            await _restClient.DeleteAsync(apiId.ToString());
         }
     }
 }

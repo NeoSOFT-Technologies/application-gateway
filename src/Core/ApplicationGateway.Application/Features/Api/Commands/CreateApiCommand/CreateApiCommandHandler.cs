@@ -35,7 +35,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand
         {
             _logger.LogInformation("Handler Initiated with {@CreateApiCommand}", request);
             Domain.TykData.Api api = _mapper.Map<Domain.TykData.Api>(request);
-            Domain.TykData.Api newApi = await _apiService.CreateApi(api);
+            Domain.TykData.Api newApi = await _apiService.CreateApiAsync(api);
 
             await _restClient.GetAsync(null);
 

@@ -47,7 +47,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
             {
                 { "x-tyk-authorization", _tykConfiguration.Secret }
             };
-            RestClient<string> restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/apis", _headers);
+            RestClient<string> restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/apis", headers);
             JArray allApis = JArray.Parse(await restClient.GetAsync(null));
             #endregion
 
@@ -67,7 +67,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
                 #endregion
 
                 Domain.TykData.Api api = _mapper.Map<Domain.TykData.Api>(obj);
-                Domain.TykData.Api newApi = await _apiService.CreateApi(api);
+                Domain.TykData.Api newApi = await _apiService.CreateApiAsync(api);
 
                 MultipleApiModelDto multipleApiModelDto = _mapper.Map<MultipleApiModelDto>(newApi);
                 createMultipleApisDto.APIs.Add(multipleApiModelDto);

@@ -4,6 +4,7 @@ namespace ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper
 {
     public interface IApiService
     {
-        Task<Api> CreateApi(Api api);
+        Task<Api> CreateApiAsync(Api api);
+        Task DeleteApiAsync(Guid apiId);
     }
 }
