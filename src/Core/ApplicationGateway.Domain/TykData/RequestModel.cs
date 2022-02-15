@@ -127,17 +127,17 @@ namespace ApplicationGateway.Domain.TykData
     //    public List<Provider> providers { get; set; }
     //}
 
-    public class Provider
-    {
-        public string issuer { get; set; }
-        public List<ClientPolicy> client_ids { get; set; }
-    }
+    //public class Provider
+    //{
+    //    public string issuer { get; set; }
+    //    public List<ClientPolicy> client_ids { get; set; }
+    //}
 
-    public class ClientPolicy
-    {
-        public string clientId { get; set; }
-        public string policy { get; set; }
-    }
+    //public class ClientPolicy
+    //{
+    //    public string clientId { get; set; }
+    //    public string policy { get; set; }
+    //}
 
     public class CreateKeyRequest
     {

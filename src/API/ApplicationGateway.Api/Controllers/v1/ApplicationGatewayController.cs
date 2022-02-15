@@ -17,6 +17,7 @@ using ApplicationGateway.Application.Responses;
 using Microsoft.Extensions.Options;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand;
+using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -73,66 +74,27 @@ namespace ApplicationGateway.Api.Controllers
 
         }
 
-        [HttpPost("createMultipleApi")]
-        public async Task<ActionResult> CreateMultipleApi(CreateMultipleApisCommand createMultipleApisCommand)
+        [HttpPost("CreateMultipleApis")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CreateMultipleApis(CreateMultipleApisCommand createMultipleApisCommand)
         {
-            _logger.LogInformation("CreateMultipleApisCommand Initiated with {@CreateMultipleApisCommand}", createMultipleApisCommand);
+            _logger.LogInformation("CreateMultipleApis Initiated with {@CreateMultipleApisCommand}", createMultipleApisCommand);
             Response<CreateMultipleApisDto> response = await _mediator.Send(createMultipleApisCommand);
-            _logger.LogInformation("CreateApi Completed");
+            _logger.LogInformation("CreateMultipleApis Completed");
             return Ok(response);
         }
 
-        [HttpPut("updateapi")]
-        public ActionResult UpdateApi(UpdateRequest request)
+        [HttpPut("UpdateApi")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> UpdateApi(UpdateApiCommand updateApiCommand)
         {
-            string requestJson = JsonConvert.SerializeObject(request);
-        //    string path = Directory.GetCurrentDirectory();
-            string transformer = System.IO.File.ReadAllText(@"JsonTransformers/Tyk/UpdateApiTransformer.json");
-            string transformed = new JsonTransformer().Transform(transformer, requestJson);
-
-            JObject inputObject = JObject.Parse(requestJson);
-            JObject transformedObject = JObject.Parse(transformed);
-            if (inputObject["versions"].Count() != 0)
-            {
-                transformedObject["version_data"]["versions"] = new JObject();
-                foreach (JToken version in inputObject["versions"])
-                {
-                    (version as JObject).Add("use_extended_paths", true);
-                    JArray removeGlobalHeaders = new JArray();
-                    removeGlobalHeaders.Add("Authorization");
-                    (version as JObject).Add("global_headers_remove", removeGlobalHeaders);
-                    (transformedObject["version_data"]["versions"] as JObject).Add($"{version["name"]}", version);
-                    (transformedObject["version_data"]["versions"][$"{version["name"]}"] as JObject).Add("override_target", version["overrideTarget"]);
-                }
-            }
-
-            if (inputObject["authType"].ToString() == "openid")
-            {
-                transformedObject["openid_options"]["providers"] = new JArray();
-                foreach (JToken provider in inputObject["openidOptions"]["providers"])
-                {
-                    JObject newProvider = new JObject();
-                    newProvider.Add("issuer", provider["issuer"]);
-                    JObject newClient = new JObject();
-                    foreach (JToken client in provider["client_ids"])
-                    {
-                        string base64ClientId = Convert.ToBase64String(Encoding.UTF8.GetBytes(client["clientId"].ToString()));
-                        newClient.Add(base64ClientId, client["policy"]);
-                    }
-                    newProvider.Add("client_ids", newClient);
-                    (transformedObject["openid_options"]["providers"] as JArray).Add(newProvider);
-                }
-            }
-
-            using (HttpClient httpClient = new HttpClient())
-            {
-                StringContent stringContent = new StringContent(transformedObject.ToString(), System.Text.Encoding.UTF8, "text/plain");
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                string Url = $"http://localhost:8080/tyk/apis/{request.id}";
-                HttpResponseMessage httpResponse = httpClient.PutAsync(Url, stringContent).Result;
-                HotReload();
-            }
-            return Ok();
+            _logger.LogInformation("UpdateApi Initiated with {@updateApiCommand}", updateApiCommand);
+            Response<UpdateApiDto> response = await _mediator.Send(updateApiCommand);
+            _logger.LogInformation("UpdateApi Completed");
+            return Ok(response);
         }
 
         [HttpDelete("{apiId}")]
