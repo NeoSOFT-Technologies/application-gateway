@@ -39,19 +39,20 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
         {
             _logger.LogInformation($"GetKeyAsync initiated for {keyId}");
             var keyResponse = await _restClient.GetAsync(keyId);
-            _logger.LogInformation($"GetKeyAsync completed for {keyId}");
             string transformedObj = await _fileOperator.Transform(keyResponse, "GetKeyTransformer");
             Key key = JsonConvert.DeserializeObject<Key>(transformedObj);
 
             JObject keyObj = JObject.Parse(keyResponse);
 
-            #region Check & Add Poliicies, if exists
+            #region Add Poliicies, if exists
             if (keyObj["apply_policies"].HasValues)
             {
-               foreach (var policy in keyObj["apply_policies"])
+                List<string> policies = new List<string>();
+               foreach (var policy in keyObj["apply_policies"] as JArray)
                 {
-                    key.Policies.Add(policy.ToString());
+                    policies.Add((string)policy);
                 }
+                key.Policies = policies;
             }
             #endregion
 
@@ -60,12 +61,13 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
             foreach(var accessRight in keyObj["access_rights"])
             {
                 AccessRightsModel accessRightsModel = new AccessRightsModel();
-                accessRightsModel.ApiId = Guid.Parse(accessRight["api_id"].ToString());
-                accessRightsModel.ApiName = accessRight["api_name"].ToString();
+                var apiObj = accessRight.First;
+                accessRightsModel.ApiId = Guid.Parse(apiObj["api_id"].ToString());
+                accessRightsModel.ApiName = apiObj["api_name"].ToString();
 
                 #region Add versions in accessRights
                 List<string> versions = new List<string>();
-                foreach(var version in accessRight["versions"])
+                foreach(var version in apiObj["versions"])
                 {
                     versions.Add(version.ToString());
                 }
@@ -73,16 +75,16 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
                 #endregion
 
                 #region Add allowed urls in accessRights, if exists
-                if (accessRight["allowed_urls"].HasValues)
+                if (apiObj["allowed_urls"].HasValues)
                 {
-                    Key.AllowedUrl urls = new Key.AllowedUrl();
-                    urls.Url = accessRight["allowed_urls"]["url"].ToString();
+                    AllowedUrl urls = new AllowedUrl();
+                    urls.url = apiObj["allowed_urls"]["url"].ToString();
                     List<string> methods = new List<string>();
                     foreach(var method in accessRight["allowed_urls"]["url"])
                     {
                         methods.Add(method.ToString());
                     }
-                    urls.Methods = methods;
+                    urls.methods = methods;
 
                     accessRightsModel.AllowedUrls = urls;
                 }
@@ -92,6 +94,8 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
 
             key.AccessRights = accessRights;
             #endregion
+            key.KeyId = keyId;
+            _logger.LogInformation($"GetKeyAsync completed for {keyId}");
             return key;
         }
 
@@ -133,13 +137,49 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
             return key;
         }
 
+        public async Task<Key> UpdateKeyAsync(Key key)
+        {
+            _logger.LogInformation($"UpdateKeyAsync initiated for {key}");
+
+            string requestString = JsonConvert.SerializeObject(key);
+            string transformedObj = await _fileOperator.Transform(requestString, "UpdateKeyTransformer");
+
+
+            JObject jsonObj = JObject.Parse(transformedObj);
+            if (key.Policies.Any())
+            {
+                JArray policies = new JArray();
+                key.Policies.ForEach(policy => policies.Add(policy));
+                jsonObj["apply_policies"] = policies;
+            }
+            if (key.AccessRights.Any())
+            {
+                jsonObj["access_rights"] = new JObject();
+                foreach (var api in key.AccessRights)
+                {
+                    string jsonString = JsonConvert.SerializeObject(api);
+                    JObject obj = JObject.Parse(jsonString);
+                    JArray versions = new JArray();
+                    api.Versions.ForEach(v => versions.Add(v));
+                    JObject accObj = new JObject();
+                    accObj.Add("api_id", obj["ApiId"]);
+                    accObj.Add("api_name", obj["ApiName"]);
+                    accObj.Add("versions", versions);
+                    (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
+                }
+            }
+
+
+            string keyResponse = await _restClient.PutKeyAsync(jsonObj,key.KeyId);
+            _logger.LogInformation($"UpdateKeyAsync completed for {key}");
+            return key;
+        }
         public async Task DeleteKeyAsync(string keyId)
         {
             _logger.LogInformation($"DeleteKeyAsync initiated for {keyId}");
             await _restClient.DeleteAsync(keyId);
             _logger.LogInformation($"DeleteKeyAsync completed for {keyId}");
         }
-
 
     }   
 }

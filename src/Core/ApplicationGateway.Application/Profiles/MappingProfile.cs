@@ -8,6 +8,7 @@ using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery;
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand.CreateKeyCommand;
+using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -50,9 +51,16 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<PerApiLimit, CreatePerApiLimit>().ReverseMap();
 
             CreateMap<Key,CreateKeyCommand>().ReverseMap();
-            CreateMap<Key.AllowedUrl, KeyAllowedUrl>().ReverseMap();
-            CreateMap<Key.AccessRightsModel, KeyAccessRightsModel>().ReverseMap();
-            
+            CreateMap<AllowedUrl, KeyAllowedUrl>().ReverseMap();
+            CreateMap<AccessRightsModel, KeyAccessRightsModel>().ReverseMap();
+            CreateMap<Key, UpdateKeyCommand>().ReverseMap();
+            CreateMap<AllowedUrl, UpdateAllowedUrl>().ReverseMap();
+            CreateMap<AccessRightsModel, UpdateAccessRightsModel>().ReverseMap();
+            CreateMap<Key, UpdateKeyCommandDto>().ReverseMap();
+            CreateMap<AllowedUrl, UpdateAllowedUrlDto>().ReverseMap();
+            CreateMap<AccessRightsModel, UpdateAccessRightsModelDto>().ReverseMap();
+
+
         }
     }
 }

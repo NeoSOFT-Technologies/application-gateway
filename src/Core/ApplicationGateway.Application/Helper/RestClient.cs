@@ -54,6 +54,14 @@ namespace ApplicationGateway.Application.Helper
 			responseMessage.EnsureSuccessStatusCode();
 			return await responseMessage.Content.ReadAsStringAsync();
 		}
+		public async Task<string> PutKeyAsync(JObject updateObject,string keyId)
+		{
+			StringContent stringContent = new StringContent(updateObject.ToString(), System.Text.Encoding.UTF8, "text/plain");
+			string address = $"{_addressSuffix}/{keyId}";
+			HttpResponseMessage responseMessage = await httpClient.PutAsync(address, stringContent);
+			responseMessage.EnsureSuccessStatusCode();
+			return await responseMessage.Content.ReadAsStringAsync();
+		}
 
 		public async Task<string> DeleteAsync(TIdentifier identifier)
 		{

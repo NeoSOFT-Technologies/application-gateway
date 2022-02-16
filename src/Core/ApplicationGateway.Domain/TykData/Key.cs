@@ -19,7 +19,7 @@ namespace ApplicationGateway.Domain.TykData
         public List<AccessRightsModel> AccessRights { get; set; }
         public List<string> Policies { get; set; }
 
-
+    }
     
     public class AccessRightsModel
     {
@@ -29,10 +29,10 @@ namespace ApplicationGateway.Domain.TykData
         public AllowedUrl AllowedUrls { get; set; }
 
     }
-    public class AllowedUrl
-    {
-        public string Url { get; set; }
-        public List<string> Methods { get; set; }
-    }
-}
+    //public class AllowedUrl
+    //{
+    //    public string Url { get; set; }
+    //    public List<string> Methods { get; set; }
+    //}
+
 }
