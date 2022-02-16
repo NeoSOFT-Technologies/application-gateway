@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Api.Controllers
 {
+//test comment
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
