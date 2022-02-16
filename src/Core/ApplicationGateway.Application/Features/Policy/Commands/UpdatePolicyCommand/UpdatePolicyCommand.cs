@@ -1,6 +1,9 @@
-﻿namespace ApplicationGateway.Domain.TykData
+﻿using ApplicationGateway.Application.Responses;
+using MediatR;
+
+namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand
 {
-    public class Policy
+    public class UpdatePolicyCommand : IRequest<Response<UpdatePolicyDto>>
     {
         public Guid PolicyId { get; set; }
         public string Name { get; set; }
@@ -15,26 +18,26 @@
         public string State { get; set; }
         public int KeyExpiresIn { get; set; }
         public List<string> Tags { get; set; }
-        public List<PolicyApi> APIs { get; set; }
-        public Partition? Partitions { get; set; }
+        public List<UpdatePolicyApi> APIs { get; set; }
+        public UpdatePartition? Partitions { get; set; }
     }
 
-    public class PolicyApi
+    public class UpdatePolicyApi
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public List<string> Versions { get; set; }
-        public List<AllowedUrl> AllowedUrls { get; set; }
-        public PerApiLimit? Limit { get; set; }
+        public List<UpdateAllowedUrl> AllowedUrls { get; set; }
+        public UpdatePerApiLimit? Limit { get; set; }
     }
 
-    public class AllowedUrl
+    public class UpdateAllowedUrl
     {
         public string url { get; set; }
         public List<string> methods { get; set; }
     }
-    
-    public class PerApiLimit
+
+    public class UpdatePerApiLimit
     {
         public int rate { get; set; }
         public int per { get; set; }
@@ -48,7 +51,7 @@
         public bool set_by_policy { get; set; }
     }
 
-    public class Partition
+    public class UpdatePartition
     {
         public bool quota { get; set; }
         public bool rate_limit { get; set; }

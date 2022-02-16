@@ -7,18 +7,18 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand
+namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand
 {
-    public class CreatePolicyCommandHandler : IRequestHandler<CreatePolicyCommand, Response<CreatePolicyDto>>
+    public class UpdatePolicyCommandHandler : IRequestHandler<UpdatePolicyCommand, Response<UpdatePolicyDto>>
     {
         private readonly IPolicyService _policyService;
         private readonly IMapper _mapper;
-        private readonly ILogger<CreatePolicyCommandHandler> _logger;
+        private readonly ILogger<UpdatePolicyCommandHandler> _logger;
         private readonly TykConfiguration _tykConfiguration;
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public CreatePolicyCommandHandler(IPolicyService policyService, IMapper mapper, ILogger<CreatePolicyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
+        public UpdatePolicyCommandHandler(IPolicyService policyService, IMapper mapper, ILogger<UpdatePolicyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
         {
             _policyService = policyService;
             _mapper = mapper;
@@ -31,17 +31,17 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
             _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/reload/group", _headers);
         }
 
-        public async Task<Response<CreatePolicyDto>> Handle(CreatePolicyCommand request, CancellationToken cancellationToken)
+        public async Task<Response<UpdatePolicyDto>> Handle(UpdatePolicyCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Handler Initiated with {@CreatePolicyCommand}", request);
+            _logger.LogInformation("Handler Initiated with {@UpdatePolicyCommand}", request);
             Domain.TykData.Policy policy = _mapper.Map<Domain.TykData.Policy>(request);
-            Domain.TykData.Policy newPolicy = await _policyService.CreatePolicyAsync(policy);
+            Domain.TykData.Policy newPolicy = await _policyService.UpdatePolicyAsync(policy);
 
             //HotReload
             await _restClient.GetAsync(null);
 
-            CreatePolicyDto createPolicyDto = _mapper.Map<CreatePolicyDto>(newPolicy);
-            Response<CreatePolicyDto> response = new Response<CreatePolicyDto>(createPolicyDto, "success");
+            UpdatePolicyDto updatePolicyDto = _mapper.Map<UpdatePolicyDto>(newPolicy);
+            Response<UpdatePolicyDto> response = new Response<UpdatePolicyDto>(updatePolicyDto, "success");
             _logger.LogInformation("Handler Completed");
             return response;
         }
