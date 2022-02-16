@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
@@ -13,6 +14,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
 {
     public class UpdateApiCommandHandler : IRequestHandler<UpdateApiCommand, Response<UpdateApiDto>>
     {
+        private readonly ISnapshotService _snapshotService;
         private readonly IApiService _apiService;
         private readonly IMapper _mapper;
         private readonly ILogger<UpdateApiCommandHandler> _logger;
@@ -20,8 +22,9 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public UpdateApiCommandHandler(IApiService apiService, IMapper mapper, ILogger<UpdateApiCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
+        public UpdateApiCommandHandler(ISnapshotService snapshotService, IApiService apiService, IMapper mapper, ILogger<UpdateApiCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
         {
+            _snapshotService = snapshotService;
             _apiService = apiService;
             _mapper = mapper;
             _logger = logger;
@@ -56,6 +59,14 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
             await _restClient.GetAsync(null);
 
             UpdateApiDto updateApiDto = _mapper.Map<UpdateApiDto>(newApi);
+
+            await _snapshotService.CreateSnapshot(
+                Enums.Gateway.Tyk,
+                Enums.Type.API,
+                Enums.Operation.Updated,
+                updateApiDto.ApiId,
+                newApi);
+
             Response<UpdateApiDto> result = new Response<UpdateApiDto>(updateApiDto, "success");
 
             _logger.LogInformation("Handler Completed");

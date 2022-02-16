@@ -1,6 +1,6 @@
 {
-  "rate": 3,
-  "perSec": 60,
+  "rate": -1,
+  "perSec": -1,
   "quota": 5,
   "quotaRenewalRate": 3600,
   "accessRights": [
@@ -11,9 +11,7 @@
     }
     ],
     "policyId":[],
-    "expires"
-    :
-    0
+    "expires": 0
 }
 
    

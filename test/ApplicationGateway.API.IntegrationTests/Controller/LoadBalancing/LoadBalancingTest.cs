@@ -13,6 +13,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using ApplicationGateway.API.IntegrationTests.Helper;
+using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
+using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
     public class LoadBalancingTest : IClassFixture<CustomWebApplicationFactory>
@@ -41,30 +45,31 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
-            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
-            var id = result.key;
+            var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
+            var id = result.Data.ApiId;
             await HotReload();
+            Thread.Sleep(3000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/LoadBalancingTest/loadBalancingData.json");
 
-            UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
-            data.name = newid.ToString();
-            data.listenPath = $"/{newid.ToString()}/";
-            data.id = Guid.Parse(id);
+            UpdateApiCommand data = JsonConvert.DeserializeObject<UpdateApiCommand>(myJsonString1);
+            data.Name = newid.ToString();
+            data.ListenPath = $"/{newid.ToString()}/";
+            data.ApiId = id;
+            data.TargetUrl = ApplicationConstants.TARGET_URL;
 
             // Update_Api
-            var RequestJson1 = JsonConvert.SerializeObject(data);
-            HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
-            var response1 = await client.PutAsync("/api/v1/ApplicationGateway/UpdateApi/updateapi", content1);
-            response1.EnsureSuccessStatusCode();
+            var updateRequestJson = JsonConvert.SerializeObject(data);
+            HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
+            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
+            updateresponse.EnsureSuccessStatusCode();
             await HotReload();
             Thread.Sleep(5000);
+
 
             // downstream
             for (int i = 1; i < 8; i++)
@@ -100,15 +105,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         private async Task HotReload()
         {
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
+            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<HttpResponseMessage> DeleteApi(string id)
+        private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
-            await HotReload();
+            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }
     }

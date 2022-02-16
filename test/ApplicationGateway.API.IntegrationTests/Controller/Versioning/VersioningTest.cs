@@ -13,6 +13,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using ApplicationGateway.API.IntegrationTests.Helper;
+using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
+using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
     public class VersioningTest : IClassFixture<CustomWebApplicationFactory>
@@ -41,34 +45,33 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
-            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
-            var id = result.key;
+            var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
+            var id = result.Data.ApiId;
             await HotReload();
+            Thread.Sleep(3000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+ "/Versioning/Header_Version.json");
-            UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
-            data.name = newid.ToString();
-            data.listenPath = $"/{newid.ToString()}/";
-            data.id = Guid.Parse(id);
+            UpdateApiCommand data = JsonConvert.DeserializeObject<UpdateApiCommand>(myJsonString1);
+            data.Name = newid.ToString();
+            data.ListenPath = $"/{newid.ToString()}/";
+            data.ApiId = id;
 
             // Update_Api
-            var RequestJson1 = JsonConvert.SerializeObject(data);
-            HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
-            var response1 = await client.PutAsync("/api/v1/ApplicationGateway/UpdateApi/updateapi", content1);
-            response1.EnsureSuccessStatusCode();
+            var updateRequestJson = JsonConvert.SerializeObject(data);
+            HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
+            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
+            updateresponse.EnsureSuccessStatusCode();
             await HotReload();
             Thread.Sleep(5000);
 
-            foreach (VersionModel obj in data.versions)
+            foreach (UpdateVersionModel obj in data.Versions)
             {
                 var clientV = HttpClientFactory.Create();
-                clientV.DefaultRequestHeaders.Add(data.versioningInfo.key, obj.name);
+                clientV.DefaultRequestHeaders.Add(data.VersioningInfo.Key, obj.Name);
                 var responseV = await clientV.GetAsync(Url);
                 responseV.EnsureSuccessStatusCode();
             }
@@ -98,37 +101,36 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
-            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
-            var id = result.key;
+            var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
+            var id = result.Data.ApiId;
             await HotReload();
+            Thread.Sleep(3000);
             // Thread.Sleep(4000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/QueryParam_Version.json");
 
-            UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
-            data.name = newid.ToString();
-            data.listenPath = $"/{newid.ToString()}/";
-            data.id = Guid.Parse(id);
+            UpdateApiCommand data = JsonConvert.DeserializeObject<UpdateApiCommand>(myJsonString1);
+            data.Name = newid.ToString();
+            data.ListenPath = $"/{newid.ToString()}/";
+            data.ApiId = id;
 
             // Update_Api
-            var RequestJson1 = JsonConvert.SerializeObject(data);
-            HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
-            var response1 = await client.PutAsync("/api/v1/ApplicationGateway/UpdateApi/updateapi", content1);
-            response1.EnsureSuccessStatusCode();
+            var updateRequestJson = JsonConvert.SerializeObject(data);
+            HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
+            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
+            updateresponse.EnsureSuccessStatusCode();
             await HotReload();
             Thread.Sleep(5000);
 
 
             //downstream
-            foreach (VersionModel obj in data.versions)
+            foreach (UpdateVersionModel obj in data.Versions)
             {
-                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + $"/WeatherForecast?{data.versioningInfo.key}={obj.name}";
+                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + $"/WeatherForecast?{data.VersioningInfo.Key}={obj.Name}";
                 var responseV = await DownStream(Url);
                 responseV.EnsureSuccessStatusCode();
             }
@@ -158,34 +160,33 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-
-            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-            var id = result.key;
+            var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
+            var id = result.Data.ApiId;
             await HotReload();
+            Thread.Sleep(3000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+ "/Versioning/Url_Version.json");
-            UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
-            data.name = newid.ToString();
-            data.listenPath = $"/{newid.ToString()}/";
-            data.id = Guid.Parse(id);
+            UpdateApiCommand data = JsonConvert.DeserializeObject<UpdateApiCommand>(myJsonString1);
+            data.Name = newid.ToString();
+            data.ListenPath = $"/{newid.ToString()}/";
+            data.ApiId = id;
 
             // Update_Api
-            var RequestJson1 = JsonConvert.SerializeObject(data);
-            HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
-            var response1 = await client.PutAsync("/api/v1/ApplicationGateway/UpdateApi/updateapi", content1);
-            response1.EnsureSuccessStatusCode();
+            var updateRequestJson = JsonConvert.SerializeObject(data);
+            HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
+            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
+            updateresponse.EnsureSuccessStatusCode();
             await HotReload();
             Thread.Sleep(5000);
 
-
             //downstream
-            foreach (VersionModel version in data.versions)
+            foreach (UpdateVersionModel version in data.Versions)
             {
-                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/" + version.name + "/WeatherForecast";
+                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/" + version.Name + "/WeatherForecast";
                 var responseV = await DownStream(Url);
                 responseV.EnsureSuccessStatusCode();
                 Thread.Sleep(2000);
@@ -214,18 +215,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
+
         private async Task HotReload()
         {
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
+            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<HttpResponseMessage> DeleteApi(string id)
+        private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
-            // await HotReload();
+            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }
     }

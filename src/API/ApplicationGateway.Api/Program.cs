@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using ApplicationGateway.Api.SwaggerHelper;
 using Microsoft.AspNetCore.DataProtection;
+using ApplicationGateway.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,7 +61,9 @@ services.AddCors(options =>
 services.AddApplicationServices();
 services.AddScoped<ILoggedInUserService, LoggedInUserService>();
 services.AddInfrastructureServices(Configuration);
+services.AddPersistenceServices(Configuration);
 services.AddIdentityServices(Configuration);
+services.AddPersistenceServices(Configuration);
 services.AddSwaggerExtension();
 services.AddSwaggerVersionedApiExplorer();
 services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
