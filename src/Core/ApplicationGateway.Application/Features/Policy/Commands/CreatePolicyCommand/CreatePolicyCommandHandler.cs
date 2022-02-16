@@ -38,8 +38,9 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         {
             _logger.LogInformation("Handler Initiated with {@CreatePolicyCommand}", request);
             Domain.TykData.Policy policy = _mapper.Map<Domain.TykData.Policy>(request);
-            Domain.TykData.Policy newPolicy = await _policyService.CreatePolicy(policy);
+            Domain.TykData.Policy newPolicy = await _policyService.CreatePolicyAsync(policy);
 
+            //HotReload
             await _restClient.GetAsync(null);
 
             CreatePolicyDto createPolicyDto = _mapper.Map<CreatePolicyDto>(newPolicy);

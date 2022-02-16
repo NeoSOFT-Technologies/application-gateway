@@ -63,6 +63,7 @@ services.AddScoped<ILoggedInUserService, LoggedInUserService>();
 services.AddInfrastructureServices(Configuration);
 services.AddPersistenceServices(Configuration);
 services.AddIdentityServices(Configuration);
+services.AddPersistenceServices(Configuration);
 services.AddSwaggerExtension();
 services.AddSwaggerVersionedApiExplorer();
 services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

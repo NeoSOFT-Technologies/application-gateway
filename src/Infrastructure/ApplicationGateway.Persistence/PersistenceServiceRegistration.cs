@@ -5,6 +5,11 @@ using ApplicationGateway.Persistence.SnapshotWrapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ApplicationGateway.Persistence
 {
@@ -13,11 +18,12 @@ namespace ApplicationGateway.Persistence
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("ApplicationConnectionString")));
+                options.UseNpgsql(configuration.GetConnectionString("ApplicationConnectionString")));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
             services.AddScoped<ISnapshotRepository, SnapshotRepository>();
             services.AddScoped<ISnapshotService, SnapshotService>();
             return services;
         }
     }
+
 }
