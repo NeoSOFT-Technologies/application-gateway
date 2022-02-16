@@ -18,11 +18,11 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class PolicyTest : IClassFixture<CustomWebApplicationFactory>
+    public class PolicyWithVersionTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
 
-        public PolicyTest(CustomWebApplicationFactory factory)
+        public PolicyWithVersionTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
         }
@@ -30,7 +30,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
 
         [Fact]
-        public async Task Add_policy_with_RateLimit_returnSuccess()
+        public async Task Add_policy_with_Api_VersionAccess_returnSuccess()
         {
 
             var client = _factory.CreateClient();
@@ -54,15 +54,15 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var id = result.key;
             await HotReload();
 
-            //Update standard authentication
+            //Update standard authentication and version info.
             //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/AddAuthentication.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/UpdateVersioning.json");
             UpdateRequest data = JsonConvert.DeserializeObject<UpdateRequest>(myJsonString1);
             data.name = newid.ToString();
             data.listenPath = $"/{newid.ToString()}/";
             data.id = Guid.Parse(id);
 
-           // data.authType = "standard";
+            // data.authType = "standard";
             // Update_Api
             var RequestJson1 = JsonConvert.SerializeObject(data);
             HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
@@ -71,15 +71,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             await HotReload();
 
             //create policy
-            var mypolicyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicy.json");
+            var mypolicyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicy-Api_versions.json");
             JObject keyValues = JObject.Parse(mypolicyJsonString);
             keyValues["name"] = Guid.NewGuid().ToString();
+            var versionPol = "";
             foreach (var obj in keyValues["apIs"])
             {
                 obj["id"] = id;
                 obj["name"] = newid.ToString();
-
+                versionPol = (obj["versions"][0]).ToString();
             }
+
+
             //create Api
 
             HttpContent Policycontent = new StringContent(keyValues.ToString(), Encoding.UTF8, "application/json");
@@ -110,21 +113,24 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var keyid = "";//key["key"];
 
             //downstream api
-            var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
-
+            /* var clientkey = HttpClientFactory.Create();
+             clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+ */
             Thread.Sleep(5000);
-            for (int i = 1; i < 4; i++)
+
+            foreach (VersionModel obj in data.versions)
             {
 
-                var responseclientkey = await clientkey.GetAsync(Url);
-                responseclientkey.EnsureSuccessStatusCode();
-
+                var clientV = HttpClientFactory.Create();
+                clientV.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+                clientV.DefaultRequestHeaders.Add(data.versioningInfo.key, obj.name);
+                var responseV = await clientV.GetAsync(Url);
+                if (obj.name == versionPol)
+                    responseV.EnsureSuccessStatusCode();
+                else
+                    responseV.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
             }
 
-            //CHECK RATE LIMITING 
-            var responseclientkey1 = await clientkey.GetAsync(Url);
-            responseclientkey1.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.TooManyRequests);
 
             //delete Api,policy,key
             var deleteResponse = await DeleteApi(id);
@@ -136,26 +142,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var deletekeyResponse = await DeleteKey(keyid.ToString());
             deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.OK);
             await HotReload();
-
-        }
-
-
-
-
-        public async Task<HttpResponseMessage> DownStream(string path)
-        {
-
-            try
-            {
-                var client = HttpClientFactory.Create();
-                var response = await client.GetAsync(path);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
 
         }
 
