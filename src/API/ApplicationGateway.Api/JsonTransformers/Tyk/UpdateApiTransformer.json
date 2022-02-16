@@ -1,0 +1,56 @@
+{
+  "name": "#valueof(Name)",
+  "api_id": "#valueof(ApiId)",
+  "use_keyless": "#ifcondition(#valueof($.AuthType),keyless,#toboolean(true),#toboolean(false))",
+  "use_basic": "#ifcondition(#valueof($.AuthType),basic,#toboolean(true),#toboolean(false))",
+  "use_standard_auth": "#ifcondition(#valueof($.AuthType),standard,#toboolean(true),#toboolean(false))",
+  "use_openid": "#ifcondition(#valueof($.AuthType),openid,#toboolean(true),#toboolean(false))",
+  "openid_options": {
+    "providers": null,
+    "segregate_by_client": false
+  },
+  "active": true,
+  "proxy": {
+    "listen_path": "#valueof(ListenPath)",
+    "target_url": "#valueof(TargetUrl)",
+    "strip_listen_path": true,
+    "enable_load_balancing": "#ifcondition(#length(#valueof($.LoadBalancingTargets)),0,#toboolean(false),#toboolean(true))",
+    "target_list": "#valueof(LoadBalancingTargets)"
+  },
+  "global_rate_limit": {
+    "rate": "#valueof(RateLimit.Rate)",
+    "per": "#valueof(RateLimit.Per)"
+  },
+  "disable_rate_limit": "#ifcondition(#valueof($.RateLimit),null,#toboolean(true),#toboolean(false))",
+  "enable_ip_whitelisting": "#ifcondition(#valueof($.Whitelist),null,#toboolean(false),#toboolean(true))",
+  "allowed_ips": "#valueof(Whitelist)",
+  "enable_ip_blacklisting": "#ifcondition(#valueof($.Blacklist),null,#toboolean(false),#toboolean(true))",
+  "blacklisted_ips": "#valueof(Blacklist)",
+  "definition": {
+    "location": "#valueof(VersioningInfo.Location)",
+    "key": "#valueof(VersioningInfo.Key)",
+    "strip_path": "#ifcondition(#valueof($.Key),null,#toboolean(false),#toboolean(true))"
+  },
+  "version_data": {
+    "not_versioned": "#ifcondition(#length(#valueof($.Versions)),0,#toboolean(true),#toboolean(false))",
+    "default_version": "#valueof(DefaultVersion)",
+    "versions": {
+      "Default": {
+        "name": "Default",
+        "use_extended_paths": true,
+        "override_target": ""
+      }
+    }
+  },
+  "CORS": {
+    "enable": "#valueof(Enable)",
+    "allowed_origins": "#valueof(Allowed_origins)",
+    "allowed_methods": "#valueof(Allowed_methods)",
+    "allowed_headers": "#valueof(Allowed_headers)",
+    "exposed_headers": "#valueof(Exposed_headers)",
+    "allow_credentials": "#valueof(Allow_credentials)",
+    "max_age": "#valueof(Max_age)",
+    "options_passthrough": "#valueof(Options_passthrough)",
+    "debug": "#valueof(Debug)"
+  }
+}

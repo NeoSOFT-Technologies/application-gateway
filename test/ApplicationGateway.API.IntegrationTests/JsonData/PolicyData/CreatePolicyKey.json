@@ -1,0 +1,13 @@
+{
+  "rate": -1,
+  "perSec": -1,
+  "quota": -1,
+  "quotaRenewalRate": -1,
+  "accessRights": [
+
+  ],
+  "policyId": [
+    "908d8c36-afd0-485b-a719-7682fb23a958"
+  ],
+  "expires": 0
+}

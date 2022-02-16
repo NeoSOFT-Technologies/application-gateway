@@ -1,0 +1,13 @@
+{
+    "circuit_breakers": 
+    [
+        {
+            "disable_half_open_state": "#valueof(disable_half_open_state)",
+            "method": "#valueof(method)",
+            "path": "#valueof(path)",
+            "return_to_service_after": "#valueof(cooldownTime)",
+            "samples": "#valueof(samples)",
+            "threshold_percent": "#valueof(threshold_percent)"
+        }
+    ]
+}

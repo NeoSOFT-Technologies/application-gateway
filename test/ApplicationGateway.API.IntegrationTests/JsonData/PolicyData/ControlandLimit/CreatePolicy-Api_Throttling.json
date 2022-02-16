@@ -1,0 +1,66 @@
+{
+  "name": "string",
+  "active": true,
+  "keysInactive": false,
+  "maxQuota": 0,
+  "quotaRate": 0,
+  "rate": 0,
+  "per": 0,
+  "throttleInterval": 0,
+  "throttleRetries": 0,
+  "state": "active",
+  "keyExpiresIn": 0,
+  "tags": [
+    "Startup Users"
+  ],
+  "apIs": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "versions": [
+        "Default"
+      ],
+      "allowedUrls": [
+
+      ],
+      "limit": {
+        "rate": 3,
+        "per": 10,
+        "throttle_interval": 3,
+        "throttle_retry_limit": 4,
+        "max_query_depth": -1,
+        "quota_max": -1,
+        "quota_renews": 0,
+        "quota_remaining": 0,
+        "quota_renewal_rate": -1,
+        "set_by_policy": false
+      }
+    }
+  ]
+}
+
+
+
+
+
+
+/*
+  "id": "f19759bd-63bf-4fe5-b5f8-fa0a19671eb1",
+      "name": "Test2",
+      "versions": [
+        "Default"
+      ],
+      "allowedUrls": [],
+      "limit": {
+        "rate": 5,
+        "per": 10,
+        "throttle_interval": 0,
+        "throttle_retry_limit": 0,
+        "max_query_depth": -1,
+        "quota_max": -1,
+        "quota_renews": 0,
+        "quota_remaining": 0,
+        "quota_renewal_rate": -1,
+        "set_by_policy": false
+      }
+*/

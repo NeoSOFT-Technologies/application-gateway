@@ -1,0 +1,22 @@
+{
+  "name": "Test2",
+  "listenPath": "/test2/",
+  "targetUrl": "http://host.docker.internal:5000",
+  "id": "f19759bd-63bf-4fe5-b5f8-fa0a19671eb1",
+  "defaultVersion": "V1",
+  "versions": [
+    {
+      "name": "V1",
+      "overrideTarget": "http://host.docker.internal:5000" // /WeatherForecast
+    },
+    {
+      "name": "V2",
+      "overrideTarget": "http://host.docker.internal:5000" // /get   http://httpbin.org
+    }
+  ],
+  "authType": "standard",
+  "versioningInfo": {
+    "location": "header",
+    "key": "x-tyk-version"
+  }
+}

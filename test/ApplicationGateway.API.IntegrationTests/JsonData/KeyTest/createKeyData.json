@@ -1,0 +1,17 @@
+{
+  "rate": -1,
+  "perSec": -1,
+  "quota": 5,
+  "quotaRenewalRate": 3600,
+  "accessRights": [
+    {
+      "apiId": "",
+      "apiName": "",
+      "versions": [ "Default" ]
+    }
+    ],
+    "policyId":[],
+    "expires": 0
+}
+
+   

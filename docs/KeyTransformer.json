@@ -1,0 +1,13 @@
+{
+  "allowance": "#valueof(rate)",
+  "rate": "#valueof(rate)",
+  "per": "#valueof(per)",
+  "expires": "#valueof(expires)",
+  "throttle_interval": "#valueof(throttleInterval)",
+  "throttle_retry_limit": "#valueof(throttleRetries)",
+  "quota_max": "#valueof(maxQuota)",
+  "quota_renewal_rate": "#valueof(quotaRate)",
+  "apply_policies": "#valueof(policies)",
+  "is_inactive": false,
+  "access_rights": {}
+}

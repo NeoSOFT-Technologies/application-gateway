@@ -1,0 +1,10 @@
+{
+  "rate": "#valueof(Rate)",
+  "per": "#valueof(Per)",
+  "expires": "#valueof(Expires)",
+  "quota_max": "#valueof(Quota)",
+  "quota_remaining": "#valueof(Quota)",
+  "quota_renewal_rate": "#valueof(QuotaRenewalRate)",
+  "access_rights": {},
+  "apply_policies": null
+}
