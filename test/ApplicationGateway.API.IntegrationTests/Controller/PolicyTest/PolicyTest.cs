@@ -94,20 +94,20 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //create key for policy
             var myKeyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicyKey.json");
-            CreateKeyRequest keyrequestmodel = JsonConvert.DeserializeObject<CreateKeyRequest>(myKeyJsonString);
+            //CreateKeyRequest keyrequestmodel = JsonConvert.DeserializeObject<CreateKeyRequest>(myKeyJsonString);
 
-            //set policyId
-            keyrequestmodel.policyId = new List<string>() { policyId.ToString() };
+            ////set policyId
+            //keyrequestmodel.policyId = new List<string>() { policyId.ToString() };
 
             //create key
-            var keyRequestJson = JsonConvert.SerializeObject(keyrequestmodel);
-            HttpContent keycontent = new StringContent(keyRequestJson, Encoding.UTF8, "application/json");
-            var responsekey = await client.PostAsync("/api/Key/CreateKey", keycontent);
-            responsekey.EnsureSuccessStatusCode();
-            var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
-            JObject key = JObject.Parse(jsonStringkey);
+            //var keyRequestJson = JsonConvert.SerializeObject(keyrequestmodel);
+            //HttpContent keycontent = new StringContent(keyRequestJson, Encoding.UTF8, "application/json");
+            //var responsekey = await client.PostAsync("/api/Key/CreateKey", keycontent);
+            //responsekey.EnsureSuccessStatusCode();
+            //var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
+            //JObject key = JObject.Parse(jsonStringkey);
 
-            var keyid = key["key"];
+            var keyid = "";//key["key"];
 
             //downstream api
             var clientkey = HttpClientFactory.Create();

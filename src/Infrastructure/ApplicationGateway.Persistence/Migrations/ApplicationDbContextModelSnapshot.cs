@@ -66,6 +66,66 @@ namespace ApplicationGateway.Persistence.Migrations
                             TransformerTemplate = "{\n  \"name\": \"#valueof(Name)\",\n  \"use_keyless\": true,\n  \"active\": true,\n  \"proxy\": {\n    \"listen_path\": \"#valueof(ListenPath)\",\n    \"target_url\": \"#valueof(TargetUrl)\",\n    \"strip_listen_path\": true\n  },\n  \"version_data\": {\n    \"not_versioned\": true,\n    \"default_version\": \"Default\",\n    \"versions\": {\n      \"Default\": {\n        \"name\": \"Default\",\n        \"use_extended_paths\": true\n      }\n    }\n  }\n}"
                         });
                 });
+
+            modelBuilder.Entity("ApplicationGateway.Domain.Entities.Snapshot", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int")
+                    .HasAnnotation("Npgsql:IdentitySequenceOptions", "'', '1', '', '', 'False', '1'");
+
+                NpgsqlModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+                b.Property<string>("Comment")
+                    .HasMaxLength(450)
+                    .IsUnicode(false)
+                    .HasColumnType("text");
+
+                b.Property<string>("CreatedBy")
+                    .HasMaxLength(450)
+                    .IsUnicode(false)
+                    .HasColumnType("text");
+
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<string>("Gateway")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnType("text");
+
+                b.Property<bool?>("IsActive")
+                    .IsRequired()
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bool")
+                    .HasDefaultValue(true);
+
+                b.Property<string>("JsonData")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("LastModifiedBy")
+                    .HasMaxLength(450)
+                    .IsUnicode(false)
+                    .HasColumnType("text");
+
+                b.Property<DateTime?>("LastModifiedDate")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<Guid>("ObjectKey")
+                    .HasColumnType("uuid");
+
+                b.Property<string>("ObjectName")
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
+                    .HasColumnType("text");
+
+                b.HasKey("Id");
+
+                b.ToTable("Snapshot");
+            });
 #pragma warning restore 612, 618
         }
     }
