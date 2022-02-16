@@ -1,0 +1,10 @@
+﻿{
+  "KeyId":"#valueof(key)",
+  "Rate": "#valueof(rate)",
+  "Per": "#valueof(per)",
+  "Expires": "#valueof(expires)",
+  "Quota": "#valueof(quota_max)",
+  "QuotaRenewalRate": "#valueof(quota_renewal_rate)",
+  "AccessRights": {},
+  "Policies": null
+}

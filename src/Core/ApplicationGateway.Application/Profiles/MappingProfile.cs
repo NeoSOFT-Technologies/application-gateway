@@ -4,6 +4,8 @@ using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
+using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand.CreateKeyCommand;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -30,6 +32,11 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Partition, CreatePartition>().ReverseMap();
             CreateMap<AllowedUrl, CreateAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, CreatePerApiLimit>().ReverseMap();
+
+            CreateMap<Key,CreateKeyCommand>().ReverseMap();
+            CreateMap<Key.AllowedUrl, KeyAllowedUrl>().ReverseMap();
+            CreateMap<Key.AccessRightsModel, KeyAccessRightsModel>().ReverseMap();
+            
         }
     }
 }
