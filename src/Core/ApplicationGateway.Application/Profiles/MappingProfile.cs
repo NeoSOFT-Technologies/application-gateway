@@ -6,7 +6,6 @@ using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCom
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery;
-using ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -47,12 +46,6 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Partition, CreatePartition>().ReverseMap();
             CreateMap<AllowedUrl, CreateAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, CreatePerApiLimit>().ReverseMap();
-            CreateMap<Policy, UpdatePolicyCommand>().ReverseMap();
-            CreateMap<Policy, UpdatePolicyDto>().ReverseMap();
-            CreateMap<PolicyApi, UpdatePolicyApi>().ReverseMap();
-            CreateMap<Partition, UpdatePartition>().ReverseMap();
-            CreateMap<AllowedUrl, UpdateAllowedUrl>().ReverseMap();
-            CreateMap<PerApiLimit, UpdatePerApiLimit>().ReverseMap();
         }
     }
 }
