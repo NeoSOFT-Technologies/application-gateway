@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ApplicationGateway.Application.Exceptions;
+using Newtonsoft.Json.Linq;
 
 namespace ApplicationGateway.Application.Helper
 {
@@ -27,8 +28,12 @@ namespace ApplicationGateway.Application.Helper
 		}
 		public async Task<string> GetAsync(TIdentifier? identifier)
 		{
-			string address = identifier is not null ? $"{_addressSuffix}/{identifier.ToString()}" : _addressSuffix;
+			string address = identifier is not null ? $"{_addressSuffix}/{identifier}" : _addressSuffix;
 			HttpResponseMessage responseMessage = await httpClient.GetAsync(address);
+			if(responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+				throw new NotFoundException("Entity", identifier);
+            }
 			return await responseMessage.Content.ReadAsStringAsync();
 		}
 
@@ -52,7 +57,7 @@ namespace ApplicationGateway.Application.Helper
 
 		public async Task<string> DeleteAsync(TIdentifier identifier)
 		{
-			string address = $"{_addressSuffix}/{identifier.ToString()}";
+			string address = $"{_addressSuffix}/{identifier}";
 			HttpResponseMessage responseMessage = await httpClient.DeleteAsync(address);
 			return await responseMessage.Content.ReadAsStringAsync();
 		}

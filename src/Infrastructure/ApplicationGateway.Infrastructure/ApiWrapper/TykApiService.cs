@@ -60,6 +60,30 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
             return apiList;
         }
 
+        public async Task<Api> GetApiByIdAsync(Guid apiId)
+        {
+            _logger.LogInformation("GetApiByIdAsync Initiated");
+            string inputJson = await _restClient.GetAsync(apiId.ToString());
+            JObject inputObject = JObject.Parse(inputJson);
+
+            #region Transorm Api
+            string transformed = await _fileOperator.Transform(inputObject.ToString(), "GetApiTransformer");
+            JObject transformedObject = JObject.Parse(transformed);
+
+            transformedObject = GetApiVersioning(transformedObject, inputObject);
+            transformedObject = GetAuthType(transformedObject, inputObject);
+
+            if (inputObject["openid_options"]["providers"] as JArray is not null)
+            {
+                transformedObject = GetOIDC(transformedObject, inputObject);
+            }
+            #endregion
+
+            Api api = JsonConvert.DeserializeObject<Api>(transformedObject.ToString());
+            _logger.LogInformation("GetApiByIdAsync Completed");
+            return api;
+        }
+
         public async Task<Api> CreateApiAsync(Api api)
         {
             _logger.LogInformation("CreateApiAsync Initiated with {@Api}", api);
