@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.PolicyWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
@@ -11,6 +12,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
 {
     public class CreatePolicyCommandHandler : IRequestHandler<CreatePolicyCommand, Response<CreatePolicyDto>>
     {
+        private readonly ISnapshotService _snapshotService;
         private readonly IPolicyService _policyService;
         private readonly IMapper _mapper;
         private readonly ILogger<CreatePolicyCommandHandler> _logger;
@@ -18,8 +20,9 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public CreatePolicyCommandHandler(IPolicyService policyService, IMapper mapper, ILogger<CreatePolicyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
+        public CreatePolicyCommandHandler(ISnapshotService snapshotService, IPolicyService policyService, IMapper mapper, ILogger<CreatePolicyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
         {
+            _snapshotService = snapshotService;
             _policyService = policyService;
             _mapper = mapper;
             _logger = logger;
@@ -40,6 +43,14 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
             await _restClient.GetAsync(null);
 
             CreatePolicyDto createPolicyDto = _mapper.Map<CreatePolicyDto>(newPolicy);
+
+            await _snapshotService.CreateSnapshot(
+                Enums.Gateway.Tyk,
+                Enums.Type.Policy,
+                Enums.Operation.Created,
+                createPolicyDto.PolicyId,
+                newPolicy);
+
             Response<CreatePolicyDto> response = new Response<CreatePolicyDto>(createPolicyDto, "success");
             _logger.LogInformation("Handler Completed");
             return response;

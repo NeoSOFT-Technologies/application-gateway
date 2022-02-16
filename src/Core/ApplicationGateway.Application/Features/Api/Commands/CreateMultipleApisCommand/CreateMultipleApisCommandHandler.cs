@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
@@ -13,6 +14,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
 {
     public class CreateMultipleApisCommandHandler : IRequestHandler<CreateMultipleApisCommand, Response<CreateMultipleApisDto>>
     {
+        private readonly ISnapshotService _snapshotService;
         private readonly IApiService _apiService;
         private readonly IMapper _mapper;
         private readonly ILogger<CreateMultipleApisCommandHandler> _logger;
@@ -20,8 +22,9 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public CreateMultipleApisCommandHandler(IApiService apiService, IMapper mapper, ILogger<CreateMultipleApisCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
+        public CreateMultipleApisCommandHandler(ISnapshotService snapshotService, IApiService apiService, IMapper mapper, ILogger<CreateMultipleApisCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
         {
+            _snapshotService = snapshotService;
             _apiService = apiService;
             _mapper = mapper;
             _logger = logger;
@@ -71,6 +74,13 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
 
                 MultipleApiModelDto multipleApiModelDto = _mapper.Map<MultipleApiModelDto>(newApi);
                 createMultipleApisDto.APIs.Add(multipleApiModelDto);
+
+                await _snapshotService.CreateSnapshot(
+                Enums.Gateway.Tyk,
+                Enums.Type.API,
+                Enums.Operation.Created,
+                newApi.ApiId,
+                newApi);
             }
             #endregion
 
