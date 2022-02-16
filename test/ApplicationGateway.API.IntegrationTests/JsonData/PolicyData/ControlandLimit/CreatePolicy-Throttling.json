@@ -1,0 +1,28 @@
+{
+  "name": "string",
+  "active": true,
+  "keysInactive": false,
+  "maxQuota": 0,
+  "quotaRate": 0,
+  "rate": 3,
+  "per": 5,
+  "throttleInterval": 4,//retry after each 5 sec 
+  "throttleRetries": 5,// for 5 times
+  "state": "active",
+  "keyExpiresIn": 0,
+  "tags": [
+    "Startup Users"
+  ],
+  "apIs": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "versions": [
+        "Default"
+      ],
+      "allowedUrls": [
+
+      ]
+    }
+  ]
+}

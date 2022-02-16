@@ -1,5 +1,8 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
 using ApplicationGateway.API.IntegrationTests.Helper;
+using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
+using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -43,11 +46,11 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-            var id = result.key;
+            var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
+            var id = result.Data.ApiId;
             await HotReload();
             Thread.Sleep(2000);
 
@@ -62,11 +65,11 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var ipvalue = values[0];
             //read update json file
             var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/AccessRestrictionTest/updateApiData.json");
-            UpdateRequest updaterequestModel1 = JsonConvert.DeserializeObject<UpdateRequest>(myupdateJsonString);
-            updaterequestModel1.name = newid.ToString();
-            updaterequestModel1.listenPath = $"/{newid.ToString()}/";
-            updaterequestModel1.id = new Guid(id);
-            updaterequestModel1.blacklist = new List<string>
+            UpdateApiCommand updaterequestModel1 = JsonConvert.DeserializeObject<UpdateApiCommand>(myupdateJsonString);
+            updaterequestModel1.Name = newid.ToString();
+            updaterequestModel1.ListenPath = $"/{newid.ToString()}/";
+            updaterequestModel1.ApiId = new Guid(id.ToString());
+            updaterequestModel1.Blacklist = new List<string>
             {
                 ipvalue
             };
@@ -74,7 +77,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //updateappi
             var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
-            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway/UpdateApi/updateapi", updatecontent);
+            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
             await HotReload();
             Thread.Sleep(2000);
@@ -118,14 +121,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         private async Task HotReload()
         {
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
+            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<HttpResponseMessage> DeleteApi(string id)
+        private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
+            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;
         }
