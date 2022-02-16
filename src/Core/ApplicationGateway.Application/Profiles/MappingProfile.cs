@@ -4,6 +4,11 @@ using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+using ApplicationGateway.Application.Models.Tyk;
+using ApplicationGateway.Application.Features.Transformer.Commands.CreateTransformerCommand;
+using ApplicationGateway.Application.Features.Transformer.Commands.UpdateTransformerCommand;
+using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformer;
+using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerById;
 using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery;
 
@@ -46,6 +51,22 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Partition, CreatePartition>().ReverseMap();
             CreateMap<AllowedUrl, CreateAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, CreatePerApiLimit>().ReverseMap();
+
+            
+            CreateMap<Transformers, CreateTransformerCommand>().ReverseMap();
+            CreateMap<Transformers, CreateTransformerDto>().ReverseMap();
+
+            CreateMap<Transformers, UpdateTransformerCommand>().ReverseMap();
+            CreateMap<Transformers, UpdateTransformerDto>().ReverseMap();
+
+            CreateMap<Transformers, GetTransformerDto>().ReverseMap();
+            CreateMap<Transformers, GetTransformerByIdDto>().ReverseMap();
+
+            CreateMap<Key,CreateKeyCommand>().ReverseMap();
+            CreateMap<Key.AllowedUrl, KeyAllowedUrl>().ReverseMap();
+            CreateMap<Key.AccessRightsModel, KeyAccessRightsModel>().ReverseMap();
+            
         }
+
     }
 }

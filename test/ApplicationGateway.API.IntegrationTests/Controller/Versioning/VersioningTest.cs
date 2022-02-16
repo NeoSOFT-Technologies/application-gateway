@@ -68,7 +68,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             foreach (VersionModel obj in data.versions)
             {
                 var clientV = HttpClientFactory.Create();
-                clientV.DefaultRequestHeaders.Add(data.versioningInfo.key, obj.name);
+                clientV.DefaultRequestHeaders.Add(data.versioningInfo.Key, obj.Name);
                 var responseV = await clientV.GetAsync(Url);
                 responseV.EnsureSuccessStatusCode();
             }
@@ -128,7 +128,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             foreach (VersionModel obj in data.versions)
             {
-                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + $"/WeatherForecast?{data.versioningInfo.key}={obj.name}";
+                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + $"/WeatherForecast?{data.versioningInfo.Key}={obj.Name}";
                 var responseV = await DownStream(Url);
                 responseV.EnsureSuccessStatusCode();
             }
@@ -185,7 +185,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //downstream
             foreach (VersionModel version in data.versions)
             {
-                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/" + version.name + "/WeatherForecast";
+                Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/" + version.Name + "/WeatherForecast";
                 var responseV = await DownStream(Url);
                 responseV.EnsureSuccessStatusCode();
                 Thread.Sleep(2000);
