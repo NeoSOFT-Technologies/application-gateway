@@ -1,0 +1,28 @@
+{
+  "apiId": "#valueof(api_id)",
+  "name": "#valueof(name)",
+  "listenPath": "#valueof(proxy.listen_path)",
+  "targetUrl": "#valueof(proxy.target_url)",
+  "rateLimit": {
+    "rate": "#valueof(global_rate_limit.rate)",
+    "per": "#valueof(global_rate_limit.per)"
+  },
+  "blacklist": "#valueof(blacklisted_ips)",
+  "whitelist": "#valueof(allowed_ips)",
+  "versioningInfo": {
+    "location": "#valueof(definition.location)",
+    "key": "#valueof(definition.key)"
+  },
+  "defaultVersion": "#valueof(version_data.default_version)",
+  "versions": [
+    {
+      "name": "string",
+      "overrideTarget": "string"
+    }
+  ],
+  "authType": "string",
+  "openidOptions": {
+    "providers": null
+  },
+  "loadBalancingTargets": "#valueof(target_list)"
+}

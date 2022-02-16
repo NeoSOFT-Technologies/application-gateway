@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Api\Queries\" />
     <Folder Include="Features\Policy\Queries\" />
   </ItemGroup>
 

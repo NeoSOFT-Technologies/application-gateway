@@ -4,6 +4,8 @@ using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
+using ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery;
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand.CreateKeyCommand;
 
@@ -25,6 +27,20 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<OpenIdOptions, UpdateOpenIdOptions>().ReverseMap();
             CreateMap<Provider, UpdateProvider>().ReverseMap();
             CreateMap<ClientPolicy, UpdateClientPolicy>().ReverseMap();
+            CreateMap<Api, GetAllApiModel>().ReverseMap();
+            CreateMap<RateLimit, GetAllRateLimit>().ReverseMap();
+            CreateMap<VersioningInfo, GetAllVersioningInfo>().ReverseMap();
+            CreateMap<VersionModel, GetAllVersionModel>().ReverseMap();
+            CreateMap<OpenIdOptions, GetAllOpenIdOptions>().ReverseMap();
+            CreateMap<Provider, GetAllProvider>().ReverseMap();
+            CreateMap<ClientPolicy, GetAllClientPolicy>().ReverseMap();
+            CreateMap<Api, GetApiByIdDto>().ReverseMap();
+            CreateMap<RateLimit, GetRateLimit>().ReverseMap();
+            CreateMap<VersioningInfo, GetVersioningInfo>().ReverseMap();
+            CreateMap<VersionModel, GetVersionModel>().ReverseMap();
+            CreateMap<OpenIdOptions, GetOpenIdOptions>().ReverseMap();
+            CreateMap<Provider, GetProvider>().ReverseMap();
+            CreateMap<ClientPolicy, GetClientPolicy>().ReverseMap();
 
             CreateMap<Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Policy, CreatePolicyDto>().ReverseMap();
