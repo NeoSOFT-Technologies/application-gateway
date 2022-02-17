@@ -21,7 +21,7 @@ namespace ApplicationGateway.Persistence.Migrations
                     ObjectName = table.Column<string>(type: "character varying(40)", unicode: false, maxLength: 40, nullable: false),
                     ObjectKey = table.Column<Guid>(type: "uuid", nullable: false),
                     JsonData = table.Column<string>(type: "text", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValueSql: "((1))"),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     Comment = table.Column<string>(type: "character varying(450)", unicode: false, maxLength: 450, nullable: true),
                     CreatedBy = table.Column<string>(type: "character varying(450)", unicode: false, maxLength: 450, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
