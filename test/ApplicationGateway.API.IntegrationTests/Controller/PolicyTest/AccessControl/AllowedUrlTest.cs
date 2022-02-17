@@ -32,7 +32,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
 
 
-       
+
 
         [Fact]
         public async Task Add_policy_with_Api_AllowedUrls()
@@ -56,24 +56,20 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            await HotReload();
             Thread.Sleep(2000);
 
             //Update standard authentication
             //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/AddAuthentication.json");
+            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/AccessControls/AddAuthentication.json");
             UpdateApiCommand data = JsonConvert.DeserializeObject<UpdateApiCommand>(myJsonString1);
             data.Name = newid.ToString();
             data.ListenPath = $"/{newid.ToString()}/";
             data.ApiId = id;
 
-            // data.authType = "standard";
-            // Update_Api
             var RequestJson1 = JsonConvert.SerializeObject(data);
             HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
             var response1 = await client.PutAsync("/api/v1/ApplicationGateway", content1);
             response1.EnsureSuccessStatusCode();
-            await HotReload();
 
             //create policy
             var mypolicyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/AccessControls/CreatePolicy-AllowedUrls.json");
@@ -94,7 +90,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var Policyresult = JsonConvert.DeserializeObject<Response<CreatePolicyDto>>(PolicyjsonString.Result);
 
             var policyId = Policyresult.Data.PolicyId;
-            await HotReload();
             Thread.Sleep(2000);
 
             //create key for policy
@@ -110,13 +105,16 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var responsekey = await client.PostAsync("/api/v1/Key/CreateKey", keycontent);
             responsekey.EnsureSuccessStatusCode();
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
-            JObject key = JObject.Parse(jsonStringkey);
+            var keyresult = JsonConvert.DeserializeObject<Response<Key>>(jsonStringkey);
+            var keyId = keyresult.Data.KeyId;
+            Thread.Sleep(2000);
 
-            var keyid = key["key"];
+            JObject key = JObject.Parse(jsonStringkey);
+            // var key_Id = (key["data"]["keyId"]).ToString();
 
             //downstream api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+            clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
 
             Thread.Sleep(5000);
             var responseclientkey = await clientkey.GetAsync(Url);
@@ -126,23 +124,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //delete Api,policy,key
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
             var deletePolicyResponse = await DeletePolicy(policyId);
             deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
-            var deletekeyResponse = await DeleteKey(keyid.ToString());
-            deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.OK);
-            await HotReload();
+            var deletekeyResponse = await DeleteKey(keyId);
+            deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
+
 
         }
 
-      
-        private async Task HotReload()
-        {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
-            response.EnsureSuccessStatusCode();
-        }
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
@@ -157,7 +146,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         {
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Policy/" + id);
-            await HotReload();
+            //   await HotReload();
             return response;
         }
 
@@ -165,8 +154,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         private async Task<HttpResponseMessage> DeleteKey(string id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("api/Key/DeleteKey?keyId=" + id);
-            await HotReload();
+            var response = await client.DeleteAsync("api/v1/Key/DeleteKey/" + id);
+            // await HotReload();
             return response;
         }
 
