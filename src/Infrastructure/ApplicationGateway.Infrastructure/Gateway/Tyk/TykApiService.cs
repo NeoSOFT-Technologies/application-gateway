@@ -1,25 +1,27 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway.Tyk;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
-using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 
-namespace ApplicationGateway.Infrastructure.ApiWrapper
+namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 {
     public class TykApiService : IApiService
     {
+        private readonly IBaseService _baseService;
         private readonly ILogger<TykApiService> _logger;
         private readonly FileOperator _fileOperator;
         private readonly TykConfiguration _tykConfiguration;
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public TykApiService(ILogger<TykApiService> logger, FileOperator fileOperator, IOptions<TykConfiguration> tykConfiguration)
+        public TykApiService(IBaseService baseService, ILogger<TykApiService> logger, FileOperator fileOperator, IOptions<TykConfiguration> tykConfiguration)
         {
+            _baseService = baseService;
             _logger = logger;
             _fileOperator = fileOperator;
             _tykConfiguration = tykConfiguration.Value;
@@ -98,6 +100,8 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
 
             await _restClient.PostAsync(transformedObject);
 
+            await _baseService.HotReload();
+
             _logger.LogInformation("CreateApiAsync Completed");
             return api;
         }
@@ -149,6 +153,8 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
 
             await _restClient.PutAsync(transformedObject);
 
+            await _baseService.HotReload();
+
             _logger.LogInformation("UpdateApiAsync Completed");
             return api;
         }
@@ -157,6 +163,7 @@ namespace ApplicationGateway.Infrastructure.ApiWrapper
         {
             _logger.LogInformation("UpdateApiAsync Initiated with {@Guid}", apiId);
             await _restClient.DeleteAsync(apiId.ToString());
+            await _baseService.HotReload();
             _logger.LogInformation("UpdateApiAsync Completed");
         }
 

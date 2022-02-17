@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
-using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
@@ -14,6 +14,7 @@ using ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyComman
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
+using ApplicationGateway.Domain.TykData;
 
 namespace ApplicationGateway.Application.Profiles
 {

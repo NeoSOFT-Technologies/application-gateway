@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway.Tyk;
 using ApplicationGateway.Application.Responses;
 using AutoMapper;
 using MediatR;
@@ -22,7 +22,7 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
         public async Task<Response<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            List<Domain.TykData.Api> apiList = await _apiService.GetAllApisAsync();
+            List<Domain.Entities.Api> apiList = await _apiService.GetAllApisAsync();
             GetAllApisDto getAllApisDto = new GetAllApisDto() { Apis = new List<GetAllApiModel>()};
 
             foreach (var api in apiList)

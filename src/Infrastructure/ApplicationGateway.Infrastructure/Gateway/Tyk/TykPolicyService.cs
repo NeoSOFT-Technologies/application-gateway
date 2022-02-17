@@ -1,23 +1,25 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.PolicyWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway.Tyk;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
-using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ApplicationGateway.Infrastructure.PolicyWrapper
+namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 {
     public class TykPolicyService : IPolicyService
     {
+        private readonly IBaseService _baseService;
         private readonly TykConfiguration _tykConfiguration;
         private readonly ILogger<TykPolicyService> _logger;
         private readonly FileOperator _fileOperator;
 
-        public TykPolicyService(ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration)
+        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration)
         {
+            _baseService = baseService;
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
             _fileOperator = new FileOperator();
@@ -48,6 +50,8 @@ namespace ApplicationGateway.Infrastructure.PolicyWrapper
 
             await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
             #endregion
+
+            await _baseService.HotReload();
 
             _logger.LogInformation("CreatePolicyAsync Completed");
             return policy;
@@ -85,7 +89,29 @@ namespace ApplicationGateway.Infrastructure.PolicyWrapper
             await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
             #endregion
 
+            await _baseService.HotReload();
+
+            _logger.LogInformation("UpdatePolicyAsync Completed");
             return policy;
+        }
+
+        public async Task DeletePolicyAsync(Guid policyId)
+        {
+            _logger.LogInformation("DeletePolicyAsync Initiated with {@Guid}", policyId);
+            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            JObject policiesObject = JObject.Parse(policiesJson);
+
+            if (!policiesObject.ContainsKey(policyId.ToString()))
+            {
+                throw new NotFoundException($"Policy with id:", policyId.ToString());
+            }
+
+            policiesObject.Remove(policyId.ToString());
+            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+
+            await _baseService.HotReload();
+            
+            _logger.LogInformation("DeletePolicyAsync Completed");
         }
 
         private static JObject SetPolicyApis(JObject inputObject)

@@ -32,7 +32,7 @@ namespace ApplicationGateway.Application.Helper
 			HttpResponseMessage responseMessage = await httpClient.GetAsync(address);
 			if(responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-				throw new NotFoundException("Entity", identifier);
+				throw new NotFoundException("Entity with Id", identifier);
             }
 			return await responseMessage.Content.ReadAsStringAsync();
 		}
