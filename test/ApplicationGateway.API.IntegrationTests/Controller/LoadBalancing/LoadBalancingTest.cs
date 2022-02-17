@@ -38,9 +38,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/LoadBalancingTest/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid.ToString()}/";
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+            requestModel1.Name = newid.ToString();
+            requestModel1.ListenPath = $"/{newid.ToString()}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);

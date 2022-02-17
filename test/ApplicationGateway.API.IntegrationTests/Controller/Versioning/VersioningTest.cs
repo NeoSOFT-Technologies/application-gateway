@@ -38,9 +38,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid.ToString()}/";
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+            requestModel1.Name = newid.ToString();
+            requestModel1.ListenPath = $"/{newid.ToString()}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -93,10 +93,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url;
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid.ToString()}/";
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/createApiData.json");
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+            requestModel1.Name = newid.ToString();
+            requestModel1.ListenPath = $"/{newid.ToString()}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -108,7 +108,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var id = result.Data.ApiId;
             await HotReload();
             Thread.Sleep(3000);
-            // Thread.Sleep(4000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/QueryParam_Version.json");
@@ -152,10 +151,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = "";
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/Versioning/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid}/";
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/createApiData.json");
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+            requestModel1.Name = newid.ToString();
+            requestModel1.ListenPath = $"/{newid.ToString()}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
