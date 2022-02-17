@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
 {
-    public class GetKeyQuery:IRequest<Response<Domain.TykData.Key>>
+    public class GetKeyQuery:IRequest<Response<Domain.Entities.Key>>
     {
         public string keyId { get; set; }
     }

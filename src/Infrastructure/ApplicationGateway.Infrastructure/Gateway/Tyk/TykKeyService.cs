@@ -1,4 +1,5 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
+using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.Entities;
@@ -12,23 +13,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ApplicationGateway.Domain.TykData.Key;
+using static ApplicationGateway.Domain.Entities.Key;
 
-namespace ApplicationGateway.Infrastructure.KeyWrapper
+namespace ApplicationGateway.Infrastructure.Gateway.Tyk
+
 {
     public class TykKeyService: IKeyService
     {
         private readonly ILogger<TykKeyService> _logger;
         private readonly FileOperator _fileOperator;
         private readonly TykConfiguration _tykConfiguration;
+        private readonly IBaseService _baseService;
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public TykKeyService(ILogger<TykKeyService> logger, FileOperator fileOperator, IOptions<TykConfiguration> tykConfiguration)
+        public TykKeyService(ILogger<TykKeyService> logger, FileOperator fileOperator, IOptions<TykConfiguration> tykConfiguration, IBaseService baseService)
         {
             _logger = logger;
             _fileOperator = fileOperator;
             _tykConfiguration = tykConfiguration.Value;
+            _baseService = baseService;
             _headers = new Dictionary<string, string>()
             {
                 { "x-tyk-authorization", _tykConfiguration.Secret }
@@ -108,13 +112,17 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
    
             JObject jsonObj = JObject.Parse(transformedObj);
             jsonObj["access_rights"] = new JObject();
+            #region Add Policies, id exists
             if (key.Policies.Any())
             {
                 JArray policies = new JArray();
                 key.Policies.ForEach(policy => policies.Add(policy));
                 jsonObj["apply_policies"] = policies;
+                goto skipAccessRights;
             }
+            #endregion
 
+            #region Add AccessRights, if exists
             if (key.AccessRights.Any())
             {
                 foreach (var api in key.AccessRights)
@@ -130,8 +138,11 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
                     (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
                 }
             }
+        #endregion
 
+        skipAccessRights:
             string keyResponse = await _restClient.PostAsync(jsonObj);
+            await _baseService.HotReload();
             JObject responseObj = JObject.Parse(keyResponse);
 
             key.KeyId = responseObj["key"].ToString();
@@ -172,6 +183,7 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
 
 
             string keyResponse = await _restClient.PutKeyAsync(jsonObj,key.KeyId);
+            await _baseService.HotReload();
             _logger.LogInformation($"UpdateKeyAsync completed for {key}");
             return key;
         }
@@ -179,6 +191,7 @@ namespace ApplicationGateway.Infrastructure.KeyWrapper
         {
             _logger.LogInformation($"DeleteKeyAsync initiated for {keyId}");
             await _restClient.DeleteAsync(keyId);
+            await _baseService.HotReload();
             _logger.LogInformation($"DeleteKeyAsync completed for {keyId}");
         }
 

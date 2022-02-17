@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Domain.TykData;
+﻿using ApplicationGateway.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

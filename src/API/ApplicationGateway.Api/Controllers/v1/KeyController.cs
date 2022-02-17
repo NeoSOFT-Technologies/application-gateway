@@ -3,7 +3,7 @@ using ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Queries.GetKey;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Domain.Entities;
 using JUST;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

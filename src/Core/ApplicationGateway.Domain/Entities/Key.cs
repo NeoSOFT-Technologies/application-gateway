@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Domain.TykData
+namespace ApplicationGateway.Domain.Entities
 {
     public class Key
     {
@@ -28,6 +28,7 @@ namespace ApplicationGateway.Domain.TykData
         public string ApiName { get; set; }
         public List<string> Versions { get; set; }
         public AllowedUrl AllowedUrls { get; set; }
+
 
     }
     //public class AllowedUrl
