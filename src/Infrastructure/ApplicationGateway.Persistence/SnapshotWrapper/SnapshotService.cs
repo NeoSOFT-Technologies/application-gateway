@@ -18,7 +18,7 @@ namespace ApplicationGateway.Persistence.SnapshotWrapper
         }
 
 
-        public Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type snapshotType, Enums.Operation operation, Guid key, dynamic? dynamic)
+        public Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type snapshotType, Enums.Operation operation, string key, dynamic? dynamic)
         {
             Snapshot snapshot = new Snapshot()
             {

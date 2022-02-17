@@ -9,7 +9,7 @@ namespace ApplicationGateway.Domain.Entities
         public int Id { get; set; }
         public string Gateway { get; set; } = null!;
         public string ObjectName { get; set; } = null!;
-        public Guid ObjectKey { get; set; }
+        public string ObjectKey { get; set; } = null!;
         public string JsonData { get; set; } = null!;
         public bool? IsActive { get; set; }
         public string? Comment { get; set; }

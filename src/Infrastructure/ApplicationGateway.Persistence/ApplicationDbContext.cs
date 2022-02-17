@@ -66,7 +66,7 @@ namespace ApplicationGateway.Persistence
 
                 entity.Property(e => e.IsActive)
                     .IsRequired()
-                    .HasDefaultValueSql("((1))");
+                    .HasDefaultValue(true);
 
                 entity.Property(e => e.LastModifiedBy)
                     .HasMaxLength(450)

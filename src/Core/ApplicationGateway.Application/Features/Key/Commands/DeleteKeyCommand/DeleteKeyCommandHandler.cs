@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
@@ -15,6 +16,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
 {
     public class DeleteKeyCommandHandler:IRequestHandler<DeleteKeyCommand>
     {
+        readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
         readonly ILogger<DeleteKeyCommandHandler> _logger;
 

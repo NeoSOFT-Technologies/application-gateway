@@ -35,7 +35,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
                 Enums.Gateway.Tyk,
                 Enums.Type.Policy,
                 Enums.Operation.Created,
-                createPolicyDto.PolicyId,
+                newPolicy.PolicyId.ToString(),
                 newPolicy);
 
             Response<CreatePolicyDto> response = new Response<CreatePolicyDto>(createPolicyDto, "success");

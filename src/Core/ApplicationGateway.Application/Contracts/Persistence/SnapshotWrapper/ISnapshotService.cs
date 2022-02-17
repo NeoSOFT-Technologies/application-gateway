@@ -6,6 +6,6 @@ namespace ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrappe
 {
     public interface ISnapshotService
     {
-        Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type type, Enums.Operation operation, Guid key, dynamic? dynamic);
+        Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type type, Enums.Operation operation, string key, dynamic? dynamic);
     }
 }

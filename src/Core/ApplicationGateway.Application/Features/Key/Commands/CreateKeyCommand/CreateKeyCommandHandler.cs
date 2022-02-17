@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
@@ -16,6 +17,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
     public class CreateKeyCommandHandler:IRequestHandler<CreateKeyCommand,Response<Domain.Entities.Key>>
     {
+        readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
         readonly IMapper _mapper;
         readonly ILogger<CreateKeyCommandHandler> _logger;
