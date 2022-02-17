@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
@@ -14,37 +15,27 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
-    public class CreateKeyCommandHandler:IRequestHandler<CreateKeyCommand,Response<Domain.TykData.Key>>
+    public class CreateKeyCommandHandler:IRequestHandler<CreateKeyCommand,Response<Domain.Entities.Key>>
     {
+        readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
         readonly IMapper _mapper;
         readonly ILogger<CreateKeyCommandHandler> _logger;
-        readonly TykConfiguration _tykConfiguration;
-        readonly RestClient<string> _restClient;
-        readonly Dictionary<string, string> _headers;
 
-        public CreateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
+        public CreateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger)
         {
             _keyService = keyService;
             _mapper = mapper;
             _logger = logger;
-            _tykConfiguration = tykConfiguration.Value;
-            _headers = new Dictionary<string, string>()
-            {
-                { "x-tyk-authorization",_tykConfiguration.Secret }
-            };
-            _restClient = new RestClient<string>(_tykConfiguration.Host, "tyk/reload/group", _headers);
         }
 
-        public async Task<Response<Domain.TykData.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
+        public async Task<Response<Domain.Entities.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"CreateKeyCommandHandler initiated with {request}");
-            var keyObj = _mapper.Map<Domain.TykData.Key>(request);
+            var keyObj = _mapper.Map<Domain.Entities.Key>(request);
             var key = await _keyService.CreateKeyAsync(keyObj);
 
-            await _restClient.GetAsync(null);
-
-            Response<Domain.TykData.Key> response =new Response<Domain.TykData.Key>(key, "success");
+            Response<Domain.Entities.Key> response =new Response<Domain.Entities.Key>(key, "success");
             return response;
         }
     }

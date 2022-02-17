@@ -34,7 +34,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand
                 Enums.Gateway.Tyk,
                 Enums.Type.API,
                 Enums.Operation.Deleted,
-                apiId,
+                request.ApiId.ToString(),
                 null);
 
             _logger.LogInformation("Handler Completed");

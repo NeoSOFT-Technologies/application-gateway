@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SendGrid.Extensions.DependencyInjection;
 using ApplicationGateway.Infrastructure.Gateway.Tyk;
-using ApplicationGateway.Infrastructure.KeyWrapper;
 using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
 
 namespace ApplicationGateway.Infrastructure

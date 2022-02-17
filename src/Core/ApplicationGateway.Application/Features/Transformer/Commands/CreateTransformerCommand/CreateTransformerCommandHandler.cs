@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Domain.TykData;
 using AutoMapper;
 using MediatR;

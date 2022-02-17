@@ -15,6 +15,7 @@ using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
 using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -70,6 +71,9 @@ namespace ApplicationGateway.Application.Profiles
 
             CreateMap<Transformers, GetTransformerDto>().ReverseMap();
             CreateMap<Transformers, GetTransformerByIdDto>().ReverseMap();
+
+            CreateMap<Transformers, GetTransformerByNameDto>().ReverseMap();
+            CreateMap<Transformers, GetTransformerByNameQuery>().ReverseMap();
 
             CreateMap<Key,CreateKeyCommand>().ReverseMap();
             CreateMap<AllowedUrl, KeyAllowedUrl>().ReverseMap();

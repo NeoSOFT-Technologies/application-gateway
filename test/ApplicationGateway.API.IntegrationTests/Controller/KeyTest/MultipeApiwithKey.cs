@@ -13,6 +13,9 @@ using Xunit;
 using Microsoft.Extensions.Logging;
 using ApplicationGateway.API.IntegrationTests.Helper;
 using System.Collections.Generic;
+using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
+using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
@@ -33,57 +36,63 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             IList<string> path = new List<string>();
             string Url = "";
             List<string> apiName = new List<string>();
-            IList<CreateRequest> requestModel1 = new List<CreateRequest>();
+            //IList<CreateMultipleApisCommand> requestModel1 = new List<CreateMultipleApisCommand>();
+            
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createMultipleApiData.json");
-            requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
+            var requestModel1 = JsonConvert.DeserializeObject<CreateMultipleApisCommand>(myJsonString);
 
-            foreach (CreateRequest obj in requestModel1)
+            foreach (MultipleApiModel obj in requestModel1.APIs)
             {
                 newid = Guid.NewGuid();
-                obj.name = newid.ToString();
-                apiName.Add(obj.name);
-                obj.listenPath = $"/{newid}/";
+                obj.Name = newid.ToString();
+                apiName.Add(obj.Name);
+                obj.ListenPath = $"/{newid}/";
                 path.Add(newid.ToString());
             }
 
             //create Apis
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApi/createMultipleApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApis", content);
             response.EnsureSuccessStatusCode();
             Thread.Sleep(3000);
             var jsonString = response.Content.ReadAsStringAsync();
 
-            IList<ResponseModel> responseModel = new List<ResponseModel>();
-            responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
+            var responseModel = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
 
             //read craatekey json file 
             var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             string[] version = new string[] { "Default" };
             JArray jarrayObj = new JArray();
+            JArray jarrayObj1 = new JArray();
             foreach (string versions in version)
             {
                 jarrayObj.Add(versions);
             }
             JArray accessRight = new JArray();
-            for (var i = 0; i < responseModel.Count; i++)
+            JObject AllowedUrls = new JObject(
+                new JProperty("Url", ""),
+                new JProperty("Methods",jarrayObj1)
+                );
+            for (var i = 0; i < responseModel.Data.APIs.Count; i++)
             {
                 accessRight.Add( new JObject(
-                new JProperty("apiId", responseModel[i].key),
-                new JProperty("apiName", apiName[i]),
-                new JProperty("versions", jarrayObj)));
+                new JProperty("ApiId", responseModel.Data.APIs[i].ApiId),
+                new JProperty("ApiName", apiName[i]),
+                new JProperty("Versions", jarrayObj),
+                new JProperty("AllowedUrls", AllowedUrls)));
             }
-            keyrequestmodel["accessRights"] = accessRight;
+            keyrequestmodel["AccessRights"] = accessRight;
             StringContent stringContent = new StringContent(keyrequestmodel.ToString(), System.Text.Encoding.UTF8, "application/json");
             //create key
-            var responsekey = await client.PostAsync("/api/Key/CreateKey", stringContent);
+            var responsekey = await client.PostAsync("/api/v1/Key/CreateKey", stringContent);
             responsekey.EnsureSuccessStatusCode();
 
             //read response key
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["key"];
+            var keyid = key["data"]["keyId"];
             foreach(var item in apiName)
             {
                 var clientkey = HttpClientFactory.Create();
@@ -92,23 +101,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 var responseclientkey = await clientkey.GetAsync(Url);
                 var check = responseclientkey.EnsureSuccessStatusCode();
             }
-            await HotReload();
+           
 
             //delete Api
-            foreach(var item in keyrequestmodel)
+            foreach(var item in accessRight)
             {
-                var deleteResponse = await DeleteApi((item.Key).ToString());
+               var deleteResponse = await DeleteApi(((new Guid((item["ApiId"].ToString())))));
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-                await HotReload();
+               
             } 
         }
 
-        private async Task HotReload()
-        {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
-            response.EnsureSuccessStatusCode();
-        }
+ 
 
         public async Task<HttpResponseMessage> DownStream(string path)
         {
@@ -127,10 +131,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
-        private async Task<HttpResponseMessage> DeleteApi(string id)
+        private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
+            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;
         }

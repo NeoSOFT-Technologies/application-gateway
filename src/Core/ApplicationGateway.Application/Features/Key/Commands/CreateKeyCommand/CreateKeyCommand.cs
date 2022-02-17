@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
-    public class CreateKeyCommand:IRequest<Response<Domain.TykData.Key>>
+    public class CreateKeyCommand:IRequest<Response<Domain.Entities.Key>>
     {
         public int Rate { get; set; }
         public int Per { get; set; }
