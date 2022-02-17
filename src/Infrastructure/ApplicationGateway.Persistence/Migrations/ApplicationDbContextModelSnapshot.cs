@@ -54,7 +54,7 @@ namespace ApplicationGateway.Persistence.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValueSql("((1))");
+                        .HasDefaultValue(true);
 
                     b.Property<string>("JsonData")
                         .IsRequired()
