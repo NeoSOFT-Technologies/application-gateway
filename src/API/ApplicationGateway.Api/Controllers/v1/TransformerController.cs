@@ -4,6 +4,8 @@ using ApplicationGateway.Application.Features.Transformer.Commands.DeleteTransfo
 using ApplicationGateway.Application.Features.Transformer.Commands.UpdateTransformerCommand;
 using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformer;
 using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerById;
+using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName;
+using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.TykData;
@@ -46,7 +48,7 @@ namespace ApplicationGateway.Api.Controllers.v1
             var getTransformer = new GetTransformerByIdQuery() { Id = id };
             _logger.LogInformation("GetTransformer Completed");
             return Ok(await _mediator.Send(getTransformer));
-            
+
         }
 
         [HttpPost("CreateTransformer")]
@@ -84,6 +86,15 @@ namespace ApplicationGateway.Api.Controllers.v1
             return NoContent();
         }
 
+        [Route("[action]/{name}")]
+        [HttpGet]
+        public async Task<ActionResult> GetTransformerByName(string name)
+        {
+            _logger.LogInformation("GetTransformerByName Initiated with {@TempalteName}", name);
+            var getTransformer = new GetTransformerByNameQuery() { TemplateName = name };
+            _logger.LogInformation("GetTransformerByName Completed");
+            return Ok(await _mediator.Send(getTransformer));
 
+        }
     }
 }

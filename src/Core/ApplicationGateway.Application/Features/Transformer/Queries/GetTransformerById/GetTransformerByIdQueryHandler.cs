@@ -27,7 +27,7 @@ namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransfo
         }
         public async Task<Response<GetTransformerByIdDto>> Handle(GetTransformerByIdQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Handler initiated with {@GetTransformerQuery}", request);
+            _logger.LogInformation("Handler initiated with {@GetTransformerByIdQuery}", request);
             var transformer = await _transRepository.GetByIdAsync(request.Id);
 
             if (transformer == null)
