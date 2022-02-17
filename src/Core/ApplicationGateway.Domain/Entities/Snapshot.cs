@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ApplicationGateway.Domain.Common;
+using System;
 using System.Collections.Generic;
 
 namespace ApplicationGateway.Domain.Entities
 {
-    public partial class Snapshot
+    public partial class Snapshot : AuditableEntity
     {
         public int Id { get; set; }
         public string Gateway { get; set; } = null!;
@@ -12,9 +13,5 @@ namespace ApplicationGateway.Domain.Entities
         public string JsonData { get; set; } = null!;
         public bool? IsActive { get; set; }
         public string? Comment { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string? LastModifiedBy { get; set; }
-        public DateTime? LastModifiedDate { get; set; }
     }
 }
