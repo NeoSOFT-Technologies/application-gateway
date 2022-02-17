@@ -26,7 +26,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             public Guid ApiId { get; set; }
             public string ApiName { get; set; }
             public List<string> Versions { get; set; }
-            public KeyAllowedUrl AllowedUrls { get; set; }
+            public List<KeyAllowedUrl> AllowedUrls { get; set; }
 
         }
         public class KeyAllowedUrl

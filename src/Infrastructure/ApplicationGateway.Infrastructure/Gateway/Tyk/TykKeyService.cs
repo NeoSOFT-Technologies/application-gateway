@@ -49,7 +49,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
             JObject keyObj = JObject.Parse(keyResponse);
 
-            #region Add Poliicies, if exists
+            #region Add Policies, if exists
             if (keyObj["apply_policies"].HasValues)
             {
                 List<string> policies = new List<string>();
@@ -71,33 +71,18 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 accessRightsModel.ApiName = apiObj["api_name"].ToString();
 
                 #region Add versions in accessRights
-                List<string> versions = new List<string>();
-                foreach(var version in apiObj["versions"])
-                {
-                    versions.Add(version.ToString());
-                }
-                accessRightsModel.Versions = versions;
+                accessRightsModel.Versions = ParseVersions(JArray.Parse(apiObj["versions"].ToString()));
                 #endregion
 
                 #region Add allowed urls in accessRights, if exists
-                if (apiObj["allowed_urls"].HasValues)
-                {
-                    AllowedUrl urls = new AllowedUrl();
-                    urls.url = apiObj["allowed_urls"]["url"].ToString();
-                    List<string> methods = new List<string>();
-                    foreach(var method in accessRight["allowed_urls"]["url"])
-                    {
-                        methods.Add(method.ToString());
-                    }
-                    urls.methods = methods;
-
-                    accessRightsModel.AllowedUrls = urls;
-                }
+                if (apiObj["allowed_urls"].HasValues)       
+                    accessRightsModel.AllowedUrls = ParseAllowedUrl(JArray.Parse(apiObj["allowed_urls"].ToString()));
+                
                 #endregion
 
                 #region Add Api Limit in accessRights, if exists
-                accessRightsModel.Limit = ParseApiLimit((JObject)apiObj["limit"]);
-
+                if (apiObj["limit"].HasValues) 
+                    accessRightsModel.Limit = ParseApiLimit((JObject)apiObj["limit"]);
                 #endregion
                 accessRights.Add(accessRightsModel);
             }
@@ -134,12 +119,34 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 {
                     string jsonString = JsonConvert.SerializeObject(api);
                     JObject obj = JObject.Parse(jsonString);
+
+                    #region Add version details
                     JArray versions = new JArray();
                     api.Versions.ForEach(v => versions.Add(v));
+                    #endregion
+
                     JObject accObj = new JObject();
                     accObj.Add("api_id", obj["ApiId"]);
                     accObj.Add("api_name", obj["ApiName"]);
                     accObj.Add("versions", versions);
+
+                    #region Added allowedUrls, if exists
+                    if (api.AllowedUrls.Any())
+                    {
+                        JArray allowedUrls = new JArray();
+                        foreach (var urlItem in api.AllowedUrls)
+                        {
+                            JObject urlDetails = new JObject();
+                            JArray methods = new JArray();
+                            urlItem.methods.ForEach(method => methods.Add(method));
+                            urlDetails.Add("url", urlItem.url);
+                            urlDetails.Add("methods", methods);
+                            allowedUrls.Add(urlDetails);
+                        }
+                    accObj.Add("allowed_urls", allowedUrls);
+                    }
+                    #endregion
+
                     (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
                 }
             }
@@ -163,29 +170,57 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
 
             JObject jsonObj = JObject.Parse(transformedObj);
+            #region Add Policies, id exists
             if (key.Policies.Any())
             {
                 JArray policies = new JArray();
                 key.Policies.ForEach(policy => policies.Add(policy));
                 jsonObj["apply_policies"] = policies;
+                goto skipAccessRights;
             }
+            #endregion
+
+            #region Add AccessRights, if exists
             if (key.AccessRights.Any())
             {
-                jsonObj["access_rights"] = new JObject();
                 foreach (var api in key.AccessRights)
                 {
                     string jsonString = JsonConvert.SerializeObject(api);
                     JObject obj = JObject.Parse(jsonString);
+
+                    #region Add version details
                     JArray versions = new JArray();
                     api.Versions.ForEach(v => versions.Add(v));
+                    #endregion
+
                     JObject accObj = new JObject();
                     accObj.Add("api_id", obj["ApiId"]);
                     accObj.Add("api_name", obj["ApiName"]);
                     accObj.Add("versions", versions);
+
+                    #region Added allowedUrls, if exists
+                    if (api.AllowedUrls.Any())
+                    {
+                        JArray allowedUrls = new JArray();
+                        foreach (var urlItem in api.AllowedUrls)
+                        {
+                            JObject urlDetails = new JObject();
+                            JArray methods = new JArray();
+                            urlItem.methods.ForEach(method => methods.Add(method));
+                            urlDetails.Add("url", urlItem.url);
+                            urlDetails.Add("methods", methods);
+                            allowedUrls.Add(urlDetails);
+                        }
+                        accObj.Add("allowed_urls", allowedUrls);
+                    }
+                    #endregion
+
                     (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
                 }
             }
+        #endregion
 
+        skipAccessRights:
 
             string keyResponse = await _restClient.PutKeyAsync(jsonObj,key.KeyId);
             await _baseService.HotReload();
@@ -214,8 +249,36 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 Quota_renews = (int)json["quota_renews"],
                 Quota_renewal_rate = (int)json["quota_renewal_rate"],
             };
-
             return limit;
+        }
+
+        private List<AllowedUrl> ParseAllowedUrl(JArray json)
+        {
+            List<AllowedUrl> allowedUrls = new List<AllowedUrl>();
+            foreach (var urlArray in json)
+            {
+                AllowedUrl urls = new AllowedUrl();
+                urls.url = urlArray["url"].ToString();
+                List<string> methods = new List<string>();
+                foreach (var method in urlArray["methods"])
+                {
+                    methods.Add(method.ToString());
+                }
+                urls.methods = methods;
+                allowedUrls.Add(urls);
+            }
+
+            return allowedUrls;
+        }
+
+        private List<string> ParseVersions(JArray json)
+        {
+            List<string> versions = new List<string>();
+            foreach (var version in json)
+            {
+                versions.Add(version.ToString());
+            }
+            return versions;
         }
     }   
 }

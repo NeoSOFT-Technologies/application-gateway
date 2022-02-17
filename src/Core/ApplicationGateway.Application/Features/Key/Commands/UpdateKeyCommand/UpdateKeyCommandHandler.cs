@@ -41,12 +41,12 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
 
             Domain.Entities.Key key = await _keyService.UpdateKeyAsync(_mapper.Map<Domain.Entities.Key>(request));
 
-            await _snapshotService.CreateSnapshot(
-                Enums.Gateway.Tyk,
-                Enums.Type.Key,
-                Enums.Operation.Updated,
-                request.KeyId.ToString(),
-                key);
+            //await _snapshotService.CreateSnapshot(
+            //    Enums.Gateway.Tyk,
+            //    Enums.Type.Key,
+            //    Enums.Operation.Updated,
+            //    request.KeyId.ToString(),
+            //    key);
 
             UpdateKeyCommandDto updateKeyCommandDto = _mapper.Map<UpdateKeyCommandDto>(key);
             Response<UpdateKeyCommandDto> response = new Response<UpdateKeyCommandDto>() {Succeeded=true,Data=updateKeyCommandDto,Message="success" };

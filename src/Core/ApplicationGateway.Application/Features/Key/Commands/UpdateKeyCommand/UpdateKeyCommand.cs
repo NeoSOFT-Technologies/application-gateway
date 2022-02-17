@@ -28,7 +28,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
             public Guid ApiId { get; set; }
             public string ApiName { get; set; }
             public List<string> Versions { get; set; }
-            public UpdateKeyAllowedUrl AllowedUrls { get; set; }
+            public List<UpdateKeyAllowedUrl> AllowedUrls { get; set; }
         }
 
         public class UpdateKeyAllowedUrl

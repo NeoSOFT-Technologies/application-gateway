@@ -25,7 +25,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
             public Guid ApiId { get; set; }
             public string ApiName { get; set; }
             public List<string> Versions { get; set; }
-            public AllowedUrl AllowedUrls { get; set; }
+            public List<AllowedUrl> AllowedUrls { get; set; }
             public ApiLimit Limit { get; set; }
         }
 

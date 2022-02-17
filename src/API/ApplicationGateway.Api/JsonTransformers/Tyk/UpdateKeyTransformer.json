@@ -5,6 +5,8 @@
   "quota_max": "#valueof(Quota)",
   "quota_remaining": "#valueof(Quota)",
   "quota_renewal_rate": "#valueof(QuotaRenewalRate)",
+  "throttle_interval": "#valueof(ThrottleInterval)",
+  "throttle_retry_limit": "#valueof(ThrottleRetries)",
   "access_rights": {},
   "apply_policies": null
 }
