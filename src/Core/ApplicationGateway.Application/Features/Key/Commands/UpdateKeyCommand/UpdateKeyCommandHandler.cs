@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
@@ -18,6 +19,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
 {
     public class UpdateKeyCommandHandler:IRequestHandler<UpdateKeyCommand,Response<UpdateKeyCommandDto>>
     {
+        readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
         readonly IMapper _mapper;
         readonly ILogger<UpdateKeyCommandHandler> _logger;
@@ -25,7 +27,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
         readonly RestClient<string> _restClient;
         readonly Dictionary<string, string> _headers;
 
-        public UpdateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<UpdateKeyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
+        public UpdateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<UpdateKeyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration, ISnapshotService snapshotService)
         {
             _keyService = keyService;
             _mapper = mapper;
@@ -36,6 +38,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
                 { "x-tyk-authorization",_tykConfiguration.Secret }
             };
             _restClient = new RestClient<string>(_tykConfiguration.Host, "tyk/reload/group", _headers);
+            _snapshotService = snapshotService;
         }
 
         public async Task<Response<UpdateKeyCommandDto>> Handle(UpdateKeyCommand request, CancellationToken cancellationToken)
@@ -50,6 +53,13 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
             Domain.TykData.Key key = await _keyService.UpdateKeyAsync(_mapper.Map<Domain.TykData.Key>(request));
 
             await _restClient.GetAsync(null);
+
+            await _snapshotService.CreateSnapshot(
+                Enums.Gateway.Tyk,
+                Enums.Type.Key,
+                Enums.Operation.Updated,
+                request.KeyId.ToString(),
+                key);
 
             UpdateKeyCommandDto updateKeyCommandDto = _mapper.Map<UpdateKeyCommandDto>(key);
             Response<UpdateKeyCommandDto> response = new Response<UpdateKeyCommandDto>() {Succeeded=true,Data=updateKeyCommandDto,Message="success" };

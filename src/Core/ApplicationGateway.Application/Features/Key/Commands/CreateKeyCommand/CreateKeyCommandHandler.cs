@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
@@ -16,6 +17,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
     public class CreateKeyCommandHandler:IRequestHandler<CreateKeyCommand,Response<Domain.TykData.Key>>
     {
+        readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
         readonly IMapper _mapper;
         readonly ILogger<CreateKeyCommandHandler> _logger;
@@ -23,7 +25,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
         readonly RestClient<string> _restClient;
         readonly Dictionary<string, string> _headers;
 
-        public CreateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration)
+        public CreateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, IOptions<TykConfiguration> tykConfiguration, ISnapshotService snapshotService)
         {
             _keyService = keyService;
             _mapper = mapper;
@@ -34,6 +36,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
                 { "x-tyk-authorization",_tykConfiguration.Secret }
             };
             _restClient = new RestClient<string>(_tykConfiguration.Host, "tyk/reload/group", _headers);
+            _snapshotService = snapshotService;
         }
 
         public async Task<Response<Domain.TykData.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
@@ -43,6 +46,13 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             var key = await _keyService.CreateKeyAsync(keyObj);
 
             await _restClient.GetAsync(null);
+
+            await _snapshotService.CreateSnapshot(
+                Enums.Gateway.Tyk,
+                Enums.Type.Key,
+                Enums.Operation.Created,
+                key.KeyId,
+                key);
 
             Response<Domain.TykData.Key> response =new Response<Domain.TykData.Key>(key, "success");
             return response;

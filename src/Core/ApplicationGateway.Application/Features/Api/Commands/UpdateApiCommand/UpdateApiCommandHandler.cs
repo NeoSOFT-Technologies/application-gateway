@@ -40,7 +40,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
                 Enums.Gateway.Tyk,
                 Enums.Type.API,
                 Enums.Operation.Updated,
-                updateApiDto.ApiId,
+                request.ApiId.ToString(),
                 newApi);
 
             Response<UpdateApiDto> result = new Response<UpdateApiDto>(updateApiDto, "success");

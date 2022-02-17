@@ -61,7 +61,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
                 Enums.Gateway.Tyk,
                 Enums.Type.API,
                 Enums.Operation.Created,
-                newApi.ApiId,
+                newApi.ApiId.ToString(),
                 newApi);
             }
             #endregion
