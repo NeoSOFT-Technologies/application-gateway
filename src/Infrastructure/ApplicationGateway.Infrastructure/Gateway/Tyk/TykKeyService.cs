@@ -94,6 +94,11 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     accessRightsModel.AllowedUrls = urls;
                 }
                 #endregion
+
+                #region Add Api Limit in accessRights, if exists
+                accessRightsModel.Limit = ParseApiLimit((JObject)apiObj["limit"]);
+
+                #endregion
                 accessRights.Add(accessRightsModel);
             }
 
@@ -195,5 +200,22 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation($"DeleteKeyAsync completed for {keyId}");
         }
 
+        private ApiLimit ParseApiLimit(JObject json)
+        {
+            ApiLimit limit = new ApiLimit()
+            {
+                Rate = (int)json["rate"],
+                Per = (int)json["per"],
+                Throttle_interval = (int)json["throttle_interval"],
+                Throttle_retry_limit = (int)json["throttle_retry_limit"],
+                Max_query_depth = (int)json["max_query_depth"],
+                Quota_max = (int)json["quota_max"],
+                Quota_remaining = (int)json["quota_remaining"],
+                Quota_renews = (int)json["quota_renews"],
+                Quota_renewal_rate = (int)json["quota_renewal_rate"],
+            };
+
+            return limit;
+        }
     }   
 }
