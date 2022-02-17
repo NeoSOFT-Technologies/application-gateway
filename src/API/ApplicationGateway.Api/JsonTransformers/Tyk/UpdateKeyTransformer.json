@@ -1,10 +1,10 @@
 {
-  "rate": "#valueof(rate)",
-  "per": "#valueof(perSec)",
-  "expires": "#valueof(expires)",
-  "quota_max": "#valueof(quota)",
-  "quota_remaining": "#valueof(quota)",
-  "quota_renewal_rate": "#valueof(quotaRenewalRate)",
+  "rate": "#valueof(Rate)",
+  "per": "#valueof(Per)",
+  "expires": "#valueof(Expires)",
+  "quota_max": "#valueof(Quota)",
+  "quota_remaining": "#valueof(Quota)",
+  "quota_renewal_rate": "#valueof(QuotaRenewalRate)",
   "access_rights": {},
   "apply_policies": null
 }

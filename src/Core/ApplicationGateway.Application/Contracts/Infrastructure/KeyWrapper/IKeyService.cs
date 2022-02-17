@@ -11,7 +11,7 @@ namespace ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper
     {
         Task<Key> GetKeyAsync(string keyId);
         Task<Key> CreateKeyAsync(Key key);
+        Task<Key> UpdateKeyAsync(Key key);
         Task DeleteKeyAsync(string keyId);
-        //Task<Key> UpdateKeyAsync(Key key);
     }
 }

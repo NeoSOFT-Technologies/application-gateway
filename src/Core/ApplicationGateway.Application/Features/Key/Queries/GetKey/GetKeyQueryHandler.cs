@@ -41,7 +41,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
         {
             _logger.LogInformation($"GetKeyQueryHandler initiated for {request}");
             Domain.TykData.Key key = await _keyService.GetKeyAsync(request.keyId);
-            Response<Domain.TykData.Key> response = new Response<Domain.TykData.Key> { Data = key, Message = "Success" };
+            Response<Domain.TykData.Key> response = new Response<Domain.TykData.Key> {Succeeded=true, Data = key, Message = "Success" };
             return response;
         }
     }
