@@ -1,4 +1,4 @@
-﻿namespace ApplicationGateway.Domain.TykData
+﻿namespace ApplicationGateway.Domain.Entities
 {
     public class Policy
     {

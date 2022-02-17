@@ -1,6 +1,6 @@
-﻿using ApplicationGateway.Domain.TykData;
+﻿using ApplicationGateway.Domain.Entities;
 
-namespace ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper
+namespace ApplicationGateway.Application.Contracts.Infrastructure.Gateway
 {
     public interface IApiService
     {
