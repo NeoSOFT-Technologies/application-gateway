@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.Logging;
 using ApplicationGateway.API.IntegrationTests.Helper;
+using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
+using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
@@ -34,34 +37,34 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid}/";
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+            requestModel1.Name = newid.ToString();
+            requestModel1.ListenPath = $"/{newid}/";
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi/createApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
-            ResponseModel result = JsonConvert.DeserializeObject<ResponseModel>(jsonString.Result);
-
-            var id = result.key;
-            await HotReload();
+            var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
+            var id = result.Data.ApiId;
+           
+            Thread.Sleep(4000);
 
             //read update json file
             var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/updateApiData.json");
-            UpdateRequest updaterequestModel1 = JsonConvert.DeserializeObject<UpdateRequest>(myupdateJsonString);
-            updaterequestModel1.name = newid.ToString();
-            updaterequestModel1.listenPath = $"/{newid}/";
-            updaterequestModel1.id = new Guid(id);
+            UpdateApiCommand updaterequestModel1 = JsonConvert.DeserializeObject<UpdateApiCommand>(myupdateJsonString);
+            updaterequestModel1.Name = newid.ToString();
+            updaterequestModel1.ListenPath = $"/{newid}/";
+            updaterequestModel1.ApiId = id;
 
             //update appi
             var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
-            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway/UpdateApi/updateapi", updatecontent);
+            var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-            await HotReload();
+           
             Thread.Sleep(2000);
 
             // read createkey json file
@@ -70,20 +73,20 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             DateTime foo = DateTime.Now.AddSeconds(30);
             long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
-            foreach (var item in keyrequestmodel["accessRights"])
+            foreach (var item in keyrequestmodel["AccessRights"])
             {
-                item["apiId"] = id.ToString();
-                item["apiName"] = newid.ToString();
+                item["ApiId"] = id.ToString();
+                item["ApiName"] = newid.ToString();
             }
-            keyrequestmodel["expires"] = unixTime;
+            keyrequestmodel["Expires"] = unixTime;
             StringContent stringContent = new StringContent(keyrequestmodel.ToString(), System.Text.Encoding.UTF8, "application/json");
 
             //create key
-            var responsekey = await client.PostAsync("/api/Key/CreateKey", stringContent);
+            var responsekey = await client.PostAsync("/api/v1/Key/CreateKey", stringContent);
             responsekey.EnsureSuccessStatusCode();
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["key"];
+            var keyid = key["data"]["keyId"];
 
             //hit api
             var clientkey = HttpClientFactory.Create();
@@ -99,16 +102,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //delete Api
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
+           
 
 
-        }
-
-        private async Task HotReload()
-        {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
-            response.EnsureSuccessStatusCode();
         }
 
         public async Task<HttpResponseMessage> DownStream(string path)
@@ -128,10 +124,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
-        private async Task<HttpResponseMessage> DeleteApi(string id)
+        private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
+            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;
         }

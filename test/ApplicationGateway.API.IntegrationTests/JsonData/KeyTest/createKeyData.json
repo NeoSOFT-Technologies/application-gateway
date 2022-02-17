@@ -1,17 +1,27 @@
 {
-  "rate": -1,
-  "perSec": -1,
-  "quota": 5,
-  "quotaRenewalRate": 3600,
-  "accessRights": [
+  "Rate": 3,
+  "Per": 60,
+  "Quota": 3,
+  "QuotaRenewalRate": 3600,
+  "ThrottleInterval": 0,
+  "ThrottleRetries": 0,
+  "Expires": 0,
+  "AccessRights": [
     {
-      "apiId": "",
-      "apiName": "",
-      "versions": [ "Default" ]
+      "ApiId": "",
+      "ApiName": "",
+      "Versions": [
+        "Default"
+      ],
+      "AllowedUrls": {
+        "Url": "",
+        "Methods": [
+          
+        ]
+      }
     }
-    ],
-    "policyId":[],
-    "expires": 0
-}
-
+  ],
+  "Policies": [
    
+  ]
+}
