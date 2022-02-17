@@ -36,7 +36,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createApiData.json");
             CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
-           
+
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
@@ -45,7 +45,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            await HotReload();
             Thread.Sleep(3000);
 
             //downstream
@@ -57,7 +56,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //delete Api
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
 
         }
 
@@ -76,13 +74,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 throw;
             }
 
-        }
-
-        private async Task HotReload()
-        {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
-            response.EnsureSuccessStatusCode();
         }
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)

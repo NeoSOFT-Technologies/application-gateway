@@ -51,7 +51,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            await HotReload();
             Thread.Sleep(3000);
 
             //Read Json
@@ -67,7 +66,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-            await HotReload();
             Thread.Sleep(5000);
 
             // downstream
@@ -91,7 +89,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //delete Api
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
 
         }
 
@@ -112,12 +109,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         }
 
-        private async Task HotReload()
-        {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
-            response.EnsureSuccessStatusCode();
-        }
 
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)

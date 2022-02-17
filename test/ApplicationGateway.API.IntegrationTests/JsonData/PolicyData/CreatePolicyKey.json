@@ -1,13 +1,15 @@
 {
-  "rate": -1,
-  "perSec": -1,
-  "quota": -1,
-  "quotaRenewalRate": -1,
-  "accessRights": [
-
+  "Rate": -1,
+  "Per": -1,
+  "Quota": -1,
+  "QuotaRenewalRate": -1,
+  "ThrottleInterval": -1,
+  "ThrottleRetries": -1,
+  "Expires": 0,
+  "AccessRights": [
+    
   ],
-  "policyId": [
-    "908d8c36-afd0-485b-a719-7682fb23a958"
-  ],
-  "expires": 0
+  "Policies": [
+    "828b9e51-a0bd-4df4-85a1-be452b03c1f1"
+  ]
 }

@@ -35,32 +35,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var client = _factory.CreateClient();
             string Url;
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createMultipleApiData.json");
-           /* IList<CreateRequest> requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
-
-            //create Apis
-            var RequestJson = JsonConvert.SerializeObject(requestModel1);
-            HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApi/createMultipleApi", content);
-            response.EnsureSuccessStatusCode();
-            var jsonString = response.Content.ReadAsStringAsync();
-            IList<ResponseModel> responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
-
-            await HotReload();
-            Thread.Sleep(5000);*/
-
 
             CreateMultipleApisCommand requestModel1 = JsonConvert.DeserializeObject<CreateMultipleApisCommand>(myJsonString);
-            
+
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApis", content);
             response.EnsureSuccessStatusCode();
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
             var ApisList = result.Data.APIs;
-            await HotReload();
             Thread.Sleep(3000);
             //downstream
             foreach (var item in requestModel1.APIs)
@@ -76,7 +62,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             {
                 var deleteResponse = await DeleteApi(obj.ApiId);
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-                await HotReload();
             }
         }
 
@@ -100,13 +85,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         }
 
 
-
-        private async Task HotReload()
-        {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
-            response.EnsureSuccessStatusCode();
-        }
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
