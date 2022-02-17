@@ -1,5 +1,7 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
 using ApplicationGateway.API.IntegrationTests.Helper;
+using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
+using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -33,7 +35,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var client = _factory.CreateClient();
             string Url;
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createMultipleApiData.json");
-            IList<CreateRequest> requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
+           /* IList<CreateRequest> requestModel1 = JsonConvert.DeserializeObject<List<CreateRequest>>(myJsonString);
 
             //create Apis
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -44,21 +46,35 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             IList<ResponseModel> responseModel = JsonConvert.DeserializeObject<List<ResponseModel>>(jsonString.Result);
 
             await HotReload();
-            Thread.Sleep(5000);
+            Thread.Sleep(5000);*/
 
+
+            CreateMultipleApisCommand requestModel1 = JsonConvert.DeserializeObject<CreateMultipleApisCommand>(myJsonString);
+            
+
+            //create Api
+            var RequestJson = JsonConvert.SerializeObject(requestModel1);
+            HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateApi", content);
+            response.EnsureSuccessStatusCode();
+            var jsonString = response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
+            var ApisList = result.Data.APIs;
+            await HotReload();
+            Thread.Sleep(3000);
             //downstream
-            foreach (var item in requestModel1)
+            foreach (var item in requestModel1.APIs)
             {
-                var path1 = item.listenPath.Trim(new char[] { '/' });
+                var path1 = item.ListenPath.Trim(new char[] { '/' });
                 Url = ApplicationConstants.TYK_BASE_URL + path1 + "/WeatherForecast";
                 var responseN = await DownStream(Url);
                 responseN.EnsureSuccessStatusCode();
             }
 
             //delete Api
-            foreach (ResponseModel obj in responseModel)
+            foreach (MultipleApiModelDto obj in ApisList)
             {
-                var deleteResponse = await DeleteApi(obj.key);
+                var deleteResponse = await DeleteApi(obj.ApiId);
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
                 await HotReload();
             }
@@ -84,18 +100,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         }
 
 
+
         private async Task HotReload()
         {
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload/HotReload");
+            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<HttpResponseMessage> DeleteApi(string id)
+        private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/DeleteApi/deleteApi?apiId=" + id);
-            // await HotReload();
+            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }
 

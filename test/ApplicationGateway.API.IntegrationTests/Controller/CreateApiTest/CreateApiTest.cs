@@ -35,8 +35,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+           
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
@@ -46,10 +46,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
             await HotReload();
-            Thread.Sleep(4000);
+            Thread.Sleep(3000);
 
             //downstream
-            var listenpath = requestModel1.listenPath.Trim(new char[] { '/' });
+            var listenpath = requestModel1.ListenPath.Trim(new char[] { '/' });
             string Url = ApplicationConstants.TYK_BASE_URL + listenpath + "/WeatherForecast";
             var responseN = await DownStream(Url);
             responseN.EnsureSuccessStatusCode();
