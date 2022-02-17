@@ -20,6 +20,7 @@ namespace ApplicationGateway.Persistence
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("ApplicationConnectionString")));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<ITransformerRepository, TransformerRepository>();
             services.AddScoped<ISnapshotRepository, SnapshotRepository>();
             services.AddScoped<ISnapshotService, SnapshotService>();
             return services;

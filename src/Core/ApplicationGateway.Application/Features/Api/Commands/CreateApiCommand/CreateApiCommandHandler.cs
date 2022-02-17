@@ -35,7 +35,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand
                 Enums.Gateway.Tyk,
                 Enums.Type.API,
                 Enums.Operation.Created,
-                createApiDto.ApiId,
+                newApi.ApiId.ToString(),
                 newApi);
 
             Response<CreateApiDto> response = new Response<CreateApiDto>(createApiDto, "success");

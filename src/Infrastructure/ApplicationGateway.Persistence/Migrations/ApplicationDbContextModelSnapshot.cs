@@ -68,8 +68,8 @@ namespace ApplicationGateway.Persistence.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ObjectKey")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ObjectKey")
+                        .HasColumnType("text");
 
                     b.Property<string>("ObjectName")
                         .IsRequired()
