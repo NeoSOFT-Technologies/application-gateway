@@ -1,6 +1,7 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
+using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Domain.TykData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

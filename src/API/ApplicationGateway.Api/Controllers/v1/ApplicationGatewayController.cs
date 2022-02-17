@@ -90,17 +90,5 @@ namespace ApplicationGateway.Api.Controllers
             _logger.LogInformation("DeleteApi Completed");
             return NoContent();
         }
-
-
-        [HttpGet("HotReload")]
-        public ActionResult HotReload()
-        {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
-            }
-            return Ok();
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.ApiWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway.Tyk;
 using ApplicationGateway.Application.Responses;
 using AutoMapper;
 using MediatR;
@@ -22,7 +22,7 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public async Task<Response<GetApiByIdDto>> Handle(GetApiByIdQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@GetApiByIdQuery}", request);
-            Domain.TykData.Api api = await _apiService.GetApiByIdAsync(request.ApiId);
+            Domain.Entities.Api api = await _apiService.GetApiByIdAsync(request.ApiId);
             GetApiByIdDto getApiByIdDto = _mapper.Map<GetApiByIdDto>(api);
             var response = new Response<GetApiByIdDto>(getApiByIdDto, "success");
             _logger.LogInformation("Handler Completed");

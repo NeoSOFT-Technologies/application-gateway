@@ -1,5 +1,6 @@
 ﻿//using MongoDB.Bson;
 //using MongoDB.Bson.Serialization.Attributes;
+using ApplicationGateway.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

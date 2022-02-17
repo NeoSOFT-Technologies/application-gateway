@@ -9,6 +9,7 @@ using JUST;
 using ApplicationGateway.Application.Models.Tyk;
 using Microsoft.Extensions.Options;
 using ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand;
+using ApplicationGateway.Application.Features.Policy.Commands.DeletePolicyCommand;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -94,30 +95,11 @@ namespace ApplicationGateway.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult DeletePolicy(Guid policyId)
+        public async Task<ActionResult> DeletePolicy(Guid policyId)
         {
-            string folderPath = _tykConfiguration.PoliciesFolderPath;
-            if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
-            {
-                return NotFound("Policies not found");
-            }
-
-            string policiesJson = System.IO.File.ReadAllText(folderPath + @"\policies.json");
-            JObject policiesObject = JObject.Parse(policiesJson);
-            if (!policiesObject.ContainsKey(policyId.ToString()))
-            {
-                return NotFound($"Policy with id: {policyId} was not found");
-            }
-
-            policiesObject.Remove(policyId.ToString());
-
-            System.IO.File.WriteAllText(folderPath + @"\policies.json", policiesObject.ToString());
-
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-                HttpResponseMessage httpResponse = httpClient.GetAsync("http://localhost:8080/tyk/reload/group").Result;
-            }
+            _logger.LogInformation("DeletePolicy Initiated with {@Guid}", policyId);
+            await _mediator.Send(new DeletePolicyCommand() { PolicyId = policyId});
+            _logger.LogInformation("DeletePolicy Completed");
             return NoContent();
         }
     }
