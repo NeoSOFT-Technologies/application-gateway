@@ -18,14 +18,14 @@ namespace ApplicationGateway.Persistence.SnapshotWrapper
         }
 
 
-        public Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type snapshotType, Enums.Operation operation, string key, dynamic? dynamic)
+        public Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type snapshotType, Enums.Operation operation, string key, dynamic? jsonData)
         {
             Snapshot snapshot = new Snapshot()
             {
                 Gateway = gateway.ToString(),
                 ObjectName = snapshotType.ToString(),
                 ObjectKey = key,
-                JsonData = operation!= Enums.Operation.Deleted ? JsonConvert.SerializeObject(dynamic) : ""
+                JsonData = operation!= Enums.Operation.Deleted ? JsonConvert.SerializeObject(jsonData) : ""
             };
             return _snapshotRepository.TakeSnapshot(snapshot, operation);
         }

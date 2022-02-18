@@ -22,11 +22,12 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
         readonly IMapper _mapper;
         readonly ILogger<CreateKeyCommandHandler> _logger;
 
-        public CreateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger)
+        public CreateKeyCommandHandler(IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, ISnapshotService snapshotService)
         {
             _keyService = keyService;
             _mapper = mapper;
             _logger = logger;
+            _snapshotService = snapshotService;
         }
 
         public async Task<Response<Domain.Entities.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
@@ -34,6 +35,13 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             _logger.LogInformation($"CreateKeyCommandHandler initiated with {request}");
             var keyObj = _mapper.Map<Domain.Entities.Key>(request);
             var key = await _keyService.CreateKeyAsync(keyObj);
+
+            await _snapshotService.CreateSnapshot(
+                Enums.Gateway.Tyk,
+                Enums.Type.Key,
+                Enums.Operation.Created,
+                key.KeyId,
+                key);
 
             Response<Domain.Entities.Key> response =new Response<Domain.Entities.Key>(key, "success");
             return response;

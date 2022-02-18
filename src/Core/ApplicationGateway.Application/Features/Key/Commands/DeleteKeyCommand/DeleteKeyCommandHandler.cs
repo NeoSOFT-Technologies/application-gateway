@@ -20,16 +20,25 @@ namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
         readonly IKeyService _keyService;
         readonly ILogger<DeleteKeyCommandHandler> _logger;
 
-        public DeleteKeyCommandHandler(IKeyService keyService,  ILogger<DeleteKeyCommandHandler> logger)
+        public DeleteKeyCommandHandler(IKeyService keyService, ILogger<DeleteKeyCommandHandler> logger, ISnapshotService snapshotService)
         {
             _keyService = keyService;
             _logger = logger;
+            _snapshotService = snapshotService;
         }
 
         public async Task<Unit> Handle(DeleteKeyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"DeleteKeyCommandHandler initated for {request}");
             await _keyService.DeleteKeyAsync(request.KeyId.ToString());
+
+            await _snapshotService.CreateSnapshot(
+                Enums.Gateway.Tyk,
+                Enums.Type.Key,
+                Enums.Operation.Deleted,
+                request.KeyId,
+                null);
+
             _logger.LogInformation($"DeleteKeyCommandHandler completed for {request}");
             return Unit.Value;
         }
