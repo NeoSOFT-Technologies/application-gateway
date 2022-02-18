@@ -17,7 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ApplicationGateway.API.IntegrationTests.Controller
+namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
 {
     public class RatelimitTest : IClassFixture<CustomWebApplicationFactory>
     {

@@ -17,7 +17,7 @@ using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
-namespace ApplicationGateway.API.IntegrationTests.Controller
+namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
 {
     public class VersioningTest : IClassFixture<CustomWebApplicationFactory>
     {
