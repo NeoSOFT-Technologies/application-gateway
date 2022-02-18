@@ -24,8 +24,4 @@
     <ProjectReference Include="..\ApplicationGateway.Domain\ApplicationGateway.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Policy\Queries\" />
-  </ItemGroup>
-
 </Project>

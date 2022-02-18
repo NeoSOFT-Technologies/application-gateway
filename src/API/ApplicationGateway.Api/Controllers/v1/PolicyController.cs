@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
 using MediatR;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.TykData;
-using Newtonsoft.Json;
-using JUST;
-using ApplicationGateway.Application.Models.Tyk;
-using Microsoft.Extensions.Options;
 using ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand;
 using ApplicationGateway.Application.Features.Policy.Commands.DeletePolicyCommand;
+using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
+using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
 
 namespace ApplicationGateway.Api.Controllers
 {
@@ -20,52 +16,33 @@ namespace ApplicationGateway.Api.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ILogger<PolicyController> _logger;
-        private readonly TykConfiguration _tykConfiguration;
 
-        public PolicyController(IMediator mediator, ILogger<PolicyController> logger, IOptions<TykConfiguration> tykConfiguration)
+        public PolicyController(IMediator mediator, ILogger<PolicyController> logger)
         {
             _mediator = mediator;
             _logger = logger;
-            _tykConfiguration = tykConfiguration.Value;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> GetAllPolicies()
         {
-            string folderPath = _tykConfiguration.PoliciesFolderPath;
-            if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
-            {
-                return NotFound("Policies not found");
-            }
-
-            string policiesJson = System.IO.File.ReadAllText(folderPath + @"\policies.json");
-            JObject policiesObject = JObject.Parse(policiesJson);
-
-            return Ok(policiesObject.ToString());
+            _logger.LogInformation("GetAllPolicies Initiated");
+            Response<List<GetAllPoliciesDto>> response = await _mediator.Send(new GetAllPoliciesQuery());
+            _logger.LogInformation("GetAllPolicies Completed");
+            return Ok(response);
         }
 
         [HttpGet("{policyId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetPolicyByid(Guid policyId)
         {
-            string folderPath = _tykConfiguration.PoliciesFolderPath;
-            if (!Directory.Exists(folderPath) || !System.IO.File.Exists(folderPath + @"\policies.json"))
-            {
-                return NotFound("Policies not found");
-            }
-
-            string policiesJson = System.IO.File.ReadAllText(folderPath + @"\policies.json");
-            JObject policiesObject = JObject.Parse(policiesJson);
-            if (!policiesObject.ContainsKey(policyId.ToString()))
-            {
-                return NotFound($"Policy with id: {policyId} was not found");
-            }
-
-            string policy = (policiesObject[policyId.ToString()] as JObject).ToString();
-
-            return Ok(policy);
+            _logger.LogInformation("GetPolicyByid Initiated with {@Guid}", policyId);
+            Response<GetPolicyByIdDto> response = await _mediator.Send(new GetPolicyByIdQuery() { PolicyId = policyId });
+            _logger.LogInformation("GetPolicyByid Completed");
+            return Ok(response);
         }
 
         [HttpPost]

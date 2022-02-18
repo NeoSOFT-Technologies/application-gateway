@@ -16,6 +16,8 @@ using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyComma
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
 using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName;
+using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
+using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -62,6 +64,16 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Partition, UpdatePartition>().ReverseMap();
             CreateMap<AllowedUrl, UpdateAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, UpdatePerApiLimit>().ReverseMap();
+            CreateMap<Policy, GetAllPoliciesDto>().ReverseMap();
+            CreateMap<PolicyApi, GetAllPolicyApi>().ReverseMap();
+            CreateMap<Partition, GetAllPartition>().ReverseMap();
+            CreateMap<AllowedUrl, GetAllAllowedUrl>().ReverseMap();
+            CreateMap<PerApiLimit, GetAllPerApiLimit>().ReverseMap();
+            CreateMap<Policy, GetPolicyByIdDto>().ReverseMap();
+            CreateMap<PolicyApi, GetPolicyApi>().ReverseMap();
+            CreateMap<Partition, GetPartition>().ReverseMap();
+            CreateMap<AllowedUrl, GetAllowedUrl>().ReverseMap();
+            CreateMap<PerApiLimit, GetPerApiLimit>().ReverseMap();
 
             CreateMap<Transformers, CreateTransformerCommand>().ReverseMap();
             CreateMap<Transformers, CreateTransformerDto>().ReverseMap();
