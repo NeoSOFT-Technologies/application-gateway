@@ -13,12 +13,7 @@
       "Versions": [
         "Default"
       ],
-      "AllowedUrls": {
-        "Url": "",
-        "Methods": [
-          
-        ]
-      }
+      "AllowedUrls": []
     }
   ],
   "Policies": [
