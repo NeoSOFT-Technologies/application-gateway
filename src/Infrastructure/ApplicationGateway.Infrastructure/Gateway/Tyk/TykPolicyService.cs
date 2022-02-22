@@ -17,18 +17,18 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         private readonly ILogger<TykPolicyService> _logger;
         private readonly FileOperator _fileOperator;
 
-        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration)
+        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator)
         {
             _baseService = baseService;
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
-            _fileOperator = new FileOperator();
+            _fileOperator = fileOperator;
         }
 
         public async Task<List<Policy>> GetAllPoliciesAsync()
         {
             _logger.LogInformation("GetAllPoliciesAsync Initiated");
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
 
             List<Policy> policies = new List<Policy>();
@@ -54,7 +54,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task<Policy> GetPolicyByIdAsync(Guid policyId)
         {
             _logger.LogInformation("GetPolicyByIdAsync Initiated with {@Guid}", policyId);
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
             if (!policiesObject.ContainsKey(policyId.ToString()))
             {
@@ -95,11 +95,11 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Add Policy to policies.json
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
             policiesObject.Add(policy.PolicyId.ToString(), transformedObject);
 
-            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
             #endregion
 
             await _baseService.HotReload();
@@ -125,7 +125,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Update Policy in policies.json
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
 
             string policyId = policy.PolicyId.ToString();
@@ -137,7 +137,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             policiesObject.Remove(policyId);
             policiesObject.Add(policyId, transformedObject);
 
-            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
             #endregion
 
             await _baseService.HotReload();
@@ -149,7 +149,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task DeletePolicyAsync(Guid policyId)
         {
             _logger.LogInformation("DeletePolicyAsync Initiated with {@Guid}", policyId);
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
 
             if (!policiesObject.ContainsKey(policyId.ToString()))
@@ -158,7 +158,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             }
 
             policiesObject.Remove(policyId.ToString());
-            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
 
             await _baseService.HotReload();
 
