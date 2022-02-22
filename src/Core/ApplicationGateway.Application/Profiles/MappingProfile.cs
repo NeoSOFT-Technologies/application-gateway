@@ -78,6 +78,7 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Key,CreateKeyCommand>().ReverseMap();
             CreateMap<AllowedUrl, KeyAllowedUrl>().ReverseMap();
             CreateMap<AccessRightsModel, KeyAccessRightsModel>().ReverseMap();
+            CreateMap<ApiLimit, KeyApiLimit>().ReverseMap();
             CreateMap<Key, UpdateKeyCommand>().ReverseMap();
             CreateMap<AllowedUrl, UpdateKeyAllowedUrl>().ReverseMap();
             CreateMap<AccessRightsModel, UpdateKeyAccessRightsModel>().ReverseMap();
