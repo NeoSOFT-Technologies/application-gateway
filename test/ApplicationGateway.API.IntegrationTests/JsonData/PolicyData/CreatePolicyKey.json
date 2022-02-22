@@ -1,0 +1,15 @@
+{
+  "Rate": -1,
+  "Per": -1,
+  "Quota": -1,
+  "QuotaRenewalRate": -1,
+  "ThrottleInterval": -1,
+  "ThrottleRetries": -1,
+  "Expires": 0,
+  "AccessRights": [
+    
+  ],
+  "Policies": [
+    "828b9e51-a0bd-4df4-85a1-be452b03c1f1"
+  ]
+}

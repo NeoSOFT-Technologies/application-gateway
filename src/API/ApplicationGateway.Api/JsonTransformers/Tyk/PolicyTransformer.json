@@ -1,0 +1,16 @@
+{
+  "access_rights": {},
+  "active": "#valueof(Active)",
+  "is_inactive ": "#valueof(KeysInactive)",
+  "name": "#valueof(Name)",
+  "quota_max": "#valueof(MaxQuota)",
+  "quota_renewal_rate": "#valueof(QuotaRate)",
+  "rate": "#valueof(Rate)",
+  "per": "#valueof(Per)",
+  "throttle_interval": "#valueof(ThrottleInterval)",
+  "throttle_retry_limit": "#valueof(ThrottleRetries)",
+  "state": "#valueof(State)",
+  "tags": "#valueof(Tags)",
+  "key_expires_in": "#valueof(KeyExpiresIn)",
+  "partitions": "#valueof(Partitions)"
+}

@@ -1,0 +1,36 @@
+{
+  "name": "string",
+  "active": true,
+  "keysInactive": false,
+  "maxQuota": 5,
+  "quotaRate": 3600,
+  //"quota_remaining": 8,
+  "rate": -1,
+  "per": -1,
+  "throttleInterval": 0,
+  "throttleRetries": 0,
+  "state": "active",
+  "keyExpiresIn": 0,
+  "tags": [
+    "Startup Users"
+  ],
+  "apIs": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "string",
+      "versions": [
+        "Default"
+      ],
+      "allowedUrls": [
+
+      ]
+    }
+  ],
+  "partitions": {
+    "quota": false,
+    "rate_limit": false,
+    "complexity": false,
+    "acl": false,
+    "per_api": true
+  }
+}

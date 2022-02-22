@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>4c4d43cd-b806-4fa0-8687-cb8193ebea7c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="6.0.1-rc2.3" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.PostgreSQL.Storage" Version="6.0.1-rc2.4" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.1-rc2.4" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.1-rc2.4" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.1-rc2.4" />
+    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.1-rc2.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="6.0.1" />
+    <PackageReference Include="JUST.net" Version="4.2.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
+    <PackageReference Include="Serilog" Version="2.11.0-dev-01377" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00241" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="swaggerhelper\" />
+    <Folder Include="scripts\" />
+  </ItemGroup>
+
+<ItemGroup>
+  <InternalsVisibleTo Include="ApplicationGateway.API.IntegrationTests" />
+</ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ApplicationGateway.Application\ApplicationGateway.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ApplicationGateway.Identity\ApplicationGateway.Identity.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ApplicationGateway.Infrastructure\ApplicationGateway.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ApplicationGateway.Persistence\ApplicationGateway.Persistence.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="JsonTransformers\Tyk\CreateApiTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\CreateKeyTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\GetPolicyTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\PolicyTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\UpdateApiTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\UpdateKeyTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

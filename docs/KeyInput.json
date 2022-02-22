@@ -1,0 +1,22 @@
+{
+  "rate": 1000,
+  "per": 60,
+  "expires": -1,
+  "throttleInterval": 60,
+  "throttleRetries": 5,
+  "maxQuota": -1,
+  "quotaRate": 60,
+  "policies": ["default"],
+  "APIs": [
+    {
+      "id": "demo1",
+      "name": "Test1",
+      "versions": ["v1", "v2"]
+    },
+    {
+      "id": "demo2",
+      "name": "Test2",
+      "versions": ["Default"]
+    }
+  ]
+}

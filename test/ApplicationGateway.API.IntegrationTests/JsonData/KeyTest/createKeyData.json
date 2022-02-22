@@ -1,0 +1,22 @@
+{
+  "Rate": 3,
+  "Per": 60,
+  "Quota": 3,
+  "QuotaRenewalRate": 3600,
+  "ThrottleInterval": 0,
+  "ThrottleRetries": 0,
+  "Expires": 0,
+  "AccessRights": [
+    {
+      "ApiId": "",
+      "ApiName": "",
+      "Versions": [
+        "Default"
+      ],
+      "AllowedUrls": []
+    }
+  ],
+  "Policies": [
+   
+  ]
+}

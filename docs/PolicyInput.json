@@ -1,0 +1,34 @@
+{
+  "APIs": [
+    {
+      "id": "demo1",
+      "name": "Test1",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "allowedUrls": []
+    },
+    {
+      "id": "demo2",
+      "name": "Test2",
+      "versions": [
+        "Default"
+      ],
+      "allowedUrls": []
+    }
+  ],
+  "active": true,
+  "keysInactive ": false,
+  "name": "Default",
+  "maxQuota": 10,
+  "quotaRate": 10,
+  "rate": 1,
+  "per": 5,
+  "throttleInterval": 2,
+  "throttleRetries": 3,
+  "state": "active",
+  "tags": [
+    "Startup Users"
+  ]
+}

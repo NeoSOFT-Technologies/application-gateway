@@ -1,0 +1,12 @@
+﻿{
+  "KeyId": "#valueof(key)",
+  "Rate": "#valueof(rate)",
+  "Per": "#valueof(per)",
+  "ThrottleInterval": "#valueof(throttle_interval)",
+  "ThrottleRetries": "#valueof(throttle_retry_limit)",
+  "Expires": "#valueof(expires)",
+  "Quota": "#valueof(quota_max)",
+  "QuotaRenewalRate": "#valueof(quota_renewal_rate)",
+  "AccessRights": null,
+  "Policies": null
+}

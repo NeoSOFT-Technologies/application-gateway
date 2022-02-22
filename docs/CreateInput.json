@@ -1,0 +1,5 @@
+{
+  "name": "Test-Boilerplate",
+  "listenPath": "/test/",
+  "targetUrl": "http://host.docker.internal:5000/api/v1/"
+}
