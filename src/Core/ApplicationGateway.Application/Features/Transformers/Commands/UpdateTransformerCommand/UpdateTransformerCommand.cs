@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Commands.UpdateTransformerCommand
+namespace ApplicationGateway.Application.Features.Transformers.Commands.UpdateTransformerCommand
 {
     public class UpdateTransformerCommand : IRequest<Response<UpdateTransformerDto>>
     {
-        public Guid Id { get; set; }
+        public Guid TransformerId { get; set; }
 
         public string TemplateName { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Exceptions;
+using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Domain.TykData;
 using AutoMapper;
 using MediatR;
@@ -10,15 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Commands.DeleteTransformerCommand
+namespace ApplicationGateway.Application.Features.Transformers.Commands.DeleteTransformerCommand
 {
     public class DeleteTransformerCommandHandler : IRequestHandler<DeleteTransformerCommand>
     {
         private readonly IMapper _mapper;
         private readonly ILogger<DeleteTransformerCommandHandler> _logger;
-        private readonly IAsyncRepository<Transformers> _transRepository;
+        private readonly IAsyncRepository<Transformer> _transRepository;
 
-        public DeleteTransformerCommandHandler(IMapper mapper, ILogger<DeleteTransformerCommandHandler> logger, IAsyncRepository<Transformers> transRepository)
+        public DeleteTransformerCommandHandler(IMapper mapper, ILogger<DeleteTransformerCommandHandler> logger, IAsyncRepository<Transformer> transRepository)
         {
             _mapper = mapper;
             _logger = logger;
@@ -28,11 +29,11 @@ namespace ApplicationGateway.Application.Features.Transformer.Commands.DeleteTra
         public async Task<Unit> Handle(DeleteTransformerCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@DeleteTransformerCommand}", request);
-            var transformerToDelete = await _transRepository.GetByIdAsync(request.Id);
+            var transformerToDelete = await _transRepository.GetByIdAsync(request.TransformerId);
 
             if (transformerToDelete == null)
             {
-                throw new NotFoundException(nameof(Transformer), request.Id);
+                throw new NotFoundException(nameof(Transformer), request.TransformerId);
             }
 
             await _transRepository.DeleteAsync(transformerToDelete);

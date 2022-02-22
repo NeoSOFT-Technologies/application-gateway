@@ -1,7 +1,7 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -11,15 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerById
+namespace ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerById
 {
     public class GetTransformerByIdQueryHandler : IRequestHandler<GetTransformerByIdQuery, Response<GetTransformerByIdDto>>
     {
         private readonly IMapper _mapper;
         private readonly ILogger<GetTransformerByIdQueryHandler> _logger;
-        private readonly IAsyncRepository<Transformers> _transRepository;
+        private readonly IAsyncRepository<Transformer> _transRepository;
 
-        public GetTransformerByIdQueryHandler(IMapper mapper, ILogger<GetTransformerByIdQueryHandler> logger, IAsyncRepository<Transformers> transRepository)
+        public GetTransformerByIdQueryHandler(IMapper mapper, ILogger<GetTransformerByIdQueryHandler> logger, IAsyncRepository<Transformer> transRepository)
         {
             _mapper = mapper;
             _logger = logger;
@@ -28,11 +28,11 @@ namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransfo
         public async Task<Response<GetTransformerByIdDto>> Handle(GetTransformerByIdQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler initiated with {@GetTransformerByIdQuery}", request);
-            var transformer = await _transRepository.GetByIdAsync(request.Id);
+            var transformer = await _transRepository.GetByIdAsync(request.TransformerId);
 
             if (transformer == null)
             {
-                throw new NotFoundException(nameof(Transformers), request.Id);
+                throw new NotFoundException(nameof(Transformers), request.TransformerId);
             }
             var result = _mapper.Map<GetTransformerByIdDto>(transformer);
 

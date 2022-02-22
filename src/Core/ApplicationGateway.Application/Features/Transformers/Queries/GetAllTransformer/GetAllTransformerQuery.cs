@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransformer
+namespace ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransformer
 {
-    public class GetTransformerQuery : IRequest<Response<IEnumerable<GetTransformerDto>>>
+    public class GetAllTransformerQuery : IRequest<Response<IEnumerable<GetAllTransformerDto>>>
     {
     }
 }

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName
+namespace ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransformer
 {
-    public class GetTransformerByNameDto
+    public class GetAllTransformerDto
     {
+        public Guid TransformerId { get; set; }
+
         public string TemplateName { get; set; }
 
         public string TransformerTemplate { get; set; }

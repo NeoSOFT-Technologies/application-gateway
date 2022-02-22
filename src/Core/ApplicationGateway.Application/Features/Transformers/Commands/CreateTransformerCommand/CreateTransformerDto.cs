@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Commands.UpdateTransformerCommand
+namespace ApplicationGateway.Application.Features.Transformers.Commands.CreateTransformerCommand
 {
-    public class UpdateTransformerDto
+    public class CreateTransformerDto
     {
-        public Guid Id { get; set; }
-
+        public Guid TransformerId { get; set; }
         public string TemplateName { get; set; }
     }
 }

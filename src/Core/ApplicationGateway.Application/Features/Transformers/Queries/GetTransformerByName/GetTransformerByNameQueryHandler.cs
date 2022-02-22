@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName
+namespace ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName
 {
     public class GetTransformerByNameQueryHandler : IRequestHandler<GetTransformerByNameQuery, Response<GetTransformerByNameDto>>
 
@@ -31,7 +31,8 @@ namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransfo
         {
             _logger.LogInformation("Handler initiated with {@GetTransformerByNameQuery}", request);
             string transformerName = request.TemplateName.Trim();
-            var transformer = await _transRepository.GetTransformerByName(transformerName);
+            string gatewayName = request.Gateway.Trim();
+            var transformer = await _transRepository.GetTransformerByNameAndGateway(transformerName,gatewayName);
             if (transformer == null)
             {
                 throw new NotFoundException(nameof(Transformers), request.TemplateName);
