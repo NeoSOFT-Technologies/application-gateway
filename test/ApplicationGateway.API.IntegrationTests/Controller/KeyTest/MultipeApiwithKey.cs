@@ -81,7 +81,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 new JProperty("ApiId", responseModel.Data.APIs[i].ApiId),
                 new JProperty("ApiName", apiName[i]),
                 new JProperty("Versions", jarrayObj),
-                new JProperty("AllowedUrls", AllowedUrls)));
+                new JProperty("AllowedUrls", jarrayObj1)));
             }
             keyrequestmodel["AccessRights"] = accessRight;
             StringContent stringContent = new StringContent(keyrequestmodel.ToString(), System.Text.Encoding.UTF8, "application/json");

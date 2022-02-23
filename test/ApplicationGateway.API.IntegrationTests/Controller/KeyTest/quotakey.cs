@@ -123,7 +123,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("/api/v1/ApplicationGateway" + id);
+            var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }
     }

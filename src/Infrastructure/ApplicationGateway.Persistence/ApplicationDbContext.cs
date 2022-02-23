@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Diagnostics.CodeAnalysis;
+using ApplicationGateway.Application.Helper;
 
 namespace ApplicationGateway.Persistence
 {
@@ -29,22 +30,23 @@ namespace ApplicationGateway.Persistence
             _loggedInUserService = loggedInUserService;
         }
 
-        public DbSet<Transformers> Transformers { get; set; }
+        public DbSet<Transformer> Transformers { get; set; }
         public virtual DbSet<Snapshot> Snapshots { get; set; } = null!;
         private IDbContextTransaction _transaction;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-            string transformer = "{\n  \"name\": \"#valueof(Name)\",\n  \"use_keyless\": true,\n  \"active\": true,\n  \"proxy\": {\n    \"listen_path\": \"#valueof(ListenPath)\",\n    \"target_url\": \"#valueof(TargetUrl)\",\n    \"strip_listen_path\": true\n  },\n  \"version_data\": {\n    \"not_versioned\": true,\n " +
-                "   \"default_version\": \"Default\",\n    \"versions\": {\n      \"Default\": {\n        \"name\": \"Default\",\n        \"use_extended_paths\": true\n      }\n    }\n  }\n}";
+            string transformer= System.IO.File.ReadAllText(@"JsonTransformers/Tyk/CreateApiTransformer.json");
+            //string transformer = "{\n  \"name\": \"#valueof(Name)\",\n  \"use_keyless\": true,\n  \"active\": true,\n  \"proxy\": {\n    \"listen_path\": \"#valueof(ListenPath)\",\n    \"target_url\": \"#valueof(TargetUrl)\",\n    \"strip_listen_path\": true\n  },\n  \"version_data\": {\n    \"not_versioned\": true,\n " +
+            //    "   \"default_version\": \"Default\",\n    \"versions\": {\n      \"Default\": {\n        \"name\": \"Default\",\n        \"use_extended_paths\": true\n      }\n    }\n  }\n}";
             //seed data, added through migrations
-            modelBuilder.Entity<Transformers>().HasData(new Transformers
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
             {
-                Id = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}"),
-                TemplateName = "CreateApi",
+                TransformerId = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}"),
+                TemplateName = TemplateHelper.CREATEAPI_TEMPLATE,
                 TransformerTemplate = transformer,
-                Gateway= "TykGateway"
+                Gateway = Enums.Gateway.Tyk.ToString()
             });
             modelBuilder.Entity<Snapshot>(entity =>
             {

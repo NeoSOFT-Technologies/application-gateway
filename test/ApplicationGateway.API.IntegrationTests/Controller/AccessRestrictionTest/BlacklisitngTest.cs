@@ -17,7 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ApplicationGateway.API.IntegrationTests.Controller
+namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTest
 {
     public class BlacklisitngTest : IClassFixture<CustomWebApplicationFactory>
     {
@@ -37,11 +37,11 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string OriginUrl = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/";
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/AccessRestrictionTest/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid}/";
-            requestModel1.targetUrl = ApplicationConstants.ORIGIN_IP_URL;
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/AccessRestrictionTest/createApiData.json");
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+            requestModel1.Name = newid.ToString();
+            requestModel1.ListenPath = $"/{newid.ToString()}/";
+            requestModel1.TargetUrl = ApplicationConstants.ORIGIN_IP_URL;
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -51,7 +51,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            await HotReload();
             Thread.Sleep(2000);
 
             //getorigin
@@ -79,7 +78,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-            await HotReload();
             Thread.Sleep(2000);
 
 
@@ -90,7 +88,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //delete Api
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
         }
 
         public async Task<HttpResponseMessage> DownStream(string path)
@@ -118,18 +115,12 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             return result;
         }
 
-        private async Task HotReload()
-        {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
-            response.EnsureSuccessStatusCode();
-        }
+        
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
-            // await HotReload();
             return response;
         }
     }

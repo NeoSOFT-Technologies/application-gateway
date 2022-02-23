@@ -69,6 +69,7 @@ namespace ApplicationGateway.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ObjectKey")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ObjectName")
@@ -82,9 +83,9 @@ namespace ApplicationGateway.Persistence.Migrations
                     b.ToTable("Snapshot", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationGateway.Domain.TykData.Transformers", b =>
+            modelBuilder.Entity("ApplicationGateway.Domain.Entities.Transformer", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("TransformerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -112,18 +113,18 @@ namespace ApplicationGateway.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("TransformerId");
 
                     b.ToTable("Transformers");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b0788d2f-8003-43c1-92a4-edc76a7c5dde"),
+                            TransformerId = new Guid("b0788d2f-8003-43c1-92a4-edc76a7c5dde"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Gateway = "TykGateway",
-                            TemplateName = "CreateApi",
-                            TransformerTemplate = "{\n  \"name\": \"#valueof(Name)\",\n  \"use_keyless\": true,\n  \"active\": true,\n  \"proxy\": {\n    \"listen_path\": \"#valueof(ListenPath)\",\n    \"target_url\": \"#valueof(TargetUrl)\",\n    \"strip_listen_path\": true\n  },\n  \"version_data\": {\n    \"not_versioned\": true,\n    \"default_version\": \"Default\",\n    \"versions\": {\n      \"Default\": {\n        \"name\": \"Default\",\n        \"use_extended_paths\": true\n      }\n    }\n  }\n}"
+                            Gateway = "Tyk",
+                            TemplateName = "CREATEAPI_TEMPLATE",
+                            TransformerTemplate = "{\r\n  \"name\": \"#valueof(Name)\",\r\n  \"use_keyless\": true,\r\n  \"active\": true,\r\n  \"proxy\": {\r\n    \"listen_path\": \"#valueof(ListenPath)\",\r\n    \"target_url\": \"#valueof(TargetUrl)\",\r\n    \"strip_listen_path\": true\r\n  },\r\n  \"version_data\": {\r\n    \"not_versioned\": true,\r\n    \"default_version\": \"Default\",\r\n    \"versions\": {\r\n      \"Default\": {\r\n        \"name\": \"Default\",\r\n        \"use_extended_paths\": true\r\n      }\r\n    }\r\n  }\r\n}"
                         });
                 });
 #pragma warning restore 612, 618

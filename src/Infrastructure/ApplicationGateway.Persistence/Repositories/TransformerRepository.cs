@@ -1,4 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
+using ApplicationGateway.Application.Helper;
+using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Domain.TykData;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,17 +11,31 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Persistence.Repositories
 {
-    public class TransformerRepository : BaseRepository<Transformers>, ITransformerRepository
+    public class TransformerRepository : BaseRepository<Transformer>, ITransformerRepository
     {
         private readonly ILogger _logger;
-        public TransformerRepository(ApplicationDbContext dbContext, ILogger<Transformers> logger) : base(dbContext, logger)
+        public TransformerRepository(ApplicationDbContext dbContext, ILogger<Transformer> logger) : base(dbContext, logger)
         {
             _logger = logger;
         }
 
-        public async Task<Transformers> GetTransformerByName(string name)
+        public async Task<Transformer> CreateTransformer(string name, string templateTranformer, Enums.Gateway gateway)
         {
-            var transformer =   _dbContext.Transformers.Where(a => a.TemplateName == name).FirstOrDefault();
+            Transformer transformer = new Transformer()
+            {
+                TemplateName = name,
+                TransformerTemplate = templateTranformer,
+                Gateway = gateway.ToString()
+            };
+            var tran = await _dbContext.AddAsync(transformer);
+            await _dbContext.SaveChangesAsync();
+            return transformer;
+        }
+
+        public async Task<Transformer> GetTransformerByNameAndGateway(string name,string gateway)
+        {
+            _logger.LogInformation("GetTransformer Initiated");
+            var transformer =   _dbContext.Transformers.Where(a => a.TemplateName == name && a.Gateway == gateway).FirstOrDefault();
             return transformer;
         }
     }

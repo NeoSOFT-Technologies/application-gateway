@@ -20,7 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ApplicationGateway.API.IntegrationTests.Controller
+namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessControl
 {
     public class AllowedUrlTest : IClassFixture<CustomWebApplicationFactory>
     {
@@ -82,7 +82,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 obj["name"] = newid.ToString();
 
             }
-            //create Api
+
 
             HttpContent Policycontent = new StringContent(keyValues.ToString(), Encoding.UTF8, "application/json");
             var PolicyResponse = await client.PostAsync("/api/v1/Policy", Policycontent);
@@ -110,7 +110,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var keyId = keyresult.Data.KeyId;
             Thread.Sleep(2000);
 
-            JObject key = JObject.Parse(jsonStringkey);
+           // JObject key = JObject.Parse(jsonStringkey);
             // var key_Id = (key["data"]["keyId"]).ToString();
 
             //downstream api
@@ -155,7 +155,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         private async Task<HttpResponseMessage> DeleteKey(string id)
         {
             var client = _factory.CreateClient();
-            var response = await client.DeleteAsync("api/v1/Key/DeleteKey/" + id);
+            var response = await client.DeleteAsync("api/v1/Key/DeleteKey?keyId=" + id);
             // await HotReload();
             return response;
         }

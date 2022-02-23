@@ -7,15 +7,6 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Controller\PolicyTest\Control And Limit\**" />
-    <Compile Remove="Controller\PolicyTest\Versioning\**" />
-    <EmbeddedResource Remove="Controller\PolicyTest\Control And Limit\**" />
-    <EmbeddedResource Remove="Controller\PolicyTest\Versioning\**" />
-    <None Remove="Controller\PolicyTest\Control And Limit\**" />
-    <None Remove="Controller\PolicyTest\Versioning\**" />
-  </ItemGroup>
-
 <ItemGroup>
   <InternalsVisibleTo Include="ApplicationGateway.API.IntegrationTests" />
 </ItemGroup>

@@ -1,0 +1,16 @@
+{
+  "policyId": "",
+  "APIs": [],
+  "active": "#valueof(active)",
+  "keysInactive ": "#valueof(is_inactive)",
+  "name": "#valueof(name)",
+  "maxQuota": "#valueof(quota_max)",
+  "quotaRate": "#valueof(quota_renewal_rate)",
+  "rate": "#valueof(rate)",
+  "per": "#valueof(per)",
+  "throttleInterval": "#valueof(throttle_interval)",
+  "throttleRetries": "#valueof(throttle_retry_limit)",
+  "state": "#valueof(state)",
+  "tags": "#valueof(tags)",
+  "partitions": "#valueof(partitions)"
+}

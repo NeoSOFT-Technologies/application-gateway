@@ -17,31 +17,33 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ApplicationGateway.API.IntegrationTests.Controller
+namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTest
 {
-    public class ratelimitTest : IClassFixture<CustomWebApplicationFactory>
+    public class WhitelistingTest : IClassFixture<CustomWebApplicationFactory>
     {
 
         private readonly CustomWebApplicationFactory _factory;
 
-        public ratelimitTest(CustomWebApplicationFactory factory)
+        public WhitelistingTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
         }
 
         [Fact]
-        public async Task RateLimiting()
+        public async Task Whitelisting()
         {
-
             var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
+            string OriginUrl = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/";
+
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/ControlandLimit/createApiData.json");
-            CreateRequest requestModel1 = JsonConvert.DeserializeObject<CreateRequest>(myJsonString);
-            requestModel1.name = newid.ToString();
-            requestModel1.listenPath = $"/{newid.ToString()}/";
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/AccessRestrictionTest/createApiData.json");
+            CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
+            requestModel1.Name = newid.ToString();
+            requestModel1.ListenPath = $"/{newid.ToString()}/";
+            requestModel1.TargetUrl = ApplicationConstants.ORIGIN_IP_URL;
 
             //create Api
             var RequestJson = JsonConvert.SerializeObject(requestModel1);
@@ -51,48 +53,43 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            await HotReload();
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
 
-            //Read Json
-            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/ControlandLimit/rateLimitData.json");
-            UpdateApiCommand data = JsonConvert.DeserializeObject<UpdateApiCommand>(myJsonString1);
-            data.Name = newid.ToString();
-            data.ListenPath = $"/{newid.ToString()}/";
-            data.ApiId = id;
-            data.TargetUrl = ApplicationConstants.TARGET_URL;
+            //getorigin
+            var ipaddress = await getsOrigin(OriginUrl);
+            var ip = ipaddress.origin;
+            string[] values = ip.Split(',');
+            for (int i = 0; i < values.Length; i++)
+            {
+                values[i] = values[i].Trim();
+            }
+            var ipvalue = values[0];
+            //read update json file
+            var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/AccessRestrictionTest/updateApiData.json");
+            UpdateApiCommand updaterequestModel1 = JsonConvert.DeserializeObject<UpdateApiCommand>(myupdateJsonString);
+            updaterequestModel1.Name = newid.ToString();
+            updaterequestModel1.ListenPath = $"/{newid.ToString()}/";
+            updaterequestModel1.ApiId = new Guid(id.ToString());
+            updaterequestModel1.Whitelist = new List<string>
+            {
+                ipvalue
+            };
 
-            // Update_Api
-            var updateRequestJson = JsonConvert.SerializeObject(data);
+            //updateappi
+            var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-            await HotReload();
-            Thread.Sleep(5000);
+            Thread.Sleep(2000);
 
-            // downstream
-            for (int i = 0; i < 8; i++)
-            {
-                var responseh = await DownStream(Url);
-                responseh.EnsureSuccessStatusCode();
-            }
 
-            //check Rate Limit Exceed
-            response = await DownStream(Url);
-            response.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.TooManyRequests);
-
-            //Rate Limiting Reset
-            Thread.Sleep(10000);
-            client = HttpClientFactory.Create();
-            response = await client.GetAsync(Url);
-            response.EnsureSuccessStatusCode();
-
+            //downstream
+            var downstreamResponse = await DownStream(Url);
+            downstreamResponse.EnsureSuccessStatusCode();
 
             //delete Api
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            await HotReload();
-
         }
 
         public async Task<HttpResponseMessage> DownStream(string path)
@@ -111,13 +108,15 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             }
 
         }
-
-        private async Task HotReload()
+        public async Task<Docker> getsOrigin(string path)
         {
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync("/api/v1/ApplicationGateway/HotReload");
-            response.EnsureSuccessStatusCode();
+            var client = HttpClientFactory.Create();
+            var response = await client.GetAsync(path);
+            var jsonString = response.Content.ReadAsStringAsync();
+            Docker result = JsonConvert.DeserializeObject<Docker>(jsonString.Result);
+            return result;
         }
+
 
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)

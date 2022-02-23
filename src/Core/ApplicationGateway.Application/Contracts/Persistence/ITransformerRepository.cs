@@ -1,4 +1,6 @@
-﻿using ApplicationGateway.Domain.TykData;
+﻿using ApplicationGateway.Application.Helper;
+using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.TykData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Contracts.Persistence
 {
-   public interface ITransformerRepository: IAsyncRepository<Transformers>
+   public interface ITransformerRepository: IAsyncRepository<Transformer>
     {
-        Task<Transformers> GetTransformerByName(string name);
+        Task<Transformer> CreateTransformer(string name, string templateTranformer, Enums.Gateway gateway);
+        Task<Transformer> GetTransformerByNameAndGateway(string name,string gateway);
     }
 }

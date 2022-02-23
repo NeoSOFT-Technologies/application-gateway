@@ -17,7 +17,7 @@ using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
-namespace ApplicationGateway.API.IntegrationTests.Controller
+namespace ApplicationGateway.API.IntegrationTests.Controller.LoadBalancing
 {
     public class LoadBalancingTest : IClassFixture<CustomWebApplicationFactory>
     {

@@ -16,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ApplicationGateway.API.IntegrationTests.Controller
+namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 {
     public class CreateApiTest : IClassFixture<CustomWebApplicationFactory>
     {

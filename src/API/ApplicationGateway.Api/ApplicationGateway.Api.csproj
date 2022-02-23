@@ -62,6 +62,9 @@
     <Content Update="JsonTransformers\Tyk\CreateKeyTransformer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="JsonTransformers\Tyk\GetPolicyTransformer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="JsonTransformers\Tyk\PolicyTransformer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
