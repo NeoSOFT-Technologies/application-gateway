@@ -11,9 +11,9 @@ namespace ApplicationGateway.Application.Helper
             _basePath = Directory.GetCurrentDirectory();
         }
 
-        public async Task<string> Transform(string requestJson, string fileName)
+        public async Task<string> Transform(string requestJson, string templateName)
         {
-            string transformer = await File.ReadAllTextAsync($@"{_basePath}\JsonTransformers\Tyk\{fileName}.json");
+            string transformer = await File.ReadAllTextAsync($@"{_basePath}\JsonTransformers\Tyk\{templateName}.json");
             return new JsonTransformer().Transform(transformer, requestJson);
         }
 

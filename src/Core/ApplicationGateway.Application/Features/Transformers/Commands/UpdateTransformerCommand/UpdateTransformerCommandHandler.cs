@@ -2,15 +2,9 @@
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
-using ApplicationGateway.Domain.TykData;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Transformers.Commands.UpdateTransformerCommand
 {
@@ -29,7 +23,7 @@ namespace ApplicationGateway.Application.Features.Transformers.Commands.UpdateTr
         public async Task<Response<UpdateTransformerDto>> Handle(UpdateTransformerCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@UpdateTransformerCommand}", request);
-            var transformerToUpdate = await _transRepository.GetByIdAsync(request.TransformerId);
+            Transformer transformerToUpdate = await _transRepository.GetByIdAsync(request.TransformerId);
             if(transformerToUpdate == null)
             {
                 throw new NotFoundException(nameof(Transformers), request.TransformerId);

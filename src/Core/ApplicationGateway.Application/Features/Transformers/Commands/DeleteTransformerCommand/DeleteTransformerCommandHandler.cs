@@ -1,15 +1,9 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Domain.Entities;
-using ApplicationGateway.Domain.TykData;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Transformers.Commands.DeleteTransformerCommand
 {
@@ -29,7 +23,7 @@ namespace ApplicationGateway.Application.Features.Transformers.Commands.DeleteTr
         public async Task<Unit> Handle(DeleteTransformerCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@DeleteTransformerCommand}", request);
-            var transformerToDelete = await _transRepository.GetByIdAsync(request.TransformerId);
+            Transformer transformerToDelete = await _transRepository.GetByIdAsync(request.TransformerId);
 
             if (transformerToDelete == null)
             {

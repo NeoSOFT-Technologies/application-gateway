@@ -42,7 +42,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #region Transorm individual api
             foreach (var inputApi in inputObject)
             {
-                string transformed = await _fileOperator.Transform(inputApi.ToString(), "GetApiTransformer");
+                string transformed = await _fileOperator.Transform(inputApi.ToString(), TemplateHelper.GETAPI_TEMPLATE);
                 JObject apiObject = JObject.Parse(transformed);
 
                 apiObject = GetApiVersioning(apiObject, inputApi as JObject);
@@ -69,7 +69,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             JObject inputObject = JObject.Parse(inputJson);
 
             #region Transorm Api
-            string transformed = await _fileOperator.Transform(inputObject.ToString(), "GetApiTransformer");
+            string transformed = await _fileOperator.Transform(inputObject.ToString(), TemplateHelper.GETAPI_TEMPLATE);
             JObject transformedObject = JObject.Parse(transformed);
 
             transformedObject = GetApiVersioning(transformedObject, inputObject);
@@ -91,7 +91,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation("CreateApiAsync Initiated with {@Api}", api);
             api.ApiId = Guid.NewGuid();
             string requestJson = JsonConvert.SerializeObject(api);
-            string transformed = await _fileOperator.Transform(requestJson, "CreateApiTransformer");
+            string transformed = await _fileOperator.Transform(requestJson, TemplateHelper.CREATEAPI_TEMPLATE);
 
             #region Add ApiId to Api
             JObject transformedObject = JObject.Parse(transformed);
@@ -110,7 +110,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation("UpdateApiAsync Initiated with {@Api}", api);
             string inputJson = JsonConvert.SerializeObject(api);
-            string transformed = await _fileOperator.Transform(inputJson, "UpdateApiTransformer");
+            string transformed = await _fileOperator.Transform(inputJson, TemplateHelper.UPDATEAPI_TEMPLATE);
 
             JObject inputObject = JObject.Parse(inputJson);
             JObject transformedObject = JObject.Parse(transformed);

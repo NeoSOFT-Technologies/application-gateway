@@ -1,13 +1,7 @@
 ﻿using ApplicationGateway.Application.Contracts;
 using ApplicationGateway.Domain.Common;
-using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Diagnostics.CodeAnalysis;
 using ApplicationGateway.Application.Helper;
@@ -37,16 +31,14 @@ namespace ApplicationGateway.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-            string transformer= System.IO.File.ReadAllText(@"JsonTransformers/Tyk/CreateApiTransformer.json");
-            //string transformer = "{\n  \"name\": \"#valueof(Name)\",\n  \"use_keyless\": true,\n  \"active\": true,\n  \"proxy\": {\n    \"listen_path\": \"#valueof(ListenPath)\",\n    \"target_url\": \"#valueof(TargetUrl)\",\n    \"strip_listen_path\": true\n  },\n  \"version_data\": {\n    \"not_versioned\": true,\n " +
-            //    "   \"default_version\": \"Default\",\n    \"versions\": {\n      \"Default\": {\n        \"name\": \"Default\",\n        \"use_extended_paths\": true\n      }\n    }\n  }\n}";
-            //seed data, added through migrations
+            
             modelBuilder.Entity<Transformer>().HasData(new Transformer
             {
                 TransformerId = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}"),
                 TemplateName = TemplateHelper.CREATEAPI_TEMPLATE,
-                TransformerTemplate = transformer,
-                Gateway = Enums.Gateway.Tyk.ToString()
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.CREATEAPI_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
             });
             modelBuilder.Entity<Snapshot>(entity =>
             {

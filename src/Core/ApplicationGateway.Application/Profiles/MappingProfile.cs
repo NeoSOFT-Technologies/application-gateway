@@ -81,7 +81,7 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Transformer, UpdateTransformerCommand>().ReverseMap();
             CreateMap<Transformer, UpdateTransformerDto>().ReverseMap();
 
-            CreateMap<Transformer, GetAllTransformerDto>().ReverseMap();
+            CreateMap<Transformer, GetAllTransformersDto>().ReverseMap();
             CreateMap<Transformer, GetTransformerByIdDto>().ReverseMap();
 
             CreateMap<Transformer, GetTransformerByNameDto>().ReverseMap();

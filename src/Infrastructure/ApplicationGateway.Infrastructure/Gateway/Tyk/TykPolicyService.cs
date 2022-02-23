@@ -36,7 +36,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #region Transform individual policy
             foreach (KeyValuePair<string, JToken> policy in policiesObject)
             {
-                string transformed = await _fileOperator.Transform(policy.Value.ToString(), "GetPolicyTransformer");
+                string transformed = await _fileOperator.Transform(policy.Value.ToString(), TemplateHelper.GETPOLICY_TEMPLATE);
                 JObject transformedObject = JObject.Parse(transformed);
                 transformedObject["policyId"] = policy.Key;
 
@@ -64,7 +64,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #region Transform policy
             string policyJson = policiesObject[policyId.ToString()].ToString();
             JObject policyObject = JObject.Parse(policyJson);
-            string transformed = await _fileOperator.Transform(policyJson, "GetPolicyTransformer");
+            string transformed = await _fileOperator.Transform(policyJson, TemplateHelper.GETPOLICY_TEMPLATE);
             JObject transformedObject = JObject.Parse(transformed);
             transformedObject["policyId"] = policyId;
             transformedObject = GetPolicyApis(policyObject["access_rights"] as JObject, transformedObject);
@@ -82,7 +82,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
             policy.PolicyId = Guid.NewGuid();
             string requestJson = JsonConvert.SerializeObject(policy);
-            string transformed = await _fileOperator.Transform(requestJson, "PolicyTransformer");
+            string transformed = await _fileOperator.Transform(requestJson, TemplateHelper.POLICY_TEMPLATE);
 
             JObject inputObject = JObject.Parse(requestJson);
             JObject transformedObject = JObject.Parse(transformed);
@@ -112,7 +112,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation("UpdatePolicyAsync Initiated with {@Policy}", policy);
             string requestJson = JsonConvert.SerializeObject(policy);
-            string transformed = await _fileOperator.Transform(requestJson, "PolicyTransformer");
+            string transformed = await _fileOperator.Transform(requestJson, TemplateHelper.POLICY_TEMPLATE);
 
             JObject inputObject = JObject.Parse(requestJson);
             JObject transformedObject = JObject.Parse(transformed);

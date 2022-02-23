@@ -8,6 +8,7 @@ using ApplicationGateway.Application.Features.Transformers.Queries.GetTransforme
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Domain.TykData;
 using AutoMapper;
 using MediatR;
@@ -33,11 +34,11 @@ namespace ApplicationGateway.Api.Controllers.v1
 
         [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetAllTransformer()
+        public async Task<ActionResult> GetAllTransformers()
         {
-            _logger.LogInformation("GetAllTransformer Initiated");
-            var dtos = await _mediator.Send(new GetAllTransformerQuery());
-            _logger.LogInformation("GetAllTransformer Completed");
+            _logger.LogInformation("GetAllTransformers Initiated");
+            var dtos = await _mediator.Send(new GetAllTransformersQuery());
+            _logger.LogInformation("GetAllTransformers Completed");
             return Ok(dtos);
         }
 
@@ -88,7 +89,7 @@ namespace ApplicationGateway.Api.Controllers.v1
 
         [Route("[action]/{name}")]
         [HttpGet]
-        public async Task<ActionResult> GetTransformerByName(string name,string gateway)
+        public async Task<ActionResult> GetTransformerByName(string name, Gateway gateway)
         {
             _logger.LogInformation("GetTransformerByName Initiated with {@TempalteName}", name);
             var getTransformer = new GetTransformerByNameQuery() { TemplateName = name, Gateway = gateway };

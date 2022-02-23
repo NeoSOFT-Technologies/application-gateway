@@ -121,7 +121,7 @@ namespace ApplicationGateway.Persistence.Migrations
                         new
                         {
                             TransformerId = new Guid("b0788d2f-8003-43c1-92a4-edc76a7c5dde"),
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedDate = new DateTime(2022, 2, 23, 7, 9, 49, 426, DateTimeKind.Utc).AddTicks(3926),
                             Gateway = "Tyk",
                             TemplateName = "CREATEAPI_TEMPLATE",
                             TransformerTemplate = "{\r\n  \"name\": \"#valueof(Name)\",\r\n  \"use_keyless\": true,\r\n  \"active\": true,\r\n  \"proxy\": {\r\n    \"listen_path\": \"#valueof(ListenPath)\",\r\n    \"target_url\": \"#valueof(TargetUrl)\",\r\n    \"strip_listen_path\": true\r\n  },\r\n  \"version_data\": {\r\n    \"not_versioned\": true,\r\n    \"default_version\": \"Default\",\r\n    \"versions\": {\r\n      \"Default\": {\r\n        \"name\": \"Default\",\r\n        \"use_extended_paths\": true\r\n      }\r\n    }\r\n  }\r\n}"
