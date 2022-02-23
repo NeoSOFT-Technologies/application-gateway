@@ -3,10 +3,17 @@ using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.TykData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static ApplicationGateway.Domain.Entities.Key;
 
 namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
@@ -14,16 +21,16 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
     public class TykKeyService: IKeyService
     {
         private readonly ILogger<TykKeyService> _logger;
-        private readonly TemplateTransformer _templateTransformer;
+        private readonly FileOperator _fileOperator;
         private readonly TykConfiguration _tykConfiguration;
         private readonly IBaseService _baseService;
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public TykKeyService(ILogger<TykKeyService> logger, TemplateTransformer templateTransformer, IOptions<TykConfiguration> tykConfiguration, IBaseService baseService)
+        public TykKeyService(ILogger<TykKeyService> logger, FileOperator fileOperator, IOptions<TykConfiguration> tykConfiguration, IBaseService baseService)
         {
             _logger = logger;
-            _templateTransformer = templateTransformer;
+            _fileOperator = fileOperator;
             _tykConfiguration = tykConfiguration.Value;
             _baseService = baseService;
             _headers = new Dictionary<string, string>()
@@ -37,7 +44,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation($"GetKeyAsync initiated for {keyId}");
             var keyResponse = await _restClient.GetAsync(keyId);
-            string transformedObj = await _templateTransformer.Transform(keyResponse, TemplateHelper.GETKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
+            string transformedObj = await _fileOperator.Transform(keyResponse, "GetKeyTransformer");
             Key key = JsonConvert.DeserializeObject<Key>(transformedObj);
 
             JObject keyObj = JObject.Parse(keyResponse);
@@ -91,7 +98,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation($"CreateKeyAsync Initiated for {key}");
             string requestString = JsonConvert.SerializeObject(key);
-            string transformedObj = await _templateTransformer.Transform(requestString, TemplateHelper.CREATEKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
+            string transformedObj = await _fileOperator.Transform(requestString,"CreateKeyTransformer");
    
             JObject jsonObj = JObject.Parse(transformedObj);
             jsonObj["access_rights"] = new JObject();
@@ -178,7 +185,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation($"UpdateKeyAsync initiated for {key}");
 
             string requestString = JsonConvert.SerializeObject(key);
-            string transformedObj = await _templateTransformer.Transform(requestString, TemplateHelper.UPDATEKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
+            string transformedObj = await _fileOperator.Transform(requestString, "UpdateKeyTransformer");
 
 
             JObject jsonObj = JObject.Parse(transformedObj);

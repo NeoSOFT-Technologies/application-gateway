@@ -12,7 +12,6 @@ namespace ApplicationGateway.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddSingleton<FileOperator>();
-            services.AddScoped<TemplateTransformer>();
 
             return services;
         }

@@ -1,10 +1,20 @@
-﻿namespace ApplicationGateway.Application.Helper
+﻿using JUST;
+
+namespace ApplicationGateway.Application.Helper
 {
     public class FileOperator
     {
+        private readonly string _basePath;
+
         public FileOperator()
         {
+            _basePath = Directory.GetCurrentDirectory();
+        }
 
+        public async Task<string> Transform(string requestJson, string templateName)
+        {
+            string transformer = await File.ReadAllTextAsync($@"{_basePath}\JsonTransformers\Tyk\{templateName}.json");
+            return new JsonTransformer().Transform(transformer, requestJson);
         }
 
         public async Task<string> ReadPolicies(string policiesFolderPath)
