@@ -148,7 +148,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     #endregion
 
                     #region Added perApiLimits, if exists
-                    if(!api.Limit.Equals(null) || !api.Limit.Equals(""))
+                    if(api.Limit != null)
                     {
                         JObject limit = new JObject();
                         limit.Add("rate", api.Limit.Rate);
