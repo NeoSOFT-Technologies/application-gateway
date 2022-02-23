@@ -35,11 +35,68 @@ namespace ApplicationGateway.Persistence
             modelBuilder.Entity<Transformer>().HasData(new Transformer
             {
                 TransformerId = Guid.Parse("{B0788D2F-8003-43C1-92A4-EDC76A7C5DDE}"),
+                TemplateName = TemplateHelper.GETAPI_TEMPLATE,
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.GETAPI_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
+            });
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
+            {
+                TransformerId = Guid.Parse("{31EA7C6D-D731-47C4-AF4A-155BAF2E2ED4}"),
                 TemplateName = TemplateHelper.CREATEAPI_TEMPLATE,
                 TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.CREATEAPI_TEMPLATE}.json"),
                 Gateway = Gateway.Tyk,
                 CreatedDate = DateTime.UtcNow
             });
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
+            {
+                TransformerId = Guid.Parse("{3F243DD1-644E-410F-93D0-E7979BE9D629}"),
+                TemplateName = TemplateHelper.UPDATEAPI_TEMPLATE,
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.UPDATEAPI_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
+            });
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
+            {
+                TransformerId = Guid.Parse("{C8A540F9-0601-4DFB-B4E6-4ADAC1D52123}"),
+                TemplateName = TemplateHelper.GETPOLICY_TEMPLATE,
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.GETPOLICY_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
+            });
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
+            {
+                TransformerId = Guid.Parse("{79AB4897-947C-4638-8D38-526AC28C5BFD}"),
+                TemplateName = TemplateHelper.POLICY_TEMPLATE,
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.POLICY_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
+            });
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
+            {
+                TransformerId = Guid.Parse("{176D16BE-6A5E-4914-8939-58CAC1F7E0F0}"),
+                TemplateName = TemplateHelper.GETKEY_TEMPLATE,
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.GETKEY_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
+            });
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
+            {
+                TransformerId = Guid.Parse("{63EFDD05-A2B8-44F8-9589-86380A7052A1}"),
+                TemplateName = TemplateHelper.CREATEKEY_TEMPLATE,
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.CREATEKEY_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
+            });
+            modelBuilder.Entity<Transformer>().HasData(new Transformer
+            {
+                TransformerId = Guid.Parse("{D37832B5-8400-4A80-90B0-51B07DFAAF4A}"),
+                TemplateName = TemplateHelper.UPDATEKEY_TEMPLATE,
+                TransformerTemplate = File.ReadAllText(@$"JsonTransformers/Tyk/{TemplateHelper.UPDATEKEY_TEMPLATE}.json"),
+                Gateway = Gateway.Tyk,
+                CreatedDate = DateTime.UtcNow
+            });
+
             modelBuilder.Entity<Snapshot>(entity =>
             {
                 entity.ToTable("Snapshot");
