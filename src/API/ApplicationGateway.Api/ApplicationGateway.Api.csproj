@@ -56,22 +56,25 @@
 
 
   <ItemGroup>
-    <Content Update="JsonTransformers\Tyk\CreateApiTransformer.json">
+    <Content Update="JsonTransformers\Tyk\CREATEAPI_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\CreateKeyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\CREATEKEY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\GetPolicyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\GETKEY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\PolicyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\GETPOLICY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\UpdateApiTransformer.json">
+    <Content Update="JsonTransformers\Tyk\POLICY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\UpdateKeyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\UPDATEAPI_TEMPLATE.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\UPDATEKEY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -10,11 +10,15 @@ namespace ApplicationGateway.Domain.Entities
     public class Transformer : AuditableEntity
     {
         public Guid TransformerId { get; set; }
-
         public string TemplateName { get; set; }
-
         public string TransformerTemplate { get; set; }
+        public Gateway Gateway { get; set; }
+    }
 
-        public string Gateway { get; set; }
+    public enum Gateway
+    {
+        Tyk,
+        Envoy,
+        Kong
     }
 }

@@ -5,11 +5,6 @@ using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerById
 {
@@ -28,13 +23,13 @@ namespace ApplicationGateway.Application.Features.Transformers.Queries.GetTransf
         public async Task<Response<GetTransformerByIdDto>> Handle(GetTransformerByIdQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler initiated with {@GetTransformerByIdQuery}", request);
-            var transformer = await _transRepository.GetByIdAsync(request.TransformerId);
+            Transformer transformer = await _transRepository.GetByIdAsync(request.TransformerId);
 
             if (transformer == null)
             {
                 throw new NotFoundException(nameof(Transformers), request.TransformerId);
             }
-            var result = _mapper.Map<GetTransformerByIdDto>(transformer);
+            GetTransformerByIdDto result = _mapper.Map<GetTransformerByIdDto>(transformer);
 
             var response = new Response<GetTransformerByIdDto>(result);
             _logger.LogInformation("Handler completed");

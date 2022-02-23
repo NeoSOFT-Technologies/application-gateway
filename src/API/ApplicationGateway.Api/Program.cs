@@ -16,6 +16,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using ApplicationGateway.Api.SwaggerHelper;
 using Microsoft.AspNetCore.DataProtection;
 using ApplicationGateway.Persistence;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,7 +76,11 @@ services.AddHealthcheckExtensionService(Configuration);
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+    // serialize enums as strings in api responses (e.g. Gateway)
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
