@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
 using AutoMapper;
@@ -26,17 +27,23 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand
         public async Task<Response<CreateApiDto>> Handle(CreateApiCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@CreateApiCommand}", request);
-            Domain.Entities.Api api = _mapper.Map<Domain.Entities.Api>(request);
-            Domain.Entities.Api newApi = await _apiService.CreateApiAsync(api);
+            Domain.Entities.Api apitoCreate = _mapper.Map<Domain.Entities.Api>(request);
 
-            CreateApiDto createApiDto = _mapper.Map<CreateApiDto>(newApi);
+            if (!await _apiService.CheckUniqueListenPathAsync(apitoCreate))
+            {
+                throw new BadRequestException("ListenPath already exists");
+            }
+
+            Domain.Entities.Api createdApi = await _apiService.CreateApiAsync(apitoCreate);
+
+            CreateApiDto createApiDto = _mapper.Map<CreateApiDto>(createdApi);
 
             await _snapshotService.CreateSnapshot(
                 Enums.Gateway.Tyk,
                 Enums.Type.API,
                 Enums.Operation.Created,
-                newApi.ApiId.ToString(),
-                newApi);
+                createdApi.ApiId.ToString(),
+                createdApi);
 
             Response<CreateApiDto> response = new Response<CreateApiDto>(createApiDto, "success");
 

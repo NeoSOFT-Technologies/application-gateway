@@ -167,6 +167,23 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation("UpdateApiAsync Completed");
         }
 
+        public async Task<bool> CheckUniqueListenPathAsync(Api api)
+        {
+            #region Get All Existsing APIs
+            List<Api> apiList = await GetAllApisAsync();
+            #endregion
+
+            #region Check for existing listenPath
+            foreach (Api existingApi in apiList)
+            {
+                if (api.ApiId != existingApi.ApiId && api.ListenPath.Trim('/') == existingApi.ListenPath.Trim('/'))
+                {
+                    return false;
+                }
+            }
+            #endregion
+            return true;
+        }
         private static JObject GetApiVersioning(JObject apiObject, JObject inputApi)
         {
             apiObject["versions"] = new JArray();
