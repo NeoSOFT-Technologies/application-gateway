@@ -1,17 +1,12 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName
+namespace ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName
 {
     public class GetTransformerByNameQueryHandler : IRequestHandler<GetTransformerByNameQuery, Response<GetTransformerByNameDto>>
 
@@ -30,15 +25,14 @@ namespace ApplicationGateway.Application.Features.Transformer.Queries.GetTransfo
         public async Task<Response<GetTransformerByNameDto>> Handle(GetTransformerByNameQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler initiated with {@GetTransformerByNameQuery}", request);
-            string transformerName = request.TemplateName.Trim();
-            var transformer = await _transRepository.GetTransformerByName(transformerName);
+            Transformer transformer = await _transRepository.GetTransformerByNameAndGateway(request.TemplateName, request.Gateway);
             if (transformer == null)
             {
                 throw new NotFoundException(nameof(Transformers), request.TemplateName);
             }
-            var result = _mapper.Map<GetTransformerByNameDto>(transformer);
+            GetTransformerByNameDto result = _mapper.Map<GetTransformerByNameDto>(transformer);
 
-            var response = new Response<GetTransformerByNameDto>(result);
+            Response<GetTransformerByNameDto> response = new Response<GetTransformerByNameDto>(result);
             _logger.LogInformation("Handler completed");
             return response;
         }

@@ -14,16 +14,16 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
     {
         private readonly IBaseService _baseService;
         private readonly ILogger<TykApiService> _logger;
-        private readonly FileOperator _fileOperator;
+        private readonly TemplateTransformer _templateTransformer;
         private readonly TykConfiguration _tykConfiguration;
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public TykApiService(IBaseService baseService, ILogger<TykApiService> logger, FileOperator fileOperator, IOptions<TykConfiguration> tykConfiguration)
+        public TykApiService(IBaseService baseService, ILogger<TykApiService> logger, TemplateTransformer templateTransformer, IOptions<TykConfiguration> tykConfiguration)
         {
             _baseService = baseService;
             _logger = logger;
-            _fileOperator = fileOperator;
+            _templateTransformer = templateTransformer;
             _tykConfiguration = tykConfiguration.Value;
             _headers = new Dictionary<string, string>()
             {
@@ -42,7 +42,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #region Transorm individual api
             foreach (var inputApi in inputObject)
             {
-                string transformed = await _fileOperator.Transform(inputApi.ToString(), "GetApiTransformer");
+                string transformed = await _templateTransformer.Transform(inputApi.ToString(), TemplateHelper.GETAPI_TEMPLATE, Domain.Entities.Gateway.Tyk);
                 JObject apiObject = JObject.Parse(transformed);
 
                 apiObject = GetApiVersioning(apiObject, inputApi as JObject);
@@ -69,7 +69,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             JObject inputObject = JObject.Parse(inputJson);
 
             #region Transorm Api
-            string transformed = await _fileOperator.Transform(inputObject.ToString(), "GetApiTransformer");
+            string transformed = await _templateTransformer.Transform(inputObject.ToString(), TemplateHelper.GETAPI_TEMPLATE, Domain.Entities.Gateway.Tyk);
             JObject transformedObject = JObject.Parse(transformed);
 
             transformedObject = GetApiVersioning(transformedObject, inputObject);
@@ -91,7 +91,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation("CreateApiAsync Initiated with {@Api}", api);
             api.ApiId = Guid.NewGuid();
             string requestJson = JsonConvert.SerializeObject(api);
-            string transformed = await _fileOperator.Transform(requestJson, "CreateApiTransformer");
+            string transformed = await _templateTransformer.Transform(requestJson, TemplateHelper.CREATEAPI_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
             #region Add ApiId to Api
             JObject transformedObject = JObject.Parse(transformed);
@@ -110,7 +110,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation("UpdateApiAsync Initiated with {@Api}", api);
             string inputJson = JsonConvert.SerializeObject(api);
-            string transformed = await _fileOperator.Transform(inputJson, "UpdateApiTransformer");
+            string transformed = await _templateTransformer.Transform(inputJson, TemplateHelper.UPDATEAPI_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
             JObject inputObject = JObject.Parse(inputJson);
             JObject transformedObject = JObject.Parse(transformed);

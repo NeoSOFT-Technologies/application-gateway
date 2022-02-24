@@ -4,10 +4,10 @@ using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
-using ApplicationGateway.Application.Features.Transformer.Commands.CreateTransformerCommand;
-using ApplicationGateway.Application.Features.Transformer.Commands.UpdateTransformerCommand;
-using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformer;
-using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerById;
+using ApplicationGateway.Application.Features.Transformers.Commands.CreateTransformerCommand;
+using ApplicationGateway.Application.Features.Transformers.Commands.UpdateTransformerCommand;
+using ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransformer;
+using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerById;
 using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery;
 using ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand;
@@ -15,7 +15,7 @@ using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
 using ApplicationGateway.Domain.TykData;
-using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName;
+using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
 using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
 
@@ -75,21 +75,22 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<AllowedUrl, GetAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, GetPerApiLimit>().ReverseMap();
 
-            CreateMap<Transformers, CreateTransformerCommand>().ReverseMap();
-            CreateMap<Transformers, CreateTransformerDto>().ReverseMap();
+            CreateMap<Transformer, CreateTransformerCommand>().ReverseMap();
+            CreateMap<Transformer, CreateTransformerDto>().ReverseMap();
 
-            CreateMap<Transformers, UpdateTransformerCommand>().ReverseMap();
-            CreateMap<Transformers, UpdateTransformerDto>().ReverseMap();
+            CreateMap<Transformer, UpdateTransformerCommand>().ReverseMap();
+            CreateMap<Transformer, UpdateTransformerDto>().ReverseMap();
 
-            CreateMap<Transformers, GetTransformerDto>().ReverseMap();
-            CreateMap<Transformers, GetTransformerByIdDto>().ReverseMap();
+            CreateMap<Transformer, GetAllTransformersDto>().ReverseMap();
+            CreateMap<Transformer, GetTransformerByIdDto>().ReverseMap();
 
-            CreateMap<Transformers, GetTransformerByNameDto>().ReverseMap();
-            CreateMap<Transformers, GetTransformerByNameQuery>().ReverseMap();
+            CreateMap<Transformer, GetTransformerByNameDto>().ReverseMap();
+            CreateMap<Transformer, GetTransformerByNameQuery>().ReverseMap();
 
             CreateMap<Key,CreateKeyCommand>().ReverseMap();
             CreateMap<AllowedUrl, KeyAllowedUrl>().ReverseMap();
             CreateMap<AccessRightsModel, KeyAccessRightsModel>().ReverseMap();
+            CreateMap<ApiLimit, KeyApiLimit>().ReverseMap();
             CreateMap<Key, UpdateKeyCommand>().ReverseMap();
             CreateMap<AllowedUrl, UpdateKeyAllowedUrl>().ReverseMap();
             CreateMap<AccessRightsModel, UpdateKeyAccessRightsModel>().ReverseMap();

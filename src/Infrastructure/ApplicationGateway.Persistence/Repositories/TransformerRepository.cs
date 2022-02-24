@@ -1,25 +1,22 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
-using ApplicationGateway.Domain.TykData;
+using ApplicationGateway.Domain.Entities;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Persistence.Repositories
 {
-    public class TransformerRepository : BaseRepository<Transformers>, ITransformerRepository
+    public class TransformerRepository : BaseRepository<Transformer>, ITransformerRepository
     {
         private readonly ILogger _logger;
-        public TransformerRepository(ApplicationDbContext dbContext, ILogger<Transformers> logger) : base(dbContext, logger)
+        public TransformerRepository(ApplicationDbContext dbContext, ILogger<Transformer> logger) : base(dbContext, logger)
         {
             _logger = logger;
         }
 
-        public async Task<Transformers> GetTransformerByName(string name)
+        public async Task<Transformer> GetTransformerByNameAndGateway(string name, Gateway gateway)
         {
-            var transformer =   _dbContext.Transformers.Where(a => a.TemplateName == name).FirstOrDefault();
+            _logger.LogInformation("GetTransformerByNameAndGateway Initiated with {@string} & {@Gateway}", name, gateway);
+            var transformer = _dbContext.Transformers.Where(a => a.TemplateName == name && a.Gateway == gateway).FirstOrDefault();
+            _logger.LogInformation("GetTransformerByNameAndGateway Completed");
             return transformer;
         }
     }
