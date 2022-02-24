@@ -21,7 +21,6 @@
         "Default"
       ],
       "allowedUrls": [
-
         {
           "url": "/WeatherForecast",
           "methods": [ "GET" ]

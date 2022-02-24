@@ -19,19 +19,21 @@ using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCom
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class MultipeApiwithKey : IClassFixture<CustomWebApplicationFactory>
+    public partial class MultipeApiwithKey : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
+        private HttpClient client = null;
         public MultipeApiwithKey(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
 
         }
 
         [Fact]
         public async Task Should_create_key()
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid;
             IList<string> path = new List<string>();
             string Url = "";
@@ -133,7 +135,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;

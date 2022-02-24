@@ -19,21 +19,23 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
 {
-    public class RatelimitTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class RatelimitTest : IClassFixture<CustomWebApplicationFactory>
     {
 
         private readonly CustomWebApplicationFactory _factory;
 
+        private HttpClient client = null;
         public RatelimitTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
         }
 
         [Fact]
         public async Task RateLimiting()
         {
 
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
@@ -57,7 +59,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/ControlandLimit/rateLimitData.json");
             UpdateApiCommand data = JsonConvert.DeserializeObject<UpdateApiCommand>(myJsonString1);
             data.Name = newid.ToString();
-            data.ListenPath = $"/{newid.ToString()}/";
+            data.ListenPath = $"/{newid}/";
             data.ApiId = id;
             data.TargetUrl = ApplicationConstants.TARGET_URL;
 
@@ -76,14 +78,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
             }
 
             //check Rate Limit Exceed
-            response = await DownStream(Url);
-            response.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.TooManyRequests);
+            var checkresponse = await DownStream(Url);
+            checkresponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.TooManyRequests);
 
             //Rate Limiting Reset
-            Thread.Sleep(10000);
-            client = HttpClientFactory.Create();
-            response = await client.GetAsync(Url);
-            response.EnsureSuccessStatusCode();
+            //Thread.Sleep(10000);
+            //client = HttpClientFactory.Create();
+            //response = await client.GetAsync(Url);
+            //response.EnsureSuccessStatusCode();
 
 
             //delete Api
@@ -113,7 +115,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }

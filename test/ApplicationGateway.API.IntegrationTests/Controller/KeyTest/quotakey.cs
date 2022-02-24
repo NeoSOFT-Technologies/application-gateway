@@ -18,19 +18,19 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class quotakey : IClassFixture<CustomWebApplicationFactory>
+    public partial class quotakey : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-        
+        private HttpClient client = null;
         public quotakey(CustomWebApplicationFactory factory)
         {
             _factory = factory;
-
+            client = _factory.CreateClient();
         }
         [Fact]
         public async Task quota_with_key()
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
             string versioncheck = "";
@@ -122,7 +122,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }

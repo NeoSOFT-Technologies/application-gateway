@@ -31,13 +31,13 @@ IConfiguration configurationBuilder = new ConfigurationBuilder()
         optional: true)
     .Build();
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configurationBuilder)
-    .CreateBootstrapLogger();
+//Log.Logger = new LoggerConfiguration()
+//    .ReadFrom.Configuration(configurationBuilder)
+//    .CreateBootstrapLogger();
 
-builder.Host.UseSerilog((ctx, lc) => lc
-        .WriteTo.Console()
-        .ReadFrom.Configuration(ctx.Configuration));
+//builder.Host.UseSerilog((ctx, lc) => lc
+//        .WriteTo.Console()
+//        .ReadFrom.Configuration(ctx.Configuration));
 
 // Add services to the container.
 
@@ -105,7 +105,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseHttpsRedirection();
 
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 app.UseAuthentication();
 

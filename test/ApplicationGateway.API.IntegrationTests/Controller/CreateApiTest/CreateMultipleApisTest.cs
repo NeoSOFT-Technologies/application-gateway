@@ -19,20 +19,21 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 {
-    public class CreateMultipleApisTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class CreateMultipleApisTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-
+        private HttpClient client = null;
         public CreateMultipleApisTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
         }
 
 
         [Fact]
         public async Task CreateMultipleApis_ReturnsSuccessResult()
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             string Url;
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createMultipleApiData.json");
 
@@ -65,8 +66,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
             }
         }
 
-
-
         public async Task<HttpResponseMessage> DownStream(string path)
         {
 
@@ -88,7 +87,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }

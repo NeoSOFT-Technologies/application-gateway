@@ -22,13 +22,14 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessControl
 {
-    public class AllowedUrlTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class AllowedUrlTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-
+        private HttpClient client = null;
         public AllowedUrlTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
         }
 
 
@@ -39,7 +40,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
         public async Task Add_policy_with_Api_AllowedUrls()
         {
 
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
 
@@ -136,7 +137,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;
@@ -145,7 +146,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
 
         private async Task<HttpResponseMessage> DeletePolicy(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Policy/" + id);
             //   await HotReload();
             return response;
@@ -154,7 +155,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
 
         private async Task<HttpResponseMessage> DeleteKey(string id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Key/DeleteKey?keyId=" + id);
             // await HotReload();
             return response;
