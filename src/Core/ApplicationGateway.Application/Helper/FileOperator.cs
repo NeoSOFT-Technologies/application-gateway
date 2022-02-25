@@ -33,39 +33,17 @@ namespace ApplicationGateway.Application.Helper
 
         public async Task CreatePolicy(string policiesFolderPath, string policyId, JObject transformedObject)
         {
-            //string policiesJson = await ReadPolicies(policiesFolderPath);
-            if (!Directory.Exists(policiesFolderPath))
-            {
-                Directory.CreateDirectory(policiesFolderPath);
-            }
-            if (!File.Exists($@"{policiesFolderPath}\policies.json"))
-            {
-                StreamWriter sw = File.CreateText($@"{policiesFolderPath}\policies.json");
-                await sw.WriteLineAsync("{}");
-                sw.Dispose();
-            }
-            string policiesJson = await File.ReadAllTextAsync($@"{policiesFolderPath}\policies.json");
+            string policiesJson = await ReadPolicies(policiesFolderPath);
+
             JObject policiesObject = JObject.Parse(policiesJson);
             policiesObject.Add(policyId, transformedObject);
 
-            //await WritePolicies(policiesFolderPath, policiesObject.ToString());
-            await File.WriteAllTextAsync($@"{policiesFolderPath}\policies.json", policiesObject.ToString());
+            await WritePolicies(policiesFolderPath, policiesObject.ToString());
         }
 
         public async Task UpdateDeletePolicyById(string policiesFolderPath, string policyId, JObject transformedObject = null)
         {
-            //string policiesJson = await ReadPolicies(policiesFolderPath);
-            if (!Directory.Exists(policiesFolderPath))
-            {
-                Directory.CreateDirectory(policiesFolderPath);
-            }
-            if (!File.Exists($@"{policiesFolderPath}\policies.json"))
-            {
-                StreamWriter sw = File.CreateText($@"{policiesFolderPath}\policies.json");
-                await sw.WriteLineAsync("{}");
-                sw.Dispose();
-            }
-            string policiesJson = await File.ReadAllTextAsync($@"{policiesFolderPath}\policies.json");
+            string policiesJson = await ReadPolicies(policiesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
 
             if (!policiesObject.ContainsKey(policyId))
@@ -77,8 +55,7 @@ namespace ApplicationGateway.Application.Helper
             if (transformedObject is not null)
                 policiesObject.Add(policyId, transformedObject);
 
-            //await WritePolicies(policiesFolderPath, policiesObject.ToString());
-            await File.WriteAllTextAsync($@"{policiesFolderPath}\policies.json", policiesObject.ToString());
+            await WritePolicies(policiesFolderPath, policiesObject.ToString());
         }
     }
 }
