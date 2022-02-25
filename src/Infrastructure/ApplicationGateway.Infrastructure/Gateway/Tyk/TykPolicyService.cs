@@ -97,11 +97,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Add Policy to policies.json
-            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            JObject policiesObject = JObject.Parse(policiesJson);
-            policiesObject.Add(policy.PolicyId.ToString(), transformedObject);
-
-            await _fileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.CreatePolicy(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
             #endregion
 
             await _baseService.HotReload();
@@ -127,19 +123,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Update Policy in policies.json
-            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            JObject policiesObject = JObject.Parse(policiesJson);
-
-            string policyId = policy.PolicyId.ToString();
-            if (!policiesObject.ContainsKey(policyId))
-            {
-                throw new NotFoundException($"Policy with id:", policyId);
-            }
-
-            policiesObject.Remove(policyId);
-            policiesObject.Add(policyId, transformedObject);
-
-            await _fileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
             #endregion
 
             await _baseService.HotReload();
@@ -151,16 +135,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task DeletePolicyAsync(Guid policyId)
         {
             _logger.LogInformation("DeletePolicyAsync Initiated with {@Guid}", policyId);
-            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            JObject policiesObject = JObject.Parse(policiesJson);
-
-            if (!policiesObject.ContainsKey(policyId.ToString()))
-            {
-                throw new NotFoundException($"Policy with id:", policyId.ToString());
-            }
-
-            policiesObject.Remove(policyId.ToString());
-            await _fileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policyId.ToString());
 
             await _baseService.HotReload();
 
