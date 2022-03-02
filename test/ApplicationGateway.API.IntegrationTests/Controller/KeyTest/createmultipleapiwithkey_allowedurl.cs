@@ -16,16 +16,16 @@ using System.Collections.Generic;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
+using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class MultipeApiwithKey : IClassFixture<CustomWebApplicationFactory>
+    public class createmultipleapiwithkey_allowedurl : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-        public MultipeApiwithKey(CustomWebApplicationFactory factory)
+        public createmultipleapiwithkey_allowedurl(CustomWebApplicationFactory factory)
         {
             _factory = factory;
-
         }
 
         [Fact]
@@ -60,21 +60,41 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             var responseModel = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
 
+            //read update json file
+            for (var i = 0; i < responseModel.Data.APIs.Count; i++)
+            {
+                var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/updateApiData.json");
+                UpdateApiCommand updaterequestModel1 = JsonConvert.DeserializeObject<UpdateApiCommand>(myupdateJsonString);
+                updaterequestModel1.Name = responseModel.Data.APIs[i].Name;
+                updaterequestModel1.ListenPath = $"/{responseModel.Data.APIs[i].Name}/";
+                updaterequestModel1.ApiId = responseModel.Data.APIs[i].ApiId;
+                updaterequestModel1.AuthType = "standard";
+
+                //updateappi
+                var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
+                HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
+                var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
+                updateresponse.EnsureSuccessStatusCode();
+                Thread.Sleep(2000);
+            }
             //read craatekey json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createkeydata_allowedurl.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             string[] version = new string[] { "Default" };
             JArray jarrayObj = new JArray();
             JArray jarrayObj1 = new JArray();
+            jarrayObj1.Add("POST");
             foreach (string versions in version)
             {
                 jarrayObj.Add(versions);
             }
             JArray accessRight = new JArray();
+            JArray AllowedArray = new JArray();
             JObject AllowedUrls = new JObject(
-                new JProperty("Url", ""),
+                new JProperty("Url", "/WeatherForecast"),
                 new JProperty("Methods", jarrayObj1)
                 );
+            AllowedArray.Add(AllowedUrls);
             JObject Limit = new JObject(
                 new JProperty("Rate", 0),
                 new JProperty("Per", 0),
@@ -88,15 +108,13 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 );
             for (var i = 0; i < responseModel.Data.APIs.Count; i++)
             {
-
                 JObject obj = new JObject();
                 obj.Add("ApiId", responseModel.Data.APIs[i].ApiId);
                 obj.Add("ApiName", apiName[i]);
                 obj.Add("Versions", jarrayObj);
-                obj.Add("AllowedUrls", jarrayObj1);
+                obj.Add("AllowedUrls", AllowedArray);
                 obj.Add("Limit", Limit);
                 accessRight.Add(obj);
-
             }
             keyrequestmodel["AccessRights"] = accessRight;
             StringContent stringContent = new StringContent(keyrequestmodel.ToString(), System.Text.Encoding.UTF8, "application/json");
@@ -110,11 +128,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var keyid = key["data"]["keyId"];
             foreach (var item in apiName)
             {
-                var clientkey = HttpClientFactory.Create();
-                clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
                 Url = ApplicationConstants.TYK_BASE_URL + item.ToString() + "/WeatherForecast";
-                var responseclientkey = await clientkey.GetAsync(Url);
-                var check = responseclientkey.EnsureSuccessStatusCode();
+                var responseclientkeys = await DownStream(Url, keyid.ToString());
+                responseclientkeys.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
             }
 
 
@@ -128,14 +144,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         }
 
 
-
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public async Task<HttpResponseMessage> DownStream(string path, string keyid)
         {
 
             try
             {
-                var client = HttpClientFactory.Create();
-                var response = await client.GetAsync(path);
+                var clients = HttpClientFactory.Create();
+                clients.DefaultRequestHeaders.Add("Authorization", keyid);
+                var response = await clients.GetAsync(path);
                 return response;
             }
             catch (Exception ex)
@@ -153,5 +169,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             // await HotReload();
             return response;
         }
+
     }
 }

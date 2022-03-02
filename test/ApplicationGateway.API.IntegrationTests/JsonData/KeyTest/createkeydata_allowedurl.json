@@ -1,8 +1,8 @@
 {
-  "Rate": 3,
-  "Per": 60,
-  "Quota": 3,
-  "QuotaRenewalRate": 3600,
+  "Rate": 0,
+  "Per": 0,
+  "Quota": 0,
+  "QuotaRenewalRate": 0,
   "ThrottleInterval": 0,
   "ThrottleRetries": 0,
   "Expires": 0,
@@ -13,7 +13,14 @@
       "Versions": [
         "Default"
       ],
-      "AllowedUrls": [],
+      "AllowedUrls": [
+        {
+          "url": "/WeatherForecast",
+          "methods": [
+            "POST"
+          ]
+        }
+      ],
       "Limit": {
         "Rate": 0,
         "Per": 0,
