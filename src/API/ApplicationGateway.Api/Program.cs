@@ -40,9 +40,9 @@ var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configurationBuilder)
     .CreateLogger();
 
-//builder.Host.UseSerilog((ctx, lc) => lc
-//        .WriteTo.Console()
-//        .ReadFrom.Configuration(ctx.Configuration));
+builder.Host.UseSerilog((ctx, lc) => lc
+        .WriteTo.Console()
+        .ReadFrom.Configuration(ctx.Configuration));
 
 // Add services to the container.
 
