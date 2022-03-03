@@ -7,6 +7,7 @@
   "quota_renewal_rate": "#valueof(QuotaRenewalRate)",
   "throttle_interval": "#valueof(ThrottleInterval)",
   "throttle_retry_limit": "#valueof(ThrottleRetries)",
+  "is_inactive": "#valueof(IsInActive)",
   "access_rights": {},
   "apply_policies": null
 }

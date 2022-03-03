@@ -241,6 +241,24 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                         accObj.Add("allowed_urls", allowedUrls);
                     }
                     #endregion
+                    #region Added perApiLimits, if exists
+                    if (api.Limit != null)
+                    {
+                        JObject limit = new JObject();
+                        limit.Add("rate", api.Limit.Rate);
+                        limit.Add("per", api.Limit.Per);
+                        limit.Add("throttle_interval", api.Limit.Throttle_interval);
+                        limit.Add("throttle_retry_limit", api.Limit.Throttle_retry_limit);
+                        limit.Add("max_query_depth", api.Limit.Max_query_depth);
+                        limit.Add("quota_max", api.Limit.Quota_max);
+                        limit.Add("quota_renews", api.Limit.Quota_renews);
+                        limit.Add("quota_remaining", api.Limit.Quota_remaining);
+                        limit.Add("quota_renewal_rate", api.Limit.Quota_renewal_rate);
+
+                        accObj.Add("limit", limit);
+                        accObj.Add("allowance_scope", api.ApiId.ToString());
+                    }
+                    #endregion
 
                     (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
                 }

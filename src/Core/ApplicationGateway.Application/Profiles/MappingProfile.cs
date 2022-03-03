@@ -97,6 +97,8 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Key, UpdateKeyCommandDto>().ReverseMap();
             CreateMap<AllowedUrl, UpdateAllowedUrlDto>().ReverseMap();
             CreateMap<AccessRightsModel, UpdateAccessRightsModelDto>().ReverseMap();
+            CreateMap<ApiLimit, UpdateKeyLimit>().ReverseMap();
+            CreateMap<ApiLimit, UpdateKeyLimitDto>().ReverseMap();
 
 
         }
