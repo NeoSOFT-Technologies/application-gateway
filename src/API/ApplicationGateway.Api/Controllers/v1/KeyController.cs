@@ -1,6 +1,7 @@
 ﻿using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
+using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 using ApplicationGateway.Application.Features.Key.Queries.GetKey;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
@@ -27,12 +28,21 @@ namespace ApplicationGateway.Api.Controllers.v1
         }
 
         [HttpGet]
+        public async Task<ActionResult> GetAllKeys()
+        {
+            _logger.LogInformation("GetAllKeys initiated in controller");
+            var response = await _mediator.Send(new GetAllKeysQuery());
+            _logger.LogInformation("GetAllKeys completed in controller");
+            return Ok(response);
+        }
+
+        [HttpGet]
         public async Task<ActionResult<Response<Key>>> GetKey(string keyId)
         {
             _logger.LogInformation($"GetKey initiated in controller for {keyId}");
             var response = await _mediator.Send(new GetKeyQuery() { keyId = keyId });
             _logger.LogInformation($"GetKey completed in controller for {keyId}");
-            return response;
+            return Ok(response);
         }
 
         [HttpPost]

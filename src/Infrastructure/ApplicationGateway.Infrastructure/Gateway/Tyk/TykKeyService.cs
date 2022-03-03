@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.Entities;
@@ -32,7 +33,21 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             };
             _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/keys", _headers);
         }
-
+        public async Task<List<string>> GetAllKeysAsync()
+        {
+            _logger.LogInformation("GetAllKeysAsync initiated");
+            var listObj = JsonConvert.DeserializeObject<JObject>(await _restClient.GetAsync(null));
+            #region Parse in List<string>
+            JArray list = JArray.Parse(listObj["keys"].ToString());
+            if (!list.Any())
+                throw new NotFoundException("Any Key","");
+            List<string> listKey = new List<string>();
+            foreach (var keyId in list)
+                listKey.Add(keyId.ToString());
+            #endregion
+            _logger.LogInformation("GetAllKeysAsync completed");
+            return listKey;
+        }
         public async Task<Key> GetKeyAsync(string keyId)
         {
             _logger.LogInformation($"GetKeyAsync initiated for {keyId}");
