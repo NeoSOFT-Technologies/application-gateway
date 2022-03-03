@@ -55,7 +55,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApis", content);
             response.EnsureSuccessStatusCode();
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
             var jsonString = response.Content.ReadAsStringAsync();
 
             var responseModel = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);

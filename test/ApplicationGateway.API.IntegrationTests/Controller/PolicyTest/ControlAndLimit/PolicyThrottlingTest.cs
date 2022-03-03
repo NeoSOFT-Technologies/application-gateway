@@ -58,7 +58,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //Update standard authentication
             //Read Json
@@ -91,7 +91,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var Policyresult = JsonConvert.DeserializeObject<Response<CreatePolicyDto>>(PolicyjsonString.Result);
 
             var policyId = Policyresult.Data.PolicyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //create key for policy
             var myKeyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicyKey.json");
@@ -108,7 +108,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             var keyresult = JsonConvert.DeserializeObject<Response<Key>>(jsonStringkey);
             var keyId = keyresult.Data.KeyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
             //downstream api
             var clientkey = HttpClientFactory.Create();
             clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
@@ -158,7 +158,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //Update standard authentication
             //Read Json
@@ -191,7 +191,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var Policyresult = JsonConvert.DeserializeObject<Response<CreatePolicyDto>>(PolicyjsonString.Result);
 
             var policyId = Policyresult.Data.PolicyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //create key for policy
             var myKeyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicyKey.json");
@@ -208,7 +208,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             var keyresult = JsonConvert.DeserializeObject<Response<Key>>(jsonStringkey);
             var keyId = keyresult.Data.KeyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //downstream api
             var clientkey = HttpClientFactory.Create();

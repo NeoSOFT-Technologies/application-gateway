@@ -46,7 +46,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
 
             //downstream
             var listenpath = requestModel1.ListenPath.Trim(new char[] { '/' });

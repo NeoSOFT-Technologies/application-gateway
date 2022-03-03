@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Downstream", "Downstream", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownstreamApi", "Downstream\DownstreamApi\DownstreamApi.csproj", "{4107DBC9-C82B-4153-A260-79918669F928}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationGateway.Worker", "src\Infrastructure\ApplicationGateway.Worker\ApplicationGateway.Worker.csproj", "{11369D43-881A-4207-8DBB-02DCC9ACE259}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{4107DBC9-C82B-4153-A260-79918669F928}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4107DBC9-C82B-4153-A260-79918669F928}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4107DBC9-C82B-4153-A260-79918669F928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11369D43-881A-4207-8DBB-02DCC9ACE259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11369D43-881A-4207-8DBB-02DCC9ACE259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11369D43-881A-4207-8DBB-02DCC9ACE259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11369D43-881A-4207-8DBB-02DCC9ACE259}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{FABD7EC7-BD53-45E2-BE9E-C0AA6837E938} = {C2881BE8-1B16-43D8-977E-3BA8C208B884}
 		{89B82EAD-8D24-49DD-A22A-E52B4260D203} = {C2881BE8-1B16-43D8-977E-3BA8C208B884}
 		{4107DBC9-C82B-4153-A260-79918669F928} = {E8AC95FE-E7F3-4EE1-8C92-DED0022ED73C}
+		{11369D43-881A-4207-8DBB-02DCC9ACE259} = {3B18EEFC-4A69-4E48-BF9A-51DFDE77DD0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {920EDF2B-79D6-48A5-AF80-5C4256675664}

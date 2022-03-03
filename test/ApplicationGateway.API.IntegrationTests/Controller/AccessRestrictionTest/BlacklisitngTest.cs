@@ -52,7 +52,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTe
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //getorigin
             var ipaddress = await getsOrigin(OriginUrl);
@@ -79,7 +79,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTe
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
 
             //downstream

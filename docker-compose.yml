@@ -5,7 +5,7 @@ networks:
   tyk:
   es:
     driver: bridge
-  
+
 services:
   tyk-gateway:
     image: docker.tyk.io/tyk-gateway/tyk-gateway:v3.2.1
@@ -43,7 +43,6 @@ services:
     networks:
       - clean-network
 
-
   downstreamapi1:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
@@ -57,7 +56,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-   
+
   downstreamapi2:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
@@ -73,20 +72,21 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
   elasticsearch:
-     image: elasticsearch:6.8.6
-     ports:
-       - 9200:9200
-     networks:
-       - es
-  
+    image: elasticsearch:7.17.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    networks:
+      - es
+
   kibana:
-     image: docker.elastic.co/kibana/kibana:6.8.6  
-     ports:
-       - 5601:5601
-     environment:
-       - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
-     depends_on:
-       - elasticsearch
-     networks:
-       - es
-  
+    image: kibana:7.17.0
+    ports:
+      - 5601:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - es

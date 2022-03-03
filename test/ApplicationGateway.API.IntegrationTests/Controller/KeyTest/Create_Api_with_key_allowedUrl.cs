@@ -54,7 +54,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
 
-            Thread.Sleep(4000);
+            Thread.Sleep(5000);
 
             //read update json file
             var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/updateApiData.json");
@@ -69,7 +69,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //read json file 
             var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createkeydata_allowedurl.json");
