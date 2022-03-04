@@ -19,6 +19,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 {
+    [Collection("Database")]
     public partial class CreateMultipleApisTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;

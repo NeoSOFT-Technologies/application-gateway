@@ -20,6 +20,7 @@ using static DownstreamApi.Controllers.WeatherForecastController;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public class Create_Api_with_key_allowedUrl: IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;

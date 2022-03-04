@@ -22,6 +22,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessControl
 {
+    [Collection("Database")]
     public partial class AllowedUrlTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -32,14 +33,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
             client = _factory.CreateClient();
         }
 
-
-
-
-
         [Fact]
         public async Task Add_policy_with_Api_AllowedUrls()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";

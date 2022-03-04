@@ -1,4 +1,7 @@
 using ApplicationGateway.Application.Exceptions;
+using ApplicationGateway.Application.Helper;
+using ApplicationGateway.Application.Models.Tyk;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
 
@@ -9,14 +12,21 @@ public class Worker : BackgroundService
     private readonly ILogger<Worker> _logger;
     private readonly IConnectionMultiplexer _redis;
     private readonly ISubscriber _subscriber;
-    private readonly string _policiesFolderPath;
+    private readonly TykConfiguration _tykConfiguration;
+    private readonly RestClient<string> _restClient;
+    private readonly Dictionary<string, string> _headers;
 
-    public Worker(ILogger<Worker> logger, IConnectionMultiplexer redis)
+    public Worker(ILogger<Worker> logger, IConnectionMultiplexer redis, IOptions<TykConfiguration> tykConfiguration)
     {
         _logger = logger;
         _redis = redis;
         _subscriber = _redis.GetSubscriber();
-        _policiesFolderPath = "C:\\Projects\\ApplicationGateway\\application-gateway\\tyk-gateway-docker\\tyk-gateway-docker\\policies";
+        _tykConfiguration = tykConfiguration.Value;
+        _headers = new Dictionary<string, string>()
+            {
+                { "x-tyk-authorization", _tykConfiguration.Secret }
+            };
+        _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/reload/group", _headers);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,59 +40,62 @@ public class Worker : BackgroundService
                 case "create":
                     messageObject.Remove("operation");
                     await CreatePolicy(messageObject);
-                    await HotReload();
                     break;
                 case "update":
                     messageObject.Remove("operation");
                     await UpdateDeletePolicyById(messageObject["policyId"].Value<string>(), messageObject);
-                    await HotReload();
                     break;
                 case "delete":
                     messageObject.Remove("operation");
                     await UpdateDeletePolicyById(messageObject["policyId"].Value<string>());
-                    await HotReload();
                     break;
                 default:
                     break;
             }
-            //await Task.Delay(1000);
+            await _restClient.GetAsync(null);
         }); 
     }
 
     public async Task<string> ReadPolicies(string policiesFolderPath)
     {
+        _logger.LogInformation($"{policiesFolderPath}");
         if (!Directory.Exists(policiesFolderPath))
         {
+            _logger.LogInformation($"Folder doesn't exist {Directory.GetCurrentDirectory()}");
             Directory.CreateDirectory(policiesFolderPath);
         }
-        if (!File.Exists($@"{policiesFolderPath}\policies.json"))
+        if (!File.Exists($@"{policiesFolderPath}/policies.json"))
         {
-            StreamWriter sw = File.CreateText($@"{policiesFolderPath}\policies.json");
+            _logger.LogInformation($"File doesn't exist {Directory.GetCurrentDirectory()}");
+            _logger.LogInformation($@"{policiesFolderPath}/policies.json");
+            StreamWriter sw = File.CreateText($@"{policiesFolderPath}/policies.json");
             await sw.WriteLineAsync("{}");
             sw.Dispose();
         }
-        return await File.ReadAllTextAsync($@"{policiesFolderPath}\policies.json");
+        return await File.ReadAllTextAsync($@"{policiesFolderPath}/policies.json");
     }
 
     public async Task WritePolicies(string policiesFolderPath, string content)
     {
-        await File.WriteAllTextAsync($@"{policiesFolderPath}\policies.json", content);
+        _logger.LogInformation($"{policiesFolderPath}");
+        _logger.LogInformation($"{Directory.GetCurrentDirectory()}");
+        await File.WriteAllTextAsync($@"{policiesFolderPath}/policies.json", content);
     }
 
     public async Task CreatePolicy(JObject transformedObject)
     {
-        string policiesJson = await ReadPolicies(_policiesFolderPath);
+        string policiesJson = await ReadPolicies(_tykConfiguration.PoliciesFolderPath);
         JObject policiesObject = JObject.Parse(policiesJson);
         string policyId = transformedObject["policyId"].Value<string>();
         transformedObject.Remove("policyId");
         policiesObject.Add(policyId, transformedObject);
 
-        await WritePolicies(_policiesFolderPath, policiesObject.ToString());
+        await WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
     }
 
     public async Task UpdateDeletePolicyById(string policyId, JObject transformedObject = null)
     {
-        string policiesJson = await ReadPolicies(_policiesFolderPath);
+        string policiesJson = await ReadPolicies(_tykConfiguration.PoliciesFolderPath);
         JObject policiesObject = JObject.Parse(policiesJson);
 
         if (!policiesObject.ContainsKey(policyId))
@@ -97,7 +110,7 @@ public class Worker : BackgroundService
             policiesObject.Add(policyId, transformedObject);
         }
 
-        await WritePolicies(_policiesFolderPath, policiesObject.ToString());
+        await WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
     }
 
     private async Task HotReload()

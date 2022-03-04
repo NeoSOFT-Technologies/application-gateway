@@ -19,6 +19,7 @@ using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCom
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public class MultipeApiwithKey : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;

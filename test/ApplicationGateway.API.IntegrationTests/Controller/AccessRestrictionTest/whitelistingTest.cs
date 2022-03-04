@@ -19,6 +19,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTest
 {
+    [Collection("Database")]
     public partial class WhitelistingTest : IClassFixture<CustomWebApplicationFactory>
     {
 

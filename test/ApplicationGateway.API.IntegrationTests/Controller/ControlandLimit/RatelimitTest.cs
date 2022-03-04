@@ -19,6 +19,7 @@
 
 //namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
 //{
+//    [Collection("Database")]
 //    public partial class RatelimitTest : IClassFixture<CustomWebApplicationFactory>
 //    {
 

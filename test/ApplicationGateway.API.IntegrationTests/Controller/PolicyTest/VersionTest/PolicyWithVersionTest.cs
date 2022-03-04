@@ -22,6 +22,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.VersionTest
 {
+    [Collection("Database")]
     public partial class PolicyWithVersionTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;

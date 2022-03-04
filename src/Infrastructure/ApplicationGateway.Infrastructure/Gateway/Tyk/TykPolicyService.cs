@@ -59,15 +59,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task<Policy> GetPolicyByIdAsync(Guid policyId)
         {
             _logger.LogInformation("GetPolicyByIdAsync Initiated with {@Guid}", policyId);
-            //string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            //JObject policiesObject = JObject.Parse(policiesJson);
-            //if (!policiesObject.ContainsKey(policyId.ToString()))
-            //{
-            //    throw new NotFoundException("Policy with id", policyId);
-            //}
 
             #region Transform policy
-            //string policyJson = policiesObject[policyId.ToString()].ToString();
             string policyJson = await _redisService.GetAsync(policyId.ToString());
             JObject policyObject = JObject.Parse(policyJson);
             string transformed = await _templateTransformer.Transform(policyJson, TemplateHelper.GETPOLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
@@ -101,13 +94,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Add Policy to policies.json
-            //transformedObject.Add("policyId", policy.PolicyId.ToString());
-            ////await _fileOperator.CreatePolicy(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
-            //transformedObject.Add("operation", "create");
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "create");
             #endregion
-
-            //await _baseService.HotReload();
 
             _logger.LogInformation("CreatePolicyAsync Completed");
             return policy;
@@ -130,9 +118,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Update Policy in policies.json
-            //await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
-            //transformedObject.Add("operation", "update");
-            //transformedObject.Add("policyId", policy.PolicyId.ToString());
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "update");
             #endregion
 
@@ -145,12 +130,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task DeletePolicyAsync(Guid policyId)
         {
             _logger.LogInformation("DeletePolicyAsync Initiated with {@Guid}", policyId);
-            //await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policyId.ToString());
-
             await _redisService.DeleteAsync(policyId.ToString());
-
-            //await _baseService.HotReload();
-
             _logger.LogInformation("DeletePolicyAsync Completed");
         }
 
