@@ -18,6 +18,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public partial class keyExpireTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -37,7 +38,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createApiData.json");
             CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
             requestModel1.Name = newid.ToString();
             requestModel1.ListenPath = $"/{newid}/";
@@ -51,7 +52,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
            
-            Thread.Sleep(4000);
+            Thread.Sleep(5000);
 
             //read update json file
             var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/updateApiData.json");
@@ -66,10 +67,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
            
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             // read createkey json file
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createKeyData.json");
             //Int32 unixTimestamp = (Int32)(DateTime.Now.Subtract(DateTime.Now.AddSeconds(60))).TotalSeconds;
             DateTime foo = DateTime.Now.AddSeconds(30);
             long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();

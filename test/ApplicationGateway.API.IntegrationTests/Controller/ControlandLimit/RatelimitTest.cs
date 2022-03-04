@@ -19,6 +19,7 @@
 
 //namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
 //{
+//    [Collection("Database")]
 //    public partial class RatelimitTest : IClassFixture<CustomWebApplicationFactory>
 //    {
 
@@ -53,7 +54,7 @@
 //            var jsonString = response.Content.ReadAsStringAsync();
 //            var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
 //            var id = result.Data.ApiId;
-//            Thread.Sleep(3000);
+//            Thread.Sleep(5000);
 
 //            //Read Json
 //            var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/ControlandLimit/rateLimitData.json");

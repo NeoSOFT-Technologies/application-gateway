@@ -18,6 +18,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public partial class VersioningKeys : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -38,7 +39,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
             string versioncheck = "";
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createApiData.json");
             CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
             requestModel1.Name = newid.ToString();
             requestModel1.ListenPath = $"/{newid}/";
@@ -70,7 +71,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //create key for version v1
             //read json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createKeyData.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             foreach (var item in keyrequestmodel["AccessRights"])
             {

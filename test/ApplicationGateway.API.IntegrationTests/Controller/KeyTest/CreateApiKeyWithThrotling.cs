@@ -20,6 +20,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public class CreateApiKeyWithThrotling : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -55,7 +56,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApis", content);
             response.EnsureSuccessStatusCode();
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
             var jsonString = response.Content.ReadAsStringAsync();
 
             var responseModel = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
@@ -75,10 +76,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
                 var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
                 updateresponse.EnsureSuccessStatusCode();
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
             }
             //read craatekey json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createkeydata_limit.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createkeydata_limit.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             string[] version = new string[] { "Default" };
             JArray jarrayObj = new JArray();

@@ -1,4 +1,5 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure;
+using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
@@ -17,14 +18,16 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         private readonly ILogger<TykPolicyService> _logger;
         private readonly FileOperator _fileOperator;
         private readonly TemplateTransformer _templateTransformer;
+        private readonly IRedisService _redisService;
 
-        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator, TemplateTransformer templateTransformer)
+        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator, TemplateTransformer templateTransformer, IRedisService redisService)
         {
             _baseService = baseService;
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
             _fileOperator = fileOperator;
             _templateTransformer = templateTransformer;
+            _redisService = redisService;
         }
 
         public async Task<List<Policy>> GetAllPoliciesAsync()
@@ -56,15 +59,9 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task<Policy> GetPolicyByIdAsync(Guid policyId)
         {
             _logger.LogInformation("GetPolicyByIdAsync Initiated with {@Guid}", policyId);
-            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            JObject policiesObject = JObject.Parse(policiesJson);
-            if (!policiesObject.ContainsKey(policyId.ToString()))
-            {
-                throw new NotFoundException("Policy with id", policyId);
-            }
 
             #region Transform policy
-            string policyJson = policiesObject[policyId.ToString()].ToString();
+            string policyJson = await _redisService.GetAsync(policyId.ToString());
             JObject policyObject = JObject.Parse(policyJson);
             string transformed = await _templateTransformer.Transform(policyJson, TemplateHelper.GETPOLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
             JObject transformedObject = JObject.Parse(transformed);
@@ -97,10 +94,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Add Policy to policies.json
-            await _fileOperator.CreatePolicy(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
+            await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "create");
             #endregion
-
-            await _baseService.HotReload();
 
             _logger.LogInformation("CreatePolicyAsync Completed");
             return policy;
@@ -123,10 +118,10 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Update Policy in policies.json
-            await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
+            await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "update");
             #endregion
 
-            await _baseService.HotReload();
+            //await _baseService.HotReload();
 
             _logger.LogInformation("UpdatePolicyAsync Completed");
             return policy;
@@ -135,10 +130,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task DeletePolicyAsync(Guid policyId)
         {
             _logger.LogInformation("DeletePolicyAsync Initiated with {@Guid}", policyId);
-            await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policyId.ToString());
-
-            await _baseService.HotReload();
-
+            await _redisService.DeleteAsync(policyId.ToString());
             _logger.LogInformation("DeletePolicyAsync Completed");
         }
 
