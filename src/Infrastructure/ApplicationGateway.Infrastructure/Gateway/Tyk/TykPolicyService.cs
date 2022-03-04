@@ -1,6 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure;
 using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.Entities;
@@ -13,16 +12,14 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 {
     public class TykPolicyService : IPolicyService
     {
-        private readonly IBaseService _baseService;
         private readonly TykConfiguration _tykConfiguration;
         private readonly ILogger<TykPolicyService> _logger;
         private readonly FileOperator _fileOperator;
         private readonly TemplateTransformer _templateTransformer;
         private readonly IRedisService _redisService;
 
-        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator, TemplateTransformer templateTransformer, IRedisService redisService)
+        public TykPolicyService(ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator, TemplateTransformer templateTransformer, IRedisService redisService)
         {
-            _baseService = baseService;
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
             _fileOperator = fileOperator;
@@ -80,18 +77,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation("CreatePolicyAsync Initiated with {@Policy}", policy);
 
             policy.PolicyId = Guid.NewGuid();
-            string requestJson = JsonConvert.SerializeObject(policy);
-            string transformed = await _templateTransformer.Transform(requestJson, TemplateHelper.POLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
-            JObject inputObject = JObject.Parse(requestJson);
-            JObject transformedObject = JObject.Parse(transformed);
-
-            #region Add Access Rights to Policy
-            if (inputObject["APIs"].Count() != 0)
-            {
-                transformedObject["access_rights"] = SetPolicyApis(inputObject);
-            }
-            #endregion
+            JObject transformedObject = await CreateUpdatePolicy(policy);
 
             #region Add Policy to policies.json
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "create");
@@ -104,24 +91,12 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task<Policy> UpdatePolicyAsync(Policy policy)
         {
             _logger.LogInformation("UpdatePolicyAsync Initiated with {@Policy}", policy);
-            string requestJson = JsonConvert.SerializeObject(policy);
-            string transformed = await _templateTransformer.Transform(requestJson, TemplateHelper.POLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
-            JObject inputObject = JObject.Parse(requestJson);
-            JObject transformedObject = JObject.Parse(transformed);
+            JObject transformedObject = await CreateUpdatePolicy(policy);
 
-            #region Add Access Rights to Policy
-            if (inputObject["APIs"].Count() != 0)
-            {
-                transformedObject["access_rights"] = SetPolicyApis(inputObject);
-            }
-            #endregion
-
-            #region Update Policy in policies.json
+            #region Add Policy to policies.json
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "update");
             #endregion
-
-            //await _baseService.HotReload();
 
             _logger.LogInformation("UpdatePolicyAsync Completed");
             return policy;
@@ -167,6 +142,24 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     };
                 (transformedObject["APIs"] as JArray).Add(transformedApiObject);
             }
+            return transformedObject;
+        }
+
+        private async Task<JObject> CreateUpdatePolicy(Policy policy)
+        {
+            string requestJson = JsonConvert.SerializeObject(policy);
+            string transformed = await _templateTransformer.Transform(requestJson, TemplateHelper.POLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
+
+            JObject inputObject = JObject.Parse(requestJson);
+            JObject transformedObject = JObject.Parse(transformed);
+
+            #region Add Access Rights to Policy
+            if (inputObject["APIs"].Count() != 0)
+            {
+                transformedObject["access_rights"] = SetPolicyApis(inputObject);
+            }
+            #endregion
+
             return transformedObject;
         }
     }

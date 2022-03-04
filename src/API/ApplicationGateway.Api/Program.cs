@@ -76,7 +76,7 @@ services.AddSwaggerGen(options => options.OperationFilter<SwaggerDefaultValues>(
 services.AddControllers();
 services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(@"bin\debug\configuration"));
-//services.AddHealthcheckExtensionService(Configuration);
+services.AddHealthcheckExtensionService(Configuration);
 
 builder.Services.AddSwaggerGen();
 
@@ -143,14 +143,14 @@ app.UseAuthorization();
 app.MapControllers();
 
 //adding endpoint of health check for the health check ui in UI format
-//app.MapHealthChecks("/healthz", new HealthCheckOptions
-//{
-//    Predicate = _ => true,
-//    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-//});
+app.MapHealthChecks("/healthz", new HealthCheckOptions
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
-////map healthcheck ui endpoing - default is /healthchecks-ui/
-//app.MapHealthChecksUI();
+//map healthcheck ui endpoing - default is /healthchecks-ui/
+app.MapHealthChecksUI();
 
 app.Run();
 
