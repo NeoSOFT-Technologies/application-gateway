@@ -62,7 +62,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var responseModel = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
 
             //read craatekey json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createKeyData.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             string[] version = new string[] { "Default" };
             JArray jarrayObj = new JArray();

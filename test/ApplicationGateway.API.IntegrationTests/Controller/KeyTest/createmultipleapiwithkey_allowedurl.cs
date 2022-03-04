@@ -79,7 +79,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 Thread.Sleep(5000);
             }
             //read craatekey json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createkeydata_allowedurl.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createkeydata_allowedurl.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             string[] version = new string[] { "Default" };
             JArray jarrayObj = new JArray();
