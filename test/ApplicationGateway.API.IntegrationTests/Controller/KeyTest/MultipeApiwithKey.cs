@@ -37,7 +37,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = "";
             List<string> apiName = new List<string>();
             //IList<CreateMultipleApisCommand> requestModel1 = new List<CreateMultipleApisCommand>();
-            
+
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createMultipleApiData.json");
             var requestModel1 = JsonConvert.DeserializeObject<CreateMultipleApisCommand>(myJsonString);
 
@@ -73,15 +73,30 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             JArray accessRight = new JArray();
             JObject AllowedUrls = new JObject(
                 new JProperty("Url", ""),
-                new JProperty("Methods",jarrayObj1)
+                new JProperty("Methods", jarrayObj1)
+                );
+            JObject Limit = new JObject(
+                new JProperty("Rate", 0),
+                new JProperty("Per", 0),
+                new JProperty("Throttle_interval", 0),
+                new JProperty("Throttle_retry_limit", 0),
+                new JProperty("Max_query_depth", 0),
+                new JProperty("Quota_max", 0),
+                new JProperty("Quota_renews", 0),
+                new JProperty("Quota_remaining", 0),
+                new JProperty("Quota_renewal_rate", 0)
                 );
             for (var i = 0; i < responseModel.Data.APIs.Count; i++)
             {
-                accessRight.Add( new JObject(
-                new JProperty("ApiId", responseModel.Data.APIs[i].ApiId),
-                new JProperty("ApiName", apiName[i]),
-                new JProperty("Versions", jarrayObj),
-                new JProperty("AllowedUrls", jarrayObj1)));
+
+                JObject obj = new JObject();
+                obj.Add("ApiId", responseModel.Data.APIs[i].ApiId);
+                obj.Add("ApiName", apiName[i]);
+                obj.Add("Versions", jarrayObj);
+                obj.Add("AllowedUrls", jarrayObj1);
+                obj.Add("Limit", Limit);
+                accessRight.Add(obj);
+
             }
             keyrequestmodel["AccessRights"] = accessRight;
             StringContent stringContent = new StringContent(keyrequestmodel.ToString(), System.Text.Encoding.UTF8, "application/json");
@@ -93,7 +108,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
             var keyid = key["data"]["keyId"];
-            foreach(var item in apiName)
+            foreach (var item in apiName)
             {
                 var clientkey = HttpClientFactory.Create();
                 clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
@@ -101,18 +116,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 var responseclientkey = await clientkey.GetAsync(Url);
                 var check = responseclientkey.EnsureSuccessStatusCode();
             }
-           
+
 
             //delete Api
-            foreach(var item in accessRight)
+            foreach (var item in accessRight)
             {
-               var deleteResponse = await DeleteApi(((new Guid((item["ApiId"].ToString())))));
+                var deleteResponse = await DeleteApi(((new Guid((item["ApiId"].ToString())))));
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-               
-            } 
+
+            }
         }
 
- 
+
 
         public async Task<HttpResponseMessage> DownStream(string path)
         {

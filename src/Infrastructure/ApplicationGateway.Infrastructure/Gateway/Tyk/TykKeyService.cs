@@ -3,17 +3,10 @@ using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.Entities;
-using ApplicationGateway.Domain.TykData;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ApplicationGateway.Domain.Entities.Key;
 
 namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
@@ -21,16 +14,16 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
     public class TykKeyService: IKeyService
     {
         private readonly ILogger<TykKeyService> _logger;
-        private readonly FileOperator _fileOperator;
+        private readonly TemplateTransformer _templateTransformer;
         private readonly TykConfiguration _tykConfiguration;
         private readonly IBaseService _baseService;
         private readonly RestClient<string> _restClient;
         private readonly Dictionary<string, string> _headers;
 
-        public TykKeyService(ILogger<TykKeyService> logger, FileOperator fileOperator, IOptions<TykConfiguration> tykConfiguration, IBaseService baseService)
+        public TykKeyService(ILogger<TykKeyService> logger, TemplateTransformer templateTransformer, IOptions<TykConfiguration> tykConfiguration, IBaseService baseService)
         {
             _logger = logger;
-            _fileOperator = fileOperator;
+            _templateTransformer = templateTransformer;
             _tykConfiguration = tykConfiguration.Value;
             _baseService = baseService;
             _headers = new Dictionary<string, string>()
@@ -44,7 +37,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation($"GetKeyAsync initiated for {keyId}");
             var keyResponse = await _restClient.GetAsync(keyId);
-            string transformedObj = await _fileOperator.Transform(keyResponse, "GetKeyTransformer");
+            string transformedObj = await _templateTransformer.Transform(keyResponse, TemplateHelper.GETKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
             Key key = JsonConvert.DeserializeObject<Key>(transformedObj);
 
             JObject keyObj = JObject.Parse(keyResponse);
@@ -98,7 +91,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation($"CreateKeyAsync Initiated for {key}");
             string requestString = JsonConvert.SerializeObject(key);
-            string transformedObj = await _fileOperator.Transform(requestString,"CreateKeyTransformer");
+            string transformedObj = await _templateTransformer.Transform(requestString, TemplateHelper.CREATEKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
    
             JObject jsonObj = JObject.Parse(transformedObj);
             jsonObj["access_rights"] = new JObject();
@@ -147,6 +140,25 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     }
                     #endregion
 
+                    #region Added perApiLimits, if exists
+                    if(api.Limit != null)
+                    {
+                        JObject limit = new JObject();
+                        limit.Add("rate", api.Limit.Rate);
+                        limit.Add("per", api.Limit.Per);
+                        limit.Add("throttle_interval", api.Limit.Throttle_interval);
+                        limit.Add("throttle_retry_limit", api.Limit.Throttle_retry_limit);
+                        limit.Add("max_query_depth", api.Limit.Max_query_depth);
+                        limit.Add("quota_max", api.Limit.Quota_max);
+                        limit.Add("quota_renews", api.Limit.Quota_renews);
+                        limit.Add("quota_remaining", api.Limit.Quota_remaining);
+                        limit.Add("quota_renewal_rate", api.Limit.Quota_renewal_rate);
+
+                        accObj.Add("limit", limit);
+                        accObj.Add("allowance_scope", api.ApiId.ToString());
+                    }
+                    #endregion
+
                     (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
                 }
             }
@@ -166,7 +178,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation($"UpdateKeyAsync initiated for {key}");
 
             string requestString = JsonConvert.SerializeObject(key);
-            string transformedObj = await _fileOperator.Transform(requestString, "UpdateKeyTransformer");
+            string transformedObj = await _templateTransformer.Transform(requestString, TemplateHelper.UPDATEKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
 
             JObject jsonObj = JObject.Parse(transformedObj);

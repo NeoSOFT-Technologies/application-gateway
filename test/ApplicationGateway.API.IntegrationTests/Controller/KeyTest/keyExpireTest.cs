@@ -18,20 +18,21 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class keyExpireTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class keyExpireTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
+        private HttpClient client = null;
         public keyExpireTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
-
+            client = _factory.CreateClient();
         }
 
         [Fact]
         public async Task ExpireTest()
         {
 
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
@@ -126,7 +127,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;

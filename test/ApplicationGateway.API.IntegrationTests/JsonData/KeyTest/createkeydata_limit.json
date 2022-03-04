@@ -1,0 +1,34 @@
+{
+  "Rate": 0,
+  "Per": 0,
+  "Quota": 0,
+  "QuotaRenewalRate": 0,
+  "ThrottleInterval": 0,
+  "ThrottleRetries": 0,
+  "Expires": 0,
+  "AccessRights": [
+    {
+      "ApiId": "",
+      "ApiName": "",
+      "Versions": [
+        "Default"
+      ],
+      "AllowedUrls": [],
+      "Limit": {
+        "Rate": 3,
+        "Per": 3600,
+        "Throttle_interval": 3,
+        "Throttle_retry_limit": 3,
+        "Max_query_depth": 0,
+        "Quota_max": 0,
+        "Quota_renews": 0,
+        "Quota_remaining": 0,
+        "Quota_renewal_rate": 0
+      }
+    }
+  ],
+  "Policies": [
+
+  ]
+}
+

@@ -19,20 +19,21 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
 {
-    public class VersioningTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class VersioningTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-
+        private HttpClient client = null;
         public VersioningTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
         }
 
         [Fact]
         public async Task Versioning_byHeader()
         {
 
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
@@ -84,7 +85,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
         public async Task Versioning_byQueryParam()
         {
 
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url;
 
@@ -138,7 +139,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
         public async Task Versioning_byUrl()
         {
 
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = "";
 
@@ -206,7 +207,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }

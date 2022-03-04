@@ -33,36 +33,34 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
             }
             #endregion
 
-            #region Get All Existsing APIs
-            List<Domain.Entities.Api> allApis = await _apiService.GetAllApisAsync();
+            CreateMultipleApisDto createMultipleApisDto = new CreateMultipleApisDto() { APIs = new List<MultipleApiModelDto>() };
+
+            #region Check for existing listenPath
+            foreach (MultipleApiModel obj in request.APIs)
+            {
+                Domain.Entities.Api apiToCreate = _mapper.Map<Domain.Entities.Api>(obj);
+                if (!await _apiService.CheckUniqueListenPathAsync(apiToCreate))
+                {
+                    throw new BadRequestException("ListenPath already exists");
+                }
+            }
             #endregion
 
             #region Add APIs one by one
-            CreateMultipleApisDto createMultipleApisDto = new CreateMultipleApisDto() { APIs = new List<MultipleApiModelDto>() };
             foreach (MultipleApiModel obj in request.APIs)
             {
-                #region Check for existing listenPath
-                foreach (Domain.Entities.Api API in allApis)
-                {
-                    if (obj.ListenPath.Trim('/') == API.ListenPath.Trim('/'))
-                    {
-                        throw new BadRequestException("Listen path already exists");
-                    }
-                }
-                #endregion
+                Domain.Entities.Api apiToCreate = _mapper.Map<Domain.Entities.Api>(obj);
+                Domain.Entities.Api createdApi = await _apiService.CreateApiAsync(apiToCreate);
 
-                Domain.Entities.Api api = _mapper.Map<Domain.Entities.Api>(obj);
-                Domain.Entities.Api newApi = await _apiService.CreateApiAsync(api);
-
-                MultipleApiModelDto multipleApiModelDto = _mapper.Map<MultipleApiModelDto>(newApi);
+                MultipleApiModelDto multipleApiModelDto = _mapper.Map<MultipleApiModelDto>(createdApi);
                 createMultipleApisDto.APIs.Add(multipleApiModelDto);
 
                 await _snapshotService.CreateSnapshot(
                 Enums.Gateway.Tyk,
                 Enums.Type.API,
                 Enums.Operation.Created,
-                newApi.ApiId.ToString(),
-                newApi);
+                createdApi.ApiId.ToString(),
+                createdApi);
             }
             #endregion
 

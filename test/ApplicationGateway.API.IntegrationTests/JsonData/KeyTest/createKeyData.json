@@ -13,10 +13,22 @@
       "Versions": [
         "Default"
       ],
-      "AllowedUrls": []
+      "AllowedUrls": [],
+      "Limit": {
+        "Rate": 0,
+        "Per": 0,
+        "Throttle_interval": 0,
+        "Throttle_retry_limit": 0,
+        "Max_query_depth": 0,
+        "Quota_max": 0,
+        "Quota_renews": 0,
+        "Quota_remaining": 0,
+        "Quota_renewal_rate": 0
+      }
     }
   ],
   "Policies": [
-   
+
   ]
 }
+

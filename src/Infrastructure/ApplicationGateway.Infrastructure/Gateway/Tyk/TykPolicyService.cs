@@ -16,19 +16,21 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         private readonly TykConfiguration _tykConfiguration;
         private readonly ILogger<TykPolicyService> _logger;
         private readonly FileOperator _fileOperator;
+        private readonly TemplateTransformer _templateTransformer;
 
-        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration)
+        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator, TemplateTransformer templateTransformer)
         {
             _baseService = baseService;
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
-            _fileOperator = new FileOperator();
+            _fileOperator = fileOperator;
+            _templateTransformer = templateTransformer;
         }
 
         public async Task<List<Policy>> GetAllPoliciesAsync()
         {
             _logger.LogInformation("GetAllPoliciesAsync Initiated");
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
 
             List<Policy> policies = new List<Policy>();
@@ -36,7 +38,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #region Transform individual policy
             foreach (KeyValuePair<string, JToken> policy in policiesObject)
             {
-                string transformed = await _fileOperator.Transform(policy.Value.ToString(), "GetPolicyTransformer");
+                string transformed = await _templateTransformer.Transform(policy.Value.ToString(), TemplateHelper.GETPOLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
                 JObject transformedObject = JObject.Parse(transformed);
                 transformedObject["policyId"] = policy.Key;
 
@@ -54,7 +56,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task<Policy> GetPolicyByIdAsync(Guid policyId)
         {
             _logger.LogInformation("GetPolicyByIdAsync Initiated with {@Guid}", policyId);
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
+            string policiesJson = await _fileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
             JObject policiesObject = JObject.Parse(policiesJson);
             if (!policiesObject.ContainsKey(policyId.ToString()))
             {
@@ -64,7 +66,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #region Transform policy
             string policyJson = policiesObject[policyId.ToString()].ToString();
             JObject policyObject = JObject.Parse(policyJson);
-            string transformed = await _fileOperator.Transform(policyJson, "GetPolicyTransformer");
+            string transformed = await _templateTransformer.Transform(policyJson, TemplateHelper.GETPOLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
             JObject transformedObject = JObject.Parse(transformed);
             transformedObject["policyId"] = policyId;
             transformedObject = GetPolicyApis(policyObject["access_rights"] as JObject, transformedObject);
@@ -82,7 +84,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
             policy.PolicyId = Guid.NewGuid();
             string requestJson = JsonConvert.SerializeObject(policy);
-            string transformed = await _fileOperator.Transform(requestJson, "PolicyTransformer");
+            string transformed = await _templateTransformer.Transform(requestJson, TemplateHelper.POLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
             JObject inputObject = JObject.Parse(requestJson);
             JObject transformedObject = JObject.Parse(transformed);
@@ -95,11 +97,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Add Policy to policies.json
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            JObject policiesObject = JObject.Parse(policiesJson);
-            policiesObject.Add(policy.PolicyId.ToString(), transformedObject);
-
-            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.CreatePolicy(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
             #endregion
 
             await _baseService.HotReload();
@@ -112,7 +110,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation("UpdatePolicyAsync Initiated with {@Policy}", policy);
             string requestJson = JsonConvert.SerializeObject(policy);
-            string transformed = await _fileOperator.Transform(requestJson, "PolicyTransformer");
+            string transformed = await _templateTransformer.Transform(requestJson, TemplateHelper.POLICY_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
             JObject inputObject = JObject.Parse(requestJson);
             JObject transformedObject = JObject.Parse(transformed);
@@ -125,19 +123,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Update Policy in policies.json
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            JObject policiesObject = JObject.Parse(policiesJson);
-
-            string policyId = policy.PolicyId.ToString();
-            if (!policiesObject.ContainsKey(policyId))
-            {
-                throw new NotFoundException($"Policy with id:", policyId);
-            }
-
-            policiesObject.Remove(policyId);
-            policiesObject.Add(policyId, transformedObject);
-
-            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policy.PolicyId.ToString(), transformedObject);
             #endregion
 
             await _baseService.HotReload();
@@ -149,16 +135,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task DeletePolicyAsync(Guid policyId)
         {
             _logger.LogInformation("DeletePolicyAsync Initiated with {@Guid}", policyId);
-            string policiesJson = await FileOperator.ReadPolicies(_tykConfiguration.PoliciesFolderPath);
-            JObject policiesObject = JObject.Parse(policiesJson);
-
-            if (!policiesObject.ContainsKey(policyId.ToString()))
-            {
-                throw new NotFoundException($"Policy with id:", policyId.ToString());
-            }
-
-            policiesObject.Remove(policyId.ToString());
-            await FileOperator.WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+            await _fileOperator.UpdateDeletePolicyById(_tykConfiguration.PoliciesFolderPath, policyId.ToString());
 
             await _baseService.HotReload();
 

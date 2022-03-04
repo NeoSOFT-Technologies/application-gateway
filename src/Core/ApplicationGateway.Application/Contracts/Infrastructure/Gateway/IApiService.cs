@@ -9,5 +9,6 @@ namespace ApplicationGateway.Application.Contracts.Infrastructure.Gateway
         Task<Api> CreateApiAsync(Api api);
         Task<Api> UpdateApiAsync(Api api);
         Task DeleteApiAsync(Guid apiId);
+        Task<bool> CheckUniqueListenPathAsync(Api api);
     }
 }

@@ -18,12 +18,14 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class VersioningKeys : IClassFixture<CustomWebApplicationFactory>
+    public partial class VersioningKeys : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
+        private HttpClient client = null;
         public VersioningKeys(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
 
         }
 
@@ -31,7 +33,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         public async Task Key_Versioning_byHeader()
         {
 
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
             string versioncheck = "";
@@ -131,7 +133,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/"+id);
             return response;
         }

@@ -19,19 +19,20 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTest
 {
-    public class BlacklisitngTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class BlacklisitngTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-
+        private HttpClient client = null;
         public BlacklisitngTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
         }
         
         [Fact]
         public async Task Blacklisting()
         {
-            var client = _factory.CreateClient();
+           // //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
             string OriginUrl = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/";
@@ -119,7 +120,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTe
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             return response;
         }

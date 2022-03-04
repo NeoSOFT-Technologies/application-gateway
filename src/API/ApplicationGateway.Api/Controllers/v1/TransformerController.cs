@@ -1,13 +1,14 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
-using ApplicationGateway.Application.Features.Transformer.Commands.CreateTransformerCommand;
-using ApplicationGateway.Application.Features.Transformer.Commands.DeleteTransformerCommand;
-using ApplicationGateway.Application.Features.Transformer.Commands.UpdateTransformerCommand;
-using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformer;
-using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerById;
-using ApplicationGateway.Application.Features.Transformer.Queries.GetTransformerByName;
+using ApplicationGateway.Application.Features.Transformers.Commands.CreateTransformerCommand;
+using ApplicationGateway.Application.Features.Transformers.Commands.DeleteTransformerCommand;
+using ApplicationGateway.Application.Features.Transformers.Commands.UpdateTransformerCommand;
+using ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransformer;
+using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerById;
+using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Domain.TykData;
 using AutoMapper;
 using MediatR;
@@ -33,11 +34,11 @@ namespace ApplicationGateway.Api.Controllers.v1
 
         [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetAllTransformer()
+        public async Task<ActionResult> GetAllTransformers()
         {
-            _logger.LogInformation("GetAllTransformer Initiated");
-            var dtos = await _mediator.Send(new GetTransformerQuery());
-            _logger.LogInformation("GetAllTransformer Completed");
+            _logger.LogInformation("GetAllTransformers Initiated");
+            var dtos = await _mediator.Send(new GetAllTransformersQuery());
+            _logger.LogInformation("GetAllTransformers Completed");
             return Ok(dtos);
         }
 
@@ -45,7 +46,7 @@ namespace ApplicationGateway.Api.Controllers.v1
         public async Task<ActionResult> GetTransformerById(Guid id)
         {
             _logger.LogInformation("GetTransformer Initiated with {@Id}", id);
-            var getTransformer = new GetTransformerByIdQuery() { Id = id };
+            var getTransformer = new GetTransformerByIdQuery() { TransformerId = id };
             _logger.LogInformation("GetTransformer Completed");
             return Ok(await _mediator.Send(getTransformer));
 
@@ -81,17 +82,17 @@ namespace ApplicationGateway.Api.Controllers.v1
         public async Task<ActionResult> DeleteTransformer(Guid transId)
         {
             _logger.LogInformation("DeleteTransformer Initiated with {@Id}", transId);
-            await _mediator.Send(new DeleteTransformerCommand() { Id = transId });
+            await _mediator.Send(new DeleteTransformerCommand() { TransformerId = transId });
             _logger.LogInformation("DeleteTransformer Completed");
             return NoContent();
         }
 
         [Route("[action]/{name}")]
         [HttpGet]
-        public async Task<ActionResult> GetTransformerByName(string name)
+        public async Task<ActionResult> GetTransformerByName(string name, Gateway gateway)
         {
             _logger.LogInformation("GetTransformerByName Initiated with {@TempalteName}", name);
-            var getTransformer = new GetTransformerByNameQuery() { TemplateName = name };
+            var getTransformer = new GetTransformerByNameQuery() { TemplateName = name, Gateway = gateway };
             _logger.LogInformation("GetTransformerByName Completed");
             return Ok(await _mediator.Send(getTransformer));
 

@@ -18,20 +18,21 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 {
-    public class CreateApiTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class CreateApiTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
-
+        private HttpClient client = null;
         public CreateApiTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
+            client = _factory.CreateClient();
         }
 
         [Fact]
         public async Task CreateApi_ReturnsSuccessResult()
         {
             Console.WriteLine("test started");
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/createApiData.json");
@@ -64,8 +65,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 
             try
             {
-                var client = HttpClientFactory.Create();
-                var response = await client.GetAsync(path);
+                var clientdown = HttpClientFactory.Create();
+                var response = await clientdown.GetAsync(path);
                 return response;
             }
             catch (Exception ex)
@@ -78,7 +79,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;

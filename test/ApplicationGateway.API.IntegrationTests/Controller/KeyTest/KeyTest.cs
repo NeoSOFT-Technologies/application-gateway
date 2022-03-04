@@ -18,20 +18,22 @@ using ApplicationGateway.Application.Responses;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
-    public class KeyTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class KeyTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
         //private readonly ILogger<KeyControllerTest> _logger;
+        private HttpClient client = null;
         public KeyTest(CustomWebApplicationFactory factory)
         {
             _factory = factory;
-           
+            client = _factory.CreateClient();
+
         }
 
         [Fact]
         public async Task KeyRateLimiting()
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
@@ -130,7 +132,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
-            var client = _factory.CreateClient();
+            //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
             // await HotReload();
             return response;

@@ -19,7 +19,8 @@ namespace DownstreamApi.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+
+        public IEnumerable<WeatherForecast> Weather()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -29,5 +30,22 @@ namespace DownstreamApi.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost(Name = "GetWeatherForecast")]
+        public IEnumerable<WeatherForecast> Weather2(postweatherforecast postweatherforecast)
+        {
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+
+        public class postweatherforecast
+        {
+            public string test { get; set; }
+        } 
     }
 }

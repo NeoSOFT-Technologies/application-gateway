@@ -31,6 +31,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00241" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
@@ -56,22 +57,25 @@
 
 
   <ItemGroup>
-    <Content Update="JsonTransformers\Tyk\CreateApiTransformer.json">
+    <Content Update="JsonTransformers\Tyk\CREATEAPI_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\CreateKeyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\CREATEKEY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\GetPolicyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\GETKEY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\PolicyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\GETPOLICY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\UpdateApiTransformer.json">
+    <Content Update="JsonTransformers\Tyk\POLICY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="JsonTransformers\Tyk\UpdateKeyTransformer.json">
+    <Content Update="JsonTransformers\Tyk\UPDATEAPI_TEMPLATE.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="JsonTransformers\Tyk\UPDATEKEY_TEMPLATE.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -7,6 +7,10 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controller\test.cs" />
+  </ItemGroup>
+
 <ItemGroup>
   <InternalsVisibleTo Include="ApplicationGateway.API.IntegrationTests" />
 </ItemGroup>
@@ -32,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Downstream\DownstreamApi\DownstreamApi.csproj" />
     <ProjectReference Include="..\..\src\API\ApplicationGateway.Api\ApplicationGateway.Api.csproj" />
     <ProjectReference Include="..\..\src\Core\ApplicationGateway.Application\ApplicationGateway.Application.csproj" />
    <!-- <ProjectReference Include="..\..\src\Infrastructure\ApplicationGateway.Identity\ApplicationGateway.Identity.csproj" />
