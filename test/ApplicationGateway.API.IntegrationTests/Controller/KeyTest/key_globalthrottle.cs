@@ -19,6 +19,7 @@ using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCom
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public class key_globalthrottle : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;

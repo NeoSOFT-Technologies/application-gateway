@@ -23,6 +23,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlAndLimit
 {
+    [Collection("Database")]
     public class MultipleApiPolicyRateLimit : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;

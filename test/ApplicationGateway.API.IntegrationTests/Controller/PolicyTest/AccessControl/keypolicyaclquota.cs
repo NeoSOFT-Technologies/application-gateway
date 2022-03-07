@@ -23,6 +23,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessControl
 {
+    [Collection("Database")]
     public class keypolicyaclquota : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;

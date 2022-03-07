@@ -22,7 +22,8 @@ using System.Threading.Tasks;
 using Xunit;
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessControl
 {
-    public class Api_Policy_KeyExpire : IClassFixture<CustomWebApplicationFactory>
+    [Collection("Database")]
+    public partial class Api_Policy_KeyExpire : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
         private HttpClient client = null;
