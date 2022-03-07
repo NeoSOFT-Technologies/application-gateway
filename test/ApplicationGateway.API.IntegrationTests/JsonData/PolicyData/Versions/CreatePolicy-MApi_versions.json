@@ -18,16 +18,16 @@
       "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "name": "string",
       "versions": [
-        "Default"
+        
       ],
       "allowedUrls": [
 
       ],
       "limit": {
-        "rate": 3,
-        "per": 10,
-        "throttle_interval": 3,
-        "throttle_retry_limit": 4,
+        "rate": -1,
+        "per": -1,
+        "throttle_interval": 0,
+        "throttle_retry_limit": 0,
         "max_query_depth": -1,
         "quota_max": -1,
         "quota_renews": 0,
@@ -36,14 +36,7 @@
         "set_by_policy": false
       }
     }
-  ],
-  "partitions": {
-    "quota": false,
-    "rate_limit": false,
-    "complexity": false,
-    "acl": false,
-    "per_api": true
-  }
+  ]
 }
 
 

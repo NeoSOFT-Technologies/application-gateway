@@ -29,20 +29,23 @@
         "throttle_retry_limit": 0,
         "max_query_depth": -1,
         "quota_max": 5,
-        "quota_renews": 0,
-        "quota_remaining": 5,
+        "quota_renews": 3600,
+        "quota_remaining": 0,
         "quota_renewal_rate": 3600,
         "set_by_policy": false
       }
     }
 
-], "partitions": {
-  "quota": false,
-  "rate_limit": false,
-  "complexity": false,
-  "acl": false,
-  "per_api": true
-} }
+  ],
+  "partitions": {
+    "quota": false,
+    "rate_limit": false,
+    "complexity": false,
+    "acl": false,
+    "per_api": true
+  } 
+
+}
 
 
 

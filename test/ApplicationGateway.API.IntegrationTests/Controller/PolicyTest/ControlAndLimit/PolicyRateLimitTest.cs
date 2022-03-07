@@ -70,7 +70,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             HttpContent content1 = new StringContent(RequestJson1, Encoding.UTF8, "application/json");
             var response1 = await client.PutAsync("/api/v1/ApplicationGateway", content1);
             response1.EnsureSuccessStatusCode();
-            ;
+            
 
             //create policy
             var mypolicyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/ControlandLimit/CreatePolicy-rateLimit.json");

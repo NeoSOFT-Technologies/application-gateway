@@ -33,9 +33,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
         }
 
 
-
-
-
         [Fact]
         public async Task Add_policy_with_Api_AllowedUrls()
         {

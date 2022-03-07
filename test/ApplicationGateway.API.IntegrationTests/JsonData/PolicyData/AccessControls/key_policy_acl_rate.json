@@ -20,28 +20,26 @@
       "versions": [
         "Default"
       ],
-      "allowedUrls": [
-
-      ],
+      "allowedUrls": [],
       "limit": {
-        "rate": 5,
-        "per": 60,
+        "rate": 0,
+        "per": 0,
         "throttle_interval": 0,
         "throttle_retry_limit": 0,
-        "max_query_depth": -1,
-        "quota_max": -1,
-        "quota_renews": -1,
-        "quota_remaining": -1,
-        "quota_renewal_rate": -1,
-        "set_by_policy": false
+        "max_query_depth": 0,
+        "quota_max": 0,
+        "quota_renews": 0,
+        "quota_remaining": 0,
+        "quota_renewal_rate": 0,
+        "set_by_policy": true
       }
     }
   ],
   "partitions": {
-    "acl": false,
+    "acl": true,
     "complexity": false,
-    "per_api": true,
+    "per_api": false,
     "quota": false,
-    "rate_limit": false
+    "rate_limit": true
   }
 }

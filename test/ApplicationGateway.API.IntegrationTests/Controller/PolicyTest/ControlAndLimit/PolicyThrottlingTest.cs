@@ -32,10 +32,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             client = _factory.CreateClient();
         }
 
-
-
-
-
         [Fact]
         public async Task Add_policy_with_Throttling_returnSuccess()
         {
@@ -123,7 +119,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             }
 
             var responseclientkey1 = await clientkey.GetAsync(Url);
-            responseclientkey1.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.OK);
+            responseclientkey1.EnsureSuccessStatusCode();
 
             //delete Api,policy,key
             var deleteResponse = await DeleteApi(id);

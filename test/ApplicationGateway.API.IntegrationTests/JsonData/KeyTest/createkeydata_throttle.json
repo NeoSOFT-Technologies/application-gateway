@@ -1,10 +1,10 @@
 {
   "Rate": 3,
   "Per": 5,
-  "Quota": 3,
-  "QuotaRenewalRate": 3600,
-  "ThrottleInterval": 0,
-  "ThrottleRetries": 0,
+  "Quota": 0,
+  "QuotaRenewalRate": 0,
+  "ThrottleInterval": 3,
+  "ThrottleRetries": 3,
   "Expires": 0,
   "AccessRights": [
     {
