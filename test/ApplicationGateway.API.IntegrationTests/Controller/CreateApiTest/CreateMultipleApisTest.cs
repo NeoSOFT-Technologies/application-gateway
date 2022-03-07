@@ -19,6 +19,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 {
+    [Collection("Database")]
     public partial class CreateMultipleApisTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -48,7 +49,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
             var ApisList = result.Data.APIs;
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
             //downstream
             foreach (var item in requestModel1.APIs)
             {

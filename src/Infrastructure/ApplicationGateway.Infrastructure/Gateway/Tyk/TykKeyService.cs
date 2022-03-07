@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.Entities;
@@ -32,7 +33,21 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             };
             _restClient = new RestClient<string>(_tykConfiguration.Host, "/tyk/keys", _headers);
         }
-
+        public async Task<List<string>> GetAllKeysAsync()
+        {
+            _logger.LogInformation("GetAllKeysAsync initiated");
+            var listObj = JsonConvert.DeserializeObject<JObject>(await _restClient.GetAsync(null));
+            #region Parse in List<string>
+            JArray list = JArray.Parse(listObj["keys"].ToString());
+            if (!list.Any())
+                throw new NotFoundException("Any Key","");
+            List<string> listKey = new List<string>();
+            foreach (var keyId in list)
+                listKey.Add(keyId.ToString());
+            #endregion
+            _logger.LogInformation("GetAllKeysAsync completed");
+            return listKey;
+        }
         public async Task<Key> GetKeyAsync(string keyId)
         {
             _logger.LogInformation($"GetKeyAsync initiated for {keyId}");
@@ -95,76 +110,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
    
             JObject jsonObj = JObject.Parse(transformedObj);
             jsonObj["access_rights"] = new JObject();
-            #region Add Policies, id exists
-            if (key.Policies.Any())
-            {
-                JArray policies = new JArray();
-                key.Policies.ForEach(policy => policies.Add(policy));
-                jsonObj["apply_policies"] = policies;
-                goto skipAccessRights;
-            }
-            #endregion
+            jsonObj = await CreateUpdateKey(key, jsonObj);
 
-            #region Add AccessRights, if exists
-            if (key.AccessRights.Any())
-            {
-                foreach (var api in key.AccessRights)
-                {
-                    string jsonString = JsonConvert.SerializeObject(api);
-                    JObject obj = JObject.Parse(jsonString);
-
-                    #region Add version details
-                    JArray versions = new JArray();
-                    api.Versions.ForEach(v => versions.Add(v));
-                    #endregion
-
-                    JObject accObj = new JObject();
-                    accObj.Add("api_id", obj["ApiId"]);
-                    accObj.Add("api_name", obj["ApiName"]);
-                    accObj.Add("versions", versions);
-
-                    #region Added allowedUrls, if exists
-                    if (api.AllowedUrls.Any())
-                    {
-                        JArray allowedUrls = new JArray();
-                        foreach (var urlItem in api.AllowedUrls)
-                        {
-                            JObject urlDetails = new JObject();
-                            JArray methods = new JArray();
-                            urlItem.methods.ForEach(method => methods.Add(method));
-                            urlDetails.Add("url", urlItem.url);
-                            urlDetails.Add("methods", methods);
-                            allowedUrls.Add(urlDetails);
-                        }
-                    accObj.Add("allowed_urls", allowedUrls);
-                    }
-                    #endregion
-
-                    #region Added perApiLimits, if exists
-                    if(api.Limit != null)
-                    {
-                        JObject limit = new JObject();
-                        limit.Add("rate", api.Limit.Rate);
-                        limit.Add("per", api.Limit.Per);
-                        limit.Add("throttle_interval", api.Limit.Throttle_interval);
-                        limit.Add("throttle_retry_limit", api.Limit.Throttle_retry_limit);
-                        limit.Add("max_query_depth", api.Limit.Max_query_depth);
-                        limit.Add("quota_max", api.Limit.Quota_max);
-                        limit.Add("quota_renews", api.Limit.Quota_renews);
-                        limit.Add("quota_remaining", api.Limit.Quota_remaining);
-                        limit.Add("quota_renewal_rate", api.Limit.Quota_renewal_rate);
-
-                        accObj.Add("limit", limit);
-                        accObj.Add("allowance_scope", api.ApiId.ToString());
-                    }
-                    #endregion
-
-                    (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
-                }
-            }
-        #endregion
-
-        skipAccessRights:
             string keyResponse = await _restClient.PostAsync(jsonObj);
             await _baseService.HotReload();
             JObject responseObj = JObject.Parse(keyResponse);
@@ -182,59 +129,9 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
 
             JObject jsonObj = JObject.Parse(transformedObj);
-            #region Add Policies, id exists
-            if (key.Policies.Any())
-            {
-                JArray policies = new JArray();
-                key.Policies.ForEach(policy => policies.Add(policy));
-                jsonObj["apply_policies"] = policies;
-                goto skipAccessRights;
-            }
-            #endregion
+            jsonObj = await CreateUpdateKey(key, jsonObj);
 
-            #region Add AccessRights, if exists
-            if (key.AccessRights.Any())
-            {
-                foreach (var api in key.AccessRights)
-                {
-                    string jsonString = JsonConvert.SerializeObject(api);
-                    JObject obj = JObject.Parse(jsonString);
-
-                    #region Add version details
-                    JArray versions = new JArray();
-                    api.Versions.ForEach(v => versions.Add(v));
-                    #endregion
-
-                    JObject accObj = new JObject();
-                    accObj.Add("api_id", obj["ApiId"]);
-                    accObj.Add("api_name", obj["ApiName"]);
-                    accObj.Add("versions", versions);
-
-                    #region Added allowedUrls, if exists
-                    if (api.AllowedUrls.Any())
-                    {
-                        JArray allowedUrls = new JArray();
-                        foreach (var urlItem in api.AllowedUrls)
-                        {
-                            JObject urlDetails = new JObject();
-                            JArray methods = new JArray();
-                            urlItem.methods.ForEach(method => methods.Add(method));
-                            urlDetails.Add("url", urlItem.url);
-                            urlDetails.Add("methods", methods);
-                            allowedUrls.Add(urlDetails);
-                        }
-                        accObj.Add("allowed_urls", allowedUrls);
-                    }
-                    #endregion
-
-                    (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
-                }
-            }
-        #endregion
-
-        skipAccessRights:
-
-            string keyResponse = await _restClient.PutKeyAsync(jsonObj,key.KeyId);
+            string keyResponse = await _restClient.PutKeyAsync(jsonObj, key.KeyId);
             await _baseService.HotReload();
             _logger.LogInformation($"UpdateKeyAsync completed for {key}");
             return key;
@@ -291,6 +188,78 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 versions.Add(version.ToString());
             }
             return versions;
+        }
+
+        private async Task<JObject> CreateUpdateKey(Key key, JObject jsonObj)
+        {
+            #region Add Policies, id exists
+            if (key.Policies.Any())
+            {
+                JArray policies = new JArray();
+                key.Policies.ForEach(policy => policies.Add(policy));
+                jsonObj["apply_policies"] = policies;
+            }
+            #endregion
+
+            #region Add AccessRights, if exists
+            else if (key.AccessRights.Any())
+            {
+                foreach (var api in key.AccessRights)
+                {
+                    string jsonString = JsonConvert.SerializeObject(api);
+                    JObject obj = JObject.Parse(jsonString);
+
+                    #region Add version details
+                    JArray versions = new JArray();
+                    api.Versions.ForEach(v => versions.Add(v));
+                    #endregion
+
+                    JObject accObj = new JObject();
+                    accObj.Add("api_id", obj["ApiId"]);
+                    accObj.Add("api_name", obj["ApiName"]);
+                    accObj.Add("versions", versions);
+
+                    #region Added allowedUrls, if exists
+                    if (api.AllowedUrls.Any())
+                    {
+                        JArray allowedUrls = new JArray();
+                        foreach (var urlItem in api.AllowedUrls)
+                        {
+                            JObject urlDetails = new JObject();
+                            JArray methods = new JArray();
+                            urlItem.methods.ForEach(method => methods.Add(method));
+                            urlDetails.Add("url", urlItem.url);
+                            urlDetails.Add("methods", methods);
+                            allowedUrls.Add(urlDetails);
+                        }
+                        accObj.Add("allowed_urls", allowedUrls);
+                    }
+                    #endregion
+                    #region Added perApiLimits, if exists
+                    if (api.Limit != null)
+                    {
+                        JObject limit = new JObject();
+                        limit.Add("rate", api.Limit.Rate);
+                        limit.Add("per", api.Limit.Per);
+                        limit.Add("throttle_interval", api.Limit.Throttle_interval);
+                        limit.Add("throttle_retry_limit", api.Limit.Throttle_retry_limit);
+                        limit.Add("max_query_depth", api.Limit.Max_query_depth);
+                        limit.Add("quota_max", api.Limit.Quota_max);
+                        limit.Add("quota_renews", api.Limit.Quota_renews);
+                        limit.Add("quota_remaining", api.Limit.Quota_remaining);
+                        limit.Add("quota_renewal_rate", api.Limit.Quota_renewal_rate);
+
+                        accObj.Add("limit", limit);
+                        accObj.Add("allowance_scope", api.ApiId.ToString());
+                    }
+                    #endregion
+
+                    (jsonObj["access_rights"] as JObject).Add(obj["ApiId"].ToString(), accObj);
+                }
+            }
+            #endregion
+
+            return jsonObj;
         }
     }   
 }

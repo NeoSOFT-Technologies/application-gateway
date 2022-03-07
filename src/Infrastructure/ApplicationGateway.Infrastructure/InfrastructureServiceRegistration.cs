@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SendGrid.Extensions.DependencyInjection;
 using ApplicationGateway.Infrastructure.Gateway.Tyk;
 using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Infrastructure.Redis;
+using StackExchange.Redis;
 
 namespace ApplicationGateway.Infrastructure
 {
@@ -21,7 +23,10 @@ namespace ApplicationGateway.Infrastructure
             services.AddTransient<IEmailService, EmailService>();
             services.Configure<CacheConfiguration>(configuration.GetSection("CacheConfiguration"));
             services.AddMemoryCache();
+            ConnectionMultiplexer multiplexer = ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis"));
+            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
             services.AddTransient<ICacheService, MemoryCacheService>();
+            services.AddTransient<IRedisService, RedisService>();
             services.AddTransient<IPolicyService, TykPolicyService>();
             services.AddTransient<IApiService, TykApiService>();
             services.AddTransient<IBaseService, TykBaseService>();

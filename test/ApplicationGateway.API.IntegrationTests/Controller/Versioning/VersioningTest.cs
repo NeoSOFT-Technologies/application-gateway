@@ -19,6 +19,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
 {
+    [Collection("Database")]
     public partial class VersioningTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -51,7 +52,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+ "/Versioning/Header_Version.json");
@@ -103,7 +104,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/Versioning/QueryParam_Version.json");
@@ -157,7 +158,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH+ "/Versioning/Url_Version.json");
@@ -179,7 +180,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.Versioning
                 Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/" + version.Name + "/WeatherForecast";
                 var responseV = await DownStream(Url);
                 responseV.EnsureSuccessStatusCode();
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
             }
 
             //delete Api

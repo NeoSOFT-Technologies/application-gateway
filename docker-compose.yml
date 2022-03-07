@@ -5,7 +5,7 @@ networks:
   tyk:
   es:
     driver: bridge
-  
+
 services:
   tyk-gateway:
     image: docker.tyk.io/tyk-gateway/tyk-gateway:v3.2.1
@@ -18,7 +18,7 @@ services:
       - ./tyk-gateway-docker/tyk-gateway-docker/apps:/opt/tyk-gateway/apps
       - ./tyk-gateway-docker/tyk-gateway-docker/middleware:/opt/tyk-gateway/middleware
       - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
-      - ./tyk-gateway-docker/tyk-gateway-docker/policies/policies.json:/opt/tyk-gateway/policies/policies.json
+      - policies:/opt/tyk-gateway/policies
     environment:
       - TYK_GW_SECRET=foo
     extra_hosts:
@@ -43,7 +43,6 @@ services:
     networks:
       - clean-network
 
-
   downstreamapi1:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
@@ -57,7 +56,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-   
+
   downstreamapi2:
     image: ${DOCKER_REGISTRY-}downstreamapi
     build:
@@ -72,21 +71,41 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+  applicationgateway.worker:
+    image: ${DOCKER_REGISTRY-}applicationgatewayworker
+    build:
+      context: .
+      dockerfile: src/Infrastructure/ApplicationGateway.Worker/Dockerfile
+    volumes:
+      - policies:/opt/tyk-gateway/policies
+    environment:
+      - ConnectionStrings:Redis=tyk-redis:6379
+      - TykConfiguration:Host=http://tyk-gateway:8080/
+      - TykConfiguration:PoliciesFolderPath=../opt/tyk-gateway/policies
+    networks:
+      - tyk
+    depends_on:
+      - tyk-redis
+
   elasticsearch:
-     image: elasticsearch:6.8.6
-     ports:
-       - 9200:9200
-     networks:
-       - es
-  
+    image: elasticsearch:7.17.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    networks:
+      - es
+
   kibana:
-     image: docker.elastic.co/kibana/kibana:6.8.6  
-     ports:
-       - 5601:5601
-     environment:
-       - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
-     depends_on:
-       - elasticsearch
-     networks:
-       - es
-  
+    image: kibana:7.17.0
+    ports:
+      - 5601:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - es
+
+volumes:
+  policies:

@@ -64,7 +64,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
         public async Task<Api> GetApiByIdAsync(Guid apiId)
         {
-            _logger.LogInformation("GetApiByIdAsync Initiated");
+            _logger.LogInformation("GetApiByIdAsync Initiated with {@Guid}", apiId);
             string inputJson = await _restClient.GetAsync(apiId.ToString());
             JObject inputObject = JObject.Parse(inputJson);
 

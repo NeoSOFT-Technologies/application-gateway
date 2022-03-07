@@ -30,6 +30,10 @@ namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
         public async Task<Unit> Handle(DeleteKeyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"DeleteKeyCommandHandler initated for {request}");
+            #region Check If Key Exists
+            await _keyService.GetKeyAsync(request.KeyId);
+            #endregion
+
             await _keyService.DeleteKeyAsync(request.KeyId.ToString());
 
             await _snapshotService.CreateSnapshot(
