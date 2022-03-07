@@ -21,6 +21,8 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
         public List<string> Policies { get; set; }
 
 
+
+    }
         public class KeyAccessRightsModel
         {
             public Guid ApiId { get; set; }
@@ -29,7 +31,6 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             public List<KeyAllowedUrl>? AllowedUrls { get; set; }
             public KeyApiLimit? Limit { get; set; }
         }
-
         public class KeyApiLimit
         {
             public int Rate { get; set; }
@@ -47,5 +48,4 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             public string Url { get; set; }
             public List<string> Methods { get; set; }
         }
-    }
 }

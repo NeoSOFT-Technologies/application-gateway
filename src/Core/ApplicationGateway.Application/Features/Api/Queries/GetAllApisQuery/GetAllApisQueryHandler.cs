@@ -25,11 +25,25 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
             List<Domain.Entities.Api> apiList = await _apiService.GetAllApisAsync();
             GetAllApisDto getAllApisDto = new GetAllApisDto() { Apis = new List<GetAllApiModel>() };
 
-            foreach (var api in apiList)
-            {
-                getAllApisDto.Apis.Add(_mapper.Map<GetAllApiModel>(api));
-            }
+            //foreach (var api in apiList)
+            //{
+            //    getAllApisDto.Apis.Add(_mapper.Map<GetAllApiModel>(api));
+            //}
 
+            //var response = new Response<GetAllApisDto>(getAllApisDto, "success");
+
+            foreach(var api in apiList)
+            {
+                 GetAllApiModel getAllApiModel= new GetAllApiModel()
+                {
+                    Status = "Active",
+                    Created = DateTime.Now
+                };
+
+                getAllApiModel.Name = api.Name;
+                getAllApiModel.TargetUrl = api.TargetUrl;
+                getAllApisDto.Apis.Add(getAllApiModel);
+            }
             var response = new Response<GetAllApisDto>(getAllApisDto, "success");
             _logger.LogInformation("Handler Completed");
             return response;
