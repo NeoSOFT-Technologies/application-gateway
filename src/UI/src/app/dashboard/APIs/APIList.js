@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAPIList } from "../../redux/actions/ApiActions";
-//import setAPIList from "../../redux/reducers/APIs/APIListState";
 import RenderList from "../../shared/RenderList";
-//import setAPIList from "../../redux/reducers/APIs/APIListState";
+import Spinner from "../../shared/Spinner";
 
 function APIList() {
   const dispatch = useDispatch();
@@ -58,7 +57,7 @@ function APIList() {
   };
   const headings = [
     { title: "API ID" },
-    { title: "Name", className: "w-100" },
+    { title: "Name" },
     { title: "Listen Path" },
     { title: "Target Url" },
     //{ title: "Action", className: "text-center" },
@@ -73,7 +72,9 @@ function APIList() {
             </div>
             <div className="table-responsive">
               {ApiList.loading ? (
-                <span>We are loading</span>
+                <span>
+                  <Spinner />
+                </span>
               ) : (
                 <RenderList headings={headings} data={datalist} />
               )}

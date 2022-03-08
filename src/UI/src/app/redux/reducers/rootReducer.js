@@ -5,6 +5,7 @@ import setUserData from "./userDataState";
 import setTenantList from "./TenantListState";
 import setAPIList from "./APIs/APIListState";
 import setPolicyList from "./Policy/PolicyListState";
+import setKeyList from "./Keys/KeyListState";
 const rootReducer = combineReducers({
   setAdminLogin,
   setTenantLogin,
@@ -12,5 +13,6 @@ const rootReducer = combineReducers({
   setTenantList,
   setAPIList,
   setPolicyList,
+  setKeyList,
 });
 export default rootReducer;

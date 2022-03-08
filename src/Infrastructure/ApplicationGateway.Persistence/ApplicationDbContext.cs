@@ -26,6 +26,10 @@ namespace ApplicationGateway.Persistence
 
         public DbSet<Transformer> Transformers { get; set; }
         public virtual DbSet<Snapshot> Snapshots { get; set; } = null!;
+        public DbSet<ApiDto> ApiDtos { get; set; } = null!;
+        public DbSet<KeyDto> KeyDtos { get; set; } = null!;
+        public DbSet<PolicyDto> PolicyDtos { get; set; } = null!;
+
         private IDbContextTransaction _transaction;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -96,6 +100,8 @@ namespace ApplicationGateway.Persistence
                 Gateway = Gateway.Tyk,
                 CreatedDate = DateTime.UtcNow
             });
+
+
 
             modelBuilder.Entity<Snapshot>(entity =>
             {
