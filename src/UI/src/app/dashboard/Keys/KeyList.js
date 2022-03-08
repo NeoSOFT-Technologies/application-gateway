@@ -1,45 +1,30 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAPIList } from "../../redux/actions/ApiActions";
+import { getKeyList } from "../../redux/actions/KeyActions";
 import RenderList from "../../shared/RenderList";
 import Spinner from "../../shared/Spinner";
 
-function APIList() {
+function KeyList() {
   const dispatch = useDispatch();
-  const ApiList = useSelector((state) => state.setAPIList);
-  // const [api, setApi] = useState({
-  //   ApiId: null,
-  //   Name: null,
-  //   ListenPath: null,
-  //   TargetUrl: null,
-  // });
+  const keyslist = useSelector((state) => state.setKeyList);
 
   useEffect(() => {
-    dispatch({ type: "API_LOADING" });
-    console.log("dispatch of loading", ApiList);
+    dispatch({ type: "Key_LOADING" });
+    console.log("dispatch of loading", keyslist);
     mainCall();
   }, []);
 
   const mainCall = () => {
-    // getAPIList().then((res) => {
-    //   console.log("in api List", res.payload.Data.Apis);
-    //   dispatch(res);
-    //   console.log("main call", ApiList);
-    // });
     try {
-      getAPIList().then((res) => {
-        console.log("in Api List", res.payload.Data.Apis);
+      getKeyList().then((res) => {
+        console.log("in Key List", res.payload.Data.KeyDto);
         dispatch(res);
-        console.log("main call", ApiList);
+        console.log("main call", keyslist);
       });
     } catch (err) {
       console.log(err);
     }
   };
-
-  // const renderTenant = (val) => {
-  //   setTenant(val);
-  // };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -48,18 +33,16 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("apilist", ApiList);
-  console.log("ApiList before datalist", isIterable(ApiList.list));
+  console.log("ApiList before datalist", isIterable(keyslist.list));
   const datalist = {
-    //list: [...ApiList.list],
-    list: [isIterable(ApiList.list) === true ? ApiList.list[0] : {}],
-    fields: ["ApiId", "Name", "ListenPath", "TargetUrl"],
+    list: [isIterable(keyslist.list) === true ? keyslist.list[0] : {}],
+    fields: ["KeyId", "AuthType", "Status", "Created"],
   };
   const headings = [
-    { title: "API ID" },
-    { title: "Name" },
-    { title: "Listen Path" },
-    { title: "Target Url" },
+    { title: "Key ID" },
+    { title: "Authentication Type", className: "w-100" },
+    { title: "Status" },
+    { title: "Created" },
     //{ title: "Action", className: "text-center" },
   ];
   return (
@@ -68,10 +51,10 @@ function APIList() {
         <div className="card">
           <div className="card-body">
             <div className="d-flex align-items-center justify-content-around">
-              <h2 className="card-title">Tenant List</h2>
+              <h2 className="card-title">Key List</h2>
             </div>
             <div className="table-responsive">
-              {ApiList.loading ? (
+              {keyslist.loading ? (
                 <span>
                   <Spinner />
                 </span>
@@ -86,4 +69,4 @@ function APIList() {
   );
 }
 
-export default APIList;
+export default KeyList;
