@@ -7,7 +7,7 @@
         public string AuthType { get; set; }
         public List<string> AccessRights { get; set; }
     }
-
+    
     //public class GetAllPoliciesDto
     //{
     //    public Guid PolicyId { get; set; }

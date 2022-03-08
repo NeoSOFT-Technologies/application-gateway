@@ -11,6 +11,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
     public class UpdateKeyCommand:IRequest<Response<UpdateKeyCommandDto>>
     {
         public string KeyId { get; set; }
+        public string KeyName { get; set; }
         public int Rate { get; set; }
         public int Per { get; set; }
         public int Quota { get; set; }
