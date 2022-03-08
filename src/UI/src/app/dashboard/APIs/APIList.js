@@ -16,7 +16,7 @@ function APIList() {
 
   useEffect(() => {
     dispatch({ type: "API_LOADING" });
-    console.log("dispatch of loading", ApiList);
+    //console.log("dispatch of loading", ApiList);
     mainCall();
   }, []);
 
@@ -28,9 +28,9 @@ function APIList() {
     // });
     try {
       getAPIList().then((res) => {
-        console.log("in Api List", res.payload.Data.Apis);
+        //console.log("in Api List", res.payload.data);
         dispatch(res);
-        console.log("main call", ApiList);
+        //console.log("main call", ApiList);
       });
     } catch (err) {
       console.log(err);
@@ -48,8 +48,8 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("apilist", ApiList);
-  console.log("ApiList before datalist", isIterable(ApiList.list));
+  //console.log("apilist", ApiList);
+  //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
       className: "btn btn-sm btn-success",
@@ -64,10 +64,14 @@ function APIList() {
       iconClassName: "mdi mdi-cog",
     },
   ];
+  console.log("apilist", isIterable(ApiList.list) === true ? ApiList : {});
   const datalist = {
     //list: [...ApiList.list],
-    list: [isIterable(ApiList.list) === true ? ApiList.list[0] : {}],
-    fields: ["Name", "TargetUrl", "Status", "Created"],
+    list:
+      isIterable(ApiList.list) === true && ApiList.list.length > 0
+        ? ApiList.list[0]
+        : [],
+    fields: ["name", "targetUrl", "Status", "Created"],
   };
   const headings = [
     { title: "Name" },
