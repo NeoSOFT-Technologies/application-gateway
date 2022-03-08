@@ -37,7 +37,7 @@ namespace ApplicationGateway.Api.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<ActionResult<Response<Key>>> GetKey(string keyId)
+        public async Task<ActionResult> GetKey(string keyId)
         {
             _logger.LogInformation($"GetKey initiated in controller for {keyId}");
             var response = await _mediator.Send(new GetKeyQuery() { keyId = keyId });
