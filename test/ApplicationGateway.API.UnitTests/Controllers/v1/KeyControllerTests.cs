@@ -46,19 +46,19 @@ namespace ApplicationGateway.API.UnitTests.Controllers.v1
             okObjectResult.Value.ShouldBeOfType<Response<GetAllKeysDto>>();
         }
 
-        //[Fact]
-        //public async Task Get_Key()
-        //{
-        //    var controller = new KeyController(_mockLogger.Object, _mockMediator.Object);
+        [Fact]
+        public async Task Get_Key()
+        {
+            var controller = new KeyController(_mockLogger.Object, _mockMediator.Object);
 
-        //    var result = await controller.GetKey("key");
+            var result = await controller.GetKey("key");
 
-        //    result.ShouldBeOfType<OkObjectResult>();
-        //    var okObjectResult = result as OkObjectResult;
-        //    okObjectResult.StatusCode.ShouldBe(200);
-        //    okObjectResult.Value.ShouldNotBeNull();
-        //    okObjectResult.Value.ShouldBeOfType<Response<Key>>();
-        //}
+            result.ShouldBeOfType<OkObjectResult>();
+            var okObjectResult = result as OkObjectResult;
+            okObjectResult.StatusCode.ShouldBe(200);
+            okObjectResult.Value.ShouldNotBeNull();
+            okObjectResult.Value.ShouldBeOfType<Response<Key>>();
+        }
 
         [Fact]
         public async Task Create_Key()
