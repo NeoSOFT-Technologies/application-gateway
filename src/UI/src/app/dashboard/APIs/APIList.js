@@ -50,17 +50,31 @@ function APIList() {
   }
   console.log("apilist", ApiList);
   console.log("ApiList before datalist", isIterable(ApiList.list));
+  const actions = [
+    {
+      className: "btn btn-sm btn-success",
+      iconClassName: "mdi mdi-sync",
+    },
+    {
+      className: "btn btn-sm btn-danger",
+      iconClassName: "mdi mdi-delete",
+    },
+    {
+      className: "btn btn-sm btn-dark",
+      iconClassName: "mdi mdi-cog",
+    },
+  ];
   const datalist = {
     //list: [...ApiList.list],
     list: [isIterable(ApiList.list) === true ? ApiList.list[0] : {}],
-    fields: ["ApiId", "Name", "ListenPath", "TargetUrl"],
+    fields: ["Name", "TargetUrl", "Status", "Created"],
   };
   const headings = [
-    { title: "API ID" },
     { title: "Name" },
-    { title: "Listen Path" },
     { title: "Target Url" },
-    //{ title: "Action", className: "text-center" },
+    { title: "Status" },
+    { title: "Created Date" },
+    { title: "Action", className: "text-center" },
   ];
   return (
     <>
@@ -68,15 +82,33 @@ function APIList() {
         <div className="card">
           <div className="card-body">
             <div className="d-flex align-items-center justify-content-around">
-              <h2 className="card-title">Tenant List</h2>
+              <div className="search-field col-lg-12">
+                <form className="h-50">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control bg-parent border-1"
+                      placeholder="Search projects"
+                    />
+                    <button className=" btn  btn-success btn-sm">
+                      <i className=" mdi mdi-magnify"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
+            <br />
             <div className="table-responsive">
               {ApiList.loading ? (
                 <span>
                   <Spinner />
                 </span>
               ) : (
-                <RenderList headings={headings} data={datalist} />
+                <RenderList
+                  headings={headings}
+                  data={datalist}
+                  actions={actions}
+                />
               )}
             </div>
           </div>

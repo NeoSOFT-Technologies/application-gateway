@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPolicyList } from "../../redux/actions/PolicyActions";
 //import setAPIList from "../../redux/reducers/APIs/APIListState";
 import RenderList from "../../shared/RenderList";
+import Spinner from "../../shared/Spinner";
 //import setAPIList from "../../redux/reducers/APIs/APIListState";
 
 function Policies() {
@@ -91,9 +92,12 @@ function Policies() {
                 </form>
               </div>
             </div>
+            <br />
             <div className="table-responsive">
               {PolicyList.loading ? (
-                <span>We are loading</span>
+                <span>
+                  <Spinner />
+                </span>
               ) : (
                 <RenderList
                   headings={headings}

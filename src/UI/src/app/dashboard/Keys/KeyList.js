@@ -34,6 +34,20 @@ function KeyList() {
     return typeof obj[Symbol.iterator] === "function";
   }
   console.log("ApiList before datalist", isIterable(keyslist.list));
+  const actions = [
+    {
+      className: "btn btn-sm btn-success",
+      iconClassName: "mdi mdi-sync",
+    },
+    {
+      className: "btn btn-sm btn-danger",
+      iconClassName: "mdi mdi-delete",
+    },
+    {
+      className: "btn btn-sm btn-dark",
+      iconClassName: "mdi mdi-cog",
+    },
+  ];
   const datalist = {
     list: [isIterable(keyslist.list) === true ? keyslist.list[0] : {}],
     fields: ["KeyId", "AuthType", "Status", "Created"],
@@ -51,15 +65,33 @@ function KeyList() {
         <div className="card">
           <div className="card-body">
             <div className="d-flex align-items-center justify-content-around">
-              <h2 className="card-title">Key List</h2>
+              <div className="search-field col-lg-12">
+                <form className="h-50">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control bg-parent border-1"
+                      placeholder="Search projects"
+                    />
+                    <button className=" btn  btn-success btn-sm">
+                      <i className=" mdi mdi-magnify"></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
+            <br />
             <div className="table-responsive">
               {keyslist.loading ? (
                 <span>
                   <Spinner />
                 </span>
               ) : (
-                <RenderList headings={headings} data={datalist} />
+                <RenderList
+                  headings={headings}
+                  data={datalist}
+                  actions={actions}
+                />
               )}
             </div>
           </div>
