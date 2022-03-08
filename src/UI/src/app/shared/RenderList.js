@@ -1,4 +1,5 @@
 import React from "react";
+//import Table from "react-bootstrap/Table";
 import Pagination from "./Pagination";
 
 export default function RenderList(props) {
@@ -6,8 +7,8 @@ export default function RenderList(props) {
   console.log("Data from Renderlist", data);
   return (
     <div>
-      {/* headings mapping logic */}
-      <table className="table">
+      {/* headings mapping logic*/}
+      <table className="table text-center table-bordered hover table-variant">
         <thead>
           <tr>
             {headings.map((heading, index) => (
@@ -53,6 +54,7 @@ export default function RenderList(props) {
           )}
         </tbody>
       </table>
+      <br />
       {/* paginate logic */}
       <Pagination
         previousLabel={"previous"}
