@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-ApplicationGateway.Worker-E10C2421-49EC-4A46-A906-9BA72F295D34</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
