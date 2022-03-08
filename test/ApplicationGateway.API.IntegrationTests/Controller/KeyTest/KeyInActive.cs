@@ -12,27 +12,28 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.Logging;
 using ApplicationGateway.API.IntegrationTests.Helper;
-using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
+using ApplicationGateway.Application.Responses;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
     [Collection("Database")]
-    public partial class keyExpireTest : IClassFixture<CustomWebApplicationFactory>
+    public partial class KeyInActive : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
+        //private readonly ILogger<KeyControllerTest> _logger;
         private HttpClient client = null;
-        public keyExpireTest(CustomWebApplicationFactory factory)
+        public KeyInActive(CustomWebApplicationFactory factory)
         {
             _factory = factory;
             client = _factory.CreateClient();
+
         }
 
         [Fact]
-        public async Task ExpireTest()
+        public async Task KeyisInActive()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
@@ -51,7 +52,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-           
+
             Thread.Sleep(5000);
 
             //read update json file
@@ -60,27 +61,24 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             updaterequestModel1.Name = newid.ToString();
             updaterequestModel1.ListenPath = $"/{newid}/";
             updaterequestModel1.ApiId = id;
+            updaterequestModel1.AuthType = "standard";
 
-            //update appi
+            //updateappi
             var updateRequestJson = JsonConvert.SerializeObject(updaterequestModel1);
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-           
             Thread.Sleep(5000);
 
-            // read createkey json file
+            //read json file 
             var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createKeyData.json");
-            //Int32 unixTimestamp = (Int32)(DateTime.Now.Subtract(DateTime.Now.AddSeconds(60))).TotalSeconds;
-            DateTime foo = DateTime.Now.AddSeconds(30);
-            long unixTime = ((DateTimeOffset)foo).ToUnixTimeSeconds();
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             foreach (var item in keyrequestmodel["AccessRights"])
             {
                 item["ApiId"] = id.ToString();
                 item["ApiName"] = newid.ToString();
             }
-            keyrequestmodel["Expires"] = unixTime;
+
             StringContent stringContent = new StringContent(keyrequestmodel.ToString(), System.Text.Encoding.UTF8, "application/json");
 
             //create key
@@ -89,28 +87,44 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
             var keyid = key["data"]["keyId"];
-            Thread.Sleep(2000);
-
-           
 
             //hit api
             var clientkey = HttpClientFactory.Create();
             clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
-            var responseclientkey = await clientkey.GetAsync(Url);
-            responseclientkey.EnsureSuccessStatusCode();
 
-            Thread.Sleep(30000);
-
+            //CHECK IsInActive
             var responseclientkey1 = await clientkey.GetAsync(Url);
-            responseclientkey1.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Unauthorized);
+            responseclientkey1.EnsureSuccessStatusCode();
+
+            //read update json file 
+            var myJsonStringKey1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/keyIsinActive.json");
+            JObject keyrequestmodel1 = JObject.Parse(myJsonStringKey1);
+            keyrequestmodel1["KeyId"] = keyid;
+            keyrequestmodel1["IsInActive"] = true;
+            foreach (var item in keyrequestmodel1["AccessRights"])
+            {
+                item["ApiId"] = id.ToString();
+                item["ApiName"] = newid.ToString();
+            }
+
+            StringContent stringContent1 = new StringContent(keyrequestmodel1.ToString(), System.Text.Encoding.UTF8, "application/json");
+
+            //create key
+            var responsekey1= await client.PutAsync("/api/v1/Key/UpdateKey", stringContent1);
+            responsekey1.EnsureSuccessStatusCode();
+            Thread.Sleep(10000);
+
+            //CHECK IsInActive
+            var responseclientkey = await clientkey.GetAsync(Url);
+            responseclientkey.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
+
 
             //delete Api
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-           
-
-
         }
+
+
 
         public async Task<HttpResponseMessage> DownStream(string path)
         {
