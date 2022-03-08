@@ -83,7 +83,16 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             JObject key = JObject.Parse(jsonStringkey);
             var keyid = key["data"]["keyId"];
 
-            for(var i = 0; i < 3; i++)
+            //getkey
+            var getkey = await client.GetAsync("/api/v1/Key/GetKey?keyId="+keyid);
+            getkey.EnsureSuccessStatusCode();
+
+            //getallkeys
+            var getAllkey = await client.GetAsync("/api/v1/Key/GetAllKeys");
+            getAllkey.EnsureSuccessStatusCode();
+
+
+            for (var i = 0; i < 3; i++)
             {
                 var clientV = HttpClientFactory.Create();
                 clientV.DefaultRequestHeaders.Add("Authorization", keyid.ToString());

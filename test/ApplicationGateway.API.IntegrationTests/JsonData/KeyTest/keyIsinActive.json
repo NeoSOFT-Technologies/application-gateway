@@ -1,0 +1,35 @@
+{
+  "KeyId": "60e66710cba346f2a3ef1bf82eeeecad",
+  "Rate": 100,
+  "Per": 20,
+  "Quota": 0,
+  "QuotaRenewalRate": 0,
+  "ThrottleInterval": 0,
+  "ThrottleRetries": 0,
+  "Expires": 0,
+  "IsInActive": true,
+  "AccessRights": [
+    {
+      "ApiId": "e34967cf-743d-4646-a208-c102d35c548d",
+      "ApiName": "limitTest",
+      "Versions": [
+        "default"
+      ],
+      "AllowedUrls": [
+      ],
+      "Limit": {
+        "Rate": 0,
+        "Per": 0,
+        "Throttle_interval": 0,
+        "Throttle_retry_limit": 0,
+        "Max_query_depth": 0,
+        "Quota_max": 0,
+        "Quota_renews": 0,
+        "Quota_remaining": 0,
+        "Quota_renewal_rate": 0
+      }
+    }
+  ],
+  "Policies": [
+  ]
+}
