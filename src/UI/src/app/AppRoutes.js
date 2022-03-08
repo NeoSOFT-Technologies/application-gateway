@@ -1,7 +1,7 @@
 import React, { Component, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import Spinner from "../app/shared/Spinner";
-const Policies = lazy(() => import("./dashboard/Policies"));
+const Policies = lazy(() => import("./dashboard/Policy/Policies"));
 const APIList = lazy(() => import("./dashboard/APIs/APIList"));
 const Keys = lazy(() => import("./dashboard/Keys"));
 const TenantList = lazy(() => import("./dashboard/TenantList"));
