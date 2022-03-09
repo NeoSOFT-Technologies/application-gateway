@@ -1,11 +1,11 @@
 {
   "name": "#valueof(Name)",
   "use_keyless": true,
-  "active": true,
+  "active": "#valueof(IsActive)",
   "proxy": {
     "listen_path": "#valueof(ListenPath)",
     "target_url": "#valueof(TargetUrl)",
-    "strip_listen_path": true
+    "strip_listen_path": "#valueof(StripListenPath)"
   },
   "version_data": {
     "not_versioned": true,

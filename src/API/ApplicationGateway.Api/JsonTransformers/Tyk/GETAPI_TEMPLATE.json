@@ -2,11 +2,17 @@
   "apiId": "#valueof(api_id)",
   "name": "#valueof(name)",
   "listenPath": "#valueof(proxy.listen_path)",
+  "stripListenPath": "#valueof(proxy.strip_listen_path)",
   "targetUrl": "#valueof(proxy.target_url)",
+  "isActive": "#valueof(active)",
+  "isInternal": "#valueof(internal)",
+  "protocol": "#valueof(protocol)",
   "rateLimit": {
     "rate": "#valueof(global_rate_limit.rate)",
-    "per": "#valueof(global_rate_limit.per)"
+    "per": "#valueof(global_rate_limit.per)",
+    "isDisabled": "#valueof(disable_rate_limit)"
   },
+  "isQuotaDisabled": "#valueof(disable_quota)",
   "blacklist": "#valueof(blacklisted_ips)",
   "whitelist": "#valueof(allowed_ips)",
   "versioningInfo": {
@@ -17,7 +23,8 @@
   "versions": [
     {
       "name": "string",
-      "overrideTarget": "string"
+      "overrideTarget": "string",
+      "expires": "string"
     }
   ],
   "authType": "string",
