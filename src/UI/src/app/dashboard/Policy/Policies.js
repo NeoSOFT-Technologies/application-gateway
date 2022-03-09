@@ -44,7 +44,10 @@ function Policies() {
     return typeof obj[Symbol.iterator] === "function";
   }
   console.log("policylist", PolicyList);
-  console.log("policyList before datalist", isIterable(PolicyList.list));
+  console.log(
+    "policyList before datalist",
+    isIterable(PolicyList.list) === true ? PolicyList : {}
+  ); //isIterable(PolicyList.list)
   const actions = [
     {
       className: "btn btn-sm btn-success",
@@ -54,14 +57,14 @@ function Policies() {
       className: "btn btn-sm btn-danger",
       iconClassName: "mdi mdi-delete",
     },
-    {
-      className: "btn btn-sm btn-dark",
-      iconClassName: "mdi mdi-cog",
-    },
-  ];
+    ];
   const datalist = {
     //list: [...PolicyList.list],
-    list: [isIterable(PolicyList.list) === true ? PolicyList.list[0] : {}],
+    //list: [isIterable(PolicyList.list) === true ? PolicyList.list[0] : {}],
+    list:
+      isIterable(PolicyList.list) === true && PolicyList.list.length > 0
+        ? PolicyList.list[0]
+        : [],
     fields: ["Status", "PolicyName", "AccessRights", "AuthType"],
   };
   const headings = [
@@ -83,7 +86,7 @@ function Policies() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search projects"
+                      placeholder="Search Policies"
                     />
                     <button className=" btn  btn-success btn-sm">
                       <i className=" mdi mdi-magnify"></i>

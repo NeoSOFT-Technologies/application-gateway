@@ -37,9 +37,6 @@ function APIList() {
     }
   };
 
-  // const renderTenant = (val) => {
-  //   setTenant(val);
-  // };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -49,7 +46,7 @@ function APIList() {
     return typeof obj[Symbol.iterator] === "function";
   }
   console.log("apilist", ApiList);
-  console.log("ApiList before datalist", isIterable(ApiList.list));
+  //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
       className: "btn btn-sm btn-success",
@@ -64,9 +61,13 @@ function APIList() {
       iconClassName: "mdi mdi-cog",
     },
   ];
+  console.log("apilist", isIterable(ApiList.list) === true ? ApiList : {});
   const datalist = {
     //list: [...ApiList.list],
-    list: [isIterable(ApiList.list) === true ? ApiList.list[0] : {}],
+    list:
+      isIterable(ApiList.list) === true && ApiList.list.length > 0
+        ? ApiList.list[0]
+        : [],
     fields: ["Name", "TargetUrl", "Status", "Created"],
   };
   const headings = [
@@ -88,7 +89,7 @@ function APIList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search projects"
+                      placeholder="Search Api"
                     />
                     <button className=" btn  btn-success btn-sm">
                       <i className=" mdi mdi-magnify"></i>
