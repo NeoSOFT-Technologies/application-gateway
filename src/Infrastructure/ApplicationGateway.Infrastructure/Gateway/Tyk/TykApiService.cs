@@ -127,6 +127,9 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     (version as JObject).Add("global_headers_remove", removeGlobalHeaders);
                     (transformedObject["version_data"]["versions"] as JObject).Add($"{version["Name"]}", version);
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("override_target", version["OverrideTarget"]);
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("OverrideTarget").Remove();
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("expires", version["Expires"]);
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("Expires").Remove();
                 }
             }
             #endregion
@@ -193,6 +196,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 JObject tempObj = new JObject();
                 tempObj.Add("name", item.Key);
                 tempObj.Add("overrideTarget", item.Value["override_target"]);
+                tempObj.Add("expires", item.Value["expires"]);
                 (apiObject["versions"] as JArray).Add(tempObj);
             }
             return apiObject;

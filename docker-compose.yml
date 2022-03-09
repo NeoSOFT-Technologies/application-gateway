@@ -3,8 +3,6 @@
 networks:
   clean-network:
   tyk:
-  es:
-    driver: bridge
 
 services:
   tyk-gateway:

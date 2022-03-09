@@ -17,6 +17,7 @@ using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
 using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
+using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -100,6 +101,10 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<ApiLimit, UpdateKeyLimitDto>().ReverseMap();
 
 
+
+            CreateMap<ApiDto, GetAllApiModel>().ReverseMap();
+            CreateMap<KeyDto, GetAllKeyModel>().ReverseMap();
+            CreateMap<PolicyDto, GetAllPolicyModel>().ReverseMap();
         }
 
     }

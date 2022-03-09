@@ -10,6 +10,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
     public class CreateKeyCommand:IRequest<Response<Domain.Entities.Key>>
     {
+        public string KeyName { get; set; }
         public int Rate { get; set; }
         public int Per { get; set; }
         public int Quota { get; set; }

@@ -1,5 +1,7 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
+using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -8,13 +10,13 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
 {
     public class GetAllApisQueryHandler : IRequestHandler<GetAllApisQuery, Response<GetAllApisDto>>
     {
-        private readonly IApiService _apiService;
         private readonly IMapper _mapper;
         private readonly ILogger<GetAllApisQueryHandler> _logger;
+        private readonly IApiDtoRepository _apiDtoRepository;
 
-        public GetAllApisQueryHandler(IApiService apiService, IMapper mapper, ILogger<GetAllApisQueryHandler> logger)
+        public GetAllApisQueryHandler(IApiDtoRepository apiDtoRepository, IMapper mapper, ILogger<GetAllApisQueryHandler> logger)
         {
-            _apiService = apiService;
+            _apiDtoRepository = apiDtoRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -22,28 +24,12 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
         public async Task<Response<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            List<Domain.Entities.Api> apiList = await _apiService.GetAllApisAsync();
-            GetAllApisDto getAllApisDto = new GetAllApisDto() { Apis = new List<GetAllApiModel>() };
-
-            //foreach (var api in apiList)
-            //{
-            //    getAllApisDto.Apis.Add(_mapper.Map<GetAllApiModel>(api));
-            //}
-
-            //var response = new Response<GetAllApisDto>(getAllApisDto, "success");
-
-            foreach(var api in apiList)
+            IReadOnlyList<ApiDto> apiList = await _apiDtoRepository.ListAllAsync();
+            GetAllApisDto getAllApisDto = new GetAllApisDto()
             {
-                 GetAllApiModel getAllApiModel= new GetAllApiModel()
-                {
-                    Status = "Active",
-                    Created = DateTime.Now
-                };
+                Apis = _mapper.Map<List<GetAllApiModel>>(apiList)
+            };
 
-                getAllApiModel.Name = api.Name;
-                getAllApiModel.TargetUrl = api.TargetUrl;
-                getAllApisDto.Apis.Add(getAllApiModel);
-            }
             var response = new Response<GetAllApisDto>(getAllApisDto, "success");
             _logger.LogInformation("Handler Completed");
             return response;

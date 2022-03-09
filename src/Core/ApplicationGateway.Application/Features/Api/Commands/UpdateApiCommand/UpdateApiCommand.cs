@@ -8,7 +8,11 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public Guid ApiId { get; set; }
         public string Name { get; set; }
         public string ListenPath { get; set; }
+        public bool StripListenPath { get; set; }
         public string TargetUrl { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsInternal { get; set; }
+        public string? Protocol { get; set; }
         public UpdateRateLimit? RateLimit { get; set; }
         public List<string>? Blacklist { get; set; }
         public List<string>? Whitelist { get; set; }
@@ -18,12 +22,14 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public string AuthType { get; set; }
         public UpdateOpenIdOptions? OpenidOptions { get; set; }
         public List<string>? LoadBalancingTargets { get; set; }
+        public bool IsQuotaDisabled { get; set; }
     }
 
     public class UpdateRateLimit
     {
         public int Rate { get; set; }
         public int Per { get; set; }
+        public bool IsDisabled { get; set; }
     }
 
     public class UpdateOpenIdOptions
@@ -53,5 +59,6 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
     {
         public string Name { get; set; }
         public string? OverrideTarget { get; set; }
+        public string? Expires { get; set; }
     }
 }
