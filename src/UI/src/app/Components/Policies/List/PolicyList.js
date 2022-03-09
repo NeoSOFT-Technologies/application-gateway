@@ -1,36 +1,24 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAPIList } from "../../redux/actions/ApiActions";
-import RenderList from "../../shared/RenderList";
-import Spinner from "../../shared/Spinner";
+import { getPolicyList } from "../../../redux/actions/PolicyActions";
+import RenderList from "../../../shared/RenderList";
+import Spinner from "../../../shared/Spinner";
 
-function APIList() {
+function Policies() {
   const dispatch = useDispatch();
-  const ApiList = useSelector((state) => state.setAPIList);
-  // const [api, setApi] = useState({
-  //   ApiId: null,
-  //   Name: null,
-  //   ListenPath: null,
-  //   TargetUrl: null,
-  // });
-
+  const PolicyList = useSelector((state) => state.setPolicyList);
   useEffect(() => {
-    dispatch({ type: "API_LOADING" });
-    console.log("dispatch of loading", ApiList);
+    dispatch({ type: "POLICY_LOADING" });
+    console.log("dispatch of loading", PolicyList);
     mainCall();
   }, []);
 
   const mainCall = () => {
-    // getAPIList().then((res) => {
-    //   console.log("in api List", res.payload.Data.Apis);
-    //   dispatch(res);
-    //   console.log("main call", ApiList);
-    // });
     try {
-      getAPIList().then((res) => {
-        console.log("in Api List", res.payload.Data.Apis);
+      getPolicyList().then((res) => {
+        console.log("in Policy List", res.payload.Data);
         dispatch(res);
-        console.log("main call", ApiList);
+        console.log("main call", PolicyList);
       });
     } catch (err) {
       console.log(err);
@@ -45,36 +33,33 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("apilist", ApiList);
-  //console.log("ApiList before datalist", isIterable(ApiList.list));
+  console.log("policylist", PolicyList);
+  console.log(
+    "policyList before datalist",
+    isIterable(PolicyList.list) === true ? PolicyList : {}
+  ); //isIterable(PolicyList.list)
   const actions = [
     {
       className: "btn btn-sm btn-success",
-      iconClassName: "mdi mdi-sync",
+      iconClassName: "mdi mdi-pencil",
     },
     {
       className: "btn btn-sm btn-danger",
       iconClassName: "mdi mdi-delete",
     },
-    {
-      className: "btn btn-sm btn-dark",
-      iconClassName: "mdi mdi-cog",
-    },
   ];
-  console.log("apilist", isIterable(ApiList.list) === true ? ApiList : {});
   const datalist = {
-    //list: [...ApiList.list],
     list:
-      isIterable(ApiList.list) === true && ApiList.list.length > 0
-        ? ApiList.list[0]
+      isIterable(PolicyList.list) === true && PolicyList.list.length > 0
+        ? PolicyList.list[0]
         : [],
-    fields: ["Name", "TargetUrl", "Status", "Created"],
+    fields: ["Status", "PolicyName", "AccessRights", "AuthType"],
   };
   const headings = [
-    { title: "Name" },
-    { title: "Target Url" },
-    { title: "Status" },
-    { title: "Created Date" },
+    { title: "State" },
+    { title: "Policy Name", className: "w-100" },
+    { title: "Access Rights", className: "text-center" },
+    { title: "Authentication Type", className: "text-center" },
     { title: "Action", className: "text-center" },
   ];
   return (
@@ -89,7 +74,7 @@ function APIList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search Api"
+                      placeholder="Search Policies"
                     />
                     <button className=" btn  btn-success btn-sm">
                       <i className=" mdi mdi-magnify"></i>
@@ -100,7 +85,7 @@ function APIList() {
             </div>
             <br />
             <div className="table-responsive">
-              {ApiList.loading ? (
+              {PolicyList.loading ? (
                 <span>
                   <Spinner />
                 </span>
@@ -119,4 +104,4 @@ function APIList() {
   );
 }
 
-export default APIList;
+export default Policies;

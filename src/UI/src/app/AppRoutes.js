@@ -1,10 +1,10 @@
 import React, { Component, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import Spinner from "../app/shared/Spinner";
-const Policies = lazy(() => import("./dashboard/Policy/Policies"));
-const APIList = lazy(() => import("./dashboard/APIs/APIList"));
-const KeyList = lazy(() => import("./dashboard/Keys/KeyList"));
-const TenantList = lazy(() => import("./dashboard/TenantList"));
+const Policies = lazy(() => import("./Components/Policies/List/PolicyList"));
+const APIList = lazy(() => import("./Components/APIs//List/APIList"));
+const KeyList = lazy(() => import("./Components/Keys/List/KeyList"));
+const TenantList = lazy(() => import("./Components/TenantList"));
 
 class AppRoutes extends Component {
   render() {

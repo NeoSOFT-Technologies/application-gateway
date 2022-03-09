@@ -6,12 +6,6 @@ const initialState = {
 const setPolicyList = (state = initialState, action) => {
   switch (action.type) {
     case "getPolicies": {
-      //return { list: [...state.list, action.payload.Data.Apis] };
-      //return action.payload.Data.Apis;
-      // return {
-      //   list: action.payload.Data,
-      //   loading: false,
-      // };
       initialState.list = [action.payload.Data];
       return initialState;
     }
