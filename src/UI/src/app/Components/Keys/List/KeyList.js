@@ -1,40 +1,30 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPolicyList } from "../../redux/actions/PolicyActions";
-//import setAPIList from "../../redux/reducers/APIs/APIListState";
-import RenderList from "../../shared/RenderList";
-import Spinner from "../../shared/Spinner";
-//import setAPIList from "../../redux/reducers/APIs/APIListState";
+import { getKeyList } from "../../../redux/actions/KeyActions";
+import RenderList from "../../../shared/RenderList";
+import Spinner from "../../../shared/Spinner";
 
-function Policies() {
+function KeyList() {
   const dispatch = useDispatch();
-  const PolicyList = useSelector((state) => state.setPolicyList);
+  const keyslist = useSelector((state) => state.setKeyList);
+
   useEffect(() => {
-    dispatch({ type: "POLICY_LOADING" });
-    console.log("dispatch of loading", PolicyList);
+    dispatch({ type: "Key_LOADING" });
+    //console.log("dispatch of loading", keyslist);
     mainCall();
   }, []);
 
   const mainCall = () => {
-    // getAPIList().then((res) => {
-    //   console.log("in api List", res.payload.Data.Apis);
-    //   dispatch(res);
-    //   console.log("main call", ApiList);
-    // });
     try {
-      getPolicyList().then((res) => {
-        console.log("in Policy List", res.payload.Data);
+      getKeyList().then((res) => {
+        //console.log("in Key List", res.payload.Data.KeyDto);
         dispatch(res);
-        console.log("main call", PolicyList);
+        //console.log("main call", keyslist);
       });
     } catch (err) {
       console.log(err);
     }
   };
-
-  // const renderTenant = (val) => {
-  //   setTenant(val);
-  // };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -43,35 +33,30 @@ function Policies() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("policylist", PolicyList);
-  console.log(
-    "policyList before datalist",
-    isIterable(PolicyList.list) === true ? PolicyList : {}
-  ); //isIterable(PolicyList.list)
+  console.log("ApiList before datalist", isIterable(keyslist.list));
   const actions = [
     {
       className: "btn btn-sm btn-success",
-      iconClassName: "mdi mdi-sync",
+      iconClassName: "mdi mdi-pencil",
     },
     {
       className: "btn btn-sm btn-danger",
       iconClassName: "mdi mdi-delete",
     },
-    ];
+  ];
+  console.log("apilist", isIterable(keyslist.list) === true ? keyslist : {});
   const datalist = {
-    //list: [...PolicyList.list],
-    //list: [isIterable(PolicyList.list) === true ? PolicyList.list[0] : {}],
     list:
-      isIterable(PolicyList.list) === true && PolicyList.list.length > 0
-        ? PolicyList.list[0]
+      isIterable(keyslist.list) === true && keyslist.list.length > 0
+        ? keyslist.list[0]
         : [],
-    fields: ["Status", "PolicyName", "AccessRights", "AuthType"],
+    fields: ["KeyId", "AuthType", "Status", "Created"],
   };
   const headings = [
-    { title: "State" },
-    { title: "Policy Name", className: "w-100" },
-    { title: "Access Rights", className: "text-center" },
-    { title: "Authentication Type", className: "text-center" },
+    { title: "Key ID" },
+    { title: "Authentication Type", className: "w-100" },
+    { title: "Status" },
+    { title: "Created" },
     { title: "Action", className: "text-center" },
   ];
   return (
@@ -86,7 +71,7 @@ function Policies() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search Policies"
+                      placeholder="Search Keys"
                     />
                     <button className=" btn  btn-success btn-sm">
                       <i className=" mdi mdi-magnify"></i>
@@ -97,7 +82,7 @@ function Policies() {
             </div>
             <br />
             <div className="table-responsive">
-              {PolicyList.loading ? (
+              {keyslist.loading ? (
                 <span>
                   <Spinner />
                 </span>
@@ -116,4 +101,4 @@ function Policies() {
   );
 }
 
-export default Policies;
+export default KeyList;

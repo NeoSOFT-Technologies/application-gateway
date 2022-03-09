@@ -1,30 +1,31 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getKeyList } from "../../redux/actions/KeyActions";
-import RenderList from "../../shared/RenderList";
-import Spinner from "../../shared/Spinner";
+import { getAPIList } from "../../../redux/actions/ApiActions";
+import RenderList from "../../../shared/RenderList";
+import Spinner from "../../../shared/Spinner";
 
-function KeyList() {
+function APIList() {
   const dispatch = useDispatch();
-  const keyslist = useSelector((state) => state.setKeyList);
+  const ApiList = useSelector((state) => state.setAPIList);
 
   useEffect(() => {
-    dispatch({ type: "Key_LOADING" });
-    console.log("dispatch of loading", keyslist);
+    dispatch({ type: "API_LOADING" });
+    console.log("dispatch of loading", ApiList);
     mainCall();
   }, []);
 
   const mainCall = () => {
     try {
-      getKeyList().then((res) => {
-        console.log("in Key List", res.payload.Data.KeyDto);
+      getAPIList().then((res) => {
+        console.log("in Api List", res.payload.Data.Apis);
         dispatch(res);
-        console.log("main call", keyslist);
+        console.log("main call", ApiList);
       });
     } catch (err) {
       console.log(err);
     }
   };
+
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -33,34 +34,31 @@ function KeyList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("ApiList before datalist", isIterable(keyslist.list));
+  console.log("apilist", ApiList);
+  //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
       className: "btn btn-sm btn-success",
-      iconClassName: "mdi mdi-sync",
+      iconClassName: "mdi mdi-pencil",
     },
     {
       className: "btn btn-sm btn-danger",
       iconClassName: "mdi mdi-delete",
     },
-    {
-      className: "btn btn-sm btn-dark",
-      iconClassName: "mdi mdi-cog",
-    },
   ];
-  console.log("apilist", isIterable(keyslist.list) === true ? keyslist : {});
+  console.log("apilist", isIterable(ApiList.list) === true ? ApiList : {});
   const datalist = {
     list:
-      isIterable(keyslist.list) === true && keyslist.list.length > 0
-        ? keyslist.list[0]
+      isIterable(ApiList.list) === true && ApiList.list.length > 0
+        ? ApiList.list[0]
         : [],
-    fields: ["KeyId", "AuthType", "Status", "Created"],
+    fields: ["Name", "TargetUrl", "Status", "Created"],
   };
   const headings = [
-    { title: "Key ID" },
-    { title: "Authentication Type", className: "w-100" },
+    { title: "Name" },
+    { title: "Target Url" },
     { title: "Status" },
-    { title: "Created" },
+    { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
   return (
@@ -75,7 +73,7 @@ function KeyList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search Keys"
+                      placeholder="Search Api"
                     />
                     <button className=" btn  btn-success btn-sm">
                       <i className=" mdi mdi-magnify"></i>
@@ -86,7 +84,7 @@ function KeyList() {
             </div>
             <br />
             <div className="table-responsive">
-              {keyslist.loading ? (
+              {ApiList.loading ? (
                 <span>
                   <Spinner />
                 </span>
@@ -105,4 +103,4 @@ function KeyList() {
   );
 }
 
-export default KeyList;
+export default APIList;
