@@ -7,6 +7,7 @@
 
     public class GetAllPolicyModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public List<string> Apis { get; set; }
         public string AuthType { get; set; }

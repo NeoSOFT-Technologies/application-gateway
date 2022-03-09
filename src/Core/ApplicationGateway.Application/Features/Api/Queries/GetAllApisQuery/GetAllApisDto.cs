@@ -9,6 +9,7 @@
 
     public class GetAllApiModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string TargetUrl { get; set; }
         public bool IsActive { get; set; }

@@ -13,6 +13,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
 
     public class GetAllKeyModel
     {
+        public string Id { get; set; }
         public string KeyName { get; set; }
         public bool IsActive { get; set; }
         public DateTime? Expires { get; set; }
