@@ -6,7 +6,7 @@ const initialState = {
 const setAPIList = (state = initialState, action) => {
   switch (action.type) {
     case "getAPIs": {
-      initialState.list = [action.payload.data.apis];
+      initialState.list = [action.payload.Data.Apis];
       return initialState;
     }
     case "API_LOADING": {

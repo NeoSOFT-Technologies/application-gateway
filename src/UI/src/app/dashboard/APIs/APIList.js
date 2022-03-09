@@ -37,9 +37,6 @@ function APIList() {
     }
   };
 
-  // const renderTenant = (val) => {
-  //   setTenant(val);
-  // };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -71,7 +68,7 @@ function APIList() {
       isIterable(ApiList.list) === true && ApiList.list.length > 0
         ? ApiList.list[0]
         : [],
-    fields: ["name", "targetUrl", "Status", "Created"],
+    fields: ["Name", "TargetUrl", "Status", "Created"],
   };
   const headings = [
     { title: "Name" },
