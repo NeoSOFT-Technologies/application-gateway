@@ -1,7 +1,9 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
+using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -14,9 +16,11 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
         private readonly IPolicyService _policyService;
         private readonly IMapper _mapper;
         private readonly ILogger<UpdatePolicyCommandHandler> _logger;
+        private readonly IPolicyDtoRepository _policyDtoRepository;
 
-        public UpdatePolicyCommandHandler(IPolicyService policyService, IMapper mapper, ILogger<UpdatePolicyCommandHandler> logger, ISnapshotService snapshotService)
+        public UpdatePolicyCommandHandler(IPolicyDtoRepository policyDtoRepository, IPolicyService policyService, IMapper mapper, ILogger<UpdatePolicyCommandHandler> logger, ISnapshotService snapshotService)
         {
+            _policyDtoRepository = policyDtoRepository;
             _policyService = policyService;
             _mapper = mapper;
             _logger = logger;
@@ -31,12 +35,29 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
 
             UpdatePolicyDto updatePolicyDto = _mapper.Map<UpdatePolicyDto>(newPolicy);
 
+            #region Create Snapshot
             await _snapshotService.CreateSnapshot(
                 Enums.Gateway.Tyk,
                 Enums.Type.Policy,
                 Enums.Operation.Updated,
                 request.PolicyId.ToString(),
                 newPolicy);
+            #endregion
+
+            #region Update Policy Dto
+            List<string> policyNames = new List<string>();
+            newPolicy.APIs.ForEach(policy => policyNames.Add(policy.Name));
+
+            PolicyDto policyDto = new PolicyDto()
+            {
+                Id = newPolicy.PolicyId,
+                Name = newPolicy.Name,
+                AuthType = "Auth Token",
+                State = newPolicy.State,
+                Apis = policyNames
+            };
+            await _policyDtoRepository.UpdateAsync(policyDto);
+            #endregion
 
             Response<UpdatePolicyDto> response = new Response<UpdatePolicyDto>(updatePolicyDto, "success");
             _logger.LogInformation("Handler Completed");

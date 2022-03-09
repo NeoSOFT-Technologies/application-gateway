@@ -29,7 +29,7 @@ export default function Pagination({
   };
   return (
     <div>
-      <ul className="pagination justify-content-center">
+      <ul className="pagination justify-content-end">
         <li className="page-item">
           <a className={`page-link`} onClick={() => setPreviousPage()}>
             {previousLabel}

@@ -1,4 +1,4 @@
-import { tenantListService } from "../../config/Myservices";
+import { tenantListService } from "../../Services/Myservices";
 
 export const getTenantList = async (currentPage, search) => {
   let res = await tenantListService(currentPage, search);
