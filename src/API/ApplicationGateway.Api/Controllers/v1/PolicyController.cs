@@ -28,7 +28,7 @@ namespace ApplicationGateway.Api.Controllers
         public async Task<ActionResult> GetAllPolicies()
         {
             _logger.LogInformation("GetAllPolicies Initiated");
-            Response<List<GetAllPoliciesDto>> response = await _mediator.Send(new GetAllPoliciesQuery());
+            Response<GetAllPoliciesDto> response = await _mediator.Send(new GetAllPoliciesQuery());
             _logger.LogInformation("GetAllPolicies Completed");
             return Ok(response);
         }

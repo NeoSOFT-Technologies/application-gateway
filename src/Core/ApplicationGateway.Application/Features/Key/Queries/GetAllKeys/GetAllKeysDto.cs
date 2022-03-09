@@ -8,14 +8,15 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
 {
     public class GetAllKeysDto
     {
-     public List<AllKeyDto> KeyDto { get; set; }
+     public List<GetAllKeyModel> Keys { get; set; }
     } 
 
-    public class AllKeyDto
+    public class GetAllKeyModel
     {
-        public string KeyId { get; set; }
-        public string AuthType { get; set; }
-        public string Status { get; set; }
-        public DateTime Created { get; set; }
+        public string KeyName { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? Expires { get; set; }
+        public List<string> Policies { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

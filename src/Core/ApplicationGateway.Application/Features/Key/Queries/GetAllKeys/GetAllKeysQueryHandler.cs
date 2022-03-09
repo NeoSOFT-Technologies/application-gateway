@@ -1,5 +1,7 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -15,29 +17,27 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
     {
         readonly ILogger<GetAllKeysQueryHandler> _logger;
         readonly IMapper _mapper;
-        readonly IKeyService _keyService;
+        readonly IKeyDtoRepository _keyDtoRepository;
 
-        public GetAllKeysQueryHandler(ILogger<GetAllKeysQueryHandler> logger, IMapper mapper, IKeyService keyService)
+        public GetAllKeysQueryHandler(IKeyDtoRepository keyDtoRepository, ILogger<GetAllKeysQueryHandler> logger, IMapper mapper)
         {
+            _keyDtoRepository = keyDtoRepository;
             _logger = logger;
             _mapper = mapper;
-            _keyService = keyService;
         }
 
         public async Task<Response<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            List<string> listOfKey =await _keyService.GetAllKeysAsync();
+            IReadOnlyList<KeyDto> listOfKey = await _keyDtoRepository.ListAllAsync();
 
-            List<AllKeyDto> allKeysDto = new List<AllKeyDto>();
-            foreach(var key in listOfKey)
-            {
-                var keyDto = new AllKeyDto() { AuthType = "Auth Token", Status = "Active", Created = DateTime.Now, KeyId = key };
-                allKeysDto.Add(keyDto);
-            }
+            GetAllKeysDto allKeysDto = new GetAllKeysDto()
+            { 
+                Keys = _mapper.Map<List<GetAllKeyModel>>(listOfKey)
+            };
 
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            return new Response<GetAllKeysDto>() {Succeeded=true,Data= new GetAllKeysDto() { KeyDto=allKeysDto} };
+            return new Response<GetAllKeysDto>() { Succeeded = true, Data = allKeysDto };
         }
     }
 }
