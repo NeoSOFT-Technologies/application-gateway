@@ -1,9 +1,6 @@
-const data = {
-  list: null,
-  count: 0,
-};
 const initialState = {
-  list: data,
+  list: [],
+  count: 0,
   loading: false,
 };
 const setPolicyList = (state = initialState, action) => {
@@ -11,10 +8,12 @@ const setPolicyList = (state = initialState, action) => {
     case "getPolicies": {
       //return { list: [...state.list, action.payload.Data.Apis] };
       //return action.payload.Data.Apis;
-      return {
-        list: action.payload.Data,
-        loading: false,
-      };
+      // return {
+      //   list: action.payload.Data,
+      //   loading: false,
+      // };
+      initialState.list = [action.payload.Data];
+      return initialState;
     }
     case "API_LOADING": {
       console.log("loading");

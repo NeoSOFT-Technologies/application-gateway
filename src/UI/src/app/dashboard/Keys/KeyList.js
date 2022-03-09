@@ -71,7 +71,7 @@ function KeyList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search projects"
+                      placeholder="Search Keys"
                     />
                     <button className=" btn  btn-success btn-sm">
                       <i className=" mdi mdi-magnify"></i>

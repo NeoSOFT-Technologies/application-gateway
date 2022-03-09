@@ -16,7 +16,7 @@ function APIList() {
 
   useEffect(() => {
     dispatch({ type: "API_LOADING" });
-    //console.log("dispatch of loading", ApiList);
+    console.log("dispatch of loading", ApiList);
     mainCall();
   }, []);
 
@@ -28,9 +28,9 @@ function APIList() {
     // });
     try {
       getAPIList().then((res) => {
-        //console.log("in Api List", res.payload.data);
+        console.log("in Api List", res.payload.Data.Apis);
         dispatch(res);
-        //console.log("main call", ApiList);
+        console.log("main call", ApiList);
       });
     } catch (err) {
       console.log(err);
@@ -48,7 +48,7 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  //console.log("apilist", ApiList);
+  console.log("apilist", ApiList);
   //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
@@ -71,7 +71,7 @@ function APIList() {
       isIterable(ApiList.list) === true && ApiList.list.length > 0
         ? ApiList.list[0]
         : [],
-    fields: ["name", "targetUrl", "Status", "Created"],
+    fields: ["Name", "TargetUrl", "Status", "Created"],
   };
   const headings = [
     { title: "Name" },
@@ -92,7 +92,7 @@ function APIList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search projects"
+                      placeholder="Search Api"
                     />
                     <button className=" btn  btn-success btn-sm">
                       <i className=" mdi mdi-magnify"></i>
