@@ -1,4 +1,4 @@
-import { ApiListService } from "../../config/APIs/APIService";
+import { ApiListService } from "../../Services/APIs/APIService";
 
 export const getAPIList = async () => {
   let res = await ApiListService();

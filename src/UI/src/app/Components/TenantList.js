@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateTenantData, deleteTenantData } from "../config/Myservices";
+import { updateTenantData, deleteTenantData } from "../Services/Myservices";
 import { regexForName, regexForUser } from "../constants/constantVariables";
 import { useDispatch, useSelector } from "react-redux";
 import { getTenantList } from "../redux/actions/TenantActions";

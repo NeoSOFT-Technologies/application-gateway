@@ -1,8 +1,7 @@
-import { PolicyListService } from "../../config/Policies/PolicyService";
+import { PolicyListService } from "../../Services/Policies/PolicyService";
 
 export const getPolicyList = async () => {
   let res = await PolicyListService();
-  console.log(res);
   return {
     type: "getPolicies",
     payload: { ...res.data },
