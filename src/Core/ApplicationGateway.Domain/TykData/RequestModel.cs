@@ -3,11 +3,13 @@
 using ApplicationGateway.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace ApplicationGateway.Domain.TykData
 {
-      public class Proxy
+    [ExcludeFromCodeCoverage]
+    public class Proxy
     {
         public string listen_path { get; set; }
         public string target_url { get; set; }
@@ -36,7 +38,7 @@ namespace ApplicationGateway.Domain.TykData
     }
 
 
-
+    [ExcludeFromCodeCoverage]
     public class RequestModel
     {
         /*[BsonId]
@@ -55,6 +57,7 @@ namespace ApplicationGateway.Domain.TykData
         public int rate { get; set; }
         public int per { get; set; }
     }
+    [ExcludeFromCodeCoverage]
     public class RateLimit_RequestModel
     {
       
@@ -73,7 +76,7 @@ namespace ApplicationGateway.Domain.TykData
         public string listenPath { get; set; }
         public string targetUrl { get; set; }
     }
-
+    [ExcludeFromCodeCoverage]
     public class UpdateRequest : CreateRequest
     {
         public Guid id { get; set; }
@@ -110,7 +113,7 @@ namespace ApplicationGateway.Domain.TykData
     //    public string name { get; set; }
     //    public string? overrideTarget { get; set; }
     //}
-
+    [ExcludeFromCodeCoverage]
     public class CircuitBreakerRequest
     {
         public string apiId { get; set; }
@@ -173,7 +176,7 @@ namespace ApplicationGateway.Domain.TykData
     {
 
     }
-
+    [ExcludeFromCodeCoverage]
     public class headers
     {
         public string Accept { get; set; }

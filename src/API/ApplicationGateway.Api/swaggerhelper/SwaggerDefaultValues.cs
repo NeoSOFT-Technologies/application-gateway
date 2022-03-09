@@ -4,11 +4,13 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ApplicationGateway.Api.SwaggerHelper
 {
+	[ExcludeFromCodeCoverage]
 	public class SwaggerDefaultValues : IOperationFilter
 	{
 		public void Apply(OpenApiOperation operation, OperationFilterContext context)

@@ -6,10 +6,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 {
+    [ExcludeFromCodeCoverage]
     public class TykApiService : IApiService
     {
         private readonly IBaseService _baseService;

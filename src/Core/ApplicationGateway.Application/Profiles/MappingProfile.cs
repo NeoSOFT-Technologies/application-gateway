@@ -20,6 +20,7 @@ using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
 
 namespace ApplicationGateway.Application.Profiles
 {
+
     public class MappingProfile : Profile
     {
         public MappingProfile()

@@ -7,9 +7,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 {
+    [ExcludeFromCodeCoverage]
     public class TykPolicyService : IPolicyService
     {
         private readonly TykConfiguration _tykConfiguration;

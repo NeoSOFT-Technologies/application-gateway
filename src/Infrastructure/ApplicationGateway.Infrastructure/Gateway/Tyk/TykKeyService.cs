@@ -8,10 +8,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
 {
+    [ExcludeFromCodeCoverage]
     public class TykKeyService: IKeyService
     {
         private readonly ILogger<TykKeyService> _logger;

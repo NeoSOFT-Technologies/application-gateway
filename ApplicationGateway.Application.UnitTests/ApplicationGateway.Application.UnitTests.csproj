@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -26,7 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\API\ApplicationGateway.Api\ApplicationGateway.Api.csproj" />
+    <Folder Include="Gateway\Api\Commands\" />
+    <Folder Include="Gateway\Policy\Commands\" />
+    <Folder Include="Key\Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Core\ApplicationGateway.Application\ApplicationGateway.Application.csproj" />
+    <ProjectReference Include="..\src\Infrastructure\ApplicationGateway.Persistence\ApplicationGateway.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
