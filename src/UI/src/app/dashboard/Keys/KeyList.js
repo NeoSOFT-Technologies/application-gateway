@@ -48,8 +48,12 @@ function KeyList() {
       iconClassName: "mdi mdi-cog",
     },
   ];
+  console.log("apilist", isIterable(keyslist.list) === true ? keyslist : {});
   const datalist = {
-    list: [isIterable(keyslist.list) === true ? keyslist.list[0] : {}],
+    list:
+      isIterable(keyslist.list) === true && keyslist.list.length > 0
+        ? keyslist.list[0]
+        : [],
     fields: ["KeyId", "AuthType", "Status", "Created"],
   };
   const headings = [
@@ -57,7 +61,7 @@ function KeyList() {
     { title: "Authentication Type", className: "w-100" },
     { title: "Status" },
     { title: "Created" },
-    //{ title: "Action", className: "text-center" },
+    { title: "Action", className: "text-center" },
   ];
   return (
     <>

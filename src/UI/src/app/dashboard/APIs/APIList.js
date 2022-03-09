@@ -37,9 +37,6 @@ function APIList() {
     }
   };
 
-  // const renderTenant = (val) => {
-  //   setTenant(val);
-  // };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
