@@ -3,13 +3,13 @@ import React from "react";
 import Pagination from "./Pagination";
 
 export default function RenderList(props) {
-  const { headings, data, pageCount, total, handlePageClick } = props;
+  const { headings, data, pageCount, handlePageClick, error } = props;
   console.log("Data from Renderlist", data);
   return (
     <div>
       {/* headings mapping logic*/}
-      <table className="table text-center table-bordered hover table-variant">
-        <thead>
+      <table className="table table-bordered hover table-variant">
+        <thead className="text-center">
           <tr>
             {headings.map((heading, index) => (
               <th key={`heading${index}`} className={heading.class}>
@@ -19,9 +19,11 @@ export default function RenderList(props) {
           </tr>
         </thead>
         <tbody>
-          {data && data.list.length == 0 ? (
+          {data && data.list.length == 0 && error == null ? (
             <tr>
-              <td rowSpan={headings.length}>No data Available</td>
+              <td className="text-center" colSpan={headings.length}>
+                No data Available
+              </td>
             </tr>
           ) : (
             //actions that is required on buttons
@@ -69,9 +71,6 @@ export default function RenderList(props) {
         onPageChange={handlePageClick}
         selectedPage={props.selected}
       />
-      <div className="d-flex justify-content-end">
-        Total Number of records: {total}
-      </div>
     </div>
   );
 }
