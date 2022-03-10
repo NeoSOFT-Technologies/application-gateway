@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getKeyList } from "../../../redux/actions/KeyActions";
 import RenderList from "../../../shared/RenderList";
 import Spinner from "../../../shared/Spinner";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
+toast.configure();
 function KeyList() {
   const dispatch = useDispatch();
   const keyslist = useSelector((state) => state.setKeyList);
-
+  const failure = (data) =>
+    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: false });
   useEffect(() => {
     dispatch({ type: "Key_LOADING" });
     //console.log("dispatch of loading", keyslist);
@@ -16,13 +20,23 @@ function KeyList() {
 
   const mainCall = () => {
     try {
-      getKeyList().then((res) => {
-        //console.log("in Key List", res.payload.Data.KeyDto);
-        dispatch(res);
-        //console.log("main call", keyslist);
-      });
+      getKeyList()
+        .then((res) => {
+          //console.log("in Key List", res.payload.Data.KeyDto);
+          dispatch(res);
+          //console.log("main call", keyslist);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          //console.warn(err.message);
+          dispatch({
+            type: "KEY_LOADING_FAILURE",
+            payload: err.message,
+          });
+        });
     } catch (err) {
       console.log(err);
+      //failure(err);
     }
   };
   //Iterable function
@@ -86,6 +100,11 @@ function KeyList() {
                 <span>
                   <Spinner />
                 </span>
+              ) : keyslist.error ? (
+                //failure(keyslist.error)
+                <h4 className="text-center text-danger  text-light">
+                  {failure(keyslist.error)}
+                </h4>
               ) : (
                 <RenderList
                   headings={headings}

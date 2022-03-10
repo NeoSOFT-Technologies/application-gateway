@@ -15,13 +15,21 @@ function Policies() {
 
   const mainCall = () => {
     try {
-      getPolicyList().then((res) => {
-        console.log("in Policy List", res.payload.Data);
-        dispatch(res);
-        console.log("main call", PolicyList);
-      });
+      getPolicyList()
+        .then((res) => {
+          console.log("in Policy List", res.payload.Data);
+          dispatch(res);
+          console.log("main call", PolicyList);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          dispatch({
+            type: "POLICY_LOADING_FAILURE",
+            payload: err.message,
+          });
+        });
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
   };
 
@@ -89,6 +97,8 @@ function Policies() {
                 <span>
                   <Spinner />
                 </span>
+              ) : PolicyList.error ? (
+                <h5 className="text-center text-danger">{PolicyList.error}</h5>
               ) : (
                 <RenderList
                   headings={headings}
