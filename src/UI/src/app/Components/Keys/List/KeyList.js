@@ -11,9 +11,8 @@ function KeyList() {
   const dispatch = useDispatch();
   const keyslist = useSelector((state) => state.setKeyList);
   const [selected, setSelected] = useState(1);
-
   const failure = (data) =>
-    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: false });
+    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: 3000 });
   useEffect(() => {
     dispatch({ type: "Key_LOADING" });
     //console.log("dispatch of loading", keyslist);
@@ -79,6 +78,9 @@ function KeyList() {
     { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
+  if (keyslist.error != null && keyslist.error.length > 0) {
+    failure(keyslist.error);
+  }
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -106,11 +108,6 @@ function KeyList() {
                 <span>
                   <Spinner />
                 </span>
-              ) : keyslist.error ? (
-                //failure(keyslist.error)
-                <h4 className="text-center text-danger  text-light">
-                  {failure(keyslist.error)}
-                </h4>
               ) : (
                 <RenderList
                   headings={headings}

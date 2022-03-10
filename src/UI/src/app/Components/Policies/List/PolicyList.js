@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPolicyList } from "../../../redux/actions/PolicyActions";
 import RenderList from "../../../shared/RenderList";
 import Spinner from "../../../shared/Spinner";
-
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+toast.configure();
 function Policies() {
   const dispatch = useDispatch();
   const PolicyList = useSelector((state) => state.setPolicyList);
   const [selected, setSelected] = useState(1);
+  const failure = (data) =>
+    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: 3000 });
   useEffect(() => {
     dispatch({ type: "POLICY_LOADING" });
     //console.log("dispatch of loading", PolicyList);
@@ -75,6 +79,9 @@ function Policies() {
     { title: "Authentication Type", className: "text-center" },
     { title: "Action", className: "text-center" },
   ];
+  if (PolicyList.error != null && PolicyList.error.length > 0) {
+    failure(PolicyList.error);
+  }
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -102,8 +109,6 @@ function Policies() {
                 <span>
                   <Spinner />
                 </span>
-              ) : PolicyList.error ? (
-                <h5 className="text-center text-danger">{PolicyList.error}</h5>
               ) : (
                 <RenderList
                   headings={headings}

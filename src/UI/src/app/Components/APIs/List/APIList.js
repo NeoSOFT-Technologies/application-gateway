@@ -3,11 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAPIList } from "../../../redux/actions/ApiActions";
 import RenderList from "../../../shared/RenderList";
 import Spinner from "../../../shared/Spinner";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
+toast.configure();
 function APIList() {
   const dispatch = useDispatch();
   const ApiList = useSelector((state) => state.setAPIList);
   const [selected, setSelected] = useState(1);
+  const failure = (data) =>
+    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: 3000 });
+
   //let currentPage = null;
   useEffect(() => {
     dispatch({ type: "API_LOADING" });
@@ -23,11 +29,20 @@ function APIList() {
   const mainCall = (currentPage) => {
     try {
       //console.log(currentPage);
-      getAPIList(currentPage).then((res) => {
-        //console.log("in Api List", res);
-        dispatch(res);
-        console.log("main call", ApiList);
-      });
+      getAPIList(currentPage)
+        .then((res) => {
+          //console.log("in Api List", res);
+          dispatch(res);
+          console.log("main call", ApiList);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          //console.warn(err.message);
+          dispatch({
+            type: "API_LOADING_FAILURE",
+            payload: err.message,
+          });
+        });
     } catch (err) {
       console.log(err);
     }
@@ -67,6 +82,9 @@ function APIList() {
     { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
+  if (ApiList.error != null && ApiList.error.length > 0) {
+    failure(ApiList.error);
+  }
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
