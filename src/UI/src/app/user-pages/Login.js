@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { regexForEmail } from "../constants/constantVariables";
-import { useDispatch, useSelector } from "react-redux";
-import { UserLogin } from "../redux/actions/LoginActions";
+//import { useDispatch, useSelector } from "react-redux";
+//import { UserLogin } from "../redux/actions/LoginActions";
 import { host } from "../config/URL";
 import PasswordButtons from "../shared/Password";
 
@@ -18,16 +18,16 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowpassword] = useState(false);
-  const user = useSelector((state) => state.setUserData);
+  //const user = useSelector((state) => state.setUserData);
   const success = (data) =>
     toast.success(data, { position: toast.POSITION.BOTTOM_RIGHT });
   const failure = (data) =>
     toast.error(data, { position: toast.POSITION.BOTTOM_RIGHT });
-  const warning = (data) =>
-    toast.warn(data, { position: toast.POSITION.BOTTOM_RIGHT });
+  // const warning = (data) =>
+  //   toast.warn(data, { position: toast.POSITION.BOTTOM_RIGHT });
 
   const handle = (event) => {
     let { name, value } = event.target;
@@ -50,30 +50,21 @@ export default function Login() {
         break;
     }
   };
-  useEffect(() => {
+  useEffect(() => {}, []);
+
+  const submit = () => {
     if (email != "" && password != "") {
-      console.log(user);
-      if (user.type == "tenant") {
-        success("Logged In");
-        navigate("/dashboard");
-      } else if (user.type == "admin") {
-        success("Logged In");
-        navigate("/dashboard");
-      } else {
-        console.log(user);
-        warning("Incorrect Credentials!");
-      }
+      console.log(email, password);
+      success("Logged In");
+      navigate("/dashboard");
     }
-  }, [user]);
+  };
 
   const handleSubmit = async () => {
+    submit();
     if (validate(error)) {
-      UserLogin(email, password)
-        .then((res) => dispatch(res))
-        .catch((err) => {
-          console.log(err);
-          warning("Incorrect Credentials!");
-        });
+      console.log(error);
+      //warning("Incorrect Credentials!");
     } else {
       failure("Please fill all the fields");
     }
@@ -108,11 +99,11 @@ export default function Login() {
                     onChange={handle}
                     required
                   />
-                  {error.email.length > 0 && (
+                  {/* {error.email.length > 0 && (
                     <Alert variant="danger" className="mt-2">
                       {error.email}
                     </Alert>
-                  )}
+                  )} */}
                 </Form.Group>
                 <div>
                   <Form.Group className="mb-3">

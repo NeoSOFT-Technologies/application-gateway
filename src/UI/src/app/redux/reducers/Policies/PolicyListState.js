@@ -10,7 +10,6 @@ const setPolicyList = (state = initialState, action) => {
       return initialState;
     }
     case "API_LOADING": {
-      console.log("loading");
       return {
         ...state.initialState,
         loading: true,
