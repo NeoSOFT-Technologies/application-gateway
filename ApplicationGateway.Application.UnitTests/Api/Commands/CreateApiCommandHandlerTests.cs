@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Profiles;
@@ -25,7 +25,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
         private readonly IMapper _mapper;
         private readonly Mock<ISnapshotService> _snapshotService;
         private readonly Mock<ILogger<CreateApiCommandHandler>> _mockLogger;
-        private readonly Mock<IApiDtoRepository> _mockApiRepository;
+        private readonly Mock<IApiRepository> _mockApiRepository;
         private readonly Mock<IApiService> _mockApiService;
 
         public CreateApiCommandHandlerTests()

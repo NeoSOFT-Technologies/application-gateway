@@ -26,9 +26,9 @@ namespace ApplicationGateway.Persistence
 
         public DbSet<Transformer> Transformers { get; set; }
         public virtual DbSet<Snapshot> Snapshots { get; set; } = null!;
-        public DbSet<ApiDto> ApiDtos { get; set; } = null!;
-        public DbSet<KeyDto> KeyDtos { get; set; } = null!;
-        public DbSet<PolicyDto> PolicyDtos { get; set; } = null!;
+        public DbSet<Api> ApiDtos { get; set; } = null!;
+        public DbSet<Key> KeyDtos { get; set; } = null!;
+        public DbSet<Policy> PolicyDtos { get; set; } = null!;
 
         private IDbContextTransaction _transaction;
 

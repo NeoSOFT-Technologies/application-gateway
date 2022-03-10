@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Domain.Entities;
 using MediatR;
@@ -13,11 +13,11 @@ namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
         readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
         readonly ILogger<DeleteKeyCommandHandler> _logger;
-        readonly IKeyDtoRepository _keyDtoRepository;
+        readonly IKeyRepository _keyRepository;
 
-        public DeleteKeyCommandHandler(IKeyDtoRepository keyDtoRepository, IKeyService keyService, ILogger<DeleteKeyCommandHandler> logger, ISnapshotService snapshotService)
+        public DeleteKeyCommandHandler(IKeyRepository keyDtoRepository, IKeyService keyService, ILogger<DeleteKeyCommandHandler> logger, ISnapshotService snapshotService)
         {
-            _keyDtoRepository = keyDtoRepository;
+            _keyRepository = keyDtoRepository;
             _keyService = keyService;
             _logger = logger;
             _snapshotService = snapshotService;
@@ -42,7 +42,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
             #endregion
 
             #region Delete Key Dto
-            await _keyDtoRepository.DeleteAsync(new KeyDto() { Id = request.KeyId });
+            await _keyRepository.DeleteAsync(new Domain.Entities.Key() { Id = request.KeyId });
             #endregion
 
             _logger.LogInformation($"DeleteKeyCommandHandler completed for {request}");

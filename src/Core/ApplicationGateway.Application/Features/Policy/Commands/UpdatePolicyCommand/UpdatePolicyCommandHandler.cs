@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
@@ -16,11 +16,11 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
         private readonly IPolicyService _policyService;
         private readonly IMapper _mapper;
         private readonly ILogger<UpdatePolicyCommandHandler> _logger;
-        private readonly IPolicyDtoRepository _policyDtoRepository;
+        private readonly IPolicyRepository _policyRepository;
 
-        public UpdatePolicyCommandHandler(IPolicyDtoRepository policyDtoRepository, IPolicyService policyService, IMapper mapper, ILogger<UpdatePolicyCommandHandler> logger, ISnapshotService snapshotService)
+        public UpdatePolicyCommandHandler(IPolicyRepository policyDtoRepository, IPolicyService policyService, IMapper mapper, ILogger<UpdatePolicyCommandHandler> logger, ISnapshotService snapshotService)
         {
-            _policyDtoRepository = policyDtoRepository;
+            _policyRepository = policyDtoRepository;
             _policyService = policyService;
             _mapper = mapper;
             _logger = logger;
@@ -48,7 +48,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
             List<string> policyNames = new List<string>();
             newPolicy.APIs.ForEach(policy => policyNames.Add(policy.Name));
 
-            PolicyDto policyDto = new PolicyDto()
+            Domain.Entities.Policy policyDto = new Domain.Entities.Policy()
             {
                 Id = newPolicy.PolicyId,
                 Name = newPolicy.Name,
@@ -56,7 +56,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
                 State = newPolicy.State,
                 Apis = policyNames
             };
-            await _policyDtoRepository.UpdateAsync(policyDto);
+            await _policyRepository.UpdateAsync(policyDto);
             #endregion
 
             Response<UpdatePolicyDto> response = new Response<UpdatePolicyDto>(updatePolicyDto, "success");

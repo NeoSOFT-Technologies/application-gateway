@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
@@ -20,7 +20,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
     public class GetAllKeysQueryHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<IKeyDtoRepository> _mockKeyRepository;
+        private readonly Mock<IKeyRepository> _mockKeyRepository;
         private readonly Mock<ILogger<GetAllKeysQueryHandler>> _mockLogger;
 
         public GetAllKeysQueryHandlerTests()

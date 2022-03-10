@@ -2,7 +2,7 @@
 
 namespace ApplicationGateway.Domain.Entities
 {
-    public class KeyDto: AuditableEntity
+    public class Key: AuditableEntity
     {
         public string Id { get; set; }   
         public string KeyName { get; set; }

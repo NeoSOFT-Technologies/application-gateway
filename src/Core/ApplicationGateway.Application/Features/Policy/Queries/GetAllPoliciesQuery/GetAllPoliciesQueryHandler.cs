@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -10,13 +10,13 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
 {
     public class GetAllPoliciesQueryHandler : IRequestHandler<GetAllPoliciesQuery, Response<GetAllPoliciesDto>>
     {
-        private readonly IPolicyDtoRepository _policyDtoRepository;
+        private readonly IPolicyRepository _policyRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<GetAllPoliciesQueryHandler> _logger;
 
-        public GetAllPoliciesQueryHandler(IPolicyDtoRepository policyDtoRepository, IMapper mapper, ILogger<GetAllPoliciesQueryHandler> logger)
+        public GetAllPoliciesQueryHandler(IPolicyRepository policyDtoRepository, IMapper mapper, ILogger<GetAllPoliciesQueryHandler> logger)
         {
-            _policyDtoRepository = policyDtoRepository;
+            _policyRepository = policyDtoRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -24,7 +24,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
         public async Task<Response<GetAllPoliciesDto>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<PolicyDto> policyList = await _policyDtoRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Policy> policyList = await _policyRepository.ListAllAsync();
             GetAllPoliciesDto policyDtoList = new GetAllPoliciesDto()
             {
                 Policies = _mapper.Map<List<GetAllPolicyModel>>(policyList),

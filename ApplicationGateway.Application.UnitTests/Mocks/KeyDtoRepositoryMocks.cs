@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Domain.Entities;
 using Moq;
 using System;
@@ -11,18 +11,18 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 {
     public class KeyDtoRepositoryMocks
     {
-        public static Mock<IKeyDtoRepository> GetKeyRepository()
+        public static Mock<IKeyRepository> GetKeyRepository()
         {
-            var policies = new List<KeyDto>()
+            var policies = new List<Domain.Entities.Key>()
             {
-                new KeyDto()
+                new Domain.Entities.Key()
                 {
                     Id = "keyId1",
                     KeyName =  "Key1",
                     IsActive = true,
                     Policies = new List<string> { "policy1","policy2"}
                 },
-                new KeyDto()
+                new Domain.Entities.Key()
                 {
                     Id = "keyId2",
                     KeyName =  "Key2",
@@ -32,7 +32,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
             };
 
-            var mockKeyRepository = new Mock<IKeyDtoRepository>();
+            var mockKeyRepository = new Mock<IKeyRepository>();
 
             mockKeyRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(policies);
 

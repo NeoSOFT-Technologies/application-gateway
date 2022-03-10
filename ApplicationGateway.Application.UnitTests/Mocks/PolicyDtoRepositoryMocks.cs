@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Domain.Entities;
 using Moq;
 using System;
@@ -11,11 +11,11 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 {
     public class PolicyDtoRepositoryMocks
     {
-        public static Mock<IPolicyDtoRepository> GetPolicyRepository()
+        public static Mock<IPolicyRepository> GetPolicyRepository()
         {
-            var policies = new List<PolicyDto>()
+            var policies = new List<Policy>()
             {
-                new PolicyDto()
+                new Policy()
                 {
                     Id = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name =  "policy1",
@@ -23,7 +23,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     AuthType = "open",
                     State = "active"
                 },
-                 new PolicyDto()
+                 new Policy()
                 {
                     Id = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name =  "policy2",
@@ -34,7 +34,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
             };
 
-            var mockPolicyRepository = new Mock<IPolicyDtoRepository>();
+            var mockPolicyRepository = new Mock<IPolicyRepository>();
 
             mockPolicyRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(policies);
 

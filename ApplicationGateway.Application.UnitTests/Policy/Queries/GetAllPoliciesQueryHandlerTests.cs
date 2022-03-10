@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
@@ -21,7 +21,7 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
     public class GetAllPoliciesQueryHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<IPolicyDtoRepository> _mockPolicyRepository;
+        private readonly Mock<IPolicyRepository> _mockPolicyRepository;
         private readonly Mock<ILogger<GetAllPoliciesQueryHandler>> _mockLogger;
 
         public GetAllPoliciesQueryHandlerTests()
