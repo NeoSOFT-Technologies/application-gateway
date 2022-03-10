@@ -89,7 +89,11 @@ function APIList() {
   ];
   if (ApiList.error != null && ApiList.error.length > 0) {
     failure(ApiList.error);
-    return <span>{/* <Spinner /> */}</span>;
+    return (
+      <span>
+        <Spinner />
+      </span>
+    );
   } else {
     return (
       <>
@@ -121,7 +125,6 @@ function APIList() {
                   className=" btn  btn-success btn-sm d-flex float-right mb-2"
                   onClick={(e) => buttonClick(e)}
                 >
-                  {" "}
                   &nbsp;
                   <span className="mdi mdi-plus"></span> &nbsp;
                 </button>

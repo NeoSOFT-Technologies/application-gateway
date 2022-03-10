@@ -85,7 +85,12 @@ function Policies() {
   ];
   if (PolicyList.error != null && PolicyList.error.length > 0) {
     failure(PolicyList.error);
-    return <span>{/* <Spinner /> */}</span>;
+    return (
+      <span>
+        {" "}
+        <Spinner />{" "}
+      </span>
+    );
   } else {
     return (
       <>
@@ -93,7 +98,7 @@ function Policies() {
           <div className="card">
             <div className="card-body">
               <div className="align-items-center">
-                            <div className="search-field justify-content-around">
+                <div className="search-field justify-content-around">
                   <form className="h-50" onSubmit={(e) => buttonClick(e)}>
                     <div className="input-group">
                       <input

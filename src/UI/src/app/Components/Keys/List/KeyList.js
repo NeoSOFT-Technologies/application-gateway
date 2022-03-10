@@ -86,7 +86,12 @@ function KeyList() {
   ];
   if (keyslist.error != null && keyslist.error.length > 0) {
     failure(keyslist.error);
-    return <span>{/* <Spinner /> */}</span>;
+    return (
+      <span>
+        {" "}
+        <Spinner />{" "}
+      </span>
+    );
   } else {
     return (
       <>
@@ -94,7 +99,7 @@ function KeyList() {
           <div className="card">
             <div className="card-body">
               <div className="align-items-center">
-                            <div className="search-field justify-content-around">
+                <div className="search-field justify-content-around">
                   <form className="h-50" onSubmit={(e) => buttonClick(e)}>
                     <div className="input-group">
                       <input
@@ -115,7 +120,7 @@ function KeyList() {
               <br />
               <div>
                 <button
-                  className=" btn  btn-success btn-md d-flex float-right"
+                  className=" btn  btn-success btn-sm d-flex float-right"
                   onClick={(e) => buttonClick(e)}
                 >
                   &nbsp;
