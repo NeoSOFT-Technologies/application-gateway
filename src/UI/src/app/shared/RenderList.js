@@ -68,10 +68,11 @@ export default function RenderList(props) {
         pageCount={pageCount}
         onPageChange={handlePageClick}
         selectedPage={props.selected}
+        totalcount={total}
       />
-      <div className="d-flex justify-content-end">
+      {/* <div className="d-flex justify-content-end">
         Total Number of records: {total}
-      </div>
+      </div> */}
     </div>
   );
 }

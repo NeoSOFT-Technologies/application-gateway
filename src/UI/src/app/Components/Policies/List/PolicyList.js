@@ -91,8 +91,8 @@ function Policies() {
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
-            <div className="d-flex align-items-center justify-content-around">
-              <div className="search-field col-lg-12">
+            <div className="align-items-center">
+              <div className="search-field justify-content-around">
                 <form className="h-50">
                   <div className="input-group">
                     <input
