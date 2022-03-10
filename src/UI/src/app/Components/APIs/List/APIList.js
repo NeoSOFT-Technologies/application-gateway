@@ -47,6 +47,11 @@ function APIList() {
       console.log(err);
     }
   };
+  const searchFilter = (e) => {
+    e.preventDefault();
+    setSelected(1);
+    mainCall(1);
+  };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -97,10 +102,13 @@ function APIList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search Api"
+                      placeholder="Search Policies"
                     />
                     <button className=" btn  btn-success btn-sm">
-                      <i className=" mdi mdi-magnify"></i>
+                      <i
+                        className=" mdi mdi-magnify"
+                        onClick={(e) => searchFilter(e)}
+                      ></i>
                     </button>
                   </div>
                 </form>
