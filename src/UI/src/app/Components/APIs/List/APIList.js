@@ -12,7 +12,7 @@ function APIList() {
   useEffect(() => {
     dispatch({ type: "API_LOADING" });
     //console.log("dispatch of loading", ApiList);
-    mainCall(selected);
+    mainCall(1);
   }, []);
 
   const handlePageClick = (selected) => {
@@ -26,7 +26,7 @@ function APIList() {
       getAPIList(currentPage).then((res) => {
         //console.log("in Api List", res);
         dispatch(res);
-        //console.log("main call", ApiList);
+        console.log("main call", ApiList);
       });
     } catch (err) {
       console.log(err);
@@ -58,7 +58,7 @@ function APIList() {
       isIterable(ApiList.list) === true && ApiList.list.length > 0
         ? ApiList.list[0]
         : [],
-    fields: ["Name", "TargetUrl", "Status", "Created"],
+    fields: ["Name", "TargetUrl", "IsActive", "CreatedDate"],
   };
   const headings = [
     { title: "Name" },
@@ -104,6 +104,9 @@ function APIList() {
                   selected={selected}
                 />
               )}
+              <div className="d-flex justify-content-end">
+                Total Number of records: {ApiList.totalCount}
+              </div>
             </div>
           </div>
         </div>
