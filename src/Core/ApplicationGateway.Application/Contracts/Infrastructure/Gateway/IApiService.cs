@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Domain.Entities;
+﻿using ApplicationGateway.Domain.GatewayCommon;
 
 namespace ApplicationGateway.Application.Contracts.Infrastructure.Gateway
 {

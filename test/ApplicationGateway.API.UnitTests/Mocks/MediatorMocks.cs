@@ -21,7 +21,7 @@ using ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransfo
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerById;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using MediatR;
 using Moq;
 using System;
@@ -59,7 +59,7 @@ namespace ApplicationGateway.API.UnitTests.Mocks
             mockMediator.Setup(m => m.Send(It.IsAny<UpdateKeyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<UpdateKeyCommandDto>());
 
             //policy
-            mockMediator.Setup(m => m.Send(It.IsAny<GetAllPoliciesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<List<GetAllPoliciesDto>>());
+            mockMediator.Setup(m => m.Send(It.IsAny<GetAllPoliciesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetAllPoliciesDto>());
             mockMediator.Setup(m => m.Send(It.IsAny<GetPolicyByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetPolicyByIdDto>());
 
             mockMediator.Setup(m => m.Send(It.IsAny<CreatePolicyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<CreatePolicyDto>());

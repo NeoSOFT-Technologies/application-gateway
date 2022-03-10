@@ -43,7 +43,7 @@ namespace ApplicationGateway.Api.Controllers
             Response<GetApiByIdDto> response = await _mediator.Send(new GetApiByIdQuery() { ApiId = apiId });
             _logger.LogInformation("GetApiById Completed");
             return Ok(response);
-        }
+        } 
 
         [HttpPost("CreateApi")]
         [ProducesResponseType(StatusCodes.Status200OK)]

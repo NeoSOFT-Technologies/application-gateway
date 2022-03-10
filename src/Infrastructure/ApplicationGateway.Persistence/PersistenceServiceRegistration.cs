@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Contracts.Persistence;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Persistence.Repositories;
 using ApplicationGateway.Persistence.Repositories.DtoRepositories;
 using ApplicationGateway.Persistence.SnapshotWrapper;
@@ -25,9 +25,9 @@ namespace ApplicationGateway.Persistence
             services.AddScoped<ITransformerRepository, TransformerRepository>();
             services.AddScoped<ISnapshotRepository, SnapshotRepository>();
             services.AddScoped<ISnapshotService, SnapshotService>();
-            services.AddScoped<IApiDtoRepository, ApiDtoRepository>();
-            services.AddScoped<IKeyDtoRepository, KeyDtoRepository>();
-            services.AddScoped<IPolicyDtoRepository, PolicyDtoRepository>();
+            services.AddScoped<IApiRepository, ApiRepository>();
+            services.AddScoped<IKeyRepository, KeyRepository>();
+            services.AddScoped<IPolicyRepository, PolicyRepository>();
             return services;
         }
     }

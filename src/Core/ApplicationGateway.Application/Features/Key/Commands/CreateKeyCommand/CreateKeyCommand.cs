@@ -1,14 +1,9 @@
 ﻿using ApplicationGateway.Application.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
-    public class CreateKeyCommand:IRequest<Response<Domain.Entities.Key>>
+    public class CreateKeyCommand:IRequest<Response<Domain.GatewayCommon.Key>>
     {
         public string KeyName { get; set; }
         public int Rate { get; set; }

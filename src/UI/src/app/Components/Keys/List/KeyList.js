@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getKeyList } from "../../../redux/actions/KeyActions";
 import RenderList from "../../../shared/RenderList";
@@ -10,15 +10,21 @@ toast.configure();
 function KeyList() {
   const dispatch = useDispatch();
   const keyslist = useSelector((state) => state.setKeyList);
+  const [selected, setSelected] = useState(1);
+
   const failure = (data) =>
     toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: false });
   useEffect(() => {
     dispatch({ type: "Key_LOADING" });
     //console.log("dispatch of loading", keyslist);
-    mainCall();
+    mainCall(selected);
   }, []);
+  const handlePageClick = (selected) => {
+    mainCall(selected);
+    setSelected(selected);
+  };
 
-  const mainCall = () => {
+  const mainCall = (currentPage) => {
     try {
       getKeyList()
         .then((res) => {
@@ -110,6 +116,9 @@ function KeyList() {
                   headings={headings}
                   data={datalist}
                   actions={actions}
+                  handlePageClick={handlePageClick}
+                  pageCount={keyslist.count}
+                  selected={selected}
                 />
               )}
             </div>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
 {
-    public class KeyDto
+    public class GetKeyDto
     {
         public string KeyId { get; set; }
         public int Rate { get; set; }
