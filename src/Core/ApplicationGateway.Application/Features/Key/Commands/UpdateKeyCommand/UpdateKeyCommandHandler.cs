@@ -1,21 +1,12 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
-using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
-using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
 {
@@ -44,7 +35,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
             await _keyService.GetKeyAsync(request.KeyId);
             #endregion
 
-            Domain.Entities.Key key = await _keyService.UpdateKeyAsync(_mapper.Map<Domain.Entities.Key>(request));
+            Domain.GatewayCommon.Key key = await _keyService.UpdateKeyAsync(_mapper.Map<Domain.GatewayCommon.Key>(request));
 
             #region Create SnapShot
             await _snapshotService.CreateSnapshot(

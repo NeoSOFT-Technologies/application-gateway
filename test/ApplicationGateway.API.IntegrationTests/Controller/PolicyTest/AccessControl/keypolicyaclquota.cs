@@ -6,7 +6,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

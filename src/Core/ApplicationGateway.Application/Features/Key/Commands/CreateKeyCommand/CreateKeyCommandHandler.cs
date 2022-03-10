@@ -2,22 +2,15 @@
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Helper;
-using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
-    public class CreateKeyCommandHandler:IRequestHandler<CreateKeyCommand,Response<Domain.Entities.Key>>
+    public class CreateKeyCommandHandler:IRequestHandler<CreateKeyCommand,Response<Domain.GatewayCommon.Key>>
     {
         readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
@@ -34,10 +27,10 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             _snapshotService = snapshotService;
         }
 
-        public async Task<Response<Domain.Entities.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
+        public async Task<Response<Domain.GatewayCommon.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"CreateKeyCommandHandler initiated with {request}");
-            var keyObj = _mapper.Map<Domain.Entities.Key>(request);
+            var keyObj = _mapper.Map<Domain.GatewayCommon.Key>(request);
             var key = await _keyService.CreateKeyAsync(keyObj);
 
             #region Create Snapshot
@@ -61,7 +54,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             await _keyDtoRepository.AddAsync(keyDto);
             #endregion
 
-            Response<Domain.Entities.Key> response =new Response<Domain.Entities.Key>(key, "success");
+            Response<Domain.GatewayCommon.Key> response =new Response<Domain.GatewayCommon.Key>(key, "success");
             return response;
         }
     }

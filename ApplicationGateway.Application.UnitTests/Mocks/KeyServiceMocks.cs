@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
     {
         public static Mock<IKeyService> GetKeyService()
         {
-            var keys = new List<Domain.Entities.Key>()
+            var keys = new List<Domain.GatewayCommon.Key>()
             {
-                new Domain.Entities.Key()
+                new Domain.GatewayCommon.Key()
                 {
                     KeyId = "KeyId",
                     Rate = 10,
@@ -38,7 +38,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                             },
                     Policies = new List<string>{"policy1","Policy2"}
                 },
-                new Domain.Entities.Key()
+                new Domain.GatewayCommon.Key()
                 {
                     KeyId = "KeyId2",
                     Rate = 10,

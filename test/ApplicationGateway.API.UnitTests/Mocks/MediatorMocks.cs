@@ -21,7 +21,7 @@ using ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransfo
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerById;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using MediatR;
 using Moq;
 using System;

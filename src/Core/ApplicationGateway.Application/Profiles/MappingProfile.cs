@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
+using ApplicationGateway.Domain.GatewayCommon;
 using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
@@ -13,7 +14,6 @@ using ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery;
 using ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
-using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
 using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;

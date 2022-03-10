@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
     {
         public static Mock<IApiService> GetApiService()
         {
-            var apis = new List<Domain.Entities.Api>()
+            var apis = new List<Domain.GatewayCommon.Api>()
             {
-                new Domain.Entities.Api()
+                new Domain.GatewayCommon.Api()
                 {
                     ApiId = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name =  "Api1",
@@ -32,7 +32,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     LoadBalancingTargets = new List<string>{"target1","target2","target3"}
 
                 },
-                  new Domain.Entities.Api()
+                  new Domain.GatewayCommon.Api()
                 {
                     ApiId = Guid.Parse("{d29cd198-03a1-46bc-965e-56d5c6748429}"),
                     Name =  "Api2",
@@ -61,8 +61,8 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     return apis.SingleOrDefault(x => x.ApiId == ApiId);
                 });
 
-            mockApiService.Setup(repo => repo.CreateApiAsync(It.IsAny<Domain.Entities.Api>())).ReturnsAsync(
-                (Domain.Entities.Api api) =>
+            mockApiService.Setup(repo => repo.CreateApiAsync(It.IsAny<Domain.GatewayCommon.Api>())).ReturnsAsync(
+                (Domain.GatewayCommon.Api api) =>
                 {
                     api.ApiId = Guid.NewGuid();
                     apis.Add(api);
@@ -70,8 +70,8 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
                 });
 
-            mockApiService.Setup(repo => repo.UpdateApiAsync(It.IsAny<Domain.Entities.Api>())).ReturnsAsync(
-                (Domain.Entities.Api api) =>
+            mockApiService.Setup(repo => repo.UpdateApiAsync(It.IsAny<Domain.GatewayCommon.Api>())).ReturnsAsync(
+                (Domain.GatewayCommon.Api api) =>
                 {
                     //api.ApiId = Guid.NewGuid();
                     apis.Add(api);
@@ -85,8 +85,8 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
                 });
 
-            mockApiService.Setup(repo => repo.CheckUniqueListenPathAsync(It.IsAny<Domain.Entities.Api>())).ReturnsAsync(
-                (Domain.Entities.Api api)=>
+            mockApiService.Setup(repo => repo.CheckUniqueListenPathAsync(It.IsAny<Domain.GatewayCommon.Api>())).ReturnsAsync(
+                (Domain.GatewayCommon.Api api)=>
                 {
                     var matches = apis.Any(e=>e.ListenPath != api.ListenPath);
                     return matches;

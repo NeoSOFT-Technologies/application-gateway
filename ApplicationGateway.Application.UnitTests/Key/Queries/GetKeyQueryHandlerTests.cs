@@ -38,7 +38,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
 
             var result = await handler.Handle(new GetKeyQuery(), CancellationToken.None);
 
-            result.ShouldBeOfType<Response<Domain.Entities.Key>>();
+            result.ShouldBeOfType<Response<Domain.GatewayCommon.Key>>();
 
 
         }

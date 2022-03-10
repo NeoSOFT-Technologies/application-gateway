@@ -30,8 +30,8 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         public async Task<Response<CreatePolicyDto>> Handle(CreatePolicyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@CreatePolicyCommand}", request);
-            Domain.Entities.Policy policy = _mapper.Map<Domain.Entities.Policy>(request);
-            Domain.Entities.Policy newPolicy = await _policyService.CreatePolicyAsync(policy);
+            Domain.GatewayCommon.Policy policy = _mapper.Map<Domain.GatewayCommon.Policy>(request);
+            Domain.GatewayCommon.Policy newPolicy = await _policyService.CreatePolicyAsync(policy);
 
             CreatePolicyDto createPolicyDto = _mapper.Map<CreatePolicyDto>(newPolicy);
 

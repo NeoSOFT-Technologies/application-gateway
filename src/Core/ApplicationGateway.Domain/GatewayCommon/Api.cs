@@ -1,4 +1,4 @@
-﻿namespace ApplicationGateway.Domain.Entities
+﻿namespace ApplicationGateway.Domain.GatewayCommon
 {
     public class Api
     {
