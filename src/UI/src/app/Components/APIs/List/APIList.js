@@ -98,7 +98,7 @@ function APIList() {
             <div className="card-body">
               <div className="align-items-center">
                 <div className="search-field justify-content-around">
-                  <form className="h-50" onClick={(e) => buttonClick(e)}>
+                  <form className="h-50" onSubmit={(e) => buttonClick(e)}>
                     <div className="input-group">
                       <input
                         type="text"
