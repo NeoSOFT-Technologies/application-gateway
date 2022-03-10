@@ -19,7 +19,7 @@ export default function RenderList(props) {
           </tr>
         </thead>
         <tbody>
-          {data && data.list.length == 0 && error == null ? (
+          {data && data.list.length == 0 && error === null ? (
             <tr>
               <td className="text-center" colSpan={headings.length}>
                 No data Available

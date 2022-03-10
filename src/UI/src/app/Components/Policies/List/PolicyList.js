@@ -119,7 +119,7 @@ function Policies() {
               <br />
               <div>
                 <button
-                  className=" btn  btn-success btn-md d-flex float-right"
+                  className=" btn  btn-success btn-sm d-flex float-right mb-2"
                   onClick={(e) => buttonClick(e)}
                 >
                   &nbsp;
