@@ -26,8 +26,7 @@ function KeyList() {
 
   const mainCall = (currentPage) => {
     try {
-        getKeyList(curr
-        )
+      getKeyList(currentPage)
         .then((res) => {
           //console.log("in Key List", res.payload.Data.KeyDto);
           dispatch(res);

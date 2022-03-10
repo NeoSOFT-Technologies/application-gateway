@@ -19,8 +19,8 @@ function Policies() {
   };
 
   const mainCall = (currentPage) => {
-      try {
-          getPolicyList(currentPage)
+    try {
+      getPolicyList(currentPage)
         .then((res) => {
           console.log("in Policy List", res.payload.Data);
           dispatch(res);
