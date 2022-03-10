@@ -30,8 +30,8 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
         public async Task<Response<UpdatePolicyDto>> Handle(UpdatePolicyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@UpdatePolicyCommand}", request);
-            Domain.Entities.Policy policy = _mapper.Map<Domain.Entities.Policy>(request);
-            Domain.Entities.Policy newPolicy = await _policyService.UpdatePolicyAsync(policy);
+            Domain.GatewayCommon.Policy policy = _mapper.Map<Domain.GatewayCommon.Policy>(request);
+            Domain.GatewayCommon.Policy newPolicy = await _policyService.UpdatePolicyAsync(policy);
 
             UpdatePolicyDto updatePolicyDto = _mapper.Map<UpdatePolicyDto>(newPolicy);
 

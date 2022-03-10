@@ -56,7 +56,7 @@ class App extends Component {
     // }
     window.scrollTo(0, 0);
     const fullPageLayoutRoutes = [
-      "/login-page",
+      "/login",
       "/registration-page",
       "/user-pages/lockscreen",
       "/error-pages/error-404",

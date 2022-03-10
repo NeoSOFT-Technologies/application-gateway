@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getKeyList } from "../../../redux/actions/KeyActions";
 import RenderList from "../../../shared/RenderList";
@@ -7,16 +7,21 @@ import Spinner from "../../../shared/Spinner";
 function KeyList() {
   const dispatch = useDispatch();
   const keyslist = useSelector((state) => state.setKeyList);
+  const [selected, setSelected] = useState(1);
 
   useEffect(() => {
     dispatch({ type: "Key_LOADING" });
     //console.log("dispatch of loading", keyslist);
-    mainCall();
+    mainCall(selected);
   }, []);
+  const handlePageClick = (selected) => {
+    mainCall(selected);
+    setSelected(selected);
+  };
 
-  const mainCall = () => {
+  const mainCall = (currentPage) => {
     try {
-      getKeyList().then((res) => {
+      getKeyList(currentPage).then((res) => {
         //console.log("in Key List", res.payload.Data.KeyDto);
         dispatch(res);
         //console.log("main call", keyslist);
@@ -91,6 +96,9 @@ function KeyList() {
                   headings={headings}
                   data={datalist}
                   actions={actions}
+                  handlePageClick={handlePageClick}
+                  pageCount={keyslist.count}
+                  selected={selected}
                 />
               )}
             </div>

@@ -3,9 +3,11 @@ using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 {
+    [ExcludeFromCodeCoverage]
     public class TykBaseService : IBaseService
     {
         private readonly ILogger<TykBaseService> _logger;

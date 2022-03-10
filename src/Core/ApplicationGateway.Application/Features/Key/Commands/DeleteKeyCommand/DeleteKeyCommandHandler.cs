@@ -2,17 +2,9 @@
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Helper;
-using ApplicationGateway.Application.Models.Tyk;
-using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
 {

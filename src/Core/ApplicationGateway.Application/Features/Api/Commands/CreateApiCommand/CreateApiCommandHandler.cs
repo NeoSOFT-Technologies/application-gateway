@@ -31,14 +31,14 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand
         public async Task<Response<CreateApiDto>> Handle(CreateApiCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@CreateApiCommand}", request);
-            Domain.Entities.Api apitoCreate = _mapper.Map<Domain.Entities.Api>(request);
+            Domain.GatewayCommon.Api apitoCreate = _mapper.Map<Domain.GatewayCommon.Api>(request);
 
             if (!await _apiService.CheckUniqueListenPathAsync(apitoCreate))
             {
                 throw new BadRequestException("ListenPath already exists");
             }
 
-            Domain.Entities.Api createdApi = await _apiService.CreateApiAsync(apitoCreate);
+            Domain.GatewayCommon.Api createdApi = await _apiService.CreateApiAsync(apitoCreate);
 
             CreateApiDto createApiDto = _mapper.Map<CreateApiDto>(createdApi);
 

@@ -35,14 +35,14 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
             await _apiService.GetApiByIdAsync(request.ApiId);
             #endregion
 
-            Domain.Entities.Api apiToUpdate = _mapper.Map<Domain.Entities.Api>(request);
+            Domain.GatewayCommon.Api apiToUpdate = _mapper.Map<Domain.GatewayCommon.Api>(request);
 
             if (!await _apiService.CheckUniqueListenPathAsync(apiToUpdate))
             {
                 throw new BadRequestException("ListenPath already exists");
             }
 
-            Domain.Entities.Api updatedApi = await _apiService.UpdateApiAsync(apiToUpdate);
+            Domain.GatewayCommon.Api updatedApi = await _apiService.UpdateApiAsync(apiToUpdate);
 
             UpdateApiDto updateApiDto = _mapper.Map<UpdateApiDto>(updatedApi);
 

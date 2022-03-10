@@ -12,6 +12,8 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
     {
         public string Name { get; set; }
         public string ListenPath { get; set; }
+        public bool StripListenPath { get; set; }
         public string TargetUrl { get; set; }
+        public bool IsActive { get; set; }
     } 
 }

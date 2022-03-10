@@ -80,7 +80,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 item["ApiId"] = id.ToString();
                 item["ApiName"] = newid.ToString();
             }
-            keyrequestmodel["Expires"] = unixTime;
+            keyrequestmodel["Expires"] = Convert.ToInt32(unixTime);
+         
             StringContent stringContent = new StringContent(keyrequestmodel.ToString(), System.Text.Encoding.UTF8, "application/json");
 
             //create key
@@ -88,7 +89,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             responsekey.EnsureSuccessStatusCode();
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["data"]["keyId"];
+            var keyid = key["Data"]["KeyId"];
             Thread.Sleep(2000);
 
            

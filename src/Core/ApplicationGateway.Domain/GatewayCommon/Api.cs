@@ -1,11 +1,15 @@
-﻿namespace ApplicationGateway.Domain.Entities
+﻿namespace ApplicationGateway.Domain.GatewayCommon
 {
     public class Api
     {
         public Guid ApiId { get; set; }
         public string Name { get; set; }
         public string ListenPath { get; set; }
+        public bool StripListenPath { get; set; }
         public string TargetUrl { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsInternal { get; set; }
+        public string? Protocol { get; set; }
         public RateLimit? RateLimit { get; set; }
         public List<string>? Blacklist { get; set; }
         public List<string>? Whitelist { get; set; }
@@ -15,12 +19,14 @@
         public string AuthType { get; set; }
         public OpenIdOptions? OpenidOptions { get; set; }
         public List<string>? LoadBalancingTargets { get; set; }
+        public bool IsQuotaDisabled { get; set; }
     }
 
     public class RateLimit
     {
         public int Rate { get; set; }
         public int Per { get; set; }
+        public bool IsDisabled { get; set; }
     }
 
     public class OpenIdOptions
@@ -50,5 +56,6 @@
     {
         public string Name { get; set; }
         public string? OverrideTarget { get; set; }
+        public string? Expires { get; set; }
     }
 }
