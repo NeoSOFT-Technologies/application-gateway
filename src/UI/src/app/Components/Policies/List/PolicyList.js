@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPolicyList } from "../../../redux/actions/PolicyActions";
 import RenderList from "../../../shared/RenderList";
@@ -7,15 +7,20 @@ import Spinner from "../../../shared/Spinner";
 function Policies() {
   const dispatch = useDispatch();
   const PolicyList = useSelector((state) => state.setPolicyList);
+  const [selected, setSelected] = useState(1);
   useEffect(() => {
     dispatch({ type: "POLICY_LOADING" });
-    console.log("dispatch of loading", PolicyList);
-    mainCall();
+    //console.log("dispatch of loading", PolicyList);
+    mainCall(1);
   }, []);
+  const handlePageClick = (selected) => {
+    mainCall(selected);
+    setSelected(selected);
+  };
 
-  const mainCall = () => {
-    try {
-      getPolicyList()
+  const mainCall = (currentPage) => {
+      try {
+          getPolicyList(currentPage)
         .then((res) => {
           console.log("in Policy List", res.payload.Data);
           dispatch(res);
@@ -44,7 +49,7 @@ function Policies() {
   console.log("policylist", PolicyList);
   console.log(
     "policyList before datalist",
-    isIterable(PolicyList.list) === true ? PolicyList : {}
+    isIterable(PolicyList.list) === true ? PolicyList[0] : {}
   ); //isIterable(PolicyList.list)
   const actions = [
     {
@@ -61,7 +66,7 @@ function Policies() {
       isIterable(PolicyList.list) === true && PolicyList.list.length > 0
         ? PolicyList.list[0]
         : [],
-    fields: ["Status", "PolicyName", "AccessRights", "AuthType"],
+    fields: ["State", "Name", "Apis", "AuthType"],
   };
   const headings = [
     { title: "State" },
@@ -104,6 +109,10 @@ function Policies() {
                   headings={headings}
                   data={datalist}
                   actions={actions}
+                  handlePageClick={handlePageClick}
+                  pageCount={PolicyList.count}
+                  total={PolicyList.totalCount}
+                  selected={selected}
                 />
               )}
             </div>

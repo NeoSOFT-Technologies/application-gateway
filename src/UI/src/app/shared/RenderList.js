@@ -3,7 +3,7 @@ import React from "react";
 import Pagination from "./Pagination";
 
 export default function RenderList(props) {
-  const { headings, data, pageCount, handlePageClick } = props;
+  const { headings, data, pageCount, total, handlePageClick } = props;
   console.log("Data from Renderlist", data);
   return (
     <div>
@@ -69,6 +69,9 @@ export default function RenderList(props) {
         onPageChange={handlePageClick}
         selectedPage={props.selected}
       />
+      <div className="d-flex justify-content-end">
+        Total Number of records: {total}
+      </div>
     </div>
   );
 }

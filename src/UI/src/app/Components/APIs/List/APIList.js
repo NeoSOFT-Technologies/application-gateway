@@ -101,12 +101,10 @@ function APIList() {
                   actions={actions}
                   handlePageClick={handlePageClick}
                   pageCount={ApiList.count}
+                  total={ApiList.totalCount}
                   selected={selected}
                 />
               )}
-              <div className="d-flex justify-content-end">
-                Total Number of records: {ApiList.totalCount}
-              </div>
             </div>
           </div>
         </div>

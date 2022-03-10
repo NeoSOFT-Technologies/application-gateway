@@ -26,7 +26,8 @@ function KeyList() {
 
   const mainCall = (currentPage) => {
     try {
-      getKeyList()
+        getKeyList(curr
+        )
         .then((res) => {
           //console.log("in Key List", res.payload.Data.KeyDto);
           dispatch(res);
@@ -53,7 +54,7 @@ function KeyList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("ApiList before datalist", isIterable(keyslist.list));
+  console.log("Key before datalist", isIterable(keyslist.list));
   const actions = [
     {
       className: "btn btn-sm btn-success",
@@ -64,19 +65,19 @@ function KeyList() {
       iconClassName: "mdi mdi-delete",
     },
   ];
-  console.log("apilist", isIterable(keyslist.list) === true ? keyslist : {});
+  console.log("Keylist", isIterable(keyslist.list) === true ? keyslist : {});
   const datalist = {
     list:
       isIterable(keyslist.list) === true && keyslist.list.length > 0
         ? keyslist.list[0]
         : [],
-    fields: ["KeyId", "AuthType", "Status", "Created"],
+    fields: ["Id", "KeyName", "IsActive", "CreatedDate"],
   };
   const headings = [
     { title: "Key ID" },
-    { title: "Authentication Type", className: "w-100" },
+    { title: "Key Name" },
     { title: "Status" },
-    { title: "Created" },
+    { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
   return (
@@ -118,6 +119,7 @@ function KeyList() {
                   actions={actions}
                   handlePageClick={handlePageClick}
                   pageCount={keyslist.count}
+                  total={keyslist.totalCount}
                   selected={selected}
                 />
               )}
