@@ -2,6 +2,7 @@ const initialState = {
   list: [],
   count: 0,
   loading: false,
+  error: "",
 };
 const setKeyList = (state = initialState, action) => {
   switch (action.type) {
@@ -15,6 +16,14 @@ const setKeyList = (state = initialState, action) => {
       return {
         ...state.initialState,
         loading: true,
+      };
+    }
+    case "KEY_LOADING_FAILURE": {
+      console.log("loading data failed");
+      return {
+        loading: false,
+        list: [],
+        error: action.payload,
       };
     }
     default:
