@@ -5,7 +5,7 @@
   "maxQuota": 0,
   "quotaRate": 0,
   "rate": 3,
-  "per": 10,
+  "per": 60,
   "throttleInterval": 0,
   "throttleRetries": 0,
   "state": "active",
@@ -21,8 +21,9 @@
         "Default"
       ],
       "allowedUrls": [
-       
+        
       ]
+     
     }
   ]
 }

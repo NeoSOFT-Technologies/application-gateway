@@ -36,7 +36,14 @@
         "set_by_policy": false
       }
     }
-  ]
+  ],
+  "partitions": {
+    "quota": false,
+    "rate_limit": false,
+    "complexity": false,
+    "acl": false,
+    "per_api": true
+  }
 }
 
 

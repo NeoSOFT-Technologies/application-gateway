@@ -19,6 +19,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.LoadBalancing
 {
+    [Collection("Database")]
     public partial class LoadBalancingTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -51,7 +52,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.LoadBalancing
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
 
             //Read Json
             var myJsonString1 = File.ReadAllText(ApplicationConstants.BASE_PATH + "/LoadBalancingTest/loadBalancingData.json");

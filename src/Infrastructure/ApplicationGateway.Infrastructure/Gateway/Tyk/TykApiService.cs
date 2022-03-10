@@ -1,15 +1,17 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 {
+    [ExcludeFromCodeCoverage]
     public class TykApiService : IApiService
     {
         private readonly IBaseService _baseService;
@@ -64,7 +66,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
         public async Task<Api> GetApiByIdAsync(Guid apiId)
         {
-            _logger.LogInformation("GetApiByIdAsync Initiated");
+            _logger.LogInformation("GetApiByIdAsync Initiated with {@Guid}", apiId);
             string inputJson = await _restClient.GetAsync(apiId.ToString());
             JObject inputObject = JObject.Parse(inputJson);
 
@@ -127,6 +129,9 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     (version as JObject).Add("global_headers_remove", removeGlobalHeaders);
                     (transformedObject["version_data"]["versions"] as JObject).Add($"{version["Name"]}", version);
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("override_target", version["OverrideTarget"]);
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("OverrideTarget").Remove();
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("expires", version["Expires"]);
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("Expires").Remove();
                 }
             }
             #endregion
@@ -193,6 +198,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 JObject tempObj = new JObject();
                 tempObj.Add("name", item.Key);
                 tempObj.Add("overrideTarget", item.Value["override_target"]);
+                tempObj.Add("expires", item.Value["expires"]);
                 (apiObject["versions"] as JArray).Add(tempObj);
             }
             return apiObject;

@@ -18,6 +18,7 @@ using ApplicationGateway.Application.Responses;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public partial class KeyTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -38,7 +39,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/keyTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/KeyTest/createApiData.json");
             CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
             requestModel1.Name = newid.ToString();
             requestModel1.ListenPath = $"/{newid}/";
@@ -52,7 +53,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
             
-            Thread.Sleep(4000);
+            Thread.Sleep(5000);
 
             //read update json file
             var myupdateJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH+"/KeyTest/updateApiData.json");
@@ -67,10 +68,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             HttpContent updatecontent = new StringContent(updateRequestJson, Encoding.UTF8, "application/json");
             var updateresponse = await client.PutAsync("/api/v1/ApplicationGateway", updatecontent);
             updateresponse.EnsureSuccessStatusCode();
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //read json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createKeyData.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             foreach(var item in keyrequestmodel["AccessRights"])
             {
@@ -84,7 +85,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             responsekey.EnsureSuccessStatusCode();
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["data"]["keyId"];
+            var keyid = key["Data"]["KeyId"];
 
             //hit api
             var clientkey = HttpClientFactory.Create();

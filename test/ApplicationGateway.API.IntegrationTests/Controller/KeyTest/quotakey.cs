@@ -18,6 +18,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public partial class quotakey : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -35,7 +36,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
             string versioncheck = "";
             //read json file 
-            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createApiData.json");
+            var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createApiData.json");
             CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
             requestModel1.Name = newid.ToString();
             requestModel1.ListenPath = $"/{newid}/";
@@ -66,7 +67,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //create key for version v1
             //read json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createKeyData.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             foreach (var item in keyrequestmodel["AccessRights"])
             {
@@ -80,9 +81,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             responsekey.EnsureSuccessStatusCode();
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["data"]["keyId"];
+            var keyid = key["Data"]["KeyId"];
 
-            for(var i = 0; i < 3; i++)
+            //getkey
+            var getkey = await client.GetAsync("/api/v1/Key/GetKey?keyId=" + keyid);
+            getkey.EnsureSuccessStatusCode();
+
+            //getallkeys
+            var getAllkey = await client.GetAsync("/api/v1/Key/GetAllKeys");
+            getAllkey.EnsureSuccessStatusCode();
+
+
+            for (var i = 0; i < 3; i++)
             {
                 var clientV = HttpClientFactory.Create();
                 clientV.DefaultRequestHeaders.Add("Authorization", keyid.ToString());

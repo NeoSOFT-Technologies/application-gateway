@@ -7,6 +7,7 @@
   "Expires": "#valueof(expires)",
   "Quota": "#valueof(quota_max)",
   "QuotaRenewalRate": "#valueof(quota_renewal_rate)",
+  "IsInActive": "#valueof(is_inactive)",
   "AccessRights": null,
   "Policies": null
 }

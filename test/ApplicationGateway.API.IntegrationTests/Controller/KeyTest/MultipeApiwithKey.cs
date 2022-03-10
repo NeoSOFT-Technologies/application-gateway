@@ -19,6 +19,7 @@ using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCom
 
 namespace ApplicationGateway.API.IntegrationTests.Controller
 {
+    [Collection("Database")]
     public class MultipeApiwithKey : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -55,13 +56,13 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             HttpContent content = new StringContent(RequestJson, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("/api/v1/ApplicationGateway/CreateMultipleApis", content);
             response.EnsureSuccessStatusCode();
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
             var jsonString = response.Content.ReadAsStringAsync();
 
             var responseModel = JsonConvert.DeserializeObject<Response<CreateMultipleApisDto>>(jsonString.Result);
 
             //read craatekey json file 
-            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/keyTest/createKeyData.json");
+            var myJsonStringKey = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createKeyData.json");
             JObject keyrequestmodel = JObject.Parse(myJsonStringKey);
             string[] version = new string[] { "Default" };
             JArray jarrayObj = new JArray();
@@ -107,7 +108,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //read response key
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["data"]["keyId"];
+            var keyid = key["Data"]["KeyId"];
             foreach (var item in apiName)
             {
                 var clientkey = HttpClientFactory.Create();

@@ -1,30 +1,36 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
+using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery
 {
-    public class GetAllPoliciesQueryHandler : IRequestHandler<GetAllPoliciesQuery, Response<List<GetAllPoliciesDto>>>
+    public class GetAllPoliciesQueryHandler : IRequestHandler<GetAllPoliciesQuery, Response<GetAllPoliciesDto>>
     {
-        private readonly IPolicyService _policyService;
+        private readonly IPolicyDtoRepository _policyDtoRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<GetAllPoliciesQueryHandler> _logger;
 
-        public GetAllPoliciesQueryHandler(IPolicyService policyService, IMapper mapper, ILogger<GetAllPoliciesQueryHandler> logger)
+        public GetAllPoliciesQueryHandler(IPolicyDtoRepository policyDtoRepository, IMapper mapper, ILogger<GetAllPoliciesQueryHandler> logger)
         {
-            _policyService = policyService;
+            _policyDtoRepository = policyDtoRepository;
             _mapper = mapper;
             _logger = logger;
         }
 
-        public async Task<Response<List<GetAllPoliciesDto>>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
+        public async Task<Response<GetAllPoliciesDto>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            List<Domain.Entities.Policy> policyList = await _policyService.GetAllPoliciesAsync();
-            List<GetAllPoliciesDto> getAllApisDto = _mapper.Map<List<GetAllPoliciesDto>>(policyList);
-            var response = new Response<List<GetAllPoliciesDto>>(getAllApisDto, "success");
+            IReadOnlyList<PolicyDto> policyList = await _policyDtoRepository.ListAllAsync();
+            GetAllPoliciesDto policyDtoList = new GetAllPoliciesDto()
+            {
+                Policies = _mapper.Map<List<GetAllPolicyModel>>(policyList),
+            };
+
+            var response = new Response<GetAllPoliciesDto>(policyDtoList, "success");
             _logger.LogInformation("Handler Completed");
             return response;
         }

@@ -5,7 +5,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -22,6 +22,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessControl
 {
+    [Collection("Database")]
     public partial class AllowedUrlTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -33,13 +34,9 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
         }
 
 
-
-
-
         [Fact]
         public async Task Add_policy_with_Api_AllowedUrls()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
@@ -58,7 +55,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //Update standard authentication
             //Read Json
@@ -92,7 +89,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
             var Policyresult = JsonConvert.DeserializeObject<Response<CreatePolicyDto>>(PolicyjsonString.Result);
 
             var policyId = Policyresult.Data.PolicyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //create key for policy
             var myKeyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicyKey.json");
@@ -109,7 +106,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             var keyresult = JsonConvert.DeserializeObject<Response<Key>>(jsonStringkey);
             var keyId = keyresult.Data.KeyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
            // JObject key = JObject.Parse(jsonStringkey);
             // var key_Id = (key["data"]["keyId"]).ToString();

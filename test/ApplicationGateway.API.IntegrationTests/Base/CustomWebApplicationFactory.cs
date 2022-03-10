@@ -11,36 +11,44 @@ namespace ApplicationGateway.API.IntegrationTests.Base
     [Collection("Database")]
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
-        /*private readonly DbFixture _dbFixture;
+        private readonly DbFixture _dbFixture;
 
         public CustomWebApplicationFactory(DbFixture dbFixture)
             => _dbFixture = dbFixture;
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseEnvironment("Test"); 
-            //builder.ConfigureAppConfiguration((context, config) =>
-            //{
-            //    config.AddInMemoryCollection(new[]
-            //    {
-            //        new KeyValuePair<string, string>(
-            //            "ConnectionStrings:ApplicationConnectionString", _dbFixture.ApplicationConnString),
-            //    });
-            //});
-          *//*  builder.ConfigureAppConfiguration((context, config) =>
+            builder.UseEnvironment("Test");
+            builder.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>(
+                        "ConnectionStrings:ApplicationConnectionString", _dbFixture.ApplicationConnString),
+                });
+            });
+            builder.ConfigureAppConfiguration((context, config) =>
             {
                 config.AddInMemoryCollection(new[]
                 {
                     new KeyValuePair<string, string>(
                         "ConnectionStrings:IdentityConnectionString", _dbFixture.IdentityConnString)
                 });
-            });*//*
+            });
             builder.ConfigureAppConfiguration((context, config) =>
             {
                 config.AddInMemoryCollection(new[]
                 {
                     new KeyValuePair<string, string>(
                         "ConnectionStrings:HealthCheckConnectionString", _dbFixture.HealthCheckConnString)
+                });
+            });
+            builder.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>(
+                        "ConnectionStrings:Redis", "localhost:6379")
                 });
             });
             builder.ConfigureAppConfiguration((context, config) =>
@@ -59,6 +67,14 @@ namespace ApplicationGateway.API.IntegrationTests.Base
                         "CacheConfiguration:SlidingExpirationInMinutes", "30")
                 });
             });
-        }*/
+            builder.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>(
+                        "TykConfiguration:PoliciesFolderPath", "..\\..\\..\\tyk-gateway-docker\\tyk-gateway-docker\\policies")
+                });
+            });
+        }
     }
 }

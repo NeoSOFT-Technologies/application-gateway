@@ -1,8 +1,10 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
+using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -15,9 +17,11 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
         private readonly IApiService _apiService;
         private readonly IMapper _mapper;
         private readonly ILogger<CreateMultipleApisCommandHandler> _logger;
+        private readonly IApiDtoRepository _apiDtoRepository;
 
-        public CreateMultipleApisCommandHandler(ISnapshotService snapshotService, IApiService apiService, IMapper mapper, ILogger<CreateMultipleApisCommandHandler> logger)
+        public CreateMultipleApisCommandHandler(IApiDtoRepository apiDtoRepository, ISnapshotService snapshotService, IApiService apiService, IMapper mapper, ILogger<CreateMultipleApisCommandHandler> logger)
         {
+            _apiDtoRepository = apiDtoRepository;
             _snapshotService = snapshotService;
             _apiService = apiService;
             _mapper = mapper;
@@ -38,7 +42,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
             #region Check for existing listenPath
             foreach (MultipleApiModel obj in request.APIs)
             {
-                Domain.Entities.Api apiToCreate = _mapper.Map<Domain.Entities.Api>(obj);
+                Domain.GatewayCommon.Api apiToCreate = _mapper.Map<Domain.GatewayCommon.Api>(obj);
                 if (!await _apiService.CheckUniqueListenPathAsync(apiToCreate))
                 {
                     throw new BadRequestException("ListenPath already exists");
@@ -49,18 +53,32 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
             #region Add APIs one by one
             foreach (MultipleApiModel obj in request.APIs)
             {
-                Domain.Entities.Api apiToCreate = _mapper.Map<Domain.Entities.Api>(obj);
-                Domain.Entities.Api createdApi = await _apiService.CreateApiAsync(apiToCreate);
+                Domain.GatewayCommon.Api apiToCreate = _mapper.Map<Domain.GatewayCommon.Api>(obj);
+                Domain.GatewayCommon.Api createdApi = await _apiService.CreateApiAsync(apiToCreate);
 
                 MultipleApiModelDto multipleApiModelDto = _mapper.Map<MultipleApiModelDto>(createdApi);
                 createMultipleApisDto.APIs.Add(multipleApiModelDto);
 
+                #region Create Snapshot
                 await _snapshotService.CreateSnapshot(
                 Enums.Gateway.Tyk,
                 Enums.Type.API,
                 Enums.Operation.Created,
                 createdApi.ApiId.ToString(),
                 createdApi);
+                #endregion
+
+                #region Create Api Dto
+                ApiDto apiDto = new ApiDto()
+                {
+                    Id = createdApi.ApiId,
+                    Name = createdApi.Name,
+                    TargetUrl = createdApi.TargetUrl,
+                    Version = "",
+                    IsActive = true
+                };
+                await _apiDtoRepository.AddAsync(apiDto);
+                #endregion
             }
             #endregion
 

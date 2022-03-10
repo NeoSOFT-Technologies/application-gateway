@@ -25,42 +25,23 @@
       ],
       "limit": {
         "rate": 5,
-        "per": 10,
+        "per": 60,
         "throttle_interval": 0,
         "throttle_retry_limit": 0,
         "max_query_depth": -1,
         "quota_max": -1,
-        "quota_renews": 0,
-        "quota_remaining": 0,
+        "quota_renews": -1,
+        "quota_remaining": -1,
         "quota_renewal_rate": -1,
         "set_by_policy": false
       }
     }
-  ]
+  ],
+  "partitions": {
+    "acl": false,
+    "complexity": false,
+    "per_api": true,
+    "quota": false,
+    "rate_limit": false
+  }
 }
-
-
-
-
-
-
-/*
-  "id": "f19759bd-63bf-4fe5-b5f8-fa0a19671eb1",
-      "name": "Test2",
-      "versions": [
-        "Default"
-      ],
-      "allowedUrls": [],
-      "limit": {
-        "rate": 5,
-        "per": 10,
-        "throttle_interval": 0,
-        "throttle_retry_limit": 0,
-        "max_query_depth": -1,
-        "quota_max": -1,
-        "quota_renews": 0,
-        "quota_remaining": 0,
-        "quota_renewal_rate": -1,
-        "set_by_policy": false
-      }
-*/

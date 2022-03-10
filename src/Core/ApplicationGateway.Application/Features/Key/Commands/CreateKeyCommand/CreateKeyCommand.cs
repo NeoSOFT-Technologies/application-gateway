@@ -1,15 +1,11 @@
 ﻿using ApplicationGateway.Application.Responses;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 {
-    public class CreateKeyCommand:IRequest<Response<Domain.Entities.Key>>
+    public class CreateKeyCommand:IRequest<Response<Domain.GatewayCommon.Key>>
     {
+        public string KeyName { get; set; }
         public int Rate { get; set; }
         public int Per { get; set; }
         public int Quota { get; set; }
@@ -21,6 +17,8 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
         public List<string> Policies { get; set; }
 
 
+
+    }
         public class KeyAccessRightsModel
         {
             public Guid ApiId { get; set; }
@@ -29,7 +27,6 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             public List<KeyAllowedUrl>? AllowedUrls { get; set; }
             public KeyApiLimit? Limit { get; set; }
         }
-
         public class KeyApiLimit
         {
             public int Rate { get; set; }
@@ -47,5 +44,4 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             public string Url { get; set; }
             public List<string> Methods { get; set; }
         }
-    }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
+using ApplicationGateway.Domain.GatewayCommon;
 using ApplicationGateway.Domain.Entities;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
@@ -12,15 +13,15 @@ using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery;
 using ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
-using static ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
-using ApplicationGateway.Domain.TykData;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
 using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
+using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 
 namespace ApplicationGateway.Application.Profiles
 {
+
     public class MappingProfile : Profile
     {
         public MappingProfile()
@@ -38,12 +39,12 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Provider, UpdateProvider>().ReverseMap();
             CreateMap<ClientPolicy, UpdateClientPolicy>().ReverseMap();
             CreateMap<Api, GetAllApiModel>().ReverseMap();
-            CreateMap<RateLimit, GetAllRateLimit>().ReverseMap();
-            CreateMap<VersioningInfo, GetAllVersioningInfo>().ReverseMap();
-            CreateMap<VersionModel, GetAllVersionModel>().ReverseMap();
-            CreateMap<OpenIdOptions, GetAllOpenIdOptions>().ReverseMap();
-            CreateMap<Provider, GetAllProvider>().ReverseMap();
-            CreateMap<ClientPolicy, GetAllClientPolicy>().ReverseMap();
+            //CreateMap<RateLimit, GetAllRateLimit>().ReverseMap();
+            //CreateMap<VersioningInfo, GetAllVersioningInfo>().ReverseMap();
+            //CreateMap<VersionModel, GetAllVersionModel>().ReverseMap();
+            //CreateMap<OpenIdOptions, GetAllOpenIdOptions>().ReverseMap();
+            //CreateMap<Provider, GetAllProvider>().ReverseMap();
+            //CreateMap<ClientPolicy, GetAllClientPolicy>().ReverseMap();
             CreateMap<Api, GetApiByIdDto>().ReverseMap();
             CreateMap<RateLimit, GetRateLimit>().ReverseMap();
             CreateMap<VersioningInfo, GetVersioningInfo>().ReverseMap();
@@ -65,10 +66,10 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<AllowedUrl, UpdateAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, UpdatePerApiLimit>().ReverseMap();
             CreateMap<Policy, GetAllPoliciesDto>().ReverseMap();
-            CreateMap<PolicyApi, GetAllPolicyApi>().ReverseMap();
-            CreateMap<Partition, GetAllPartition>().ReverseMap();
-            CreateMap<AllowedUrl, GetAllAllowedUrl>().ReverseMap();
-            CreateMap<PerApiLimit, GetAllPerApiLimit>().ReverseMap();
+            //CreateMap<PolicyApi, GetAllPolicyApi>().ReverseMap();
+            //CreateMap<Partition, GetAllPartition>().ReverseMap();
+            //CreateMap<AllowedUrl, GetAllAllowedUrl>().ReverseMap();
+            //CreateMap<PerApiLimit, GetAllPerApiLimit>().ReverseMap();
             CreateMap<Policy, GetPolicyByIdDto>().ReverseMap();
             CreateMap<PolicyApi, GetPolicyApi>().ReverseMap();
             CreateMap<Partition, GetPartition>().ReverseMap();
@@ -97,8 +98,14 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Key, UpdateKeyCommandDto>().ReverseMap();
             CreateMap<AllowedUrl, UpdateAllowedUrlDto>().ReverseMap();
             CreateMap<AccessRightsModel, UpdateAccessRightsModelDto>().ReverseMap();
+            CreateMap<ApiLimit, UpdateKeyLimit>().ReverseMap();
+            CreateMap<ApiLimit, UpdateKeyLimitDto>().ReverseMap();
 
 
+
+            CreateMap<ApiDto, GetAllApiModel>().ReverseMap();
+            CreateMap<KeyDto, GetAllKeyModel>().ReverseMap();
+            CreateMap<PolicyDto, GetAllPolicyModel>().ReverseMap();
         }
 
     }

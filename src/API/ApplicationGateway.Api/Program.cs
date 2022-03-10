@@ -17,6 +17,7 @@ using ApplicationGateway.Api.SwaggerHelper;
 using Microsoft.AspNetCore.DataProtection;
 using ApplicationGateway.Persistence;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,9 +41,9 @@ var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configurationBuilder)
     .CreateLogger();
 
-//builder.Host.UseSerilog((ctx, lc) => lc
-//        .WriteTo.Console()
-//        .ReadFrom.Configuration(ctx.Configuration));
+builder.Host.UseSerilog((ctx, lc) => lc
+        .WriteTo.Console()
+        .ReadFrom.Configuration(ctx.Configuration));
 
 // Add services to the container.
 
@@ -63,6 +64,16 @@ services.AddCors(options =>
             builder.WithOrigins(Urls).AllowAnyHeader().AllowAnyMethod();
         });
 });
+services.AddCors(c =>
+{
+    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+//Json Serialization
+services.AddControllersWithViews().AddNewtonsoftJson(options =>
+options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
+    = new DefaultContractResolver());
+
 services.AddApplicationServices();
 services.AddScoped<ILoggedInUserService, LoggedInUserService>();
 services.AddInfrastructureServices(Configuration);
@@ -138,6 +149,9 @@ app.UseCustomExceptionHandler();
 
 app.UseCors("Open");
 
+//Enable CORS
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapControllers();

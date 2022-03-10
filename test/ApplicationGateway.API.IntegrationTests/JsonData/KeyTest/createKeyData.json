@@ -1,6 +1,6 @@
 {
   "Rate": 3,
-  "Per": 60,
+  "Per": 5,
   "Quota": 3,
   "QuotaRenewalRate": 3600,
   "ThrottleInterval": 0,

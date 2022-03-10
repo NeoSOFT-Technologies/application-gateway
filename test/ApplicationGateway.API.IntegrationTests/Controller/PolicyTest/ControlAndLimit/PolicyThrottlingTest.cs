@@ -5,7 +5,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 using ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand;
 using ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCommand;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -22,6 +22,7 @@ using Xunit;
 
 namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlAndLimit
 {
+    [Collection("Database")]
     public partial class PolicyThrottlingTest : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly CustomWebApplicationFactory _factory;
@@ -31,10 +32,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             _factory = factory;
             client = _factory.CreateClient();
         }
-
-
-
-
 
         [Fact]
         public async Task Add_policy_with_Throttling_returnSuccess()
@@ -58,7 +55,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //Update standard authentication
             //Read Json
@@ -91,7 +88,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var Policyresult = JsonConvert.DeserializeObject<Response<CreatePolicyDto>>(PolicyjsonString.Result);
 
             var policyId = Policyresult.Data.PolicyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //create key for policy
             var myKeyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicyKey.json");
@@ -108,7 +105,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             var keyresult = JsonConvert.DeserializeObject<Response<Key>>(jsonStringkey);
             var keyId = keyresult.Data.KeyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
             //downstream api
             var clientkey = HttpClientFactory.Create();
             clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
@@ -123,7 +120,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             }
 
             var responseclientkey1 = await clientkey.GetAsync(Url);
-            responseclientkey1.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.OK);
+            responseclientkey1.EnsureSuccessStatusCode();
 
             //delete Api,policy,key
             var deleteResponse = await DeleteApi(id);
@@ -158,7 +155,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonString = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Response<CreateApiDto>>(jsonString.Result);
             var id = result.Data.ApiId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //Update standard authentication
             //Read Json
@@ -191,7 +188,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var Policyresult = JsonConvert.DeserializeObject<Response<CreatePolicyDto>>(PolicyjsonString.Result);
 
             var policyId = Policyresult.Data.PolicyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //create key for policy
             var myKeyJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/CreatePolicyKey.json");
@@ -208,7 +205,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             var keyresult = JsonConvert.DeserializeObject<Response<Key>>(jsonStringkey);
             var keyId = keyresult.Data.KeyId;
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             //downstream api
             var clientkey = HttpClientFactory.Create();
