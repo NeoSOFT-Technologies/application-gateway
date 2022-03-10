@@ -45,6 +45,12 @@ function KeyList() {
       //failure(err);
     }
   };
+
+  const searchFilter = (e) => {
+    e.preventDefault();
+    setSelected(1);
+    mainCall(1);
+  };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -94,7 +100,10 @@ function KeyList() {
                       placeholder="Search Keys"
                     />
                     <button className=" btn  btn-success btn-sm">
-                      <i className=" mdi mdi-magnify"></i>
+                      <i
+                        className=" mdi mdi-magnify"
+                        onClick={(e) => searchFilter(e)}
+                      ></i>
                     </button>
                   </div>
                 </form>
