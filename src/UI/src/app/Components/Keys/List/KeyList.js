@@ -84,14 +84,15 @@ function KeyList() {
     { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
-  if (keyslist.error != null && keyslist.error.length > 0) {
-    failure(keyslist.error);
+  if (keyslist.loading) {
     return (
       <span>
-        {" "}
-        <Spinner />{" "}
+        <Spinner />
       </span>
     );
+  } else if (keyslist.error) {
+    failure(keyslist.error);
+    return <></>;
   } else {
     return (
       <>

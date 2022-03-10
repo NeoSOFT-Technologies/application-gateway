@@ -83,14 +83,24 @@ function Policies() {
     { title: "Authentication Type", className: "text-center" },
     { title: "Action", className: "text-center" },
   ];
-  if (PolicyList.error != null && PolicyList.error.length > 0) {
-    failure(PolicyList.error);
+  // if (PolicyList.error != null && PolicyList.error.length > 0) {
+  //   failure(PolicyList.error);
+  //   return (
+  //     <span>
+  //       {" "}
+  //       <Spinner />{" "}
+  //     </span>
+  //   );
+  // } else {
+  if (PolicyList.loading) {
     return (
       <span>
-        {" "}
-        <Spinner />{" "}
+        <Spinner />
       </span>
     );
+  } else if (PolicyList.error) {
+    failure(PolicyList.error);
+    return <></>;
   } else {
     return (
       <>

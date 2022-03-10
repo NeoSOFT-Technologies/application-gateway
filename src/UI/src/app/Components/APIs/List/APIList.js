@@ -87,13 +87,15 @@ function APIList() {
     { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
-  if (ApiList.error != null && ApiList.error.length > 0) {
-    failure(ApiList.error);
+  if (ApiList.loading) {
     return (
       <span>
         <Spinner />
       </span>
     );
+  } else if (ApiList.error) {
+    failure(ApiList.error);
+    return <></>;
   } else {
     return (
       <>
