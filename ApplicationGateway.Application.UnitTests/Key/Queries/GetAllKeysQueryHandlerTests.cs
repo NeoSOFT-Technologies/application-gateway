@@ -25,7 +25,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
 
         public GetAllKeysQueryHandlerTests()
         {
-            _mockKeyRepository = KeyDtoRepositoryMocks.GetKeyRepository();
+            _mockKeyRepository = KeyRepositoryMocks.GetKeyRepository();
             _mockLogger = new Mock<ILogger<GetAllKeysQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {

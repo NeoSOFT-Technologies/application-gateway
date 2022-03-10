@@ -29,7 +29,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
 
         public UpdateApiCommandHandlerTests()
         {
-            _mockApiRepository = ApiDtoRepositoryMocks.GetApiRepository();
+            _mockApiRepository = ApiRepositoryMocks.GetApiRepository();
             _mockApiService = ApiServiceMocks.GetApiService();
             _snapshotService = new Mock<ISnapshotService>();
             _mockLogger = new Mock<ILogger<UpdateApiCommandHandler>>();

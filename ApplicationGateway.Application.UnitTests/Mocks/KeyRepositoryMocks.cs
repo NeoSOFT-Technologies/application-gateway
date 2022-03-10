@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.UnitTests.Mocks
 {
-    public class KeyDtoRepositoryMocks
+    public class KeyRepositoryMocks
     {
         public static Mock<IKeyRepository> GetKeyRepository()
         {

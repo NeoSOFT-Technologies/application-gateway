@@ -28,7 +28,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
 
         public DeleteApiCommandHandlerTests()
         {
-            _mockApiRepository = ApiDtoRepositoryMocks.GetApiRepository();
+            _mockApiRepository = ApiRepositoryMocks.GetApiRepository();
             _mockApiService = ApiServiceMocks.GetApiService();
             _snapshotService = new Mock<ISnapshotService>();
             _mockLogger = new Mock<ILogger<DeleteApiCommandHandler>>();
