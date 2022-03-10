@@ -56,7 +56,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
                 KeyName = request.KeyName,
                 IsActive = !key.IsInActive,
                 Policies = key.Policies,
-                Expires = key.Expires == 0 ? null : (DateTimeOffset.FromUnixTimeSeconds(key.Expires)).LocalDateTime
+                Expires = key.Expires == 0 ? null : (DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
         };
             await _keyDtoRepository.AddAsync(keyDto);
             #endregion
