@@ -1,4 +1,4 @@
-import { getUserData } from "../../config/Myservices";
+import { getUserData } from "../../Services/Myservices";
 
 export const AdminLoginSuccess = () => {
   return { type: "AdminLoginSuccess" };

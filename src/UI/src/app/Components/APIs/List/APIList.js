@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAPIList } from "../../../redux/actions/ApiActions";
 import RenderList from "../../../shared/RenderList";
@@ -7,25 +7,31 @@ import Spinner from "../../../shared/Spinner";
 function APIList() {
   const dispatch = useDispatch();
   const ApiList = useSelector((state) => state.setAPIList);
-
+  const [selected, setSelected] = useState(1);
+  //let currentPage = null;
   useEffect(() => {
     dispatch({ type: "API_LOADING" });
-    console.log("dispatch of loading", ApiList);
-    mainCall();
+    //console.log("dispatch of loading", ApiList);
+    mainCall(selected);
   }, []);
 
-  const mainCall = () => {
+  const handlePageClick = (selected) => {
+    mainCall(selected);
+    setSelected(selected);
+  };
+
+  const mainCall = (currentPage) => {
     try {
-      getAPIList().then((res) => {
-        console.log("in Api List", res.payload.Data.Apis);
+      //console.log(currentPage);
+      getAPIList(currentPage).then((res) => {
+        //console.log("in Api List", res);
         dispatch(res);
-        console.log("main call", ApiList);
+        //console.log("main call", ApiList);
       });
     } catch (err) {
       console.log(err);
     }
   };
-
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -34,7 +40,7 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("apilist", ApiList);
+  //console.log("apilist", ApiList);
   //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
@@ -46,8 +52,8 @@ function APIList() {
       iconClassName: "mdi mdi-delete",
     },
   ];
-  console.log("apilist", isIterable(ApiList.list) === true ? ApiList : {});
-  const datalist = {
+  //console.log("apilist", isIterable(ApiList.list) === true ? ApiList : {});
+  let datalist = {
     list:
       isIterable(ApiList.list) === true && ApiList.list.length > 0
         ? ApiList.list[0]
@@ -93,6 +99,9 @@ function APIList() {
                   headings={headings}
                   data={datalist}
                   actions={actions}
+                  handlePageClick={handlePageClick}
+                  pageCount={ApiList.count}
+                  selected={selected}
                 />
               )}
             </div>

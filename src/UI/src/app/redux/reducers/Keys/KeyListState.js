@@ -6,7 +6,9 @@ const initialState = {
 const setKeyList = (state = initialState, action) => {
   switch (action.type) {
     case "getKeys": {
-      initialState.list = [action.payload.Data.KeyDto];
+      //initialState.list = [action.payload.Data.KeyDto];
+      initialState.list = [action.payload.listData];
+      initialState.count = action.payload.countList;
       return initialState;
     }
     case "Key_LOADING": {

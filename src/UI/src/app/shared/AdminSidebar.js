@@ -12,6 +12,18 @@ function AdminSidebar() {
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <ul className="nav">
           <li
+            className={
+              isPathActive("/dashboard") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/dashboard">
+              <span className="menu-title">
+                <>Dashboard</>
+              </span>
+              <i className="mdi mdi-home menu-icon"></i>
+            </Link>
+          </li>
+          <li
             className={isPathActive("/apis") ? "nav-item active" : "nav-item"}
           >
             <Link className="nav-link" to="/apis">
