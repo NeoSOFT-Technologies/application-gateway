@@ -85,7 +85,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             responsekey.EnsureSuccessStatusCode();
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["data"]["keyId"];
+            var keyid = key["Data"]["KeyId"];
 
             //hit api
             var clientkey = HttpClientFactory.Create();

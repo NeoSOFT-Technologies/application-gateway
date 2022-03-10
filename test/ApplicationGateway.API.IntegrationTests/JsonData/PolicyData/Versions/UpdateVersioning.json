@@ -3,6 +3,8 @@
   "listenPath": "/test2/",
   "targetUrl": "http://host.docker.internal:5000",
   "id": "f19759bd-63bf-4fe5-b5f8-fa0a19671eb1",
+  "IsActive": true,
+  "StripListenPath": true,
   "defaultVersion": "V1",
   "versions": [
     {

@@ -28,7 +28,13 @@ export default function RenderList(props) {
             data.list.map((val, index1) => (
               <tr key={index1}>
                 {data.fields.map((field, index2) => (
-                  <td key={`list${index1}${index2}`}>{val[field]}</td>
+                  <td key={`list${index1}${index2}`}>
+                    {field === "IsActive" && val[field] === true
+                      ? "Active"
+                      : field === "IsActive" && val[field] === false
+                      ? "InActive"
+                      : val[field]}
+                  </td>
                 ))}
                 {props.actions && (
                   <td>

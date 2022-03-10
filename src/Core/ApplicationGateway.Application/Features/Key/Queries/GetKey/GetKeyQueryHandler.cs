@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;

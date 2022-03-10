@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper
+namespace ApplicationGateway.Application.Contracts.Infrastructure.Gateway
 {
     public interface IKeyService
     {
