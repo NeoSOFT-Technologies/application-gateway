@@ -28,7 +28,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
         public async Task<Response<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            IReadOnlyList<Domain.Entities.Key> listOfKey = await _keyRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Key> listOfKey = await _keyRepository.GetPagedReponseAsync(request.pageNum,request.pageSize);
 
             GetAllKeysDto allKeysDto = new GetAllKeysDto()
             { 

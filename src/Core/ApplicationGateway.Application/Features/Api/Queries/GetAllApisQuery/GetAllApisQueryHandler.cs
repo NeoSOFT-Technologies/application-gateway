@@ -24,7 +24,7 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
         public async Task<Response<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<Domain.Entities.Api> apiList = await _apiRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Api> apiList = await _apiRepository.GetPagedReponseAsync( request.pageNum, request.pageSize);
             GetAllApisDto getAllApisDto = new GetAllApisDto()
             {
                 Apis = _mapper.Map<List<GetAllApiModel>>(apiList)

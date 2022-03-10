@@ -25,10 +25,10 @@ namespace ApplicationGateway.Api.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllKeys()
+        public async Task<ActionResult> GetAllKeys(int pageNum, int pageSize)
         {
             _logger.LogInformation("GetAllKeys initiated in controller");
-            var response = await _mediator.Send(new GetAllKeysQuery());
+            var response = await _mediator.Send(new GetAllKeysQuery() { pageNum = pageNum, pageSize = pageSize });
             _logger.LogInformation("GetAllKeys completed in controller");
             return Ok(response);
         }
@@ -55,6 +55,8 @@ namespace ApplicationGateway.Api.Controllers.v1
 
 
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateKey(UpdateKeyCommand updateKeyCommand)
         {
             _logger.LogInformation($"UpdateKey initiated in controller for {updateKeyCommand}");

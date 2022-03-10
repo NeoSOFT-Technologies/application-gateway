@@ -5,5 +5,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
 {
     public class GetAllPoliciesQuery : IRequest<Response<GetAllPoliciesDto>>
     {
+        public int pageNum { get; set; }
+        public int pageSize { get; set; }
     }
 }
