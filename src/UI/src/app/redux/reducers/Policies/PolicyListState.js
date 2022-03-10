@@ -3,18 +3,17 @@ const initialState = {
   count: 0,
   loading: false,
   error: "",
+  totalCount: 0,
 };
 const setPolicyList = (state = initialState, action) => {
   switch (action.type) {
     case "getPolicies": {
-      initialState.list = [action.payload.Data];
-      initialState.count = initialState.list[0].length;
-      console.log(initialState.count);
-      initialState.error = "";
+      initialState.list = [action.payload.listData];
+      initialState.count = action.payload.countList;
+      initialState.totalCount = action.payload.total;
       return initialState;
     }
     case "POLICY_LOADING": {
-      console.log("loading");
       return {
         ...state.initialState,
         loading: true,
@@ -28,7 +27,6 @@ const setPolicyList = (state = initialState, action) => {
         error: action.payload,
       };
     }
-
     default:
       return state;
   }

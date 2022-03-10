@@ -1,21 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPolicyList } from "../../../redux/actions/PolicyActions";
 import RenderList from "../../../shared/RenderList";
 import Spinner from "../../../shared/Spinner";
-
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+toast.configure();
 function Policies() {
   const dispatch = useDispatch();
   const PolicyList = useSelector((state) => state.setPolicyList);
+  const [selected, setSelected] = useState(1);
+  const failure = (data) =>
+    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: 3000 });
   useEffect(() => {
     dispatch({ type: "POLICY_LOADING" });
-    console.log("dispatch of loading", PolicyList);
-    mainCall();
+    //console.log("dispatch of loading", PolicyList);
+    mainCall(1);
   }, []);
+  const handlePageClick = (selected) => {
+    mainCall(selected);
+    setSelected(selected);
+  };
 
-  const mainCall = () => {
+  const mainCall = (currentPage) => {
     try {
-      getPolicyList()
+      getPolicyList(currentPage)
         .then((res) => {
           console.log("in Policy List", res.payload.Data);
           dispatch(res);
@@ -32,7 +41,11 @@ function Policies() {
       console.log(err.message);
     }
   };
-
+  const searchFilter = (e) => {
+    e.preventDefault();
+    setSelected(1);
+    mainCall(1);
+  };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -44,7 +57,7 @@ function Policies() {
   console.log("policylist", PolicyList);
   console.log(
     "policyList before datalist",
-    isIterable(PolicyList.list) === true ? PolicyList : {}
+    isIterable(PolicyList.list) === true ? PolicyList[0] : {}
   ); //isIterable(PolicyList.list)
   const actions = [
     {
@@ -61,7 +74,7 @@ function Policies() {
       isIterable(PolicyList.list) === true && PolicyList.list.length > 0
         ? PolicyList.list[0]
         : [],
-    fields: ["Status", "PolicyName", "AccessRights", "AuthType"],
+    fields: ["State", "Name", "Apis", "AuthType"],
   };
   const headings = [
     { title: "State" },
@@ -70,6 +83,9 @@ function Policies() {
     { title: "Authentication Type", className: "text-center" },
     { title: "Action", className: "text-center" },
   ];
+  if (PolicyList.error != null && PolicyList.error.length > 0) {
+    failure(PolicyList.error);
+  }
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -85,7 +101,10 @@ function Policies() {
                       placeholder="Search Policies"
                     />
                     <button className=" btn  btn-success btn-sm">
-                      <i className=" mdi mdi-magnify"></i>
+                      <i
+                        className=" mdi mdi-magnify"
+                        onClick={(e) => searchFilter(e)}
+                      ></i>
                     </button>
                   </div>
                 </form>
@@ -97,13 +116,15 @@ function Policies() {
                 <span>
                   <Spinner />
                 </span>
-              ) : PolicyList.error ? (
-                <h5 className="text-center text-danger">{PolicyList.error}</h5>
               ) : (
                 <RenderList
                   headings={headings}
                   data={datalist}
                   actions={actions}
+                  handlePageClick={handlePageClick}
+                  pageCount={PolicyList.count}
+                  total={PolicyList.totalCount}
+                  selected={selected}
                 />
               )}
             </div>

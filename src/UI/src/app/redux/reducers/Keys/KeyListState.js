@@ -3,6 +3,7 @@ const initialState = {
   count: 0,
   loading: false,
   error: "",
+  totalCount: 0,
 };
 const setKeyList = (state = initialState, action) => {
   switch (action.type) {
@@ -10,6 +11,7 @@ const setKeyList = (state = initialState, action) => {
       //initialState.list = [action.payload.Data.KeyDto];
       initialState.list = [action.payload.listData];
       initialState.count = action.payload.countList;
+      initialState.totalCount = action.payload.total;
       return initialState;
     }
     case "Key_LOADING": {

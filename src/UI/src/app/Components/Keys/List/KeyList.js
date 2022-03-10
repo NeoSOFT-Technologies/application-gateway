@@ -11,9 +11,8 @@ function KeyList() {
   const dispatch = useDispatch();
   const keyslist = useSelector((state) => state.setKeyList);
   const [selected, setSelected] = useState(1);
-
   const failure = (data) =>
-    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: false });
+    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: 3000 });
   useEffect(() => {
     dispatch({ type: "Key_LOADING" });
     //console.log("dispatch of loading", keyslist);
@@ -26,7 +25,7 @@ function KeyList() {
 
   const mainCall = (currentPage) => {
     try {
-      getKeyList()
+      getKeyList(currentPage)
         .then((res) => {
           //console.log("in Key List", res.payload.Data.KeyDto);
           dispatch(res);
@@ -45,6 +44,12 @@ function KeyList() {
       //failure(err);
     }
   };
+
+  const searchFilter = (e) => {
+    e.preventDefault();
+    setSelected(1);
+    mainCall(1);
+  };
   //Iterable function
   function isIterable(obj) {
     // checks for null and undefined
@@ -53,7 +58,7 @@ function KeyList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  console.log("ApiList before datalist", isIterable(keyslist.list));
+  console.log("Key before datalist", isIterable(keyslist.list));
   const actions = [
     {
       className: "btn btn-sm btn-success",
@@ -64,21 +69,24 @@ function KeyList() {
       iconClassName: "mdi mdi-delete",
     },
   ];
-  console.log("apilist", isIterable(keyslist.list) === true ? keyslist : {});
+  console.log("Keylist", isIterable(keyslist.list) === true ? keyslist : {});
   const datalist = {
     list:
       isIterable(keyslist.list) === true && keyslist.list.length > 0
         ? keyslist.list[0]
         : [],
-    fields: ["KeyId", "AuthType", "Status", "Created"],
+    fields: ["Id", "KeyName", "IsActive", "CreatedDate"],
   };
   const headings = [
     { title: "Key ID" },
-    { title: "Authentication Type", className: "w-100" },
+    { title: "Key Name" },
     { title: "Status" },
-    { title: "Created" },
+    { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
+  if (keyslist.error != null && keyslist.error.length > 0) {
+    failure(keyslist.error);
+  }
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -94,7 +102,10 @@ function KeyList() {
                       placeholder="Search Keys"
                     />
                     <button className=" btn  btn-success btn-sm">
-                      <i className=" mdi mdi-magnify"></i>
+                      <i
+                        className=" mdi mdi-magnify"
+                        onClick={(e) => searchFilter(e)}
+                      ></i>
                     </button>
                   </div>
                 </form>
@@ -106,11 +117,6 @@ function KeyList() {
                 <span>
                   <Spinner />
                 </span>
-              ) : keyslist.error ? (
-                //failure(keyslist.error)
-                <h4 className="text-center text-danger  text-light">
-                  {failure(keyslist.error)}
-                </h4>
               ) : (
                 <RenderList
                   headings={headings}
@@ -118,6 +124,7 @@ function KeyList() {
                   actions={actions}
                   handlePageClick={handlePageClick}
                   pageCount={keyslist.count}
+                  total={keyslist.totalCount}
                   selected={selected}
                 />
               )}
