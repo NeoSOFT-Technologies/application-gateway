@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
+using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
@@ -21,12 +22,12 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Api.Commands
     public class GetAllApisQueryHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<IApiService> _mockApiService;
+        private readonly Mock<IApiDtoRepository> _mockApiRepository;
         private readonly Mock<ILogger<GetAllApisQueryHandler>> _mockLogger;
 
         public GetAllApisQueryHandlerTests()
         {
-            _mockApiService = ApiServiceMocks.GetApiService();
+            _mockApiRepository = ApiDtoRepositoryMocks.GetApiRepository();
             _mockLogger = new Mock<ILogger<GetAllApisQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
@@ -39,7 +40,7 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Api.Commands
         [Fact]
         public async Task Handle_GetAllAPI()
         {
-            var handler = new GetAllApisQueryHandler(_mockApiService.Object,_mapper,_mockLogger.Object);
+            var handler = new GetAllApisQueryHandler(_mockApiRepository.Object,_mapper,_mockLogger.Object);
 
             var result = await handler.Handle(new GetAllApisQuery(),CancellationToken.None);
 

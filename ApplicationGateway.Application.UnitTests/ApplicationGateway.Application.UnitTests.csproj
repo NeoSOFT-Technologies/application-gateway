@@ -26,8 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Gateway\Api\Commands\" />
-    <Folder Include="Gateway\Policy\Commands\" />
+    <Folder Include="Policy\Commands\" />
     <Folder Include="Key\Commands\" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
@@ -20,12 +21,12 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
     public class GetAllKeysQueryHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<IKeyService> _mockKeyService;
+        private readonly Mock<IKeyDtoRepository> _mockKeyRepository;
         private readonly Mock<ILogger<GetAllKeysQueryHandler>> _mockLogger;
 
         public GetAllKeysQueryHandlerTests()
         {
-            _mockKeyService = KeyServiceMocks.GetKeyService();
+            _mockKeyRepository = KeyDtoRepositoryMocks.GetKeyRepository();
             _mockLogger = new Mock<ILogger<GetAllKeysQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
@@ -38,11 +39,11 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
         [Fact]
         public async Task Handle_GetAllKeys()
         {
-            var handler = new GetAllKeysQueryHandler(_mockLogger.Object, _mapper, _mockKeyService.Object);
+            var handler = new GetAllKeysQueryHandler(_mockKeyRepository.Object,_mockLogger.Object, _mapper);
 
             var result = await handler.Handle(new GetAllKeysQuery(), CancellationToken.None);
 
-            result.ShouldBeOfType<Response<List<GetAllKeysDto>>>();
+            result.ShouldBeOfType<Response<GetAllKeysDto>>();
 
 
         }

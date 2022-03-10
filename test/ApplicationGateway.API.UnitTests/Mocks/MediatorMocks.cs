@@ -59,7 +59,7 @@ namespace ApplicationGateway.API.UnitTests.Mocks
             mockMediator.Setup(m => m.Send(It.IsAny<UpdateKeyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<UpdateKeyCommandDto>());
 
             //policy
-            mockMediator.Setup(m => m.Send(It.IsAny<GetAllPoliciesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<List<GetAllPoliciesDto>>());
+            mockMediator.Setup(m => m.Send(It.IsAny<GetAllPoliciesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetAllPoliciesDto>());
             mockMediator.Setup(m => m.Send(It.IsAny<GetPolicyByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetPolicyByIdDto>());
 
             mockMediator.Setup(m => m.Send(It.IsAny<CreatePolicyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<CreatePolicyDto>());
