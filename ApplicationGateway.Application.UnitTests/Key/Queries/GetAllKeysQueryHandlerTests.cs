@@ -1,5 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
 using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;

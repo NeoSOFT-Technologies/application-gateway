@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Domain.Entities;
 using Moq;
 using System;

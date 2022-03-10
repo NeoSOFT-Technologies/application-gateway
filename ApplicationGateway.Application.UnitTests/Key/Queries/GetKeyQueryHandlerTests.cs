@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Infrastructure.KeyWrapper;
+﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Features.Key.Queries.GetKey;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
