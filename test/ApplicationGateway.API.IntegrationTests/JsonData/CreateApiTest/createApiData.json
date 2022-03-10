@@ -1,5 +1,7 @@
 {
-    "name": "newDemoApi",
-    "listenPath": "/newPathDemosk/",
-    "targetUrl": "http://gateway.docker.internal:5000"
+  "name": "newDemoApi",
+  "listenPath": "/newPathDemosk/",
+  "targetUrl": "http://gateway.docker.internal:5000",
+  "IsActive": true,
+  "StripListenPath": true
 }

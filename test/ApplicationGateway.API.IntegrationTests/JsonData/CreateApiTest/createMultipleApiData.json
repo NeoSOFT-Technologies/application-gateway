@@ -2,13 +2,17 @@
   "apIs": [
     {
       "name": "new1",
-      "listenPath": "/newPath1/",
-      "targetUrl": "http://host.docker.internal:5000"
+      "listenPath": "/newPathnew123456/",
+      "targetUrl": "http://host.docker.internal:5000",
+      "IsActive": true,
+      "StripListenPath": true
     },
     {
       "name": "new2",
-      "listenPath": "/newPath2/",
-      "targetUrl": "http://host.docker.internal:5000"
+      "listenPath": "/newPathnew123456/",
+      "targetUrl": "http://host.docker.internal:5000",
+      "IsActive": true,
+      "StripListenPath": true
     }
   ]
 }

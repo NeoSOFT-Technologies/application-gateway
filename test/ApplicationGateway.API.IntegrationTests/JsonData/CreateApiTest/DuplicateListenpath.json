@@ -3,12 +3,16 @@
     {
       "name": "new1",
       "listenPath": "/newPath1/",
-      "targetUrl": "http://host.docker.internal:5000"
+      "targetUrl": "http://host.docker.internal:5000",
+      "IsActive": true,
+      "StripListenPath": true
     },
     {
       "name": "new2",
       "listenPath": "/newPath1/",
-      "targetUrl": "http://host.docker.internal:5000"
+      "targetUrl": "http://host.docker.internal:5000",
+      "IsActive": true,
+      "StripListenPath": true
     }
   ]
 }

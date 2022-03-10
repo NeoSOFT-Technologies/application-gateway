@@ -125,7 +125,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //read response key
             var jsonStringkey = await responsekey.Content.ReadAsStringAsync();
             JObject key = JObject.Parse(jsonStringkey);
-            var keyid = key["data"]["keyId"];
+            var keyid = key["Data"]["KeyId"];
             foreach (var item in apiName)
             {
                 //var clientkey = HttpClientFactory.Create();
