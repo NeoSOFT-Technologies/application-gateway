@@ -24,8 +24,8 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQu
             _logger.LogInformation("Handler Initiated with {@GetPolicyByIdQuery}", request);
             Domain.GatewayCommon.Policy policy = await _policyService.GetPolicyByIdAsync(request.PolicyId);
             GetPolicyByIdDto getPolicyByIdDto = _mapper.Map<GetPolicyByIdDto>(policy);
-            var response = new Response<GetPolicyByIdDto>(getPolicyByIdDto, "success");
-            _logger.LogInformation("Handler Completed");
+            Response<GetPolicyByIdDto> response = new Response<GetPolicyByIdDto>(getPolicyByIdDto, "success");
+            _logger.LogInformation("Handler Completed: {@Response<GetPolicyByIdDto>}", response);
             return response;
         }
     }
