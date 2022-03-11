@@ -31,7 +31,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
                 Policies = _mapper.Map<List<GetAllPolicyModel>>(policyList),
             };
 
-            var response = new PagedResponse<GetAllPoliciesDto>(policyDtoList, totCount, request.pageNum, request.pageSize);
+            PagedResponse<GetAllPoliciesDto> response = new PagedResponse<GetAllPoliciesDto>(policyDtoList, totCount, request.pageNum, request.pageSize);
             _logger.LogInformation("Handler Completed");
             return response;
         }

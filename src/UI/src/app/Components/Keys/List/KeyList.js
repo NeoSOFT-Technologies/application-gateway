@@ -45,7 +45,7 @@ function KeyList() {
     }
   };
 
-  const searchFilter = (e) => {
+  const buttonClick = (e) => {
     e.preventDefault();
     setSelected(1);
     mainCall(1);
@@ -84,56 +84,74 @@ function KeyList() {
     { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
-  if (keyslist.error != null && keyslist.error.length > 0) {
+  if (keyslist.loading) {
+    return (
+      <span>
+        <Spinner />
+      </span>
+    );
+  } else if (keyslist.error) {
     failure(keyslist.error);
-  }
-  return (
-    <>
-      <div className="col-lg-12 grid-margin stretch-card">
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex align-items-center justify-content-around">
-              <div className="search-field col-lg-12">
-                <form className="h-50">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control bg-parent border-1"
-                      placeholder="Search Keys"
-                    />
-                    <button className=" btn  btn-success btn-sm">
-                      <i
-                        className=" mdi mdi-magnify"
-                        onClick={(e) => searchFilter(e)}
-                      ></i>
-                    </button>
-                  </div>
-                </form>
+    return <></>;
+  } else {
+    return (
+      <>
+        <div className="col-lg-12 grid-margin stretch-card">
+          <div className="card">
+            <div className="card-body">
+              <div className="align-items-center">
+                <div className="search-field justify-content-around">
+                  <form className="h-50" onSubmit={(e) => buttonClick(e)}>
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        className="form-control bg-parent border-1"
+                        placeholder="Search Keys"
+                      />
+                      <button
+                        className=" btn  btn-success btn-sm"
+                        onClick={(e) => buttonClick(e)}
+                      >
+                        <i className=" mdi mdi-magnify"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
-            <br />
-            <div className="table-responsive">
-              {keyslist.loading ? (
-                <span>
-                  <Spinner />
-                </span>
-              ) : (
-                <RenderList
-                  headings={headings}
-                  data={datalist}
-                  actions={actions}
-                  handlePageClick={handlePageClick}
-                  pageCount={keyslist.count}
-                  total={keyslist.totalCount}
-                  selected={selected}
-                />
-              )}
+              <br />
+              <div>
+                <button
+                  className=" btn  btn-success btn-sm d-flex float-right mb-2"
+                  onClick={(e) => buttonClick(e)}
+                >
+                  &nbsp;
+                  <span className=" mdi mdi-plus"> </span>&nbsp;
+                </button>
+              </div>
+              <div className="table-responsive">
+                {keyslist.loading ? (
+                  <span>
+                    <Spinner />
+                  </span>
+                ) : (
+                  <RenderList
+                    headings={headings}
+                    data={datalist}
+                    actions={actions}
+                    handlePageClick={handlePageClick}
+                    pageCount={keyslist.count}
+                    total={keyslist.totalCount}
+                    selected={selected}
+                    error={keyslist.error}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default KeyList;

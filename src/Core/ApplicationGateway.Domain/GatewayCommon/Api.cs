@@ -48,7 +48,7 @@
 
     public class VersioningInfo
     {
-        public string Location { get; set; }
+        public VersioningLocation Location { get; set; }
         public string Key { get; set; }
     }
 
@@ -57,5 +57,13 @@
         public string Name { get; set; }
         public string? OverrideTarget { get; set; }
         public string? Expires { get; set; }
+    }
+
+    public enum VersioningLocation
+    {
+        none,
+        header,
+        url,
+        url_param
     }
 }

@@ -54,12 +54,23 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 {
                     apiObject = GetOIDC(apiObject, inputApi as JObject);
                 }
-
+                #region Get VersioningLocation
+                if (apiObject["versioningInfo"]["location"].ToString() == "")
+                {
+                    (apiObject["versioningInfo"] as JObject).Remove("location");
+                    (apiObject["versioningInfo"] as JObject).Add("location", VersioningLocation.none.ToString());
+                }
+                else if (apiObject["versioningInfo"]["location"].ToString() == "url-param")
+                {
+                    (apiObject["versioningInfo"] as JObject).Remove("location");
+                    (apiObject["versioningInfo"] as JObject).Add("location", VersioningLocation.url_param.ToString());
+                }
+                #endregion
                 transformedObject.Add(apiObject);
             }
             #endregion
 
-            List<Api> apiList = JsonConvert.DeserializeObject<List<Api>>(transformedObject.ToString());
+            List<Api> apiList = JsonConvert.DeserializeObject<List<Api>>(transformedObject.ToString(), new Newtonsoft.Json.Converters.StringEnumConverter());
             _logger.LogInformation("GetAllApisAsync Completed");
             return apiList;
         }
@@ -81,9 +92,22 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             {
                 transformedObject = GetOIDC(transformedObject, inputObject);
             }
+
+            #region Get VersioningLocation
+            if (transformedObject["versioningInfo"]["location"].ToString() == "")
+            {
+                (transformedObject["versioningInfo"] as JObject).Remove("location");
+                (transformedObject["versioningInfo"] as JObject).Add("location", VersioningLocation.none.ToString());
+            }
+            else if (transformedObject["versioningInfo"]["location"].ToString() == "url-param")
+            {
+                (transformedObject["versioningInfo"] as JObject).Remove("location");
+                (transformedObject["versioningInfo"] as JObject).Add("location", VersioningLocation.url_param.ToString());
+            }
+            #endregion
             #endregion
 
-            Api api = JsonConvert.DeserializeObject<Api>(transformedObject.ToString());
+            Api api = JsonConvert.DeserializeObject<Api>(transformedObject.ToString(), new Newtonsoft.Json.Converters.StringEnumConverter());
             _logger.LogInformation("GetApiByIdAsync Completed");
             return api;
         }
@@ -111,7 +135,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public async Task<Api> UpdateApiAsync(Api api)
         {
             _logger.LogInformation("UpdateApiAsync Initiated with {@Api}", api);
-            string inputJson = JsonConvert.SerializeObject(api);
+            string inputJson = JsonConvert.SerializeObject(api, new Newtonsoft.Json.Converters.StringEnumConverter());
             string transformed = await _templateTransformer.Transform(inputJson, TemplateHelper.UPDATEAPI_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
             JObject inputObject = JObject.Parse(inputJson);
@@ -153,6 +177,19 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     newProvider.Add("client_ids", newClient);
                     (transformedObject["openid_options"]["providers"] as JArray).Add(newProvider);
                 }
+            }
+            #endregion
+
+            #region Set VersioningLocation
+            if (transformedObject["definition"]["location"].ToString() == "none")
+            {
+                (transformedObject["definition"] as JObject).Remove("location");
+                (transformedObject["definition"] as JObject).Add("location", "");
+            }
+            else if (transformedObject["definition"]["location"].ToString() == "url_param")
+            {
+                (transformedObject["definition"] as JObject).Remove("location");
+                (transformedObject["definition"] as JObject).Add("location", VersioningLocation.url_param.ToString().Replace('_', '-'));
             }
             #endregion
 

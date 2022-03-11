@@ -36,7 +36,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
                 Keys = _mapper.Map<List<GetAllKeyModel>>(listOfKey)
             };
 
-            var response = new PagedResponse<GetAllKeysDto>(allKeysDto, totCount, request.pageNum, request.pageSize);
+            PagedResponse<GetAllKeysDto> response = new PagedResponse<GetAllKeysDto>(allKeysDto, totCount, request.pageNum, request.pageSize);
             _logger.LogInformation("GetAllKeysQueryHandler completed");
             return response;
         }
