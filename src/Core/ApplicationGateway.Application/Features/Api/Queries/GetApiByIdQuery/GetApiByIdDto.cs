@@ -1,4 +1,6 @@
-﻿namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
+﻿using ApplicationGateway.Domain.GatewayCommon;
+
+namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
 {
     public class GetApiByIdDto
     {
@@ -48,7 +50,7 @@
 
     public class GetVersioningInfo
     {
-        public string Location { get; set; }
+        public VersioningLocation Location { get; set; }
         public string Key { get; set; }
     }
 

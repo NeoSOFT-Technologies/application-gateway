@@ -65,7 +65,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand
 
             Response<CreateApiDto> response = new Response<CreateApiDto>(createApiDto, "success");
 
-            _logger.LogInformation("Handler Completed");
+            _logger.LogInformation("Handler Completed: {@Response<CreateApiDto>}", response);
             return response;
         }
     }
