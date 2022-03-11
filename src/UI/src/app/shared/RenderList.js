@@ -9,7 +9,7 @@ export default function RenderList(props) {
     <div>
       {/* headings mapping logic*/}
       <table className="table table-bordered hover table-variant">
-        <thead className="text-center">
+        <thead>
           <tr>
             {headings.map((heading, index) => (
               <th key={`heading${index}`} className={heading.class}>

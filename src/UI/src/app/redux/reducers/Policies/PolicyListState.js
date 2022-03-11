@@ -8,9 +8,9 @@ const initialState = {
 const setPolicyList = (state = initialState, action) => {
   switch (action.type) {
     case "getPolicies": {
-      initialState.list = [action.payload.listData];
-      initialState.count = action.payload.countList;
-      initialState.totalCount = action.payload.total;
+      initialState.list = [action.payload.Data.Policies];
+      initialState.count = Math.ceil(action.payload.TotalCount / 3);
+      initialState.totalCount = action.payload.TotalCount;
       return initialState;
     }
     case "POLICY_LOADING": {
