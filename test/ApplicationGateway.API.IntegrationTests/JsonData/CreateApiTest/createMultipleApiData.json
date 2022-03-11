@@ -9,7 +9,7 @@
     },
     {
       "name": "new2",
-      "listenPath": "/newPathnew123456/",
+      "listenPath": "/newPathnew1234567/",
       "targetUrl": "http://host.docker.internal:5000",
       "IsActive": true,
       "StripListenPath": true
