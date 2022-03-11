@@ -31,7 +31,7 @@ function APIList() {
       //console.log(currentPage);
       getAPIList(currentPage)
         .then((res) => {
-          //console.log("in Api List", res);
+          console.log("in Api List", res);
           dispatch(res);
           console.log("main call", ApiList);
         })
@@ -60,7 +60,7 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  //console.log("apilist", ApiList);
+  console.log("apilist", ApiList);
   //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
