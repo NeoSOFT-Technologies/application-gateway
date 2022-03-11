@@ -4,12 +4,9 @@ using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
 using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 using ApplicationGateway.Application.Features.Key.Queries.GetKey;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.Entities;
-using JUST;
+using ApplicationGateway.Domain.GatewayCommon;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ApplicationGateway.Api.Controllers.v1
 {

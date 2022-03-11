@@ -1,20 +1,12 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Application.Helper;
-using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
 {
-    public class GetKeyQueryHandler : IRequestHandler<GetKeyQuery, Response<Domain.Entities.Key>>
+    public class GetKeyQueryHandler : IRequestHandler<GetKeyQuery, Response<Domain.GatewayCommon.Key>>
     {
         readonly ILogger<GetKeyQueryHandler> _logger;
         readonly IMapper _mapper;
@@ -28,11 +20,11 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
             _keyService = keyService;
         }
 
-        public async Task<Response<Domain.Entities.Key>> Handle(GetKeyQuery request, CancellationToken cancellationToken)
+        public async Task<Response<Domain.GatewayCommon.Key>> Handle(GetKeyQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"GetKeyQueryHandler initiated for {request}");
-            Domain.Entities.Key key = await _keyService.GetKeyAsync(request.keyId);
-            Response<Domain.Entities.Key> response = new Response<Domain.Entities.Key> {Succeeded=true, Data = key, Message = "Success" };
+            Domain.GatewayCommon.Key key = await _keyService.GetKeyAsync(request.keyId);
+            Response<Domain.GatewayCommon.Key> response = new Response<Domain.GatewayCommon.Key> {Succeeded=true, Data = key, Message = "Success" };
             return response;
         }
     }

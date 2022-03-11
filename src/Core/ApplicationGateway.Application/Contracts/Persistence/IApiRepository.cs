@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories
+namespace ApplicationGateway.Application.Contracts.Persistence
 {
-    public interface IApiDtoRepository:IAsyncRepository<ApiDto>
+    public interface IApiRepository:IAsyncRepository<Api>
     {
     }
 }

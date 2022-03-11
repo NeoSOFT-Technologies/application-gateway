@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories
+namespace ApplicationGateway.Application.Contracts.Persistence
 {
-    public interface IPolicyDtoRepository:IAsyncRepository<PolicyDto>
+    public interface IPolicyRepository:IAsyncRepository<Policy>
     {
     }
 }

@@ -22,7 +22,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQu
         public async Task<Response<GetPolicyByIdDto>> Handle(GetPolicyByIdQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@GetPolicyByIdQuery}", request);
-            Domain.Entities.Policy policy = await _policyService.GetPolicyByIdAsync(request.PolicyId);
+            Domain.GatewayCommon.Policy policy = await _policyService.GetPolicyByIdAsync(request.PolicyId);
             GetPolicyByIdDto getPolicyByIdDto = _mapper.Map<GetPolicyByIdDto>(policy);
             var response = new Response<GetPolicyByIdDto>(getPolicyByIdDto, "success");
             _logger.LogInformation("Handler Completed");

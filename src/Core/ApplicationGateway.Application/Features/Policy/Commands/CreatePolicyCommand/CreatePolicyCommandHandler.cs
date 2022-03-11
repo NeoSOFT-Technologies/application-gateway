@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
@@ -16,11 +16,11 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         private readonly IPolicyService _policyService;
         private readonly IMapper _mapper;
         private readonly ILogger<CreatePolicyCommandHandler> _logger;
-        private readonly IPolicyDtoRepository _policyDtoRepository;
+        private readonly IPolicyRepository _policyRepository;
 
-        public CreatePolicyCommandHandler(IPolicyDtoRepository policyDtoRepository, ISnapshotService snapshotService, IPolicyService policyService, IMapper mapper, ILogger<CreatePolicyCommandHandler> logger)
+        public CreatePolicyCommandHandler(IPolicyRepository policyDtoRepository, ISnapshotService snapshotService, IPolicyService policyService, IMapper mapper, ILogger<CreatePolicyCommandHandler> logger)
         {
-            _policyDtoRepository= policyDtoRepository;
+            _policyRepository= policyDtoRepository;
             _snapshotService = snapshotService;
             _policyService = policyService;
             _mapper = mapper;
@@ -30,8 +30,8 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         public async Task<Response<CreatePolicyDto>> Handle(CreatePolicyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated with {@CreatePolicyCommand}", request);
-            Domain.Entities.Policy policy = _mapper.Map<Domain.Entities.Policy>(request);
-            Domain.Entities.Policy newPolicy = await _policyService.CreatePolicyAsync(policy);
+            Domain.GatewayCommon.Policy policy = _mapper.Map<Domain.GatewayCommon.Policy>(request);
+            Domain.GatewayCommon.Policy newPolicy = await _policyService.CreatePolicyAsync(policy);
 
             CreatePolicyDto createPolicyDto = _mapper.Map<CreatePolicyDto>(newPolicy);
 
@@ -48,7 +48,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
             List<string> policyNames = new List<string>();
             newPolicy.APIs.ForEach(policy => policyNames.Add(policy.Name));
 
-            PolicyDto policyDto = new PolicyDto()
+            Domain.Entities.Policy policyDto = new Domain.Entities.Policy()
             {
                 Id = newPolicy.PolicyId,
                 Name = newPolicy.Name,
@@ -56,7 +56,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
                 State = newPolicy.State,
                 Apis = policyNames
             };
-            await _policyDtoRepository.AddAsync(policyDto);
+            await _policyRepository.AddAsync(policyDto);
             #endregion
 
             Response<CreatePolicyDto> response = new Response<CreatePolicyDto>(createPolicyDto, "success");

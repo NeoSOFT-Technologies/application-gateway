@@ -1,8 +1,10 @@
 ﻿using ApplicationGateway.Application.Exceptions;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Application.Helper
 {
+	[ExcludeFromCodeCoverage]
 	public class RestClient<TIdentifier> : IDisposable
 	{
 		private HttpClient httpClient;

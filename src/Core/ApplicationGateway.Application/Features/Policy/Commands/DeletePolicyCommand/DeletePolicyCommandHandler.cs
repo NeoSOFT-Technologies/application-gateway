@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -14,11 +14,11 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.DeletePolicyCo
         private readonly ISnapshotService _snapshotService;
         private readonly IPolicyService _policyService;
         private readonly ILogger<DeletePolicyCommandHandler> _logger;
-        private readonly IPolicyDtoRepository _policyDtoRepository;
+        private readonly IPolicyRepository _policyRepository;
 
-        public DeletePolicyCommandHandler(IPolicyDtoRepository policyDtoRepository, IPolicyService policyService, IMapper mapper, ILogger<DeletePolicyCommandHandler> logger, ISnapshotService snapshotService)
+        public DeletePolicyCommandHandler(IPolicyRepository policyDtoRepository, IPolicyService policyService, IMapper mapper, ILogger<DeletePolicyCommandHandler> logger, ISnapshotService snapshotService)
         {
-            _policyDtoRepository = policyDtoRepository; 
+            _policyRepository = policyDtoRepository; 
             _policyService = policyService;
             _logger = logger;
             _snapshotService = snapshotService;
@@ -39,7 +39,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.DeletePolicyCo
             #endregion
 
             #region Delete Policy Dto
-            await _policyDtoRepository.DeleteAsync(new PolicyDto() { Id=request.PolicyId });
+            await _policyRepository.DeleteAsync(new Domain.Entities.Policy() { Id= request.PolicyId });
             #endregion
 
             _logger.LogInformation("Handler Completed");

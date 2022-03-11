@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,15 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationGateway.Persistence.Repositories.DtoRepositories
+namespace ApplicationGateway.Persistence.Repositories
 {
-    internal class PolicyDtoRepository : BaseRepository<PolicyDto>, IPolicyDtoRepository
+    internal class PolicyRepository : BaseRepository<Policy>, IPolicyRepository
     {
-        public PolicyDtoRepository(ApplicationDbContext dbContext, ILogger<PolicyDto> logger) : base(dbContext, logger)
+        public PolicyRepository(ApplicationDbContext dbContext, ILogger<Policy> logger) : base(dbContext, logger)
         {
         }
 
-        public override async Task UpdateAsync(PolicyDto entity)
+        public override async Task UpdateAsync(Policy entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.Entry(entity).Property(p => p.CreatedDate).IsModified = false;

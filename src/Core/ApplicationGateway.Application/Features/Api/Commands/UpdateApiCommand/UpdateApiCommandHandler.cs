@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
@@ -17,11 +17,11 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         private readonly IApiService _apiService;
         private readonly IMapper _mapper;
         private readonly ILogger<UpdateApiCommandHandler> _logger;
-        private readonly IApiDtoRepository _apiDtoRepository;
-        public UpdateApiCommandHandler(ISnapshotService snapshotService, IApiService apiService, IApiDtoRepository apiDtoRepository, IMapper mapper, ILogger<UpdateApiCommandHandler> logger)
+        private readonly IApiRepository _apiRepository;
+        public UpdateApiCommandHandler(ISnapshotService snapshotService, IApiService apiService, IApiRepository apiDtoRepository, IMapper mapper, ILogger<UpdateApiCommandHandler> logger)
         {
             _snapshotService = snapshotService;
-            _apiDtoRepository = apiDtoRepository;
+            _apiRepository = apiDtoRepository;
             _apiService = apiService;
             _mapper = mapper;
             _logger = logger;
@@ -35,14 +35,14 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
             await _apiService.GetApiByIdAsync(request.ApiId);
             #endregion
 
-            Domain.Entities.Api apiToUpdate = _mapper.Map<Domain.Entities.Api>(request);
+            Domain.GatewayCommon.Api apiToUpdate = _mapper.Map<Domain.GatewayCommon.Api>(request);
 
             if (!await _apiService.CheckUniqueListenPathAsync(apiToUpdate))
             {
                 throw new BadRequestException("ListenPath already exists");
             }
 
-            Domain.Entities.Api updatedApi = await _apiService.UpdateApiAsync(apiToUpdate);
+            Domain.GatewayCommon.Api updatedApi = await _apiService.UpdateApiAsync(apiToUpdate);
 
             UpdateApiDto updateApiDto = _mapper.Map<UpdateApiDto>(updatedApi);
 
@@ -56,15 +56,15 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
             #endregion
 
             #region Update to Api Dto
-            ApiDto apiDto = new ApiDto()
+            Domain.Entities.Api apiDto = new Domain.Entities.Api()
             {
-                Id=updatedApi.ApiId,
-                Name=updatedApi.Name,
-                TargetUrl=updatedApi.TargetUrl,
+                Id= updatedApi.ApiId,
+                Name= updatedApi.Name,
+                TargetUrl= updatedApi.TargetUrl,
                 IsActive=true,
                 Version=""
             };
-            await _apiDtoRepository.UpdateAsync(apiDto);
+            await _apiRepository.UpdateAsync(apiDto);
             #endregion
 
             Response<UpdateApiDto> result = new Response<UpdateApiDto>(updateApiDto, "success");

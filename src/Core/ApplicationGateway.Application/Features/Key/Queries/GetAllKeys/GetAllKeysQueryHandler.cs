@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -16,11 +16,11 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
     {
         readonly ILogger<GetAllKeysQueryHandler> _logger;
         readonly IMapper _mapper;
-        readonly IKeyDtoRepository _keyDtoRepository;
+        readonly IKeyRepository _keyRepository;
 
-        public GetAllKeysQueryHandler(IKeyDtoRepository keyDtoRepository, ILogger<GetAllKeysQueryHandler> logger, IMapper mapper)
+        public GetAllKeysQueryHandler(IKeyRepository keyDtoRepository, ILogger<GetAllKeysQueryHandler> logger, IMapper mapper)
         {
-            _keyDtoRepository = keyDtoRepository;
+            _keyRepository = keyDtoRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -28,7 +28,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
         public async Task<Response<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            IReadOnlyList<KeyDto> listOfKey = await _keyDtoRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Key> listOfKey = await _keyRepository.ListAllAsync();
 
             GetAllKeysDto allKeysDto = new GetAllKeysDto()
             { 

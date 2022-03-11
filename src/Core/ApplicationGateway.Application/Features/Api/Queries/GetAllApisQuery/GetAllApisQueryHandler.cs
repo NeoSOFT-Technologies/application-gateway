@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -12,11 +12,11 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
     {
         private readonly IMapper _mapper;
         private readonly ILogger<GetAllApisQueryHandler> _logger;
-        private readonly IApiDtoRepository _apiDtoRepository;
+        private readonly IApiRepository _apiRepository;
 
-        public GetAllApisQueryHandler(IApiDtoRepository apiDtoRepository, IMapper mapper, ILogger<GetAllApisQueryHandler> logger)
+        public GetAllApisQueryHandler(IApiRepository apiDtoRepository, IMapper mapper, ILogger<GetAllApisQueryHandler> logger)
         {
-            _apiDtoRepository = apiDtoRepository;
+            _apiRepository = apiDtoRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -24,7 +24,7 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
         public async Task<Response<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<ApiDto> apiList = await _apiDtoRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Api> apiList = await _apiRepository.ListAllAsync();
             GetAllApisDto getAllApisDto = new GetAllApisDto()
             {
                 Apis = _mapper.Map<List<GetAllApiModel>>(apiList)

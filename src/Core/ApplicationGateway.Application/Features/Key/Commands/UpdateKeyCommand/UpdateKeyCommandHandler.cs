@@ -1,21 +1,12 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
-using ApplicationGateway.Application.Exceptions;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Helper;
-using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
 {
@@ -25,11 +16,11 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
         readonly IKeyService _keyService;
         readonly IMapper _mapper;
         readonly ILogger<UpdateKeyCommandHandler> _logger;
-        readonly IKeyDtoRepository _keyDtoRepository;
+        readonly IKeyRepository _keyRepository;
 
-        public UpdateKeyCommandHandler(IKeyDtoRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<UpdateKeyCommandHandler> logger, ISnapshotService snapshotService)
+        public UpdateKeyCommandHandler(IKeyRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<UpdateKeyCommandHandler> logger, ISnapshotService snapshotService)
         {
-            _keyDtoRepository = keyDtoRepository;
+            _keyRepository = keyDtoRepository;
             _keyService = keyService;
             _mapper = mapper;
             _logger = logger;
@@ -44,9 +35,9 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
             await _keyService.GetKeyAsync(request.KeyId);
             #endregion
 
-            Domain.Entities.Key key = await _keyService.UpdateKeyAsync(_mapper.Map<Domain.Entities.Key>(request));
+            Domain.GatewayCommon.Key key = await _keyService.UpdateKeyAsync(_mapper.Map<Domain.GatewayCommon.Key>(request));
 
-            #region Create SnapShot
+            #region Create Snapshot
             await _snapshotService.CreateSnapshot(
                 Enums.Gateway.Tyk,
                 Enums.Type.Key,
@@ -56,15 +47,15 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
             #endregion
 
             #region Update Key Dto
-            KeyDto keyDto = new KeyDto()
+            Domain.Entities.Key keyDto = new Domain.Entities.Key()
             {
                 Id = key.KeyId,
                 KeyName = request.KeyName,
                 IsActive = !key.IsInActive,
                 Policies = key.Policies,
-                Expires = key.Expires == 0 ? null : (DateTimeOffset.FromUnixTimeSeconds(key.Expires)).LocalDateTime
+                Expires = key.Expires == 0 ? null : (global::System.DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
             };
-            await _keyDtoRepository.UpdateAsync(keyDto);
+            await _keyRepository.UpdateAsync(keyDto);
             #endregion
 
 
