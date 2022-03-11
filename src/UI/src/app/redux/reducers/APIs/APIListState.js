@@ -2,6 +2,7 @@ const initialState = {
   list: [],
   count: 0,
   loading: false,
+  error: "",
   totalCount: 0,
 };
 const setAPIList = (state = initialState, action) => {
@@ -16,6 +17,14 @@ const setAPIList = (state = initialState, action) => {
       return {
         ...state.initialState,
         loading: true,
+      };
+    }
+    case "API_LOADING_FAILURE": {
+      console.log("loading data failed");
+      return {
+        loading: false,
+        list: [],
+        error: action.payload,
       };
     }
     default:

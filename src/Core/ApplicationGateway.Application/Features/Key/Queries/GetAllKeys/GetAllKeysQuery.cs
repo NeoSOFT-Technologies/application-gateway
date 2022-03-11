@@ -10,5 +10,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
 {
     public class GetAllKeysQuery:IRequest<Response<GetAllKeysDto>>
     {
+        public int pageNum { get; set; }
+        public int pageSize { get; set; }
     }
 }

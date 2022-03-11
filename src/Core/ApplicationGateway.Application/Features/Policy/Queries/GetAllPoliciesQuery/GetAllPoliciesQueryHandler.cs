@@ -24,7 +24,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
         public async Task<Response<GetAllPoliciesDto>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<Domain.Entities.Policy> policyList = await _policyRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Policy> policyList = await _policyRepository.GetPagedReponseAsync(request.pageNum, request.pageSize);
             GetAllPoliciesDto policyDtoList = new GetAllPoliciesDto()
             {
                 Policies = _mapper.Map<List<GetAllPolicyModel>>(policyList),
