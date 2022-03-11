@@ -42,7 +42,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.DeletePolicyCo
             await _policyRepository.DeleteAsync(new Domain.Entities.Policy() { Id= request.PolicyId });
             #endregion
 
-            _logger.LogInformation("Handler Completed");
+            _logger.LogInformation("Handler Completed: {@Guid}", request.PolicyId);
             return Unit.Value;
         }
     }

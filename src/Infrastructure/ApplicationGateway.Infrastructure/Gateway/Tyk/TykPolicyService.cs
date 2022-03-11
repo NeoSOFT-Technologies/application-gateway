@@ -51,7 +51,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             }
             #endregion
 
-            _logger.LogInformation("GetAllPoliciesAsync Completed");
+            _logger.LogInformation("GetAllPoliciesAsync Completed: {@List<Policy>}", policies);
             return policies;
         }
 
@@ -86,7 +86,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "create");
             #endregion
 
-            _logger.LogInformation("CreatePolicyAsync Completed");
+            _logger.LogInformation("CreatePolicyAsync Completed: {@Policy}", policy);
             return policy;
         }
 
@@ -100,7 +100,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "update");
             #endregion
 
-            _logger.LogInformation("UpdatePolicyAsync Completed");
+            _logger.LogInformation("UpdatePolicyAsync Completed: {@Policy}", policy);
             return policy;
         }
 
@@ -108,7 +108,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             _logger.LogInformation("DeletePolicyAsync Initiated with {@Guid}", policyId);
             await _redisService.DeleteAsync(policyId.ToString());
-            _logger.LogInformation("DeletePolicyAsync Completed");
+            _logger.LogInformation("DeletePolicyAsync Completed: {@Guid}", policyId);
         }
 
         private static JObject SetPolicyApis(JObject inputObject)
