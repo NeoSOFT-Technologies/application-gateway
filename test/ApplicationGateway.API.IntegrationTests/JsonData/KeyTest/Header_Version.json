@@ -40,7 +40,7 @@
     ]
   },
   "versioningInfo": {
-    "location": "header",
+    "location": 1,
     "key": "x-tyk-api-version",
     "strip_path": false
   },

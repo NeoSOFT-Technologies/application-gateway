@@ -28,7 +28,7 @@ namespace ApplicationGateway.Api.Controllers.v1
         public async Task<ActionResult> GetAllKeys(int pageNum, int pageSize)
         {
             _logger.LogInformation("GetAllKeys initiated in controller");
-            var response = await _mediator.Send(new GetAllKeysQuery() { pageNum = pageNum, pageSize = pageSize });
+            PagedResponse<GetAllKeysDto> response = await _mediator.Send(new GetAllKeysQuery() { pageNum = pageNum, pageSize = pageSize });
             _logger.LogInformation("GetAllKeys completed in controller");
             return Ok(response);
         }

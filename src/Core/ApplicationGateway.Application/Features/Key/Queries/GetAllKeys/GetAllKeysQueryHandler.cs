@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
 {
-    public class GetAllKeysQueryHandler : IRequestHandler<GetAllKeysQuery, Response<GetAllKeysDto>>
+    public class GetAllKeysQueryHandler : IRequestHandler<GetAllKeysQuery, PagedResponse<GetAllKeysDto>>
     {
         readonly ILogger<GetAllKeysQueryHandler> _logger;
         readonly IMapper _mapper;
@@ -25,18 +25,20 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
             _mapper = mapper;
         }
 
-        public async Task<Response<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
             IReadOnlyList<Domain.Entities.Key> listOfKey = await _keyRepository.GetPagedReponseAsync(request.pageNum,request.pageSize);
+            int totCount = await _keyRepository.GetTotalCount();
 
             GetAllKeysDto allKeysDto = new GetAllKeysDto()
             { 
                 Keys = _mapper.Map<List<GetAllKeyModel>>(listOfKey)
             };
 
-            _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            return new Response<GetAllKeysDto>() { Succeeded = true, Data = allKeysDto };
+            PagedResponse<GetAllKeysDto> response = new PagedResponse<GetAllKeysDto>(allKeysDto, totCount, request.pageNum, request.pageSize);
+            _logger.LogInformation("GetAllKeysQueryHandler completed");
+            return response;
         }
     }
 }

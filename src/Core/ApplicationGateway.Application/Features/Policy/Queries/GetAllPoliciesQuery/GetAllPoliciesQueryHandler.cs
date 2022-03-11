@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery
 {
-    public class GetAllPoliciesQueryHandler : IRequestHandler<GetAllPoliciesQuery, Response<GetAllPoliciesDto>>
+    public class GetAllPoliciesQueryHandler : IRequestHandler<GetAllPoliciesQuery, PagedResponse<GetAllPoliciesDto>>
     {
         private readonly IPolicyRepository _policyRepository;
         private readonly IMapper _mapper;
@@ -21,16 +21,17 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
             _logger = logger;
         }
 
-        public async Task<Response<GetAllPoliciesDto>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<GetAllPoliciesDto>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
             IReadOnlyList<Domain.Entities.Policy> policyList = await _policyRepository.GetPagedReponseAsync(request.pageNum, request.pageSize);
+            int totCount =await _policyRepository.GetTotalCount();
             GetAllPoliciesDto policyDtoList = new GetAllPoliciesDto()
             {
                 Policies = _mapper.Map<List<GetAllPolicyModel>>(policyList),
             };
 
-            var response = new Response<GetAllPoliciesDto>(policyDtoList, "success");
+            PagedResponse<GetAllPoliciesDto> response = new PagedResponse<GetAllPoliciesDto>(policyDtoList, totCount, request.pageNum, request.pageSize);
             _logger.LogInformation("Handler Completed");
             return response;
         }
