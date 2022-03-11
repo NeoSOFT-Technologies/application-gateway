@@ -85,7 +85,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
                 (string id) =>
                 {
-                    keys.RemoveAll(a => a.KeyId == id);
+                    keys.RemoveAll(x=>x.KeyId==id);
                 }
                 );
 
