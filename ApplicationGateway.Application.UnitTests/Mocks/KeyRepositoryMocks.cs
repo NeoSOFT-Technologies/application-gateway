@@ -57,6 +57,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     keys.RemoveAll(a => a.Id == "KeyId1");
                 }
                 );
+            mockKeyRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(keys);
 
             return mockKeyRepository;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -7,6 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ApplicationGateway.Persistence.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class inital_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

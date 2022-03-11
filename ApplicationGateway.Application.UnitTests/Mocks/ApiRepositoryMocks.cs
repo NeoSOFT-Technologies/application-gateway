@@ -59,6 +59,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                    apis.Add(api);
                    
                });
+            mockApiRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(apis);
 
             return mockApiRepository;
 
