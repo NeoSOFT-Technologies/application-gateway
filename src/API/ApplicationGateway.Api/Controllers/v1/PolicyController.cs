@@ -29,7 +29,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("GetAllPolicies Initiated");
             Response<GetAllPoliciesDto> response = await _mediator.Send(new GetAllPoliciesQuery() { pageNum = pageNum, pageSize = pageSize});
-            _logger.LogInformation("GetAllPolicies Completed");
+            _logger.LogInformation("GetAllPolicies Completed: {@Response<GetAllPoliciesDto>}", response);
             return Ok(response);
         }
 
@@ -41,7 +41,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("GetPolicyByid Initiated with {@Guid}", policyId);
             Response<GetPolicyByIdDto> response = await _mediator.Send(new GetPolicyByIdQuery() { PolicyId = policyId });
-            _logger.LogInformation("GetPolicyByid Completed");
+            _logger.LogInformation("GetPolicyByid Completed: {@Response<GetPolicyByIdDto>}", response);
             return Ok(response);
         }
 
@@ -52,7 +52,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("CreatePolicy Initiated with {@CreatePolicyCommand}", createPolicyCommand);
             Response<CreatePolicyDto> response = await _mediator.Send(createPolicyCommand);
-            _logger.LogInformation("CreatePolicy Completed");
+            _logger.LogInformation("CreatePolicy Completed: {@Response<CreatePolicyDto>}", response);
             return Ok(response);
         }
 
@@ -64,7 +64,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("UpdatePolicy Initiated with {@UpdatePolicyCommand}", updatePolicyCommand);
             Response<UpdatePolicyDto> response = await _mediator.Send(updatePolicyCommand);
-            _logger.LogInformation("UpdatePolicy Completed");
+            _logger.LogInformation("UpdatePolicy Completed: {@Response<UpdatePolicyDto>}", response);
             return Ok(response);
         }
 
@@ -76,7 +76,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("DeletePolicy Initiated with {@Guid}", policyId);
             await _mediator.Send(new DeletePolicyCommand() { PolicyId = policyId });
-            _logger.LogInformation("DeletePolicy Completed");
+            _logger.LogInformation("DeletePolicy Completed: {@Guid}", policyId);
             return NoContent();
         }
     }

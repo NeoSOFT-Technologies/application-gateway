@@ -30,7 +30,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("GetAllApis Initiated");
             Response<GetAllApisDto> response = await _mediator.Send(new GetAllApisQuery() {pageNum = pageNum, pageSize = pageSize });
-            _logger.LogInformation("GetAllApis Completed");
+            _logger.LogInformation("GetAllApis Completed: {@Response<GetAllApisDto>}", response);
             return Ok(response);
         }
 
@@ -41,7 +41,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("GetApiById Initiated with {@Guid}", apiId);
             Response<GetApiByIdDto> response = await _mediator.Send(new GetApiByIdQuery() { ApiId = apiId });
-            _logger.LogInformation("GetApiById Completed");
+            _logger.LogInformation("GetApiById Completed: {@Response<GetApiByIdDto>}", response);
             return Ok(response);
         } 
 
@@ -52,7 +52,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("CreateApi Initiated with {@CreateApiCommand}", createApiCommand);
             Response<CreateApiDto> response = await _mediator.Send(createApiCommand);
-            _logger.LogInformation("CreateApi Completed");
+            _logger.LogInformation("CreateApi CompletedGetApiByIdDto: {@Response<CreateApiDto>}", response);
             return Ok(response);
 
         }
@@ -64,7 +64,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("CreateMultipleApis Initiated with {@CreateMultipleApisCommand}", createMultipleApisCommand);
             Response<CreateMultipleApisDto> response = await _mediator.Send(createMultipleApisCommand);
-            _logger.LogInformation("CreateMultipleApis Completed");
+            _logger.LogInformation("CreateMultipleApis Completed: {@Response<CreateMultipleApisDto>}", response);
             return Ok(response);
         }
 
@@ -76,7 +76,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("UpdateApi Initiated with {@updateApiCommand}", updateApiCommand);
             Response<UpdateApiDto> response = await _mediator.Send(updateApiCommand);
-            _logger.LogInformation("UpdateApi Completed");
+            _logger.LogInformation("UpdateApi Completed: {@Response<UpdateApiDto>}", response);
             return Ok(response);
         }
 
@@ -87,7 +87,7 @@ namespace ApplicationGateway.Api.Controllers
         {
             _logger.LogInformation("DeleteApi Initiated with {@Guid}", apiId);
             await _mediator.Send(new DeleteApiCommand() { ApiId = apiId });
-            _logger.LogInformation("DeleteApi Completed");
+            _logger.LogInformation("DeleteApi Completed: {@Guid}", apiId);
             return NoContent();
         }
     }

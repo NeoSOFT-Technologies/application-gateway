@@ -30,8 +30,8 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
                 Apis = _mapper.Map<List<GetAllApiModel>>(apiList)
             };
 
-            var response = new Response<GetAllApisDto>(getAllApisDto, "success");
-            _logger.LogInformation("Handler Completed");
+            Response<GetAllApisDto> response = new Response<GetAllApisDto>(getAllApisDto, "success");
+            _logger.LogInformation("Handler Completed: {@Response<GetAllApisDto>}", response);
             return response;
         }
     }

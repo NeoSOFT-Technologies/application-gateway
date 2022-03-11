@@ -67,10 +67,10 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
             await _apiRepository.UpdateAsync(apiDto);
             #endregion
 
-            Response<UpdateApiDto> result = new Response<UpdateApiDto>(updateApiDto, "success");
+            Response<UpdateApiDto> response = new Response<UpdateApiDto>(updateApiDto, "success");
 
-            _logger.LogInformation("Handler Completed");
-            return result;
+            _logger.LogInformation("Handler Completed: {@Response<UpdateApiDto>}", response);
+            return response;
         }
     }
 }
