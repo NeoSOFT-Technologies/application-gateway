@@ -151,7 +151,7 @@ function Policies() {
                     pageCount={PolicyList.count}
                     total={PolicyList.totalCount}
                     selected={selected}
-                    error={PolicyList.error}
+                    // error={PolicyList.error}
                   />
                 )}
               </div>

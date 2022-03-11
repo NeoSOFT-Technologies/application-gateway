@@ -29,8 +29,8 @@ namespace ApplicationGateway.Api.Controllers
         public async Task<ActionResult> GetAllApis(int pageNum, int pageSize)
         {
             _logger.LogInformation("GetAllApis Initiated");
-            Response<GetAllApisDto> response = await _mediator.Send(new GetAllApisQuery() {pageNum = pageNum, pageSize = pageSize });
-            _logger.LogInformation("GetAllApis Completed: {@Response<GetAllApisDto>}", response);
+            PagedResponse<GetAllApisDto> response = await _mediator.Send(new GetAllApisQuery() {pageNum = pageNum, pageSize = pageSize });
+            _logger.LogInformation("GetAllApis Completed");
             return Ok(response);
         }
 

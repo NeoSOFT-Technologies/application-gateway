@@ -3,7 +3,7 @@ import React from "react";
 import Pagination from "./Pagination";
 
 export default function RenderList(props) {
-  const { headings, data, pageCount, handlePageClick, total, error } = props;
+  const { headings, data, pageCount, handlePageClick, total } = props;
   console.log("Data from Renderlist", data);
   return (
     <div>
@@ -19,7 +19,7 @@ export default function RenderList(props) {
           </tr>
         </thead>
         <tbody>
-          {data && data.list.length == 0 && error === null ? (
+          {data && data.list.length == 0 ? (
             <tr>
               <td className="text-center" colSpan={headings.length}>
                 No data Available

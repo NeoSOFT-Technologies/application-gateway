@@ -28,8 +28,8 @@ namespace ApplicationGateway.Api.Controllers
         public async Task<ActionResult> GetAllPolicies(int pageNum, int pageSize)
         {
             _logger.LogInformation("GetAllPolicies Initiated");
-            Response<GetAllPoliciesDto> response = await _mediator.Send(new GetAllPoliciesQuery() { pageNum = pageNum, pageSize = pageSize});
-            _logger.LogInformation("GetAllPolicies Completed: {@Response<GetAllPoliciesDto>}", response);
+            PagedResponse<GetAllPoliciesDto> response = await _mediator.Send(new GetAllPoliciesQuery() { pageNum = pageNum, pageSize = pageSize});
+            _logger.LogInformation("GetAllPolicies Completed");
             return Ok(response);
         }
 
