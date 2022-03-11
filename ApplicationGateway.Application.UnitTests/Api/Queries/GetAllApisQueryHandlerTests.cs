@@ -43,10 +43,12 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Api.Commands
             var handler = new GetAllApisQueryHandler(_mockApiRepository.Object,_mapper,_mockLogger.Object);
 
             var result = await handler.Handle(new GetAllApisQuery(),CancellationToken.None);
+            var allApis = await _mockApiRepository.Object.ListAllAsync();
+            result.ShouldBeOfType<PagedResponse<GetAllApisDto>>();
+            allApis.Count.ShouldBe(2);
+            
 
-            result.ShouldBeOfType<Response<GetAllApisDto>>();
 
-        
         }
 
     }

@@ -37,6 +37,8 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
             var mockPolicyRepository = new Mock<IPolicyRepository>();
 
             mockPolicyRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(policies);
+            mockPolicyRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(policies);
+
 
             return mockPolicyRepository;
         }

@@ -35,13 +35,13 @@ namespace ApplicationGateway.API.UnitTests.Controllers.v1
         {
             var controller = new ApplicationGatewayController(_mockMediator.Object, _mockLogger.Object);
 
-            var result = await controller.GetAllApis();
+            var result = await controller.GetAllApis(1,1);
 
             result.ShouldBeOfType<OkObjectResult>();
             var okObjectResult = result as OkObjectResult;
             okObjectResult.StatusCode.ShouldBe(200);
             okObjectResult.Value.ShouldNotBeNull();
-            okObjectResult.Value.ShouldBeOfType<Response<GetAllApisDto>>();
+            okObjectResult.Value.ShouldBeOfType<PagedResponse<GetAllApisDto>>();
         }
 
         [Fact]

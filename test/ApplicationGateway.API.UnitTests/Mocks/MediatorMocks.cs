@@ -39,7 +39,7 @@ namespace ApplicationGateway.API.UnitTests.Mocks
         {
             var mockMediator = new Mock<IMediator>();
             //api
-            mockMediator.Setup(m => m.Send(It.IsAny<GetAllApisQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetAllApisDto>());
+            mockMediator.Setup(m => m.Send(It.IsAny<GetAllApisQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new PagedResponse<GetAllApisDto>());
             mockMediator.Setup(m => m.Send(It.IsAny<GetApiByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetApiByIdDto>());
 
 
@@ -51,7 +51,7 @@ namespace ApplicationGateway.API.UnitTests.Mocks
             mockMediator.Setup(m => m.Send(It.IsAny<UpdateApiCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<UpdateApiDto>());
 
             //key
-            mockMediator.Setup(m => m.Send(It.IsAny<GetAllKeysQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetAllKeysDto>());
+            mockMediator.Setup(m => m.Send(It.IsAny<GetAllKeysQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new PagedResponse<GetAllKeysDto>());
             mockMediator.Setup(m => m.Send(It.IsAny<GetKeyQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<Key>());
 
             mockMediator.Setup(m => m.Send(It.IsAny<CreateKeyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<Key>());
@@ -59,7 +59,7 @@ namespace ApplicationGateway.API.UnitTests.Mocks
             mockMediator.Setup(m => m.Send(It.IsAny<UpdateKeyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<UpdateKeyCommandDto>());
 
             //policy
-            mockMediator.Setup(m => m.Send(It.IsAny<GetAllPoliciesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetAllPoliciesDto>());
+            mockMediator.Setup(m => m.Send(It.IsAny<GetAllPoliciesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new PagedResponse<GetAllPoliciesDto>());
             mockMediator.Setup(m => m.Send(It.IsAny<GetPolicyByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetPolicyByIdDto>());
 
             mockMediator.Setup(m => m.Send(It.IsAny<CreatePolicyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<CreatePolicyDto>());
