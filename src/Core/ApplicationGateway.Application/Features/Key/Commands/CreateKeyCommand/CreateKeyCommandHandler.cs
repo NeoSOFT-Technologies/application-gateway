@@ -55,6 +55,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             #endregion
 
             Response<Domain.GatewayCommon.Key> response =new Response<Domain.GatewayCommon.Key>(key, "success");
+            _logger.LogInformation($"CreateKeyCommandHandler completed with {request}");
             return response;
         }
     }
