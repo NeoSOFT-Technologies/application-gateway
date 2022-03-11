@@ -108,6 +108,17 @@ function Policies() {
           <div className="card">
             <div className="card-body">
               <div className="align-items-center">
+                <div>
+                  <button
+                    className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                    onClick={(e) => buttonClick(e)}
+                  >
+                    {" "}
+                    Create Policy &nbsp;
+                    <span className=" mdi mdi-plus"> </span>
+                  </button>
+                  &nbsp;
+                </div>
                 <div className="search-field justify-content-around">
                   <form className="h-50" onSubmit={(e) => buttonClick(e)}>
                     <div className="input-group">
@@ -127,16 +138,6 @@ function Policies() {
                 </div>
               </div>
               <br />
-              <div>
-                <button
-                  className=" btn  btn-success btn-sm d-flex float-right mb-2"
-                  onClick={(e) => buttonClick(e)}
-                >
-                  &nbsp;
-                  <span className=" mdi mdi-plus"> </span>
-                </button>
-                &nbsp;
-              </div>
               <div className="table-responsive">
                 {PolicyList.loading ? (
                   <span>
