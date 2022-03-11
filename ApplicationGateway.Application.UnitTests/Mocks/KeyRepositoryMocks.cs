@@ -17,14 +17,14 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
             {
                 new Domain.Entities.Key()
                 {
-                    Id = "EE272F8B-6096-4CB6-8625-BB4BB2D89E8B",
+                    Id = "KeyId1",
                     KeyName =  "Key1",
                     IsActive = true,
                     Policies = new List<string> { "policy1","policy2"}
                 },
                 new Domain.Entities.Key()
                 {
-                    Id = "d917933a-becc-4beb-83c5-3364dd19fd44",
+                    Id = "KeyId2",
                     KeyName =  "Key2",
                     IsActive = true,
                     Policies = new List<string> { "policy1","policy2"}
@@ -54,7 +54,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
                 (Domain.Entities.Key key) =>
                 {
-                    keys.Remove(key);
+                    keys.RemoveAll(a => a.Id == "KeyId1");
                 }
                 );
 

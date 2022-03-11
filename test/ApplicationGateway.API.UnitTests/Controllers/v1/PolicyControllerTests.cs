@@ -35,7 +35,7 @@ namespace ApplicationGateway.API.UnitTests.Controllers.v1
         {
             var controller = new PolicyController(_mockMediator.Object, _mockLogger.Object);
 
-            var result = await controller.GetAllPolicies();
+            var result = await controller.GetAllPolicies(1,1);
 
             result.ShouldBeOfType<OkObjectResult>();
             var okObjectResult = result as OkObjectResult;

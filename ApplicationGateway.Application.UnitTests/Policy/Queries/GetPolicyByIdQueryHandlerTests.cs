@@ -38,9 +38,10 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
         [Fact]
         public async Task Handle_GetPolicyById()
         {
+            var PolicyId = _mockPolicyService.Object.GetAllPoliciesAsync().Result.FirstOrDefault().PolicyId;
             var handler = new GetPolicyByIdQueryHandler(_mockPolicyService.Object, _mapper, _mockLogger.Object);
 
-            var result = await handler.Handle(new GetPolicyByIdQuery(), CancellationToken.None);
+            var result = await handler.Handle(new GetPolicyByIdQuery() { PolicyId= PolicyId }, CancellationToken.None);
 
             result.ShouldBeOfType<Response<GetPolicyByIdDto>>();
 

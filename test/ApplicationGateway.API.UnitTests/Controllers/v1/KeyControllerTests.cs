@@ -37,7 +37,7 @@ namespace ApplicationGateway.API.UnitTests.Controllers.v1
         {
             var controller = new KeyController(_mockLogger.Object,_mockMediator.Object);
 
-            var result = await controller.GetAllKeys();
+            var result = await controller.GetAllKeys(1,1);
 
             result.ShouldBeOfType<OkObjectResult>();
             var okObjectResult = result as OkObjectResult;

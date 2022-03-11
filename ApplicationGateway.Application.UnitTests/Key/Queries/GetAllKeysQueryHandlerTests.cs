@@ -40,7 +40,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
         {
             var handler = new GetAllKeysQueryHandler(_mockKeyRepository.Object,_mockLogger.Object, _mapper);
 
-            var result = await handler.Handle(new GetAllKeysQuery(), CancellationToken.None);
+            var result = await handler.Handle(new GetAllKeysQuery() { pageNum=1,pageSize=1}, CancellationToken.None);
 
             result.ShouldBeOfType<Response<GetAllKeysDto>>();
 
