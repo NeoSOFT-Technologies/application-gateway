@@ -40,7 +40,7 @@
     ]
   },
   "versioningInfo": {
-    "location": "url-param",
+    "location": 3,
     "key": "x-tyk-api-version",
     "strip_path": false
   },

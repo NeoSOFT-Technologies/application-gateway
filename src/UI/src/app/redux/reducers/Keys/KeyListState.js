@@ -2,6 +2,8 @@ const initialState = {
   list: [],
   count: 0,
   loading: false,
+  error: "",
+  totalCount: 0,
 };
 const setKeyList = (state = initialState, action) => {
   switch (action.type) {
@@ -9,12 +11,21 @@ const setKeyList = (state = initialState, action) => {
       //initialState.list = [action.payload.Data.KeyDto];
       initialState.list = [action.payload.listData];
       initialState.count = action.payload.countList;
+      initialState.totalCount = action.payload.total;
       return initialState;
     }
     case "Key_LOADING": {
       return {
         ...state.initialState,
         loading: true,
+      };
+    }
+    case "KEY_LOADING_FAILURE": {
+      console.log("loading data failed");
+      return {
+        loading: false,
+        list: [],
+        error: action.payload,
       };
     }
     default:

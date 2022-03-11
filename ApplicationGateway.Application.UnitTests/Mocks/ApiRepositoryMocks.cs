@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.UnitTests.Mocks
 {
-    public class ApiDtoRepositoryMocks
+    public class ApiRepositoryMocks
     {
         public static Mock<IApiRepository> GetApiRepository()
         {
@@ -37,8 +37,8 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
             var mockApiRepository = new Mock<IApiRepository>();
 
             mockApiRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(apis);
-            mockApiRepository.Setup(repo => repo.AddAsync(It.IsAny<Api>())).ReturnsAsync(
-                (Api api) =>
+            mockApiRepository.Setup(repo => repo.AddAsync(It.IsAny<Domain.Entities.Api>())).ReturnsAsync(
+                (Domain.Entities.Api api) =>
                 {
                     api.Id = Guid.NewGuid();
                     apis.Add(api);

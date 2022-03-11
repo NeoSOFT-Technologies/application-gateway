@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.UnitTests.Mocks
 {
-    public class PolicyDtoRepositoryMocks
+    public class PolicyRepositoryMocks
     {
         public static Mock<IPolicyRepository> GetPolicyRepository()
         {

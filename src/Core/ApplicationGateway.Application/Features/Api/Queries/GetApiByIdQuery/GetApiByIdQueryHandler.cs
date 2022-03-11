@@ -24,8 +24,8 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
             _logger.LogInformation("Handler Initiated with {@GetApiByIdQuery}", request);
             Domain.GatewayCommon.Api api = await _apiService.GetApiByIdAsync(request.ApiId);
             GetApiByIdDto getApiByIdDto = _mapper.Map<GetApiByIdDto>(api);
-            var response = new Response<GetApiByIdDto>(getApiByIdDto, "success");
-            _logger.LogInformation("Handler Completed");
+            Response<GetApiByIdDto> response = new Response<GetApiByIdDto>(getApiByIdDto, "success");
+            _logger.LogInformation("Handler Completed: {@Response<GetApiByIdDto>}", response);
             return response;
         }
     }

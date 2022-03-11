@@ -27,7 +27,7 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Api.Commands
 
         public GetAllApisQueryHandlerTests()
         {
-            _mockApiRepository = ApiDtoRepositoryMocks.GetApiRepository();
+            _mockApiRepository = ApiRepositoryMocks.GetApiRepository();
             _mockLogger = new Mock<ILogger<GetAllApisQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {

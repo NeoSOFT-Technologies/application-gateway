@@ -60,7 +60,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
             #endregion
 
             Response<UpdatePolicyDto> response = new Response<UpdatePolicyDto>(updatePolicyDto, "success");
-            _logger.LogInformation("Handler Completed");
+            _logger.LogInformation("Handler Completed: {@Response<CreatePolicyDto>}", response);
             return response;
         }
     }

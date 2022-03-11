@@ -46,7 +46,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand
             #region Delete From ApiDto
             await _apiRepository.DeleteAsync(new Domain.Entities.Api() { Id = request.ApiId });
             #endregion
-            _logger.LogInformation("Handler Completed");
+            _logger.LogInformation("Handler Completed: {@Guid}", apiId);
             return Unit.Value;
         }
     }

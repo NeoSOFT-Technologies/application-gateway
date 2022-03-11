@@ -84,7 +84,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
 
             Response<CreateMultipleApisDto> response = new Response<CreateMultipleApisDto>(createMultipleApisDto, "success");
 
-            _logger.LogInformation("Handler Completed");
+            _logger.LogInformation("Handler Completed: {@Response<CreateMultipleApisDto>}", response);
             return response;
         }
     }

@@ -40,7 +40,7 @@
     ]
   },
   "versioningInfo": {
-    "location": "url",
+    "location": 2,
     "key": "",
     "strip_path": true
   },

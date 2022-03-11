@@ -26,7 +26,7 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
 
         public GetAllPoliciesQueryHandlerTests()
         {
-            _mockPolicyRepository = PolicyDtoRepositoryMocks.GetPolicyRepository();
+            _mockPolicyRepository = PolicyRepositoryMocks.GetPolicyRepository();
             _mockLogger = new Mock<ILogger<GetAllPoliciesQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {

@@ -5,6 +5,7 @@ using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.UnitTests.Mocks;
 using ApplicationGateway.Domain.Entities;
+using ApplicationGateway.Domain.GatewayCommon;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -29,7 +30,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
 
         public UpdateApiCommandHandlerTests()
         {
-            _mockApiRepository = ApiDtoRepositoryMocks.GetApiRepository();
+            _mockApiRepository = ApiRepositoryMocks.GetApiRepository();
             _mockApiService = ApiServiceMocks.GetApiService();
             _snapshotService = new Mock<ISnapshotService>();
             _mockLogger = new Mock<ILogger<UpdateApiCommandHandler>>();
@@ -57,7 +58,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
                 RateLimit = new UpdateRateLimit() { Rate = 5, Per = 20 },
                 Blacklist = new List<string> { "192.168.4.6", "125.365.548" },
                 Whitelist = new List<string> { "192.168.4.6", "125.365.548" },
-                VersioningInfo = new UpdateVersioningInfo() { Location = "mylocation2", Key = "mykey2" },
+                VersioningInfo = new UpdateVersioningInfo() { Location = VersioningLocation.header, Key = "mykey2" },
                 DefaultVersion = "Default2",
                 Versions = new List<UpdateVersionModel> { new UpdateVersionModel() { Name = "versionName2", OverrideTarget = "overridetarget2" } },
                 AuthType = "open",
