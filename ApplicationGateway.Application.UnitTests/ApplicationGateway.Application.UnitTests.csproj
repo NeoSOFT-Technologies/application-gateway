@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Policy\Commands\" />
-    <Folder Include="Key\Commands\" />
   </ItemGroup>
 
   <ItemGroup>
