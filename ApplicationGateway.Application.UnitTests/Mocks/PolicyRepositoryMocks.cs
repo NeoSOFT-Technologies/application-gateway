@@ -38,6 +38,14 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
             mockPolicyRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(policies);
             mockPolicyRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(policies);
+            mockPolicyRepository.Setup(repo => repo.AddAsync(It.IsAny<Domain.Entities.Policy>())).ReturnsAsync(
+               (Domain.Entities.Policy policy) =>
+               {
+                   policy.Id = Guid.NewGuid();
+                   policies.Add(policy);
+                   return policy;
+               }
+               );
             mockPolicyRepository.Setup(repo => repo.DeleteAsync(It.IsAny<Domain.Entities.Policy>())).Callback(
 
               (Domain.Entities.Policy policy) =>

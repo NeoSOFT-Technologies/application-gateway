@@ -44,7 +44,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
         }
 
         [Fact]
-        public async Task create_api()
+        public async Task Handle_create_api()
         {
             var handler = new CreateApiCommandHandler(_snapshotService.Object, _mockApiService.Object, _mapper, _mockLogger.Object, _mockApiRepository.Object);
             var result = await handler.Handle(new CreateApiCommand() 
@@ -55,7 +55,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
             }, 
             CancellationToken.None);
             result.ShouldBeOfType<Response<CreateApiDto>>();
-
+            result.ShouldNotBeNull();
         }
     }
 

@@ -75,6 +75,14 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                 {
                     return Policies.SingleOrDefault(x => x.PolicyId == policyId);
                 });
+            mockPolicyService.Setup(repo => repo.CreatePolicyAsync(It.IsAny<Domain.GatewayCommon.Policy>())).ReturnsAsync(
+                (Domain.GatewayCommon.Policy policy) =>
+                {
+                    policy.PolicyId = Guid.NewGuid();
+                    Policies.Add(policy);
+                    return policy;
+                }
+                );
             mockPolicyService.Setup(repo => repo.DeletePolicyAsync(It.IsAny<Guid>())).Callback(
                 (Guid id) =>
                 {
