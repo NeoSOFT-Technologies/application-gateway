@@ -49,7 +49,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
                 KeyName = request.KeyName,
                 IsActive = !key.IsInActive,
                 Policies = key.Policies,
-                Expires = key.Expires == 0 ? null : (global::System.DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
+                Expires = key.Expires == 0 ? null : (DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
         };
             await _keyRepository.AddAsync(keyDto);
             #endregion
