@@ -13,9 +13,9 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
     {
         public static Mock<IPolicyRepository> GetPolicyRepository()
         {
-            var policies = new List<Policy>()
+            var policies = new List<Domain.Entities.Policy>()
             {
-                new Policy()
+                new Domain.Entities.Policy()
                 {
                     Id = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name =  "policy1",
@@ -23,7 +23,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     AuthType = "open",
                     State = "active"
                 },
-                 new Policy()
+                 new Domain.Entities.Policy()
                 {
                     Id = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name =  "policy2",
@@ -38,7 +38,13 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
             mockPolicyRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(policies);
             mockPolicyRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(policies);
+            mockPolicyRepository.Setup(repo => repo.DeleteAsync(It.IsAny<Domain.Entities.Policy>())).Callback(
 
+              (Domain.Entities.Policy policy) =>
+              {
+                  policies.RemoveAll(x => x.Id == policy.Id);
+              }
+              );
 
             return mockPolicyRepository;
         }
