@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
-using ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransformer;
+using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.UnitTests.Mocks;
@@ -17,16 +17,16 @@ using Xunit;
 
 namespace ApplicationGateway.Application.UnitTests.Transformer.Queries
 {
-    public class GetAllTransformersQueryHandlerTests
+    public class GetTransformerByNameQueryHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<ILogger<GetAllTransformersQueryHandler>> _mocklogger;
+        private readonly Mock<ILogger<GetTransformerByNameQueryHandler>> _mocklogger;
         private readonly Mock<ITransformerRepository> _mockTransformerRepository;
 
-        public GetAllTransformersQueryHandlerTests()
+        public GetTransformerByNameQueryHandlerTests()
         {
             _mockTransformerRepository = TransformerRepositoryMocks.GetTransformerRepository();
-            _mocklogger = new Mock<ILogger<GetAllTransformersQueryHandler>>();
+            _mocklogger = new Mock<ILogger<GetTransformerByNameQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
@@ -36,14 +36,18 @@ namespace ApplicationGateway.Application.UnitTests.Transformer.Queries
         }
 
         [Fact]
-        public async Task Handle_GetAllTransformers()
+        public async Task Handle_Get_Transformer_by_Name()
         {
-            var handler = new GetAllTransformersQueryHandler(_mapper, _mocklogger.Object, _mockTransformerRepository.Object);
+            var transformerName = _mockTransformerRepository.Object.ListAllAsync().Result.FirstOrDefault().TemplateName;
 
-            var result = await handler.Handle(new GetAllTransformersQuery(), CancellationToken.None);
-            var allKeys = await _mockTransformerRepository.Object.ListAllAsync();
-            result.ShouldBeOfType<Response<IEnumerable<GetAllTransformersDto>>>();
-            allKeys.Count.ShouldBe(2);
+            var handler = new GetTransformerByNameQueryHandler(_mapper, _mocklogger.Object, _mockTransformerRepository.Object);
+
+            var result = await handler.Handle(new GetTransformerByNameQuery() { TemplateName = transformerName}, CancellationToken.None);
+
+            result.ShouldBeOfType<Response<GetTransformerByNameDto>>();
+            result.Data.ShouldNotBeNull();
+
+
 
         }
     }

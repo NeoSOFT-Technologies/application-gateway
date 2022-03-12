@@ -55,6 +55,8 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
             }, 
             CancellationToken.None);
             result.ShouldBeOfType<Response<CreateApiDto>>();
+            var allApis = _mockApiRepository.Object.ListAllAsync().Result;
+            allApis.Count().ShouldBe(3);
             result.ShouldNotBeNull();
         }
     }

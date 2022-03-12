@@ -18,7 +18,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                 {
                     TransformerId = Guid.NewGuid(),
                     TemplateName =  "TemplateName1",
-                    TransformerTemplate = "TransformerTemplate2",
+                    TransformerTemplate = "TransformerTemplate1",
                     Gateway = new Domain.Entities.Gateway(){},
                 },
                 new Domain.Entities.Transformer()
@@ -37,6 +37,26 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     return transformers.SingleOrDefault(x => x.TransformerId == id);
                 }
                 );
+            mockTransformerRepository.Setup(repo => repo.GetTransformerByNameAndGateway(It.IsAny<string>(), It.IsAny<Domain.Entities.Gateway>())).ReturnsAsync(
+                (string name, Domain.Entities.Gateway gateway) =>
+                {
+                    return transformers.SingleOrDefault(x => x.TemplateName == name && x.Gateway== gateway);
+                }
+                );
+            mockTransformerRepository.Setup(repo => repo.AddAsync(It.IsAny<Domain.Entities.Transformer>())).ReturnsAsync(
+                (Domain.Entities.Transformer transformer) =>
+                {
+                    transformer.TransformerId = Guid.NewGuid();
+                    transformers.Add(transformer);
+                    return transformer;
+
+                });
+            mockTransformerRepository.Setup(repo => repo.DeleteAsync(It.IsAny<Domain.Entities.Transformer>())).Callback(
+                (Domain.Entities.Transformer transformer) =>
+                {
+                    transformers.Remove(transformer);
+
+                });
             return mockTransformerRepository;
         }
     }

@@ -30,8 +30,4 @@
     <ProjectReference Include="..\src\Infrastructure\ApplicationGateway.Persistence\ApplicationGateway.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Transformer\Commands\" />
-  </ItemGroup>
-
 </Project>
