@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ApplicationGateway.Domain.Entities
 {
-    public class PolicyDto: AuditableEntity
+    public class Policy: AuditableEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

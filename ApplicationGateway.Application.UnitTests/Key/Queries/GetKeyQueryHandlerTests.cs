@@ -34,9 +34,11 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
         [Fact]
         public async Task Handle_GetKey()
         {
+            var KeyId = "KeyId2";
+
             var handler = new GetKeyQueryHandler(_mockLogger.Object, _mapper, _mockKeyService.Object);
 
-            var result = await handler.Handle(new GetKeyQuery(), CancellationToken.None);
+            var result = await handler.Handle(new GetKeyQuery() { keyId= KeyId }, CancellationToken.None);
 
             result.ShouldBeOfType<Response<Domain.GatewayCommon.Key>>();
 

@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.GatewayCommon;
 using MediatR;
 
 namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
@@ -51,7 +52,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
 
     public class UpdateVersioningInfo
     {
-        public string Location { get; set; }
+        public VersioningLocation Location { get; set; }
         public string Key { get; set; }
     }
 

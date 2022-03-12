@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Domain.Entities;
 using Moq;
 using System;
@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.UnitTests.Mocks
 {
-    public class ApiDtoRepositoryMocks
+    public class ApiRepositoryMocks
     {
-        public static Mock<IApiDtoRepository> GetApiRepository()
+        public static Mock<IApiRepository> GetApiRepository()
         {
-            var apis = new List<ApiDto>()
+            var apis = new List<Domain.Entities.Api>()
             {
-                new ApiDto()
+                new Domain.Entities.Api()
                 {
                     Id = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name =  "Api1",
@@ -23,7 +23,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     Version = "version1",
                     IsActive = true,
                 },
-                 new ApiDto()
+                 new Domain.Entities.Api()
                 {
                     Id = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name =  "Api2",
@@ -34,31 +34,32 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
             };
 
-            var mockApiRepository = new Mock<IApiDtoRepository>();
+            var mockApiRepository = new Mock<IApiRepository>();
 
             mockApiRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(apis);
-            mockApiRepository.Setup(repo => repo.AddAsync(It.IsAny<ApiDto>())).ReturnsAsync(
-                (ApiDto api) =>
+            mockApiRepository.Setup(repo => repo.AddAsync(It.IsAny<Domain.Entities.Api>())).ReturnsAsync(
+                (Domain.Entities.Api api) =>
                 {
                     api.Id = Guid.NewGuid();
                     apis.Add(api);
                     return api;
 
                 });
-            mockApiRepository.Setup(repo => repo.DeleteAsync(It.IsAny<ApiDto>())).Callback(
-                (ApiDto api) =>
+            mockApiRepository.Setup(repo => repo.DeleteAsync(It.IsAny<Domain.Entities.Api>())).Callback(
+                (Domain.Entities.Api api) =>
                 {
                     apis.Remove(api);
 
                 });
 
-            mockApiRepository.Setup(repo => repo.UpdateAsync(It.IsAny<ApiDto>())).Callback(
-               (ApiDto api) =>
+            mockApiRepository.Setup(repo => repo.UpdateAsync(It.IsAny<Domain.Entities.Api>())).Callback(
+               (Domain.Entities.Api api) =>
                {
                    //api.Id = Guid.NewGuid();
                    apis.Add(api);
                    
                });
+            mockApiRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(apis);
 
             return mockApiRepository;
 

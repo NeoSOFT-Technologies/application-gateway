@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
@@ -23,12 +23,12 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
     {
         private readonly Mock<ISnapshotService> _snapshotService;
         private readonly Mock<ILogger<DeleteApiCommandHandler>> _mockLogger;
-        private readonly Mock<IApiDtoRepository> _mockApiRepository;
+        private readonly Mock<IApiRepository> _mockApiRepository;
         private readonly Mock<IApiService> _mockApiService;
 
         public DeleteApiCommandHandlerTests()
         {
-            _mockApiRepository = ApiDtoRepositoryMocks.GetApiRepository();
+            _mockApiRepository = ApiRepositoryMocks.GetApiRepository();
             _mockApiService = ApiServiceMocks.GetApiService();
             _snapshotService = new Mock<ISnapshotService>();
             _mockLogger = new Mock<ILogger<DeleteApiCommandHandler>>();

@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
 {
-    public class GetAllKeysQuery:IRequest<Response<GetAllKeysDto>>
+    public class GetAllKeysQuery:IRequest<PagedResponse<GetAllKeysDto>>
     {
+        public int pageNum { get; set; }
+        public int pageSize { get; set; }
     }
 }

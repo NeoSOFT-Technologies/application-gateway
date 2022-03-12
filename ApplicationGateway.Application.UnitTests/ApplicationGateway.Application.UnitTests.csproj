@@ -26,11 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Policy\Commands\" />
-    <Folder Include="Key\Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\src\Core\ApplicationGateway.Application\ApplicationGateway.Application.csproj" />
     <ProjectReference Include="..\src\Infrastructure\ApplicationGateway.Persistence\ApplicationGateway.Persistence.csproj" />
   </ItemGroup>

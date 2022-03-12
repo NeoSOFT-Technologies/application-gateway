@@ -31,7 +31,10 @@ namespace ApplicationGateway.Application.Responses
         public int TotalCount { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
+        public PagedResponse()
+        {
 
+        }
         public PagedResponse(T data, int totalCount, int page, int pageSize)
         {
             this.TotalCount = totalCount;

@@ -17,7 +17,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
             {
                 new Domain.GatewayCommon.Key()
                 {
-                    KeyId = "KeyId",
+                    KeyId = "KeyId1",
                     Rate = 10,
                     Per = 10,
                     Quota = 10,
@@ -63,12 +63,31 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                 }
             };
 
-            var mockKeyService = new Mock<IKeyService>();
-            mockKeyService.Setup(repo => repo.GetKeyAsync("key")).ReturnsAsync(
+           var mockKeyService = new Mock<IKeyService>();
+
+           mockKeyService.Setup(repo => repo.GetAllKeysAsync()).ReturnsAsync(new List<string>());
+           mockKeyService.Setup(repo => repo.GetKeyAsync(It.IsAny<string>())).ReturnsAsync(
                 (string keyId) =>
                 {
                     return keys.SingleOrDefault(x => x.KeyId == keyId);
                 });
+
+            mockKeyService.Setup(repo => repo.CreateKeyAsync(It.IsAny<Domain.GatewayCommon.Key>())).ReturnsAsync(
+                 (Domain.GatewayCommon.Key key) =>
+                 {
+                     key.KeyId = "keyId";
+                     keys.Add(key);
+                     return key;
+
+                 }
+                );
+            mockKeyService.Setup(repo => repo.DeleteKeyAsync(It.IsAny<string>())).Callback(
+
+                (string id) =>
+                {
+                    keys.RemoveAll(x=>x.KeyId==id);
+                }
+                );
 
             return mockKeyService;
 

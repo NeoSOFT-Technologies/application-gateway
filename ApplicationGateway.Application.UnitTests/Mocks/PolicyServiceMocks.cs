@@ -12,9 +12,9 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
     {
         public static Mock<IPolicyService> GetPolicyService()
         {
-            var Policies = new List<Policy>()
+            var Policies = new List<Domain.GatewayCommon.Policy>()
             {
-                new Policy()
+                new Domain.GatewayCommon.Policy()
                 {
                     PolicyId = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
                     Name = "policy1",
@@ -40,7 +40,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
 
                 },
-                 new Policy()
+                 new Domain.GatewayCommon.Policy()
                 {
                     PolicyId = Guid.Parse("{7cca2947-221d-4314-971e-911d542622b2}"),
                     Name = "policy2",
@@ -75,7 +75,20 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                 {
                     return Policies.SingleOrDefault(x => x.PolicyId == policyId);
                 });
-
+            mockPolicyService.Setup(repo => repo.CreatePolicyAsync(It.IsAny<Domain.GatewayCommon.Policy>())).ReturnsAsync(
+                (Domain.GatewayCommon.Policy policy) =>
+                {
+                    policy.PolicyId = Guid.NewGuid();
+                    Policies.Add(policy);
+                    return policy;
+                }
+                );
+            mockPolicyService.Setup(repo => repo.DeletePolicyAsync(It.IsAny<Guid>())).Callback(
+                (Guid id) =>
+                {
+                    Policies.RemoveAll(x => x.PolicyId == id);
+                }
+                );
             return mockPolicyService;
         }
     }

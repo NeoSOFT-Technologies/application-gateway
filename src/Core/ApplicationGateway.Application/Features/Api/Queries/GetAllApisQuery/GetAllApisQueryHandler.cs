@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -8,29 +8,30 @@ using Microsoft.Extensions.Logging;
 
 namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
 {
-    public class GetAllApisQueryHandler : IRequestHandler<GetAllApisQuery, Response<GetAllApisDto>>
+    public class GetAllApisQueryHandler : IRequestHandler<GetAllApisQuery, PagedResponse<GetAllApisDto>>
     {
         private readonly IMapper _mapper;
         private readonly ILogger<GetAllApisQueryHandler> _logger;
-        private readonly IApiDtoRepository _apiDtoRepository;
+        private readonly IApiRepository _apiRepository;
 
-        public GetAllApisQueryHandler(IApiDtoRepository apiDtoRepository, IMapper mapper, ILogger<GetAllApisQueryHandler> logger)
+        public GetAllApisQueryHandler(IApiRepository apiDtoRepository, IMapper mapper, ILogger<GetAllApisQueryHandler> logger)
         {
-            _apiDtoRepository = apiDtoRepository;
+            _apiRepository = apiDtoRepository;
             _mapper = mapper;
             _logger = logger;
         }
 
-        public async Task<Response<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<ApiDto> apiList = await _apiDtoRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Api> apiList = await _apiRepository.GetPagedReponseAsync( request.pageNum, request.pageSize);
+            int totCount = await _apiRepository.GetTotalCount();
             GetAllApisDto getAllApisDto = new GetAllApisDto()
             {
                 Apis = _mapper.Map<List<GetAllApiModel>>(apiList)
             };
 
-            var response = new Response<GetAllApisDto>(getAllApisDto, "success");
+            PagedResponse<GetAllApisDto> response = new PagedResponse<GetAllApisDto>(getAllApisDto,totCount,request.pageNum,request.pageSize);
             _logger.LogInformation("Handler Completed");
             return response;
         }

@@ -3,11 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAPIList } from "../../../redux/actions/ApiActions";
 import RenderList from "../../../shared/RenderList";
 import Spinner from "../../../shared/Spinner";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
+toast.configure();
 function APIList() {
   const dispatch = useDispatch();
   const ApiList = useSelector((state) => state.setAPIList);
   const [selected, setSelected] = useState(1);
+  const failure = (data) =>
+    toast.error(data, { position: toast.POSITION.TOP_RIGHT, autoClose: 3000 });
+
   //let currentPage = null;
   useEffect(() => {
     dispatch({ type: "API_LOADING" });
@@ -23,14 +29,28 @@ function APIList() {
   const mainCall = (currentPage) => {
     try {
       //console.log(currentPage);
-      getAPIList(currentPage).then((res) => {
-        //console.log("in Api List", res);
-        dispatch(res);
-        console.log("main call", ApiList);
-      });
+      getAPIList(currentPage)
+        .then((res) => {
+          console.log("in Api List", res);
+          dispatch(res);
+          console.log("main call", ApiList);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          //console.warn(err.message);
+          dispatch({
+            type: "API_LOADING_FAILURE",
+            payload: err.message,
+          });
+        });
     } catch (err) {
       console.log(err);
     }
+  };
+  const buttonClick = (e) => {
+    e.preventDefault();
+    setSelected(1);
+    mainCall(1);
   };
   //Iterable function
   function isIterable(obj) {
@@ -40,7 +60,7 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  //console.log("apilist", ApiList);
+  console.log("apilist", ApiList);
   //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
@@ -67,52 +87,75 @@ function APIList() {
     { title: "Created Date" },
     { title: "Action", className: "text-center" },
   ];
-  return (
-    <>
-      <div className="col-lg-12 grid-margin stretch-card">
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex align-items-center justify-content-around">
-              <div className="search-field col-lg-12">
-                <form className="h-50">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control bg-parent border-1"
-                      placeholder="Search Api"
-                    />
-                    <button className=" btn  btn-success btn-sm">
-                      <i className=" mdi mdi-magnify"></i>
-                    </button>
-                  </div>
-                </form>
+  if (ApiList.loading) {
+    return (
+      <span>
+        <Spinner />
+      </span>
+    );
+  } else if (ApiList.error) {
+    failure(ApiList.error);
+    return <></>;
+  } else {
+    return (
+      <>
+        <div className="col-lg-12 grid-margin stretch-card">
+          <div className="card">
+            <div className="card-body">
+              <div className="align-items-center">
+                <div>
+                  <button
+                    className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                    onClick={(e) => buttonClick(e)}
+                  >
+                    {" "}
+                    Create API &nbsp;
+                    <span className="mdi mdi-plus"></span> &nbsp;
+                  </button>
+                </div>
+                <div className="search-field justify-content-around">
+                  <form className="h-50" onSubmit={(e) => buttonClick(e)}>
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        className="form-control bg-parent border-1"
+                        placeholder="Search APIs"
+                      />
+                      <button
+                        className=" btn  btn-success btn-sm"
+                        onClick={(e) => buttonClick(e)}
+                      >
+                        <i className=" mdi mdi-magnify"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
-            <br />
-            <div className="table-responsive">
-              {ApiList.loading ? (
-                <span>
-                  <Spinner />
-                </span>
-              ) : (
-                <RenderList
-                  headings={headings}
-                  data={datalist}
-                  actions={actions}
-                  handlePageClick={handlePageClick}
-                  pageCount={ApiList.count}
-                  selected={selected}
-                />
-              )}
-              <div className="d-flex justify-content-end">
-                Total Number of records: {ApiList.totalCount}
+              <br />
+              <div className="table-responsive">
+                {ApiList.loading ? (
+                  <span>
+                    <Spinner />
+                  </span>
+                ) : (
+                  <RenderList
+                    headings={headings}
+                    data={datalist}
+                    actions={actions}
+                    handlePageClick={handlePageClick}
+                    pageCount={ApiList.count}
+                    total={ApiList.totalCount}
+                    selected={selected}
+                    // error={ApiList.error}
+                  />
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default APIList;

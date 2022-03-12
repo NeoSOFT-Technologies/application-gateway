@@ -23,7 +23,7 @@
   ],
   "authType": "keyless",
   "versioningInfo": {
-    "location": "header",
+    "location": 1,
     "key": "x-tyk-version"
   },
   "loadBalancingTargets": [

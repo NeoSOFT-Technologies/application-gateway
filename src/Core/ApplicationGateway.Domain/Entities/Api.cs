@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Domain.Entities
 {
-    public class ApiDto: AuditableEntity
+    public class Api: AuditableEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

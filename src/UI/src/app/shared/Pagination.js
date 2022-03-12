@@ -6,6 +6,7 @@ export default function Pagination({
   pageCount,
   onPageChange,
   selectedPage,
+  totalcount,
 }) {
   const pageArray = [];
   for (let i = 1; i <= pageCount; i++) {
@@ -27,9 +28,20 @@ export default function Pagination({
     selectedPage = page;
     onPageChange(selectedPage);
   };
+  // const mystyle = {
+  //   position: "relative",
+  //   display: "block",
+  //   padding: "0.5rem 0.75rem",
+  //   marginRight: "6px",
+  //   lineHeight: "1.25",
+  //   fontWeight: "bold",
+  // };
   return (
     <div>
       <ul className="pagination justify-content-end">
+        <li className="page-item">
+          <a className={`page-link`}>Total Records: {totalcount}</a>
+        </li>
         <li className="page-item">
           <a className={`page-link`} onClick={() => setPreviousPage()}>
             {previousLabel}

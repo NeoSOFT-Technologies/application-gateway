@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Profiles;
@@ -25,12 +25,12 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
         private readonly IMapper _mapper;
         private readonly Mock<ISnapshotService> _snapshotService;
         private readonly Mock<ILogger<CreateApiCommandHandler>> _mockLogger;
-        private readonly Mock<IApiDtoRepository> _mockApiRepository;
+        private readonly Mock<IApiRepository> _mockApiRepository;
         private readonly Mock<IApiService> _mockApiService;
 
         public CreateApiCommandHandlerTests()
         {
-            _mockApiRepository = ApiDtoRepositoryMocks.GetApiRepository();
+            _mockApiRepository = ApiRepositoryMocks.GetApiRepository();
             _mockApiService = ApiServiceMocks.GetApiService();
             _snapshotService = new Mock<ISnapshotService>();
             _mockLogger = new Mock<ILogger<CreateApiCommandHandler>>();
@@ -44,7 +44,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
         }
 
         [Fact]
-        public async Task create_api()
+        public async Task Handle_create_api()
         {
             var handler = new CreateApiCommandHandler(_snapshotService.Object, _mockApiService.Object, _mapper, _mockLogger.Object, _mockApiRepository.Object);
             var result = await handler.Handle(new CreateApiCommand() 
@@ -55,7 +55,9 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
             }, 
             CancellationToken.None);
             result.ShouldBeOfType<Response<CreateApiDto>>();
-
+            var allApis = _mockApiRepository.Object.ListAllAsync().Result;
+            allApis.Count().ShouldBe(3);
+            result.ShouldNotBeNull();
         }
     }
 

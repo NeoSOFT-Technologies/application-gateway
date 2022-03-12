@@ -54,13 +54,24 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 {
                     apiObject = GetOIDC(apiObject, inputApi as JObject);
                 }
-
+                #region Get VersioningLocation
+                if (apiObject["versioningInfo"]["location"].ToString() == "")
+                {
+                    (apiObject["versioningInfo"] as JObject).Remove("location");
+                    (apiObject["versioningInfo"] as JObject).Add("location", VersioningLocation.none.ToString());
+                }
+                else if (apiObject["versioningInfo"]["location"].ToString() == "url-param")
+                {
+                    (apiObject["versioningInfo"] as JObject).Remove("location");
+                    (apiObject["versioningInfo"] as JObject).Add("location", VersioningLocation.url_param.ToString());
+                }
+                #endregion
                 transformedObject.Add(apiObject);
             }
             #endregion
 
-            List<Api> apiList = JsonConvert.DeserializeObject<List<Api>>(transformedObject.ToString());
-            _logger.LogInformation("GetAllApisAsync Completed");
+            List<Api> apiList = JsonConvert.DeserializeObject<List<Api>>(transformedObject.ToString(), new Newtonsoft.Json.Converters.StringEnumConverter());
+            _logger.LogInformation("GetAllApisAsync Completed: {@List<Api>}", apiList);
             return apiList;
         }
 
@@ -81,10 +92,23 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             {
                 transformedObject = GetOIDC(transformedObject, inputObject);
             }
+
+            #region Get VersioningLocation
+            if (transformedObject["versioningInfo"]["location"].ToString() == "")
+            {
+                (transformedObject["versioningInfo"] as JObject).Remove("location");
+                (transformedObject["versioningInfo"] as JObject).Add("location", VersioningLocation.none.ToString());
+            }
+            else if (transformedObject["versioningInfo"]["location"].ToString() == "url-param")
+            {
+                (transformedObject["versioningInfo"] as JObject).Remove("location");
+                (transformedObject["versioningInfo"] as JObject).Add("location", VersioningLocation.url_param.ToString());
+            }
+            #endregion
             #endregion
 
-            Api api = JsonConvert.DeserializeObject<Api>(transformedObject.ToString());
-            _logger.LogInformation("GetApiByIdAsync Completed");
+            Api api = JsonConvert.DeserializeObject<Api>(transformedObject.ToString(), new Newtonsoft.Json.Converters.StringEnumConverter());
+            _logger.LogInformation("GetApiByIdAsync Completed: {@Api}", api);
             return api;
         }
 
@@ -104,14 +128,14 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
             await _baseService.HotReload();
 
-            _logger.LogInformation("CreateApiAsync Completed");
+            _logger.LogInformation("CreateApiAsync Completed: {@Api}", api);
             return api;
         }
 
         public async Task<Api> UpdateApiAsync(Api api)
         {
             _logger.LogInformation("UpdateApiAsync Initiated with {@Api}", api);
-            string inputJson = JsonConvert.SerializeObject(api);
+            string inputJson = JsonConvert.SerializeObject(api, new Newtonsoft.Json.Converters.StringEnumConverter());
             string transformed = await _templateTransformer.Transform(inputJson, TemplateHelper.UPDATEAPI_TEMPLATE, Domain.Entities.Gateway.Tyk);
 
             JObject inputObject = JObject.Parse(inputJson);
@@ -156,20 +180,33 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             }
             #endregion
 
+            #region Set VersioningLocation
+            if (transformedObject["definition"]["location"].ToString() == "none")
+            {
+                (transformedObject["definition"] as JObject).Remove("location");
+                (transformedObject["definition"] as JObject).Add("location", "");
+            }
+            else if (transformedObject["definition"]["location"].ToString() == "url_param")
+            {
+                (transformedObject["definition"] as JObject).Remove("location");
+                (transformedObject["definition"] as JObject).Add("location", VersioningLocation.url_param.ToString().Replace('_', '-'));
+            }
+            #endregion
+
             await _restClient.PutAsync(transformedObject);
 
             await _baseService.HotReload();
 
-            _logger.LogInformation("UpdateApiAsync Completed");
+            _logger.LogInformation("UpdateApiAsync Completed: {@Api}", api);
             return api;
         }
 
         public async Task DeleteApiAsync(Guid apiId)
         {
-            _logger.LogInformation("UpdateApiAsync Initiated with {@Guid}", apiId);
+            _logger.LogInformation("DeleteApiAsync Initiated with {@Guid}", apiId);
             await _restClient.DeleteAsync(apiId.ToString());
             await _baseService.HotReload();
-            _logger.LogInformation("UpdateApiAsync Completed");
+            _logger.LogInformation("DeleteApiAsync Completed: {@Guid}", apiId);
         }
 
         public async Task<bool> CheckUniqueListenPathAsync(Api api)

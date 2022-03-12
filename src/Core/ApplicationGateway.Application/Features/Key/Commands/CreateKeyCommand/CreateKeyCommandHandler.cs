@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
@@ -16,11 +16,11 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
         readonly IKeyService _keyService;
         readonly IMapper _mapper;
         readonly ILogger<CreateKeyCommandHandler> _logger;
-        readonly IKeyDtoRepository _keyDtoRepository;
+        readonly IKeyRepository _keyRepository;
 
-        public CreateKeyCommandHandler(IKeyDtoRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, ISnapshotService snapshotService)
+        public CreateKeyCommandHandler(IKeyRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, ISnapshotService snapshotService)
         {
-            _keyDtoRepository = keyDtoRepository;
+            _keyRepository = keyDtoRepository;
             _keyService = keyService;
             _mapper = mapper;
             _logger = logger;
@@ -43,7 +43,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             #endregion
 
             #region Create Key Dto
-            KeyDto keyDto = new KeyDto() 
+            Domain.Entities.Key keyDto = new Domain.Entities.Key() 
             { 
                 Id = key.KeyId,
                 KeyName = request.KeyName,
@@ -51,10 +51,11 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
                 Policies = key.Policies,
                 Expires = key.Expires == 0 ? null : (DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
         };
-            await _keyDtoRepository.AddAsync(keyDto);
+            await _keyRepository.AddAsync(keyDto);
             #endregion
 
             Response<Domain.GatewayCommon.Key> response =new Response<Domain.GatewayCommon.Key>(key, "success");
+            _logger.LogInformation($"CreateKeyCommandHandler completed with {request}");
             return response;
         }
     }

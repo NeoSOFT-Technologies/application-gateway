@@ -1,5 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
@@ -21,12 +21,12 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
     public class GetAllPoliciesQueryHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<IPolicyDtoRepository> _mockPolicyRepository;
+        private readonly Mock<IPolicyRepository> _mockPolicyRepository;
         private readonly Mock<ILogger<GetAllPoliciesQueryHandler>> _mockLogger;
 
         public GetAllPoliciesQueryHandlerTests()
         {
-            _mockPolicyRepository = PolicyDtoRepositoryMocks.GetPolicyRepository();
+            _mockPolicyRepository = PolicyRepositoryMocks.GetPolicyRepository();
             _mockLogger = new Mock<ILogger<GetAllPoliciesQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
@@ -40,10 +40,10 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
         public async Task Handle_GetAllPolicies()
         {
             var handler = new GetAllPoliciesQueryHandler(_mockPolicyRepository.Object, _mapper, _mockLogger.Object);
-
             var result = await handler.Handle(new GetAllPoliciesQuery(), CancellationToken.None);
-
-            result.ShouldBeOfType<Response<GetAllPoliciesDto>>();
+            var allPolicies = await _mockPolicyRepository.Object.ListAllAsync();
+            result.ShouldBeOfType<PagedResponse<GetAllPoliciesDto>>();
+            allPolicies.Count.ShouldBe(2);
 
 
         }

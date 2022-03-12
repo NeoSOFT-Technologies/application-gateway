@@ -1,6 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
-using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Domain.Entities;
 using MediatR;
@@ -13,11 +13,11 @@ namespace ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand
         private readonly ISnapshotService _snapshotService;
         private readonly IApiService _apiService;
         private readonly ILogger<DeleteApiCommandHandler> _logger;
-        private readonly IApiDtoRepository _apiDtoRepository;
+        private readonly IApiRepository _apiRepository;
 
-        public DeleteApiCommandHandler(IApiDtoRepository apiDtoRepository, ISnapshotService snapshotService, IApiService apiService, ILogger<DeleteApiCommandHandler> logger)
+        public DeleteApiCommandHandler(IApiRepository apiDtoRepository, ISnapshotService snapshotService, IApiService apiService, ILogger<DeleteApiCommandHandler> logger)
         {
-            _apiDtoRepository = apiDtoRepository;
+            _apiRepository = apiDtoRepository;
             _snapshotService = snapshotService;
             _apiService = apiService;
             _logger = logger;
@@ -44,9 +44,9 @@ namespace ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand
             #endregion
 
             #region Delete From ApiDto
-            await _apiDtoRepository.DeleteAsync(new ApiDto() { Id = request.ApiId });
+            await _apiRepository.DeleteAsync(new Domain.Entities.Api() { Id = request.ApiId });
             #endregion
-            _logger.LogInformation("Handler Completed");
+            _logger.LogInformation("Handler Completed: {@Guid}", apiId);
             return Unit.Value;
         }
     }

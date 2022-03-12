@@ -1,4 +1,4 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence.IDtoRepositories;
+﻿using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -12,31 +12,33 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
 {
-    public class GetAllKeysQueryHandler : IRequestHandler<GetAllKeysQuery, Response<GetAllKeysDto>>
+    public class GetAllKeysQueryHandler : IRequestHandler<GetAllKeysQuery, PagedResponse<GetAllKeysDto>>
     {
         readonly ILogger<GetAllKeysQueryHandler> _logger;
         readonly IMapper _mapper;
-        readonly IKeyDtoRepository _keyDtoRepository;
+        readonly IKeyRepository _keyRepository;
 
-        public GetAllKeysQueryHandler(IKeyDtoRepository keyDtoRepository, ILogger<GetAllKeysQueryHandler> logger, IMapper mapper)
+        public GetAllKeysQueryHandler(IKeyRepository keyDtoRepository, ILogger<GetAllKeysQueryHandler> logger, IMapper mapper)
         {
-            _keyDtoRepository = keyDtoRepository;
+            _keyRepository = keyDtoRepository;
             _logger = logger;
             _mapper = mapper;
         }
 
-        public async Task<Response<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            IReadOnlyList<KeyDto> listOfKey = await _keyDtoRepository.ListAllAsync();
+            IReadOnlyList<Domain.Entities.Key> listOfKey = await _keyRepository.GetPagedReponseAsync(request.pageNum,request.pageSize);
+            int totCount = await _keyRepository.GetTotalCount();
 
             GetAllKeysDto allKeysDto = new GetAllKeysDto()
             { 
                 Keys = _mapper.Map<List<GetAllKeyModel>>(listOfKey)
             };
 
-            _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            return new Response<GetAllKeysDto>() { Succeeded = true, Data = allKeysDto };
+            PagedResponse<GetAllKeysDto> response = new PagedResponse<GetAllKeysDto>(allKeysDto, totCount, request.pageNum, request.pageSize);
+            _logger.LogInformation("GetAllKeysQueryHandler completed");
+            return response;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
         }
 
 
-        [Fact]
+        //[Fact]
         public async Task Duplicatelistenpatherror()
         {
             //var client = _factory.CreateClient();
