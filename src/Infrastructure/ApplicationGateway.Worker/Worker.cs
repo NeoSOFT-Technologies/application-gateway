@@ -4,9 +4,10 @@ using ApplicationGateway.Application.Models.Tyk;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Worker;
-
+[ExcludeFromCodeCoverage]
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;

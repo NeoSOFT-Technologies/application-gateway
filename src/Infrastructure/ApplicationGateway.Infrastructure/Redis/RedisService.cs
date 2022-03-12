@@ -2,9 +2,11 @@
 using ApplicationGateway.Application.Exceptions;
 using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Infrastructure.Redis
 {
+    [ExcludeFromCodeCoverage]
     public class RedisService : IRedisService
     {
         private readonly IConnectionMultiplexer _redis;

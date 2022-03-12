@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
 {
+    [ExcludeFromCodeCoverage]
     public class GetKeyDto
     {
         public string KeyId { get; set; }
