@@ -69,7 +69,6 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     return api;
 
                 });
-
             mockApiService.Setup(repo => repo.UpdateApiAsync(It.IsAny<Domain.GatewayCommon.Api>())).ReturnsAsync(
                 (Domain.GatewayCommon.Api api) =>
                 {

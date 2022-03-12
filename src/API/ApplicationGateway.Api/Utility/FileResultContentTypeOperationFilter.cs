@@ -1,8 +1,10 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Api.Utility
 {
+    [ExcludeFromCodeCoverage]
     public class FileResultContentTypeOperationFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)

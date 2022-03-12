@@ -11,9 +11,11 @@ using SendGrid.Extensions.DependencyInjection;
 using ApplicationGateway.Infrastructure.Gateway.Tyk;
 using ApplicationGateway.Infrastructure.Redis;
 using StackExchange.Redis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public static class InfrastructureServiceRegistration
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
