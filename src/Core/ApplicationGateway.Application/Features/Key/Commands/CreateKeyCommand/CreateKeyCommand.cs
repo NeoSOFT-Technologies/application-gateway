@@ -24,10 +24,12 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             public Guid ApiId { get; set; }
             public string ApiName { get; set; }
             public List<string> Versions { get; set; }
-            public List<KeyAllowedUrl>? AllowedUrls { get; set; }
+#nullable enable
+        public List<KeyAllowedUrl>? AllowedUrls { get; set; }
             public KeyApiLimit? Limit { get; set; }
-        }
-        public class KeyApiLimit
+#nullable disable
+    }
+    public class KeyApiLimit
         {
             public int Rate { get; set; }
             public int Per { get; set; }

@@ -91,8 +91,8 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //hit api
             var clientkey = HttpClientFactory.Create();
-            postweatherforecast obj = new postweatherforecast();
-            obj.test = "test";
+            Postweatherforecast obj = new Postweatherforecast();
+            obj.Test = "test";
             //StringContent stringContent1 = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
             clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
             var responseclientkey = await clientkey.GetAsync(Url);

@@ -132,7 +132,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             JObject jsonObj = JObject.Parse(transformedObj);
             jsonObj = await CreateUpdateKey(key, jsonObj);
 
-            string keyResponse = await _restClient.PutKeyAsync(jsonObj, key.KeyId);
+            await _restClient.PutKeyAsync(jsonObj, key.KeyId);
             await _baseService.HotReload();
             _logger.LogInformation($"UpdateKeyAsync completed for {key}");
             return key;

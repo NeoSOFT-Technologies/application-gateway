@@ -36,7 +36,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
         {
             var KeyId = _mockKeyRepository.Object.ListAllAsync().Result.FirstOrDefault().Id;
             var handler = new DeleteKeyCommandHandler(_mockKeyRepository.Object, _mockKeyService.Object, _mockLogger.Object, _snapshotService.Object);
-            var result = await handler.Handle(new DeleteKeyCommand() { KeyId = KeyId }, CancellationToken.None);           
+            await handler.Handle(new DeleteKeyCommand() { KeyId = KeyId }, CancellationToken.None);           
             var allKeys = await _mockKeyRepository.Object.ListAllAsync();           
             allKeys.Count.ShouldBe(1);
         }

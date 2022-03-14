@@ -11,7 +11,9 @@ namespace ApplicationGateway.Domain.Entities
         public string ObjectName { get; set; } = null!;
         public string ObjectKey { get; set; } = null!;
         public string JsonData { get; set; } = null!;
+#nullable enable
         public bool? IsActive { get; set; }
         public string? Comment { get; set; }
+#nullable disable
     }
 }

@@ -23,7 +23,10 @@ namespace ApplicationGateway.Persistence.Repositories
 
         public async Task<Snapshot> TakeSnapshot(Snapshot @snapshot, Enums.Operation operation)
         {
+            _logger.LogInformation("TakeSnapShot method triggered");
+#nullable enable 
             Snapshot? _snapshot;
+#nullable disable
             _dbContext.BeginTransaction();
             switch (operation)
             {

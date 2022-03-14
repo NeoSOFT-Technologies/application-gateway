@@ -9,16 +9,20 @@
         public string TargetUrl { get; set; }
         public bool IsActive { get; set; }
         public bool IsInternal { get; set; }
+#nullable enable
         public string? Protocol { get; set; }
         public RateLimit? RateLimit { get; set; }
         public List<string>? Blacklist { get; set; }
         public List<string>? Whitelist { get; set; }
         public VersioningInfo? VersioningInfo { get; set; }
+#nullable disable
         public string DefaultVersion { get; set; }
         public List<VersionModel> Versions { get; set; }
         public string AuthType { get; set; }
+#nullable enable
         public OpenIdOptions? OpenidOptions { get; set; }
         public List<string>? LoadBalancingTargets { get; set; }
+#nullable disable
         public bool IsQuotaDisabled { get; set; }
     }
 
@@ -55,8 +59,10 @@
     public class VersionModel
     {
         public string Name { get; set; }
+#nullable enable
         public string? OverrideTarget { get; set; }
         public string? Expires { get; set; }
+#nullable disable
     }
 
     public enum VersioningLocation

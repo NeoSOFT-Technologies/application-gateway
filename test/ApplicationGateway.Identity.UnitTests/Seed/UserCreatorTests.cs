@@ -23,11 +23,11 @@ namespace ApplicationGateway.Identity.UnitTests.Seed
         [Fact]
         public async static Task Create_First_User()
         {
-            var oldCount = _mockUserManager.Object.Users.ToList().Count();
+            var oldCount = _mockUserManager.Object.Users.ToList().Count;
 
             await Should.NotThrowAsync(() => UserCreator.SeedAsync(_mockUserManager.Object));
 
-            var newCount = _mockUserManager.Object.Users.ToList().Count();
+            var newCount = _mockUserManager.Object.Users.ToList().Count;
             newCount.ShouldBe(oldCount + 1);
         }
     }

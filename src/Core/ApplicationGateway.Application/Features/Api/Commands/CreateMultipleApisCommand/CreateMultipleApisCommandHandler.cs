@@ -31,7 +31,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
         {
             _logger.LogInformation("Handler Initiated with {@CreateMultipleApisCommand}", request);
             #region Check for repeated listen path in request
-            if (request.APIs.DistinctBy(p => p.ListenPath.Trim('/')).Count() != request.APIs.Count())
+            if (request.APIs.DistinctBy(p => p.ListenPath.Trim('/')).Count() != request.APIs.Count)
             {
                 throw new BadRequestException("Listen path should be unique");
             }

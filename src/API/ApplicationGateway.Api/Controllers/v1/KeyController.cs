@@ -71,7 +71,7 @@ namespace ApplicationGateway.Api.Controllers.v1
         public async Task<IActionResult> DeleteKey(string keyId)
         {
             _logger.LogInformation($"DeleteKey initiated in controller for {keyId}");
-            var response = await _mediator.Send(new DeleteKeyCommand() {KeyId=keyId });
+            await _mediator.Send(new DeleteKeyCommand() {KeyId=keyId });
             _logger.LogInformation($"DeleteKey completed in controller for {keyId}");
             return NoContent();
         }
