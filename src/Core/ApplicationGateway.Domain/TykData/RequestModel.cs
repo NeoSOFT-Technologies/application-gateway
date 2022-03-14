@@ -19,8 +19,10 @@ namespace ApplicationGateway.Domain.TykData
     [ExcludeFromCodeCoverage]
     public class Docker
     {
+#nullable enable
         public args? args { get; set; }
         public headers? headers { get; set; }
+#nullable disable
         public string origin { get; set; }
         public string url { get; set; }
 

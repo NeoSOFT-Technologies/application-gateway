@@ -41,7 +41,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
             var ApiId = _mockApiService.Object.GetAllApisAsync().Result.FirstOrDefault().ApiId;
             var oldApi = await _mockApiService.Object.GetApiByIdAsync(ApiId);
             var handler = new DeleteApiCommandHandler(_mockApiRepository.Object,_snapshotService.Object, _mockApiService.Object, _mockLogger.Object);
-            var result = await handler.Handle(new DeleteApiCommand() { ApiId= ApiId},CancellationToken.None);
+            await handler.Handle(new DeleteApiCommand() { ApiId= ApiId},CancellationToken.None);
             var allApis = await _mockApiService.Object.GetAllApisAsync();
             allApis.ShouldNotContain(oldApi);
             allApis.Count.ShouldBe(1);
@@ -52,7 +52,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
         {
             var ApiID = Guid.Parse("{85a8c9cb-563d-4a3a-b101-1dab23a51a6d}");
             var handler = new DeleteApiCommandHandler(_mockApiRepository.Object, _snapshotService.Object, _mockApiService.Object, _mockLogger.Object);
-            var result = await handler.Handle(new DeleteApiCommand() { ApiId = ApiID }, CancellationToken.None); 
+            await handler.Handle(new DeleteApiCommand() { ApiId = ApiID }, CancellationToken.None); 
             var allApis = await _mockApiService.Object.GetAllApisAsync();
             allApis.Count.ShouldBe(2);           
         }

@@ -2,7 +2,9 @@
 {
     public class Key
     {
+#nullable enable
         public string? KeyId { get; set; }
+#nullable disable
         public int Rate { get; set; }
         public int Per { get; set; }
         public int Quota { get; set; }
@@ -37,10 +39,4 @@
         public int Quota_remaining { get; set; }
         public int Quota_renewal_rate { get; set; }
     }
-    //public class AllowedUrl
-    //{
-    //    public string Url { get; set; }
-    //    public List<string> Methods { get; set; }
-    //}
-
 }

@@ -20,6 +20,7 @@ namespace ApplicationGateway.Persistence.SnapshotWrapper
 
         public Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type snapshotType, Enums.Operation operation, string key, dynamic? jsonData)
         {
+            _logger.LogInformation("CreateSnapshot method triggered");
             Snapshot snapshot = new Snapshot()
             {
                 Gateway = gateway.ToString(),
