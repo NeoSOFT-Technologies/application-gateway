@@ -11,14 +11,17 @@ namespace ApplicationGateway.Application.Helper
 		protected readonly string _baseAddress;
 		private readonly string _addressSuffix;
 		private bool disposed = false;
-
+#nullable enable
 		public RestClient(string baseAddress, string addressSuffix, Dictionary<string, string>? headers)
+#nullable disable
 		{
 			_baseAddress = baseAddress;
 			_addressSuffix = addressSuffix;
 			httpClient = CreateHttpClient(_baseAddress, headers);
 		}
+#nullable enable
 		protected virtual HttpClient CreateHttpClient(string serviceBaseAddress, Dictionary<string, string>? headers)
+#nullable disable
 		{
 			httpClient = new HttpClient();
 			httpClient.BaseAddress = new Uri(serviceBaseAddress);
@@ -28,7 +31,9 @@ namespace ApplicationGateway.Application.Helper
             }
 			return httpClient;
 		}
+#nullable enable
 		public async Task<string> GetAsync(TIdentifier? identifier)
+#nullable disable
 		{
 			string address = identifier is not null ? $"{_addressSuffix}/{identifier}" : _addressSuffix;
 			HttpResponseMessage responseMessage = await httpClient.GetAsync(address);
