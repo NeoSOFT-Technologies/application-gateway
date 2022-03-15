@@ -8,6 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ApplicationGateway.Persistence.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
