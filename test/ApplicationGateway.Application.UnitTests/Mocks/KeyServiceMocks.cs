@@ -88,6 +88,25 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     keys.RemoveAll(x=>x.KeyId==id);
                 }
                 );
+            mockKeyService.Setup(repo => repo.UpdateKeyAsync(It.IsAny<Domain.GatewayCommon.Key>())).ReturnsAsync(
+                (Domain.GatewayCommon.Key key) =>
+                {
+                    keys[0].KeyId = key.KeyId;
+                    keys[0].Rate = key.Rate;
+                    keys[0].Per = key.Per;
+                    keys[0].Quota = key.Quota;
+                    keys[0].QuotaRenewalRate = key.QuotaRenewalRate;
+                    keys[0].ThrottleInterval = key.ThrottleInterval;
+                    keys[0].ThrottleRetries = key.ThrottleRetries;
+                    keys[0].Expires = key.Expires;
+                    keys[0].IsInActive = key.IsInActive;
+                    keys[0].AccessRights = key.AccessRights;
+                    keys[0].Policies = key.Policies;
+                    return key;
+                    
+
+                }
+                );
 
             return mockKeyService;
 

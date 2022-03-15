@@ -72,8 +72,19 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
             mockApiService.Setup(repo => repo.UpdateApiAsync(It.IsAny<Domain.GatewayCommon.Api>())).ReturnsAsync(
                 (Domain.GatewayCommon.Api api) =>
                 {
-                    //api.ApiId = Guid.NewGuid();
-                    apis.Add(api);
+                    apis[0].ApiId = api.ApiId;
+                    apis[0].Name = api.Name;
+                    apis[0].ListenPath = api.ListenPath;
+                    apis[0].TargetUrl = api.TargetUrl;
+                    apis[0].RateLimit = api.RateLimit;
+                    apis[0].Blacklist = api.Blacklist;
+                    apis[0].Whitelist = api.Whitelist;
+                    apis[0].VersioningInfo = api.VersioningInfo;
+                    apis[0].DefaultVersion = api.DefaultVersion;
+                    apis[0].Versions = api.Versions;
+                    apis[0].AuthType = api.AuthType;
+                    apis[0].OpenidOptions = api.OpenidOptions;
+                    apis[0].LoadBalancingTargets = api.LoadBalancingTargets;
                     return api;
                 });
 
