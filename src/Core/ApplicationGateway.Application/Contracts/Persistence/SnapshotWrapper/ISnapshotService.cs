@@ -6,8 +6,6 @@ namespace ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrappe
 {
     public interface ISnapshotService
     {
-        #nullable enable
         Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type type, Enums.Operation operation, string key, dynamic? jsonData);
-        #nullable disable
     }
 }

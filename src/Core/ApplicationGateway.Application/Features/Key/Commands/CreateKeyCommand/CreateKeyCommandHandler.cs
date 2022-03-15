@@ -29,7 +29,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
 
         public async Task<Response<Domain.GatewayCommon.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"CreateKeyCommandHandler initiated with {request}");
+            _logger.LogInformation("CreateKeyCommandHandler initiated with {request}",request);
             var keyObj = _mapper.Map<Domain.GatewayCommon.Key>(request);
             var key = await _keyService.CreateKeyAsync(keyObj);
 
@@ -55,7 +55,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
             #endregion
 
             Response<Domain.GatewayCommon.Key> response =new Response<Domain.GatewayCommon.Key>(key, "success");
-            _logger.LogInformation($"CreateKeyCommandHandler completed with {request}");
+            _logger.LogInformation("CreateKeyCommandHandler completed with {request}",request);
             return response;
         }
     }

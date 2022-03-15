@@ -22,10 +22,10 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
 
         public async Task<Response<Domain.GatewayCommon.Key>> Handle(GetKeyQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"GetKeyQueryHandler initiated for {request}");
+            _logger.LogInformation("GetKeyQueryHandler initiated for {request}", request);
             Domain.GatewayCommon.Key key = await _keyService.GetKeyAsync(request.keyId);
             Response<Domain.GatewayCommon.Key> response = new Response<Domain.GatewayCommon.Key> {Succeeded=true, Data = key, Message = "Success" };
-            _logger.LogInformation($"GetKeyQueryHandler completed for {request}");
+            _logger.LogInformation("GetKeyQueryHandler completed for {request}", request);
             return response;
         }
     }
