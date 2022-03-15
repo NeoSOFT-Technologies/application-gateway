@@ -19,8 +19,8 @@ namespace ApplicationGateway.Domain.TykData
     public class Docker
     {
 #nullable enable
-        public args? args { get; set; }
-        public headers? headers { get; set; }
+        public Args? args { get; set; }
+        public Headers? headers { get; set; }
 #nullable disable
         public string origin { get; set; }
         public string url { get; set; }
@@ -28,13 +28,13 @@ namespace ApplicationGateway.Domain.TykData
     }
 
     [ExcludeFromCodeCoverage]
-    public class args
+    public class Args
     {
 
     }
 
     [ExcludeFromCodeCoverage]
-    public class headers
+    public class Headers
     {
         public string Accept { get; set; }
         public string Accept_Encoding { get; set; }

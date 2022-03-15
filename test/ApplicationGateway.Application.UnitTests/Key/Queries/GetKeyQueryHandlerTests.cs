@@ -15,7 +15,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
 {
     public class GetKeyQueryHandlerTests
     {
-        private readonly IMapper _mapper;
+       
         private readonly Mock<IKeyService> _mockKeyService;
         private readonly Mock<ILogger<GetKeyQueryHandler>> _mockLogger;
 
@@ -23,12 +23,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
         {
             _mockKeyService = KeyServiceMocks.GetKeyService();
             _mockLogger = new Mock<ILogger<GetKeyQueryHandler>>();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });
-
-            _mapper = configurationProvider.CreateMapper();
+           
         }
 
         [Fact]
@@ -36,7 +31,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Queries
         {
             var KeyId = "KeyId2";
 
-            var handler = new GetKeyQueryHandler(_mockLogger.Object, _mapper, _mockKeyService.Object);
+            var handler = new GetKeyQueryHandler(_mockLogger.Object, _mockKeyService.Object);
 
             var result = await handler.Handle(new GetKeyQuery() { keyId= KeyId }, CancellationToken.None);
 

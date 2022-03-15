@@ -9,14 +9,12 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
     public class GetKeyQueryHandler : IRequestHandler<GetKeyQuery, Response<Domain.GatewayCommon.Key>>
     {
         readonly ILogger<GetKeyQueryHandler> _logger;
-        readonly IMapper _mapper;
         readonly IKeyService _keyService;
 
-        public GetKeyQueryHandler(ILogger<GetKeyQueryHandler> logger, IMapper mapper, IKeyService keyService)
+        public GetKeyQueryHandler(ILogger<GetKeyQueryHandler> logger, IKeyService keyService)
             
         {
             _logger = logger;
-            _mapper = mapper;
             _keyService = keyService;
         }
 

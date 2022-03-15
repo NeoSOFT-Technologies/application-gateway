@@ -243,19 +243,19 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
         private static JObject GetAuthType(JObject apiObject, JObject inputApi)
         {
-            if (inputApi.Value<bool>("use_keyless") == true)
+            if (inputApi.Value<bool>("use_keyless"))
             {
                 apiObject["authType"] = "keyless";
             }
-            else if (inputApi.Value<bool>("use_basic_auth") == true)
+            else if (inputApi.Value<bool>("use_basic_auth"))
             {
                 apiObject["authType"] = "basic";
             }
-            else if (inputApi.Value<bool>("use_standard_auth") == true)
+            else if (inputApi.Value<bool>("use_standard_auth"))
             {
                 apiObject["authType"] = "standard";
             }
-            else if (inputApi.Value<bool>("use_openid") == true)
+            else if (inputApi.Value<bool>("use_openid"))
             {
                 apiObject["authType"] = "openid";
             }

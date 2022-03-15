@@ -148,7 +148,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             }
         }
 
-        public async Task<HttpResponseMessage> DownStream(string path, string keyid)
+        public static async Task<HttpResponseMessage> DownStream(string path, string keyid)
         {
 
             try

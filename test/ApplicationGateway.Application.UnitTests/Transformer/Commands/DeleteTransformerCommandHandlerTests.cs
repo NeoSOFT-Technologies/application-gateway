@@ -18,7 +18,6 @@ namespace ApplicationGateway.Application.UnitTests.Transformer.Commands
 {
     public class DeleteTransformerCommandHandlerTests
     {
-        private readonly IMapper _mapper;
         private readonly Mock<ILogger<DeleteTransformerCommandHandler>> _mocklogger;
         private readonly Mock<ITransformerRepository> _mockTransformerRepository;
 
@@ -26,12 +25,7 @@ namespace ApplicationGateway.Application.UnitTests.Transformer.Commands
         {
             _mockTransformerRepository = TransformerRepositoryMocks.GetTransformerRepository();
             _mocklogger = new Mock<ILogger<DeleteTransformerCommandHandler>>();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });
-
-            _mapper = configurationProvider.CreateMapper();
+            
         }
 
         [Fact]
@@ -39,8 +33,8 @@ namespace ApplicationGateway.Application.UnitTests.Transformer.Commands
         {
             var TransformerId = _mockTransformerRepository.Object.ListAllAsync().Result.FirstOrDefault().TransformerId;
             var oldTransformer = await _mockTransformerRepository.Object.GetByIdAsync(TransformerId);
-            var handler = new DeleteTransformerCommandHandler(_mapper, _mocklogger.Object, _mockTransformerRepository.Object);
-            var result = await handler.Handle(new DeleteTransformerCommand() { TransformerId = TransformerId }, CancellationToken.None);
+            var handler = new DeleteTransformerCommandHandler(_mocklogger.Object, _mockTransformerRepository.Object);
+            await handler.Handle(new DeleteTransformerCommand() { TransformerId = TransformerId }, CancellationToken.None);
             var allApis = await _mockTransformerRepository.Object.ListAllAsync();
             allApis.ShouldNotContain(oldTransformer);
             allApis.Count.ShouldBe(1);

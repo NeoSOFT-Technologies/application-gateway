@@ -103,7 +103,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
         }
 
-        public async Task<HttpResponseMessage> DownStream(string path, string keyid)
+        public static async Task<HttpResponseMessage> DownStream(string path, string keyid)
         {
 
             try
