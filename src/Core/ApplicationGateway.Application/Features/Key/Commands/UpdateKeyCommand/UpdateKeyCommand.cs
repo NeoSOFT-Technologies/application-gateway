@@ -22,8 +22,9 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
         public bool IsInActive { get; set; }
         public List<UpdateKeyAccessRightsModel> AccessRights { get; set; }
         public List<string> Policies { get; set; }
+        public List<string> Tags { get; set; }
 
-        }
+    }
 
         public class UpdateKeyAccessRightsModel
         {

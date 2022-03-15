@@ -1,5 +1,6 @@
 ﻿{
   "KeyId": "#valueof(key)",
+  "KeyName": "#valueof(alias)",
   "Rate": "#valueof(rate)",
   "Per": "#valueof(per)",
   "ThrottleInterval": "#valueof(throttle_interval)",
@@ -9,5 +10,6 @@
   "QuotaRenewalRate": "#valueof(quota_renewal_rate)",
   "IsInActive": "#valueof(is_inactive)",
   "AccessRights": null,
-  "Policies": null
+  "Policies": null,
+  "Tags": "#valueof(tags)"
 }
