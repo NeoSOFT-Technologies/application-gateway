@@ -66,6 +66,25 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
 #nullable enable
         public string? OverrideTarget { get; set; }
         public string? Expires { get; set; }
+        public Dictionary<string, string>? GlobalRequestHeaders { get; set; }
+        public List<string>? GlobalRequestHeadersRemove { get; set; }
+        public Dictionary<string, string>? GlobalResponseHeaders { get; set; }
+        public List<string>? GlobalResponseHeadersRemove { get; set; }
+        public UpdateExtendedPaths? ExtendedPaths { get; set; }
 #nullable disable
+    }
+
+    public class UpdateExtendedPaths
+    {
+#nullable enable
+        public List<UpdateMethodTransform>? MethodTransforms { get; set; }
+#nullable disable
+    }
+
+    public class UpdateMethodTransform
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public string ToMethod { get; set; }
     }
 }

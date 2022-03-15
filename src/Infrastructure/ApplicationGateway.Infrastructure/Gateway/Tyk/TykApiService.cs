@@ -156,6 +156,11 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("OverrideTarget").Remove();
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("expires", version["Expires"]);
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("Expires").Remove();
+                    if(version.Value<JObject>("ExtendedPaths") is not null)
+                    {
+                        transformedObject = SetExtendedPaths(transformedObject, version as JObject);
+                    }
+                    transformedObject = SetAddRemoveGlobalHeaders(transformedObject, version as JObject);
                 }
             }
             #endregion
@@ -236,6 +241,11 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 tempObj.Add("name", item.Key);
                 tempObj.Add("overrideTarget", item.Value["override_target"]);
                 tempObj.Add("expires", item.Value["expires"]);
+                if (item.Value["extended_paths"] is not null && item.Value["extended_paths"].ToString() != "{}")
+                {
+                    tempObj = GetExtendedPaths(tempObj, item.Value["extended_paths"] as JObject);
+                    tempObj = GetAddRemoveGlobalHeaders(tempObj, item.Value as JObject);
+                }
                 (apiObject["versions"] as JArray).Add(tempObj);
             }
             return apiObject;
@@ -280,10 +290,128 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     clientObj.Add("policy", innerItem.Value);
                     (tempObj["client_ids"] as JArray).Add(clientObj);
                 }
-
                 (apiObject["openidOptions"]["providers"] as JArray).Add(tempObj);
             }
             return apiObject;
+        }
+
+        private static JObject GetExtendedPaths(JObject apiObject, JObject extendedPaths)
+        {
+            apiObject.Add("extendedPaths", new JObject());
+            JArray methodTransforms = new JArray();
+            if (extendedPaths["method_transforms"] is not null)
+            {
+                foreach (JToken methodTransform in extendedPaths["method_transforms"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("method", methodTransform.Value<string>("method"));
+                    tempObj.Add("path", methodTransform.Value<string>("path"));
+                    tempObj.Add("toMethod", methodTransform.Value<string>("to_method"));
+                    methodTransforms.Add(tempObj);
+                }
+                (apiObject["extendedPaths"] as JObject).Add("methodTransforms", methodTransforms);
+            }
+            return apiObject;
+        }
+
+        private static JObject GetAddRemoveGlobalHeaders(JObject apiObject, JObject version)
+        {
+            if (version.Value<JObject>("global_headers") is not null)
+            {
+                JObject globalHeaders = version.Value<JObject>("global_headers");
+                apiObject.Add("globalRequestHeaders", new JObject());
+                foreach (var item in globalHeaders)
+                {
+                    (apiObject["globalRequestHeaders"] as JObject).Add(item.Key, item.Value);
+                }
+            }
+            if (version.Value<JArray>("global_headers_remove") is not null)
+            {
+                apiObject.Add("globalRequestHeadersRemove", new JArray());
+                foreach (var item in version.Value<JArray>("global_headers_remove"))
+                {
+                    (apiObject["globalRequestHeadersRemove"] as JArray).Add(item);
+                }
+            }
+            if (version.Value<JArray>("global_response_headers_remove") is not null)
+            {
+                apiObject.Add("globalResponseHeadersRemove", new JArray());
+                foreach (var item in version.Value<JArray>("global_response_headers_remove"))
+                {
+                    (apiObject["globalResponseHeadersRemove"] as JArray).Add(item);
+                }
+            }
+            if (version.Value<JObject>("global_response_headers") is not null)
+            {
+                JObject globalResponseHeaders = version.Value<JObject>("global_response_headers");
+                apiObject.Add("globalResponseHeaders", new JObject());
+                foreach (var item in globalResponseHeaders)
+                {
+                    (apiObject["globalResponseHeaders"] as JObject).Add(item.Key, item.Value);
+                }
+            }
+            return apiObject;
+        }
+
+        private static JObject SetExtendedPaths(JObject transformedObject, JObject version)
+        {
+            JObject extendedPaths = version.Value<JObject>("ExtendedPaths");
+            if (extendedPaths["MethodTransforms"] is not null)
+            {
+                foreach (JToken methodTransform in extendedPaths["MethodTransforms"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("method", methodTransform.Value<string>("Method"));
+                    tempObj.Add("path", methodTransform.Value<string>("Path"));
+                    tempObj.Add("to_method", methodTransform.Value<string>("ToMethod"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("extended_paths", new JObject());
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("method_transforms", new JArray());
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["method_transforms"] as JArray).Add(tempObj);
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("ExtendedPaths").Remove();
+                }
+            }
+            return transformedObject;
+        }
+
+        private static JObject SetAddRemoveGlobalHeaders(JObject transformedObject, JObject version)
+        {
+            if(version.Value<JObject>("GlobalRequestHeaders") is not null)
+            {
+                JObject globalRequestHeaders = version.Value<JObject>("GlobalRequestHeaders");
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("global_headers", new JObject());
+                foreach (var item in globalRequestHeaders)
+                {
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["global_headers"] as JObject).Add(item.Key, item.Value);
+                }
+            }
+            if (version.Value<JArray>("GlobalRequestHeadersRemove") is not null)
+            {
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("global_headers_remove").Remove();
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("global_headers_remove", new JArray());
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["global_headers_remove"] as JArray).Add("Authorization");
+                foreach (var item in version.Value<JArray>("GlobalRequestHeadersRemove"))
+                {
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["global_headers_remove"] as JArray).Add(item);
+                }
+            }
+            if (version.Value<JArray>("GlobalResponseHeadersRemove") is not null)
+            {
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("global_response_headers_remove", new JArray());
+                foreach (var item in version.Value<JArray>("GlobalResponseHeadersRemove"))
+                {
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["global_response_headers_remove"] as JArray).Add(item);
+                }
+            }
+            if (version.Value<JObject>("GlobalResponseHeaders") is not null)
+            {
+                JObject globalRequestHeaders = version.Value<JObject>("GlobalResponseHeaders");
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("global_response_headers", new JObject());
+                foreach (var item in globalRequestHeaders)
+                {
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["global_response_headers"] as JObject).Add(item.Key, item.Value);
+                }
+            }
+            return transformedObject;
         }
     }
 }

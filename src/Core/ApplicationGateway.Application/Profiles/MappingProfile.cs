@@ -35,6 +35,8 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<RateLimit, UpdateRateLimit>().ReverseMap();
             CreateMap<VersioningInfo, UpdateVersioningInfo>().ReverseMap();
             CreateMap<VersionModel, UpdateVersionModel>().ReverseMap();
+            CreateMap<ExtendedPaths, UpdateExtendedPaths>().ReverseMap();
+            CreateMap<MethodTransform, UpdateMethodTransform>().ReverseMap();
             CreateMap<OpenIdOptions, UpdateOpenIdOptions>().ReverseMap();
             CreateMap<Provider, UpdateProvider>().ReverseMap();
             CreateMap<ClientPolicy, UpdateClientPolicy>().ReverseMap();
@@ -52,6 +54,8 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<OpenIdOptions, GetOpenIdOptions>().ReverseMap();
             CreateMap<Provider, GetProvider>().ReverseMap();
             CreateMap<ClientPolicy, GetClientPolicy>().ReverseMap();
+            CreateMap<ExtendedPaths,GetExtendedPaths>().ReverseMap();
+            CreateMap<MethodTransform, GetMethodTransform>().ReverseMap();
 
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyDto>().ReverseMap();
