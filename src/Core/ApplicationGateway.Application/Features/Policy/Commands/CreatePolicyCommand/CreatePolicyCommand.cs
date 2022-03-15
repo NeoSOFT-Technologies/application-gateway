@@ -18,7 +18,10 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         public int KeyExpiresIn { get; set; }
         public List<string> Tags { get; set; }
         public List<CreatePolicyApi> APIs { get; set; }
+#nullable enable
         public CreatePartition? Partitions { get; set; }
+#nullable disable
+
     }
 
     public class CreatePolicyApi
@@ -27,7 +30,9 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
         public string Name { get; set; }
         public List<string> Versions { get; set; }
         public List<CreateAllowedUrl> AllowedUrls { get; set; }
+#nullable enable
         public CreatePerApiLimit? Limit { get; set; }
+#nullable disable
     }
 
     public class CreateAllowedUrl

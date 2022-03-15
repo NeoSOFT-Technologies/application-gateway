@@ -22,6 +22,7 @@ namespace DownstreamApi.Controllers
 
         public IEnumerable<WeatherForecast> Weather()
         {
+            _logger.LogInformation("Weather Method triggered in downStream");
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -32,7 +33,7 @@ namespace DownstreamApi.Controllers
         }
 
         [HttpPost(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Weather2(postweatherforecast postweatherforecast)
+        public IEnumerable<WeatherForecast> Weather2(Postweatherforecast postweatherforecast)
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -43,9 +44,9 @@ namespace DownstreamApi.Controllers
             .ToArray();
         }
 
-        public class postweatherforecast
+        public class Postweatherforecast
         {
-            public string test { get; set; }
+            public string Test { get; set; }
         } 
     }
 }

@@ -29,7 +29,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
             client = _factory.CreateClient();
         }
 
-        [Fact]
+       // [Fact]
         public async Task CreateApi_ReturnsSuccessResult()
         {
    
@@ -66,7 +66,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
         }
 
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public static async Task<HttpResponseMessage> DownStream(string path)
         {
 
             try

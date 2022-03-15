@@ -51,7 +51,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         }
         public async Task<Key> GetKeyAsync(string keyId)
         {
-            _logger.LogInformation($"GetKeyAsync initiated for {keyId}");
+            _logger.LogInformation("GetKeyAsync initiated for {keyId}",keyId);
             var keyResponse = await _restClient.GetAsync(keyId);
             string transformedObj = await _templateTransformer.Transform(keyResponse, TemplateHelper.GETKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
             Key key = JsonConvert.DeserializeObject<Key>(transformedObj);
@@ -99,13 +99,13 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             key.AccessRights = accessRights;
             #endregion
             key.KeyId = keyId;
-            _logger.LogInformation($"GetKeyAsync completed for {keyId}");
+            _logger.LogInformation("GetKeyAsync completed for {keyId}",keyId);
             return key;
         }
 
         public async Task<Key> CreateKeyAsync(Key key)
         {
-            _logger.LogInformation($"CreateKeyAsync Initiated for {key}");
+            _logger.LogInformation("CreateKeyAsync Initiated for {key}",key);
             string requestString = JsonConvert.SerializeObject(key);
             string transformedObj = await _templateTransformer.Transform(requestString, TemplateHelper.CREATEKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
    
@@ -123,7 +123,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
         public async Task<Key> UpdateKeyAsync(Key key)
         {
-            _logger.LogInformation($"UpdateKeyAsync initiated for {key}");
+            _logger.LogInformation("UpdateKeyAsync initiated for {key}",key);
 
             string requestString = JsonConvert.SerializeObject(key);
             string transformedObj = await _templateTransformer.Transform(requestString, TemplateHelper.UPDATEKEY_TEMPLATE, Domain.Entities.Gateway.Tyk);
@@ -132,17 +132,17 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             JObject jsonObj = JObject.Parse(transformedObj);
             jsonObj = await CreateUpdateKey(key, jsonObj);
 
-            string keyResponse = await _restClient.PutKeyAsync(jsonObj, key.KeyId);
+            await _restClient.PutKeyAsync(jsonObj, key.KeyId);
             await _baseService.HotReload();
-            _logger.LogInformation($"UpdateKeyAsync completed for {key}");
+            _logger.LogInformation("UpdateKeyAsync completed for {key}",key);
             return key;
         }
         public async Task DeleteKeyAsync(string keyId)
         {
-            _logger.LogInformation($"DeleteKeyAsync initiated for {keyId}");
+            _logger.LogInformation("DeleteKeyAsync initiated for {keyId}",keyId);
             await _restClient.DeleteAsync(keyId);
             await _baseService.HotReload();
-            _logger.LogInformation($"DeleteKeyAsync completed for {keyId}");
+            _logger.LogInformation("DeleteKeyAsync completed for {keyId}",keyId);
         }
 
         private ApiLimit ParseApiLimit(JObject json)

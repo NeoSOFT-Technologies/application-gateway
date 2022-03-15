@@ -71,7 +71,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             List<Api> apiList = JsonConvert.DeserializeObject<List<Api>>(transformedObject.ToString(), new Newtonsoft.Json.Converters.StringEnumConverter());
-            _logger.LogInformation("GetAllApisAsync Completed");
+            _logger.LogInformation("GetAllApisAsync Completed: {@List<Api>}", apiList);
             return apiList;
         }
 
@@ -108,7 +108,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             Api api = JsonConvert.DeserializeObject<Api>(transformedObject.ToString(), new Newtonsoft.Json.Converters.StringEnumConverter());
-            _logger.LogInformation("GetApiByIdAsync Completed");
+            _logger.LogInformation("GetApiByIdAsync Completed: {@Api}", api);
             return api;
         }
 
@@ -128,7 +128,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
             await _baseService.HotReload();
 
-            _logger.LogInformation("CreateApiAsync Completed");
+            _logger.LogInformation("CreateApiAsync Completed: {@Api}", api);
             return api;
         }
 
@@ -197,16 +197,16 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
             await _baseService.HotReload();
 
-            _logger.LogInformation("UpdateApiAsync Completed");
+            _logger.LogInformation("UpdateApiAsync Completed: {@Api}", api);
             return api;
         }
 
         public async Task DeleteApiAsync(Guid apiId)
         {
-            _logger.LogInformation("UpdateApiAsync Initiated with {@Guid}", apiId);
+            _logger.LogInformation("DeleteApiAsync Initiated with {@Guid}", apiId);
             await _restClient.DeleteAsync(apiId.ToString());
             await _baseService.HotReload();
-            _logger.LogInformation("UpdateApiAsync Completed");
+            _logger.LogInformation("DeleteApiAsync Completed: {@Guid}", apiId);
         }
 
         public async Task<bool> CheckUniqueListenPathAsync(Api api)
@@ -243,19 +243,19 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
         private static JObject GetAuthType(JObject apiObject, JObject inputApi)
         {
-            if (inputApi.Value<bool>("use_keyless") == true)
+            if (inputApi.Value<bool>("use_keyless"))
             {
                 apiObject["authType"] = "keyless";
             }
-            else if (inputApi.Value<bool>("use_basic_auth") == true)
+            else if (inputApi.Value<bool>("use_basic_auth"))
             {
                 apiObject["authType"] = "basic";
             }
-            else if (inputApi.Value<bool>("use_standard_auth") == true)
+            else if (inputApi.Value<bool>("use_standard_auth"))
             {
                 apiObject["authType"] = "standard";
             }
-            else if (inputApi.Value<bool>("use_openid") == true)
+            else if (inputApi.Value<bool>("use_openid"))
             {
                 apiObject["authType"] = "openid";
             }

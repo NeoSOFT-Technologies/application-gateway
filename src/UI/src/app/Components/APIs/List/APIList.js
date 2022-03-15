@@ -31,7 +31,7 @@ function APIList() {
       //console.log(currentPage);
       getAPIList(currentPage)
         .then((res) => {
-          //console.log("in Api List", res);
+          console.log("in Api List", res);
           dispatch(res);
           console.log("main call", ApiList);
         })
@@ -60,7 +60,7 @@ function APIList() {
     }
     return typeof obj[Symbol.iterator] === "function";
   }
-  //console.log("apilist", ApiList);
+  console.log("apilist", ApiList);
   //console.log("ApiList before datalist", isIterable(ApiList.list));
   const actions = [
     {
@@ -103,13 +103,23 @@ function APIList() {
           <div className="card">
             <div className="card-body">
               <div className="align-items-center">
+                <div>
+                  <button
+                    className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                    onClick={(e) => buttonClick(e)}
+                  >
+                    {" "}
+                    Create API &nbsp;
+                    <span className="mdi mdi-plus"></span> &nbsp;
+                  </button>
+                </div>
                 <div className="search-field justify-content-around">
                   <form className="h-50" onSubmit={(e) => buttonClick(e)}>
                     <div className="input-group">
                       <input
                         type="text"
                         className="form-control bg-parent border-1"
-                        placeholder="Search Policies"
+                        placeholder="Search APIs"
                       />
                       <button
                         className=" btn  btn-success btn-sm"
@@ -120,16 +130,6 @@ function APIList() {
                     </div>
                   </form>
                 </div>
-              </div>
-              <br />
-              <div>
-                <button
-                  className=" btn  btn-success btn-sm d-flex float-right mb-2"
-                  onClick={(e) => buttonClick(e)}
-                >
-                  &nbsp;
-                  <span className="mdi mdi-plus"></span> &nbsp;
-                </button>
               </div>
               <br />
               <div className="table-responsive">
@@ -146,7 +146,7 @@ function APIList() {
                     pageCount={ApiList.count}
                     total={ApiList.totalCount}
                     selected={selected}
-                    error={ApiList.error}
+                    // error={ApiList.error}
                   />
                 )}
               </div>

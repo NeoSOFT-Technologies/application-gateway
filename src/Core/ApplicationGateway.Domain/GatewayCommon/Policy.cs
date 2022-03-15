@@ -16,7 +16,9 @@
         public int KeyExpiresIn { get; set; }
         public List<string> Tags { get; set; }
         public List<PolicyApi> APIs { get; set; }
+#nullable enable
         public Partition? Partitions { get; set; }
+#nullable disable
     }
 
     public class PolicyApi
@@ -25,7 +27,9 @@
         public string Name { get; set; }
         public List<string> Versions { get; set; }
         public List<AllowedUrl> AllowedUrls { get; set; }
+#nullable enable
         public PerApiLimit? Limit { get; set; }
+#nullable disable
     }
 
     public class AllowedUrl

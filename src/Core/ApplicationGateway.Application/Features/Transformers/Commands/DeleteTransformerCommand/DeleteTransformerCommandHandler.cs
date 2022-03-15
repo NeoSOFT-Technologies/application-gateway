@@ -9,13 +9,11 @@ namespace ApplicationGateway.Application.Features.Transformers.Commands.DeleteTr
 {
     public class DeleteTransformerCommandHandler : IRequestHandler<DeleteTransformerCommand>
     {
-        private readonly IMapper _mapper;
         private readonly ILogger<DeleteTransformerCommandHandler> _logger;
         private readonly IAsyncRepository<Transformer> _transRepository;
 
-        public DeleteTransformerCommandHandler(IMapper mapper, ILogger<DeleteTransformerCommandHandler> logger, IAsyncRepository<Transformer> transRepository)
+        public DeleteTransformerCommandHandler(ILogger<DeleteTransformerCommandHandler> logger, IAsyncRepository<Transformer> transRepository)
         {
-            _mapper = mapper;
             _logger = logger;
             _transRepository = transRepository;
         }

@@ -4,9 +4,10 @@ using ApplicationGateway.Application.Models.Tyk;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Worker;
-
+[ExcludeFromCodeCoverage]
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
@@ -58,7 +59,7 @@ public class Worker : BackgroundService
 
     public async Task<string> ReadPolicies(string policiesFolderPath)
     {
-        _logger.LogInformation($"{policiesFolderPath}");
+        _logger.LogInformation("{policiesFolderPath}",policiesFolderPath);
         if (!Directory.Exists(policiesFolderPath))
         {
             _logger.LogInformation($"Folder doesn't exist {Directory.GetCurrentDirectory()}");
@@ -77,7 +78,7 @@ public class Worker : BackgroundService
 
     public async Task WritePolicies(string policiesFolderPath, string content)
     {
-        _logger.LogInformation($"{policiesFolderPath}");
+        _logger.LogInformation("{policiesFolderPath}",policiesFolderPath);
         _logger.LogInformation($"{Directory.GetCurrentDirectory()}");
         await File.WriteAllTextAsync($@"{policiesFolderPath}/policies.json", content);
     }

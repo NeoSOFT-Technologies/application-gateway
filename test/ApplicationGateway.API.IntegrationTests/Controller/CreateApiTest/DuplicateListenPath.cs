@@ -31,11 +31,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
         }
 
 
-        [Fact]
+        //[Fact]
         public async Task Duplicatelistenpatherror()
         {
             //var client = _factory.CreateClient();
-            string Url;
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/CreateApiTest/DuplicateListenPath.json");
 
             CreateMultipleApisCommand requestModel1 = JsonConvert.DeserializeObject<CreateMultipleApisCommand>(myJsonString);
@@ -48,7 +47,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
             
         }
 
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public static async Task<HttpResponseMessage> DownStream(string path)
         {
 
             try

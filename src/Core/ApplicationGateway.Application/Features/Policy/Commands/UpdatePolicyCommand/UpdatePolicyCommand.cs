@@ -19,7 +19,9 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
         public int KeyExpiresIn { get; set; }
         public List<string> Tags { get; set; }
         public List<UpdatePolicyApi> APIs { get; set; }
+#nullable enable
         public UpdatePartition? Partitions { get; set; }
+#nullable disable
     }
 
     public class UpdatePolicyApi
@@ -28,7 +30,9 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.UpdatePolicyCo
         public string Name { get; set; }
         public List<string> Versions { get; set; }
         public List<UpdateAllowedUrl> AllowedUrls { get; set; }
+#nullable enable
         public UpdatePerApiLimit? Limit { get; set; }
+#nullable disable
     }
 
     public class UpdateAllowedUrl

@@ -11,16 +11,20 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public string TargetUrl { get; set; }
         public bool IsActive { get; set; }
         public bool IsInternal { get; set; }
+#nullable enable
         public string? Protocol { get; set; }
         public GetRateLimit? RateLimit { get; set; }
         public List<string>? Blacklist { get; set; }
         public List<string>? Whitelist { get; set; }
         public GetVersioningInfo? VersioningInfo { get; set; }
+#nullable disable
         public string DefaultVersion { get; set; }
         public List<GetVersionModel> Versions { get; set; }
         public string AuthType { get; set; }
+#nullable enable
         public GetOpenIdOptions? OpenidOptions { get; set; }
         public List<string>? LoadBalancingTargets { get; set; }
+#nullable disable
         public bool IsQuotaDisabled { get; set; }
     }
 
@@ -57,7 +61,9 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
     public class GetVersionModel
     {
         public string Name { get; set; }
+#nullable enable
         public string? OverrideTarget { get; set; }
         public string? Expires { get; set; }
+#nullable disable
     }
 }

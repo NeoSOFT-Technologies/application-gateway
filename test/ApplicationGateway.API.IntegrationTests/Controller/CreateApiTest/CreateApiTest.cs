@@ -29,7 +29,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
             client = _factory.CreateClient();
         }
 
-        [Fact]
+        //[Fact]
         public async Task CreateApi_ReturnsSuccessResult()
         {
             Console.WriteLine("test started");
@@ -61,7 +61,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.CreateApiTest
 
         }
 
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public static async Task<HttpResponseMessage> DownStream(string path)
         {
 
             try

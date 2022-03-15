@@ -1,9 +1,11 @@
 ﻿using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Domain.Entities;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ApplicationGateway.Application.Helper
 {
+    [ExcludeFromCodeCoverage]
     public class FileOperator
     {
         public FileOperator()

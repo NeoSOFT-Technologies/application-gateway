@@ -32,11 +32,13 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
             public string ApiName { get; set; }
             public List<string> Versions { get; set; }
             public List<UpdateKeyAllowedUrl> AllowedUrls { get; set; }
-            public UpdateKeyLimit? Limit { get; set; }
+#nullable enable
+        public UpdateKeyLimit? Limit { get; set; }
+#nullable disable
 
     }
 
-        public class UpdateKeyLimit
+    public class UpdateKeyLimit
         {
             public int Rate { get; set; }
             public int Per { get; set; }

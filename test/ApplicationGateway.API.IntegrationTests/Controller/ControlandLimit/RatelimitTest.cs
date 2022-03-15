@@ -95,7 +95,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
 
         }
 
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public static async Task<HttpResponseMessage> DownStream(string path)
         {
 
             try

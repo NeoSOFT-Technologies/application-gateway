@@ -34,7 +34,7 @@ namespace ApplicationGateway.Api.Middleware
             }
         }
 
-        private Task ConvertException(HttpContext context, Exception exception)
+        private static Task ConvertException(HttpContext context, Exception exception)
         {
             HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
 
@@ -71,7 +71,7 @@ namespace ApplicationGateway.Api.Middleware
             return context.Response.WriteAsync(result);
         }
 
-        private string GetErrorMessage(string message)
+        private static string GetErrorMessage(string message)
         {
             var response = new Response<string>();
             response.Succeeded = false;
@@ -81,7 +81,7 @@ namespace ApplicationGateway.Api.Middleware
 
         }
 
-        private string GetErrorMessages(List<string> messages)
+        private static string GetErrorMessages(List<string> messages)
         {
             var response = new Response<string>();
             response.Succeeded = false;

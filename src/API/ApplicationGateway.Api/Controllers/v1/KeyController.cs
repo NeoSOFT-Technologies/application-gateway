@@ -36,9 +36,10 @@ namespace ApplicationGateway.Api.Controllers.v1
         [HttpGet]
         public async Task<ActionResult> GetKey(string keyId)
         {
-            _logger.LogInformation($"GetKey initiated in controller for {keyId}");
+
+            _logger.LogInformation("GetKey initiated in controller for {keyId}",keyId);
             var response = await _mediator.Send(new GetKeyQuery() { keyId = keyId });
-            _logger.LogInformation($"GetKey completed in controller for {keyId}");
+            _logger.LogInformation("GetKey completed in controller for {keyId}",keyId);
             return Ok(response);
         }
 
@@ -47,9 +48,9 @@ namespace ApplicationGateway.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> CreateKey(CreateKeyCommand createKeyCommand)
         {
-            _logger.LogInformation($"CreateKey initiated in controller for {createKeyCommand}");
+            _logger.LogInformation("CreateKey initiated in controller for {createKeyCommand}",createKeyCommand);
             Response<Key> response = await _mediator.Send(createKeyCommand);
-            _logger.LogInformation($"CreateKey completed for {createKeyCommand}");
+            _logger.LogInformation("CreateKey completed for {createKeyCommand}",createKeyCommand);
             return Ok(response);
         }
 
@@ -59,9 +60,9 @@ namespace ApplicationGateway.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateKey(UpdateKeyCommand updateKeyCommand)
         {
-            _logger.LogInformation($"UpdateKey initiated in controller for {updateKeyCommand}");
+            _logger.LogInformation("UpdateKey initiated in controller for {updateKeyCommand}",updateKeyCommand);
             Response<UpdateKeyCommandDto> response = await _mediator.Send(updateKeyCommand);
-            _logger.LogInformation($"UpdateKey completed for {updateKeyCommand}");
+            _logger.LogInformation("UpdateKey completed for {updateKeyCommand}",updateKeyCommand);
             return Ok(response);
         }
 
@@ -70,9 +71,9 @@ namespace ApplicationGateway.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteKey(string keyId)
         {
-            _logger.LogInformation($"DeleteKey initiated in controller for {keyId}");
-            var response = await _mediator.Send(new DeleteKeyCommand() {KeyId=keyId });
-            _logger.LogInformation($"DeleteKey completed in controller for {keyId}");
+            _logger.LogInformation("DeleteKey initiated in controller for {keyId}",keyId);
+            await _mediator.Send(new DeleteKeyCommand() {KeyId=keyId });
+            _logger.LogInformation("DeleteKey completed in controller for {keyId}",keyId);
             return NoContent();
         }
 

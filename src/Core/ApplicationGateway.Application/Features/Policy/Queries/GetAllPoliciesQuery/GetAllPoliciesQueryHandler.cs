@@ -32,7 +32,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
             };
 
             PagedResponse<GetAllPoliciesDto> response = new PagedResponse<GetAllPoliciesDto>(policyDtoList, totCount, request.pageNum, request.pageSize);
-            _logger.LogInformation("Handler Completed");
+            _logger.LogInformation("Handler Completed: {@Response<GetAllPoliciesDto>}", response);
             return response;
         }
     }
