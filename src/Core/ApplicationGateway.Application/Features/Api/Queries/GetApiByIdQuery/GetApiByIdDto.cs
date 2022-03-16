@@ -64,6 +64,25 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
 #nullable enable
         public string? OverrideTarget { get; set; }
         public string? Expires { get; set; }
+        public Dictionary<string, string>? GlobalRequestHeaders { get; set; }
+        public List<string>? GlobalRequestHeadersRemove { get; set; }
+        public Dictionary<string, string>? GlobalResponseHeaders { get; set; }
+        public List<string>? GlobalResponseHeadersRemove { get; set; }
+        public GetExtendedPaths? ExtendedPaths { get; set; }
 #nullable disable
+    }
+
+    public class GetExtendedPaths
+    {
+#nullable enable
+        public List<GetMethodTransform>? MethodTransforms { get; set; }
+#nullable disable
+    }
+
+    public class GetMethodTransform
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public string ToMethod { get; set; }
     }
 }
