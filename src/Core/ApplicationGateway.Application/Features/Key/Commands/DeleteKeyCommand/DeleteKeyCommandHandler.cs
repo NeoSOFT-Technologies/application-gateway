@@ -25,7 +25,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
 
         public async Task<Unit> Handle(DeleteKeyCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"DeleteKeyCommandHandler initated for {request}");
+            _logger.LogInformation("DeleteKeyCommandHandler initated for {request}", request);
             #region Check If Key Exists
             await _keyService.GetKeyAsync(request.KeyId);
             #endregion
@@ -45,7 +45,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.DeleteKeyCommand
             await _keyRepository.DeleteAsync(new Domain.Entities.Key() { Id = request.KeyId });
             #endregion
 
-            _logger.LogInformation($"DeleteKeyCommandHandler completed for {request}");
+            _logger.LogInformation("DeleteKeyCommandHandler completed for {request}", request);
             return Unit.Value;
         }
 

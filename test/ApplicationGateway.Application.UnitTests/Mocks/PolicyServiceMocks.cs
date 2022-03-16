@@ -89,6 +89,13 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     Policies.RemoveAll(x => x.PolicyId == id);
                 }
                 );
+            mockPolicyService.Setup(repo => repo.UpdatePolicyAsync(It.IsAny<Domain.GatewayCommon.Policy>())).ReturnsAsync(
+                (Domain.GatewayCommon.Policy policy) =>
+                {
+                    Policies[0] = policy;
+                    return policy;
+                }
+                );
             return mockPolicyService;
         }
     }

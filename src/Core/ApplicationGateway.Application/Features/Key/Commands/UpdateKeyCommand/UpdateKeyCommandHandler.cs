@@ -29,7 +29,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
 
         public async Task<Response<UpdateKeyCommandDto>> Handle(UpdateKeyCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"UpdateKeyHandler initiated for {request}");
+            _logger.LogInformation("UpdateKeyHandler initiated for {request}", request);
 
             #region Check if Key exists
             await _keyService.GetKeyAsync(request.KeyId);
@@ -61,7 +61,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
 
             UpdateKeyCommandDto updateKeyCommandDto = _mapper.Map<UpdateKeyCommandDto>(key);
             Response<UpdateKeyCommandDto> response = new Response<UpdateKeyCommandDto>() {Succeeded=true,Data=updateKeyCommandDto,Message="success" };
-            _logger.LogInformation($"UpdateKeyHandler completed for {request}");
+            _logger.LogInformation("UpdateKeyHandler completed for {request}", request);
             return response;
         }
     }

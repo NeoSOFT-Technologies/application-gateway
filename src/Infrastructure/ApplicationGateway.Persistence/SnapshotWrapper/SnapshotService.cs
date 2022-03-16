@@ -17,8 +17,9 @@ namespace ApplicationGateway.Persistence.SnapshotWrapper
             _snapshotRepository = snapshotRepository;
         }
 
-
+#nullable enable
         public Task<Snapshot> CreateSnapshot(Enums.Gateway gateway, Enums.Type snapshotType, Enums.Operation operation, string key, dynamic? jsonData)
+#nullable disable
         {
             _logger.LogInformation("CreateSnapshot method triggered");
             Snapshot snapshot = new Snapshot()

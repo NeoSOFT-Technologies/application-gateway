@@ -102,7 +102,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
         }
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public static async Task<HttpResponseMessage> DownStream(string path)
         {
 
             try

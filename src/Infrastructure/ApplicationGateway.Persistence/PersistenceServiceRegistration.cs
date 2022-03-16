@@ -1,6 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Contracts.Persistence;
-using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Persistence.Repositories;
 using ApplicationGateway.Persistence.Repositories.DtoRepositories;
 using ApplicationGateway.Persistence.SnapshotWrapper;

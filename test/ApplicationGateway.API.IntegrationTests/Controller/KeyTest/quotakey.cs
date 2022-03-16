@@ -34,7 +34,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
-            string versioncheck = "";
+            //string versioncheck = "";
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/KeyTest/createApiData.json");
             CreateApiCommand requestModel1 = JsonConvert.DeserializeObject<CreateApiCommand>(myJsonString);
@@ -113,7 +113,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
       
 
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public static async Task<HttpResponseMessage> DownStream(string path)
         {
 
             try

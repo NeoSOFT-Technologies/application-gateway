@@ -1,4 +1,5 @@
 {
+  "alias": "#valueof(KeyName)",
   "rate": "#valueof(Rate)",
   "per": "#valueof(Per)",
   "expires": "#valueof(Expires)",
@@ -7,6 +8,7 @@
   "quota_renewal_rate": "#valueof(QuotaRenewalRate)",
   "throttle_interval": "#valueof(ThrottleInterval)",
   "throttle_retry_limit": "#valueof(ThrottleRetries)",
+  "tags": "#valueof(Tags)",
   "access_rights": {},
   "apply_policies": null
 }

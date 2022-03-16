@@ -37,12 +37,9 @@ namespace ApplicationGateway.Infrastructure.Redis
 
         public async Task CreateUpdateAsync(string policyId, JObject transformedObject, string operation)
         {
-            if(operation == "update")
+            if (operation == "update" && !await _database.KeyExistsAsync(policyId))
             {
-                if (!await _database.KeyExistsAsync(policyId))
-                {
-                    throw new NotFoundException($"Policy with id:", policyId);
-                }
+                throw new NotFoundException($"Policy with id:", policyId);
             }
 
             await _database.StringSetAsync(policyId, transformedObject.ToString());

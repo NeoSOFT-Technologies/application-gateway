@@ -42,14 +42,14 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
             _mapper = configurationProvider.CreateMapper();
         }
 
-        //[Fact]
+        [Fact]
         public async Task Handle_Updated_Api()
         {
             var handler = new UpdateApiCommandHandler(_snapshotService.Object, _mockApiService.Object, _mockApiRepository.Object, _mapper, _mockLogger.Object);
             var ApiId = _mockApiService.Object.GetAllApisAsync().Result.FirstOrDefault().ApiId;
 
             var oldApi = await _mockApiService.Object.GetApiByIdAsync(ApiId);
-            var newApi = await handler.Handle(new UpdateApiCommand()
+            await handler.Handle(new UpdateApiCommand()
             {
                 ApiId = ApiId,
                 Name = "updatedApi",
@@ -68,7 +68,7 @@ namespace ApplicationGateway.Application.UnitTests.Api.Commands
 
             var allApis = await _mockApiService.Object.GetAllApisAsync();
             allApis.ShouldContain(oldApi);
-            oldApi.ShouldBeEquivalentTo(newApi);
+            allApis.Count.ShouldBe(2);            
         }
     }
 }

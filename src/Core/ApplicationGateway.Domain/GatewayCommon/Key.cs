@@ -2,9 +2,10 @@
 {
     public class Key
     {
-#nullable enable
+        #nullable enable
         public string? KeyId { get; set; }
-#nullable disable
+        #nullable disable
+        public string KeyName { get; set; }
         public int Rate { get; set; }
         public int Per { get; set; }
         public int Quota { get; set; }
@@ -15,6 +16,7 @@
         public bool IsInActive { get; set; }
         public List<AccessRightsModel> AccessRights { get; set; }
         public List<string> Policies { get; set; }
+        public List<string> Tags { get; set; }
 
     }
     

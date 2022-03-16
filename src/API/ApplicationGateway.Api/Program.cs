@@ -37,7 +37,7 @@ Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configurationBuilder)
     .CreateBootstrapLogger().Freeze();
 
-var logger = new LoggerConfiguration()
+new LoggerConfiguration()
     .ReadFrom.Configuration(configurationBuilder)
     .CreateLogger();
 
@@ -47,7 +47,6 @@ builder.Host.UseSerilog((ctx, lc) => lc
 
 // Add services to the container.
 
-//readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 
 IConfiguration Configuration = builder.Configuration;

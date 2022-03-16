@@ -15,9 +15,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
         public int Expires { get; set; }
         public List<KeyAccessRightsModel> AccessRights { get; set; }
         public List<string> Policies { get; set; }
-
-
-
+        public List<string> Tags { get; set; }
     }
         public class KeyAccessRightsModel
         {

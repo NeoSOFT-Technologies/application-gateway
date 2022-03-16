@@ -34,7 +34,7 @@ namespace ApplicationGateway.Api.Middleware
             }
         }
 
-        private Task ConvertException(HttpContext context, Exception exception)
+        private static Task ConvertException(HttpContext context, Exception exception)
         {
             HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
 

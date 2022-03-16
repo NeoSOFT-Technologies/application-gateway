@@ -94,7 +94,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTe
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
         }
 
-        public async Task<HttpResponseMessage> DownStream(string path)
+        public static async Task<HttpResponseMessage> DownStream(string path)
         {
 
             try
@@ -110,7 +110,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.AccessRestrictionTe
             }
 
         }
-        public async Task<Docker> getsOrigin(string path)
+        public static async Task<Docker> getsOrigin(string path)
         {
             var client = HttpClientFactory.Create();
             var response = await client.GetAsync(path);

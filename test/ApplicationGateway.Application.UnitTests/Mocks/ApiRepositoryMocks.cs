@@ -55,9 +55,11 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
             mockApiRepository.Setup(repo => repo.UpdateAsync(It.IsAny<Domain.Entities.Api>())).Callback(
                (Domain.Entities.Api api) =>
                {
-                   //api.Id = Guid.NewGuid();
-                   apis.Add(api);
-                   
+                   apis[0].Id = api.Id;
+                   apis[0].Name = api.Name;
+                   apis[0].TargetUrl = api.TargetUrl;
+                   apis[0].Version = api.Version;
+                   apis[0].IsActive = api.IsActive;
                });
             mockApiRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(apis);
 
