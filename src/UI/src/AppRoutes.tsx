@@ -13,6 +13,7 @@ const APIList = lazy(() => import("./pages/features/APIs/List/APIList"));
 const PolicyList = lazy(
   () => import("./pages/features/Policies/List/PolicyList")
 );
+const KeyList = lazy(() => import("./pages/features/Keys/List/KeyList"));
 
 function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ function AppRoutes() {
         <Route path="/tenantlist" element={<TenantList />} />
         <Route path="/apilist" element={<APIList />} />
         <Route path="/policylist" element={<PolicyList />} />
+        <Route path="/keylist" element={<KeyList />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />
       </Routes>

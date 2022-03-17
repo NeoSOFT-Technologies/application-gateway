@@ -9,6 +9,7 @@ import updateTenantReducer from "./features/tenant/update-tenant/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import apiListReducer from "./features/api/list/slice";
 import policyListReducer from "./features/policy/list/slice";
+import keyListReducer from "./features/key/list/slice";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     addNewUser: addNewUserReducer,
     apiList: apiListReducer,
     policyList: policyListReducer,
+    keyList: keyListReducer,
   },
 });
 
