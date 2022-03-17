@@ -8,11 +8,12 @@ import {
   ITenantUserData,
 } from "../../types/index";
 import { IApiData, IApiDataList } from "../../types/api/index";
+import { IPolicyData, IPolicyDataList } from "../../types/Policy/index";
 import Pagination from "./Pagination";
 
 interface IProps {
   headings: IHeadings[];
-  data: ITenantDataList | ITenantUserDataList | IApiDataList;
+  data: ITenantDataList | ITenantUserDataList | IApiDataList | IPolicyDataList;
   pageCount: number;
   handlePageClick: (selected: number) => void;
   actions?: IActionsRenderList[];
@@ -44,7 +45,7 @@ const RenderList: React.FC<IProps> = (props) => {
             // @ts-ignore
             data.list.map(
               (
-                val: ITenantData | ITenantUserData | IApiData,
+                val: ITenantData | ITenantUserData | IApiData | IPolicyData,
                 index1: number
               ) => (
                 <tr key={index1}>
