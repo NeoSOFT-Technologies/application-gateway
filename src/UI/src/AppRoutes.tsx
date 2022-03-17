@@ -10,6 +10,7 @@ const TenantList = lazy(
   () => import("./pages/features/Admin/tenant-list/TenantList")
 );
 const APIList = lazy(() => import("./pages/features/APIs/List/APIList"));
+const KeyList = lazy(() => import("./pages/features/Keys/List/KeyList"));
 
 function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ function AppRoutes() {
         <Route path="/error-pages/error-401" element={<Error401 />} />
         <Route path="/tenantlist" element={<TenantList />} />
         <Route path="/apilist" element={<APIList />} />
+        <Route path="/keylist" element={<KeyList />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />
       </Routes>
