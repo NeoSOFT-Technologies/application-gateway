@@ -39,7 +39,7 @@ const slice = createSlice({
       state.loading = false;
       state.data = {
         Apis: action.payload.Data.Apis,
-        TotalCount: action.payload.TotalCount,
+        TotalCount: Math.ceil(action.payload.TotalCount / 3),
       };
     });
     builder.addCase(getApiList.rejected, (state, action) => {
