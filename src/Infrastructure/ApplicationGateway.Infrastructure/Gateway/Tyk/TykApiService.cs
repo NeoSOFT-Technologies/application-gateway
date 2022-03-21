@@ -311,6 +311,46 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 }
                 (apiObject["extendedPaths"] as JObject).Add("methodTransforms", methodTransforms);
             }
+            GetTransformHeaders(apiObject, extendedPaths);
+            GetTransformResponseHeaders(apiObject, extendedPaths);
+            return apiObject;
+        }
+        private static JObject GetTransformHeaders(JObject apiObject, JObject extendedPaths)
+        {
+            JArray headerTransforms = new JArray();
+            if (extendedPaths["transform_headers"] is not null)
+            {
+                foreach (JToken headerTransform in extendedPaths["transform_headers"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("actOn", headerTransform.Value<bool>("act_on"));
+                    tempObj.Add("addHeaders", headerTransform.Value<JObject>("add_headers"));
+                    tempObj.Add("deleteHeaders", headerTransform.Value<JArray>("delete_headers"));
+                    tempObj.Add("method", headerTransform.Value<string>("method"));
+                    tempObj.Add("path", headerTransform.Value<string>("path"));
+                    headerTransforms.Add(tempObj);
+                }
+               (apiObject["extendedPaths"] as JObject).Add("transformHeaders", headerTransforms);
+            }
+            return apiObject;
+        }
+        private static JObject GetTransformResponseHeaders(JObject apiObject, JObject extendedPaths)
+        {
+            JArray headerResponseTransforms = new JArray();
+            if (extendedPaths["transform_response_headers"] is not null)
+            {
+                foreach (JToken headerResponseTransform in extendedPaths["transform_response_headers"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("actOn", headerResponseTransform.Value<bool>("act_on"));
+                    tempObj.Add("addHeaders", headerResponseTransform.Value<JObject>("add_headers"));
+                    tempObj.Add("deleteHeaders", headerResponseTransform.Value<JArray>("delete_headers"));
+                    tempObj.Add("method", headerResponseTransform.Value<string>("method"));
+                    tempObj.Add("path", headerResponseTransform.Value<string>("path"));
+                    headerResponseTransforms.Add(tempObj);
+                }
+               (apiObject["extendedPaths"] as JObject).Add("transformResponseHeaders", headerResponseTransforms);
+            }
             return apiObject;
         }
 
@@ -356,6 +396,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         private static JObject SetExtendedPaths(JObject transformedObject, JObject version)
         {
             JObject extendedPaths = version.Value<JObject>("ExtendedPaths");
+            (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("extended_paths", new JObject());
             if (extendedPaths["MethodTransforms"] is not null)
             {
                 foreach (JToken methodTransform in extendedPaths["MethodTransforms"])
@@ -364,15 +405,51 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     tempObj.Add("method", methodTransform.Value<string>("Method"));
                     tempObj.Add("path", methodTransform.Value<string>("Path"));
                     tempObj.Add("to_method", methodTransform.Value<string>("ToMethod"));
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("extended_paths", new JObject());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("method_transforms", new JArray());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["method_transforms"] as JArray).Add(tempObj);
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("ExtendedPaths").Remove();
+                }
+            }
+            SetTransformHeaders(transformedObject, version, extendedPaths);
+            SetTransformResponseHeaders(transformedObject, version, extendedPaths);
+            (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("ExtendedPaths").Remove();
+            return transformedObject;
+        }
+        private static JObject SetTransformHeaders(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            if (extendedPaths["TransformHeaders"] is not null)
+            {
+                foreach (JToken headerTransform in extendedPaths["TransformHeaders"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("act_on", headerTransform.Value<bool>("ActOn"));
+                    tempObj.Add("add_headers", headerTransform.Value<JObject>("AddHeaders"));
+                    tempObj.Add("delete_headers", headerTransform.Value<JArray>("DeleteHeaders"));
+                    tempObj.Add("method", headerTransform.Value<string>("Method"));
+                    tempObj.Add("path", headerTransform.Value<string>("Path"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_headers", new JArray());
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_headers"] as JArray).Add(tempObj);
                 }
             }
             return transformedObject;
         }
-
+        private static JObject SetTransformResponseHeaders(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            if (extendedPaths["TransformResponseHeaders"] is not null)
+            {
+                foreach (JToken headerResponseTransform in extendedPaths["TransformResponseHeaders"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("act_on", headerResponseTransform.Value<bool>("ActOn"));
+                    tempObj.Add("add_headers", headerResponseTransform.Value<JObject>("AddHeaders"));
+                    tempObj.Add("delete_headers", headerResponseTransform.Value<JArray>("DeleteHeaders"));
+                    tempObj.Add("method", headerResponseTransform.Value<string>("Method"));
+                    tempObj.Add("path", headerResponseTransform.Value<string>("Path"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_response_headers", new JArray());
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_response_headers"] as JArray).Add(tempObj);
+                }
+            }
+            return transformedObject;
+        }
         private static JObject SetAddRemoveGlobalHeaders(JObject transformedObject, JObject version)
         {
             if(version.Value<JObject>("GlobalRequestHeaders") is not null)

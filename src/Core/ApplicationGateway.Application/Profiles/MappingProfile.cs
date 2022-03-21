@@ -102,6 +102,12 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Domain.Entities.Api, GetAllApiModel>().ReverseMap();
             CreateMap<Domain.Entities.Key, GetAllKeyModel>().ReverseMap();
             CreateMap<Domain.Entities.Policy, GetAllPolicyModel>().ReverseMap();
+
+            CreateMap<TransformHeader, UpdateTransformHeader>().ReverseMap();
+            CreateMap<TransformHeader, GetTransformHeader>().ReverseMap();
+            CreateMap<TransformResponseHeader, UpdateTransformResponseHeader>().ReverseMap();
+            CreateMap<TransformResponseHeader, GetTransformResponseHeader>().ReverseMap();
+
         }
 
     }

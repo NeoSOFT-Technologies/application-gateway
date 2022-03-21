@@ -74,6 +74,8 @@
     {
 #nullable enable
         public List<MethodTransform>? MethodTransforms { get; set; }
+        public List<TransformHeader>? TransformHeaders { get; set; }
+        public List<TransformResponseHeader>? TransformResponseHeaders { get; set; }
 #nullable disable
     }
 
@@ -82,6 +84,27 @@
         public string Method { get; set; }
         public string Path { get; set; }
         public string ToMethod { get; set; }
+    }
+    public class TransformHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+
+    public class TransformResponseHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
     }
 
     public enum VersioningLocation

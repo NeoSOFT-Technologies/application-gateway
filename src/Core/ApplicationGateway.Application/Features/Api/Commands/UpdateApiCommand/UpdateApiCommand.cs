@@ -78,6 +78,8 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
     {
 #nullable enable
         public List<UpdateMethodTransform>? MethodTransforms { get; set; }
+        public List<UpdateTransformHeader>? TransformHeaders { get; set; }
+        public List<UpdateTransformResponseHeader>? TransformResponseHeaders { get; set; }
 #nullable disable
     }
 
@@ -87,4 +89,26 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public string Path { get; set; }
         public string ToMethod { get; set; }
     }
+    public class UpdateTransformHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+
+    public class UpdateTransformResponseHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+
 }

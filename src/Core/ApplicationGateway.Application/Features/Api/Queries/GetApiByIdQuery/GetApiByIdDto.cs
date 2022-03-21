@@ -76,6 +76,8 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
     {
 #nullable enable
         public List<GetMethodTransform>? MethodTransforms { get; set; }
+        public List<GetTransformHeader>? TransformHeaders { get; set; }
+        public List<GetTransformResponseHeader>? TransformResponseHeaders { get; set; }
 #nullable disable
     }
 
@@ -84,5 +86,26 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public string Method { get; set; }
         public string Path { get; set; }
         public string ToMethod { get; set; }
+    }
+
+    public class GetTransformHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+    public class GetTransformResponseHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
     }
 }
