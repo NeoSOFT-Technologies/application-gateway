@@ -15,6 +15,7 @@ const PolicyList = lazy(
 );
 const KeyList = lazy(() => import("./pages/features/Keys/List/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/Dashboard"));
+const Update = lazy(() => import("./pages/features/APIs/Update/Update"));
 
 function AppRoutes() {
   return (
@@ -29,6 +30,7 @@ function AppRoutes() {
         <Route path="/policylist" element={<PolicyList />} />
         <Route path="/keylist" element={<KeyList />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/update" element={<Update />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />
       </Routes>
