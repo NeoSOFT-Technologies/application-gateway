@@ -70,24 +70,31 @@ export default function APIList() {
     { title: "Target Url" },
     { title: "Status" },
     { title: "Created Date" },
-    { title: "Action", className: "text-center" },
+    { title: "Action" },
   ];
   const actions = [
     {
-      className: "btn btn-sm btn-dark",
-      iconClassName: "bi bi-gear-fill",
+      className: "btn btn-sm btn-light",
+      iconClassName: "bi bi-pencil-square menu-icon",
     },
   ];
   return (
     <>
-      <span className="w-50 text-right  d-inline-block">API Record</span>
-
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
-            <div className="d-flex align-items-center justify-content-around">
-              <h2 className="card-title">Tenant List</h2>
-              <div className="search-field ">
+            <div className="align-items-center">
+              <div>
+                <button
+                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                  onClick={(e) => searchFilter(e)}
+                >
+                  {" "}
+                  Create API &nbsp;
+                  <span className="bi bi-plus-lg"></span> &nbsp;
+                </button>
+              </div>
+              <div className="search-field justify-content-around ">
                 <form className="h-50">
                   <div className="input-group">
                     <input
@@ -106,6 +113,7 @@ export default function APIList() {
                 </form>
               </div>
             </div>
+            <br />
             {apiList.loading && <Spinner />}
             <div className="table-responsive">
               {!apiList.loading && apiList.data && (

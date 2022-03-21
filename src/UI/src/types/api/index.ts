@@ -16,5 +16,4 @@ export interface IApiData {
   CreatedDate: string;
   TargetUrl: string;
   IsActive: boolean;
-  Id: string;
 }

@@ -70,27 +70,34 @@ export default function PolicyList() {
 
   const headings = [
     { title: "State" },
-    { title: "Policy Name", className: "w-100" },
-    { title: "Access Rights", className: "text-center" },
-    { title: "Authentication Type", className: "text-center" },
-    { title: "Action", className: "text-center" },
+    { title: "Policy Name" },
+    { title: "Access Rights" },
+    { title: "Authentication Type" },
+    { title: "Action" },
   ];
   const actions = [
     {
-      className: "btn btn-sm btn-dark",
-      iconClassName: "bi bi-gear-fill",
+      className: "btn btn-sm btn-light",
+      iconClassName: "bi bi-pencil-square menu-icon",
     },
   ];
   return (
     <>
-      <span className="w-50 text-right  d-inline-block">Policy Record</span>
-
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
-            <div className="d-flex align-items-center justify-content-around">
-              <h2 className="card-title">Policy List</h2>
-              <div className="search-field ">
+            <div className="align-items-center">
+              <div>
+                <button
+                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                  onClick={(e) => searchFilter(e)}
+                >
+                  {" "}
+                  Create Policy &nbsp;
+                  <span className="bi bi-plus-lg"></span> &nbsp;
+                </button>
+              </div>
+              <div className="search-field justify-content-around">
                 <form className="h-50">
                   <div className="input-group">
                     <input
@@ -109,6 +116,7 @@ export default function PolicyList() {
                 </form>
               </div>
             </div>
+            <br />
             {policyList.loading && <Spinner />}
             <div className="table-responsive">
               {!policyList.loading && policyList.data && (

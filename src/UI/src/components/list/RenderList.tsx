@@ -10,10 +10,16 @@ import {
 import { IApiData, IApiDataList } from "../../types/api/index";
 import { IPolicyData, IPolicyDataList } from "../../types/Policy/index";
 import Pagination from "./Pagination";
+import { IKeyData, IKeyDataList } from "../../types/key";
 
 interface IProps {
   headings: IHeadings[];
-  data: ITenantDataList | ITenantUserDataList | IApiDataList | IPolicyDataList;
+  data:
+    | ITenantDataList
+    | ITenantUserDataList
+    | IApiDataList
+    | IPolicyDataList
+    | IKeyDataList;
   pageCount: number;
   handlePageClick: (selected: number) => void;
   actions?: IActionsRenderList[];
@@ -25,7 +31,7 @@ const RenderList: React.FC<IProps> = (props) => {
   return (
     <div>
       {/* headings mapping logic */}
-      <table className="table">
+      <table className="table table-bordered">
         <thead>
           <tr>
             {headings.map((heading, index) => (
@@ -45,7 +51,12 @@ const RenderList: React.FC<IProps> = (props) => {
             // @ts-ignore
             data.list.map(
               (
-                val: ITenantData | ITenantUserData | IApiData | IPolicyData,
+                val:
+                  | ITenantData
+                  | ITenantUserData
+                  | IApiData
+                  | IPolicyData
+                  | IKeyData,
                 index1: number
               ) => (
                 <tr key={index1}>

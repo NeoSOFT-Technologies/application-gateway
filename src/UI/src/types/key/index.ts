@@ -12,9 +12,9 @@ export interface ISetKeyList {
   TotalCount: number;
 }
 export interface IKeyData {
-  Name: string;
+  KeyName: string;
   CreatedDate: string;
-  TargetUrl: string;
   IsActive: boolean;
   Id: string;
+  Policies?: string[];
 }

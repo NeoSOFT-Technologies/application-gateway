@@ -38,7 +38,7 @@ const slice = createSlice({
       state.loading = false;
       state.data = {
         Policies: action.payload.Data.Policies,
-        TotalCount: action.payload.TotalCount,
+        TotalCount: Math.ceil(action.payload.TotalCount / 3),
       };
     });
     builder.addCase(getPolicyList.rejected, (state, action) => {

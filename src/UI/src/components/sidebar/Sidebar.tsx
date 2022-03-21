@@ -62,7 +62,7 @@ export const Sidebar = () => {
                 <span className="menu-title">
                   <>{route.title}</>
                 </span>
-                <i className={route.title}></i>
+                <i className={route.icon}></i>
               </Link>
             </li>
           ))}
