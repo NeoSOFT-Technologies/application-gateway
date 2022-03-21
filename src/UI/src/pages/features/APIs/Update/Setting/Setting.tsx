@@ -7,11 +7,11 @@ export default function Setting() {
   return (
     <div>
       Setting
-      <h1>
+      <div>
         <ListenPath />
         <TargetUrl />
         <RateLimit />
-      </h1>
+      </div>
     </div>
   );
 }
