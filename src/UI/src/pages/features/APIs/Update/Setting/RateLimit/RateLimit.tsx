@@ -14,6 +14,15 @@ export default function RateLimit() {
               <Form>
                 <Row>
                   <Col md="12">
+                    <Form.Group className="mb-3">
+                      <Form.Check
+                        type="switch"
+                        id="custom-switch"
+                        label="Disable rate limiting"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md="12">
                     <i> Global Rate Limiting</i>
                     <i className="mb-3">
                       Turn on global rate limit for the whole Api.Key specific
@@ -39,6 +48,8 @@ export default function RateLimit() {
                         trailing &apos;/ &apos;
                       </i>
                     </Form.Group>
+                  </Col>
+                  <Col md="12">
                     <Form.Group className="mb-3">
                       <Form.Label> Per (Seconds)</Form.Label>
                       <br />
@@ -50,6 +61,15 @@ export default function RateLimit() {
                         placeholder="Enter time"
                         name="per"
                         required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md="12">
+                    <Form.Group className="mb-3">
+                      <Form.Check
+                        type="switch"
+                        id="custom-switch"
+                        label="Disable quotas"
                       />
                     </Form.Group>
                   </Col>

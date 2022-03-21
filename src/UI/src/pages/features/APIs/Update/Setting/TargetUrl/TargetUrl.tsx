@@ -35,6 +35,24 @@ export default function TargetUrl() {
                       </i>
                     </Form.Group>
                   </Col>
+                  <Col md="12">
+                    <Form.Group className="mb-3">
+                      <Form.Check
+                        type="switch"
+                        id="custom-switch"
+                        label="Enable round-robin load balancing"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md="12">
+                    <Form.Group className="mb-3">
+                      <Form.Check
+                        type="switch"
+                        id="custom-switch"
+                        label="Enable service discovery"
+                      />
+                    </Form.Group>
+                  </Col>
                 </Row>
               </Form>
             </div>

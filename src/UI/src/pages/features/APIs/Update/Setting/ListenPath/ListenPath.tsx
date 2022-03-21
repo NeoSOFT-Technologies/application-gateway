@@ -32,9 +32,9 @@ export default function ListenPath() {
                     />
                   </Form.Group>
                   <i>
-                    If you add a trailing &quot; / &quot; to your listen path,
-                    you can only make requests that include the trailing &quot;
-                    / &quot;.
+                    If you add a trailing &apos;/ &apos; to your listen path,
+                    you can only make requests that include the trailing &apos;/
+                    &apos;.
                   </i>
                 </Col>
                 <Col md={12}>
