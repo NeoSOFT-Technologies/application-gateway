@@ -43,6 +43,7 @@ export default function Versions() {
                       name="striplistenpath"
                       value=""
                       placeholder="Version Name"
+                      required
                     />
                   </Form.Group>
                 </Col>
@@ -53,6 +54,7 @@ export default function Versions() {
                       name="striplistenpath"
                       value=""
                       placeholder="Override Target Host"
+                      required
                     />
                   </Form.Group>
                 </Col>
@@ -63,6 +65,7 @@ export default function Versions() {
                       name="striplistenpath"
                       value=""
                       placeholder="Expires"
+                      required
                     />
                   </Form.Group>
                 </Col>

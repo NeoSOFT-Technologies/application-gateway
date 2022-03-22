@@ -11,7 +11,7 @@ export default function ListenPath() {
             Listen Path
           </div>
           <div className="card-body">
-            <Form className="p-4">
+            <div className="p-4">
               <Row>
                 <Col md={12} className="mb-3">
                   <p>
@@ -29,6 +29,7 @@ export default function ListenPath() {
                       placeholder="Enter listen path"
                       name="listenpath"
                       value=""
+                      required
                     />
                   </Form.Group>
                   <i>
@@ -70,13 +71,6 @@ export default function ListenPath() {
                       If set, API can&apos;t be accessed except when using
                       Internal
                     </p>
-                    {/* <Form.Control
-                            className="text-left"
-                            type="switch"
-                            name="internal"
-                            value=""
-                          />
-                          <span>Activated</span> */}
 
                     <Form.Check
                       type="switch"
@@ -84,13 +78,9 @@ export default function ListenPath() {
                       label="Activated"
                     />
                   </Form.Group>
-                  {/* <ToggleButtonGroup
-                          id="1"
-                          disabled={true}
-                        ></ToggleButtonGroup> */}
                 </Col>
               </Row>
-            </Form>
+            </div>
           </div>
         </div>
       </div>
