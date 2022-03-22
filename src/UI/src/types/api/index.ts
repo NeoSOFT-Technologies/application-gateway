@@ -31,3 +31,23 @@ export interface IApiFormData {
   isActive: Boolean;
   id?: number;
 }
+export interface IErrorApiUpdateInput {
+  apiName: string;
+  targetUrl: string;
+  listenPath: string;
+  rate: string;
+  perSecond: string;
+}
+export interface IApiUpdateFormData {
+  apiName: string;
+  listenPath: string;
+  targetUrl: string;
+  stripListenPath: Boolean;
+  internal: Boolean;
+  roundRobin: Boolean;
+  service: Boolean;
+  rateLimit: Boolean;
+  rate: string;
+  perSecond: string;
+  quotas: Boolean;
+}
