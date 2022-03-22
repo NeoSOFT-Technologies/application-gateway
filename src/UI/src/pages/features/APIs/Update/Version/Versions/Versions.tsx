@@ -40,8 +40,8 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      id="striplistenpath"
                       name="striplistenpath"
-                      value=""
                       placeholder="Version Name"
                       required
                     />
@@ -51,8 +51,8 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      id="striplistenpath"
                       name="striplistenpath"
-                      value=""
                       placeholder="Override Target Host"
                       required
                     />
@@ -62,8 +62,8 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      id="striplistenpath"
                       name="striplistenpath"
-                      value=""
                       placeholder="Expires"
                       required
                     />

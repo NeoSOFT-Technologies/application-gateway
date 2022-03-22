@@ -27,8 +27,8 @@ export default function ListenPath() {
                     <Form.Control
                       type="text"
                       placeholder="Enter listen path"
+                      id="listenpath"
                       name="listenpath"
-                      value=""
                       required
                     />
                   </Form.Group>
