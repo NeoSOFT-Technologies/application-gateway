@@ -7,7 +7,7 @@ import {
   IErrorApiUpdateInput,
 } from "../../../../types/api";
 // import { regexForListenPath } from "../../../../resources/APIS/ApiConstants";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+// import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 // import { useNavigate } from "react-router-dom";
 
 export default function Update() {
@@ -46,8 +46,8 @@ export default function Update() {
   };
   const handleSubmitApi = (event: React.FormEvent) => {
     event.preventDefault();
-
     if (handleValidate()) {
+      console.log("apisUpdateForm", apisUpdateForm);
       if (
         apisUpdateForm.apiName !== "" &&
         apisUpdateForm.listenPath !== "" &&
@@ -66,12 +66,6 @@ export default function Update() {
           perSecond: "",
           quotas: false,
         });
-      } else if (
-        apisUpdateForm.apiName === "" ||
-        apisUpdateForm.listenPath === "" ||
-        apisUpdateForm.targetUrl === ""
-      ) {
-        ToastAlert("Please Fill All Fields", "warning");
       }
     } else {
       setErr({

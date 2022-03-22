@@ -106,7 +106,8 @@ export default function ListenPath() {
                           <span>Strip the Listen path</span> */}
                     <Form.Check
                       type="switch"
-                      id="custom-switch"
+                      id="stripListenPath"
+                      name="stripListenPath"
                       label="Strip the Listen path"
                     />
                   </Form.Group>
