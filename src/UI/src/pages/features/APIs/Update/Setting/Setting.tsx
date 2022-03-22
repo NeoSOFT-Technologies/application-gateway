@@ -1,17 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import ListenPath from "./ListenPath/ListenPath";
 // import { Accordion } from "react-bootstrap";
 import RateLimit from "./RateLimit/RateLimit";
 import TargetUrl from "./TargetUrl/TargetUrl";
+import { Col, Form, Row } from "react-bootstrap";
+import {
+  IApiUpdateFormData,
+  IErrorApiUpdateInput,
+} from "../../../../../types/api";
+import {
+  regexForListenPath,
+  regexForName,
+} from "../../../../../resources/APIS/ApiConstants";
 
 export default function Setting() {
+  const [apisUpdateForm, setApisUpdateForm] = useState<IApiUpdateFormData>({
+    apiName: "",
+    listenPath: "",
+    targetUrl: "",
+    stripListenPath: false,
+    internal: false,
+    roundRobin: false,
+    service: false,
+    rateLimit: false,
+    rate: "",
+    perSecond: "",
+    quotas: false,
+  });
+  const [err, setErr] = useState<IErrorApiUpdateInput>({
+    apiName: "",
+    targetUrl: "",
+    listenPath: "",
+    rate: "",
+    perSecond: "",
+  });
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(event.target.value);
+    const { name, value } = event.target;
+    switch (name) {
+      case "apiName":
+        setErr({
+          ...err,
+          [name]: regexForName.test(value)
+            ? ""
+            : "Name should only consist Alphabets",
+        });
+        break;
+      case "listenPath":
+        setErr({
+          ...err,
+          [name]: regexForListenPath.test(value)
+            ? ""
+            : "ListenPath should be in correct format eg: /abc/",
+        });
+        break;
+      default:
+        break;
+    }
+    setApisUpdateForm({ ...apisUpdateForm, [name]: value });
+  };
   return (
     <div>
-      {/* <h1>
-        <ListenPath />
-        <TargetUrl />
-        <RateLimit />
-      </h1> */}
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
@@ -21,31 +70,36 @@ export default function Setting() {
               API Settings
               {/* <Accordion.Header>API Settings</Accordion.Header> */}
             </div>
-            {/* <h2 className="accordion-header">
-                    <button
-                      type="button"
-                      aria-expanded="true"
-                      className="accordion-button"
-                    >
-                      API Settings
-                    </button>
-                  </h2>
-                </div> */}
 
             <div className="card-body">
               {/* <Accordion.Body> */}
-              <form className="h-50">
-                <div>
-                  <label>API Name :</label>
-                </div>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control bg-parent border-1"
-                    placeholder="Enter API Name"
-                  />
-                </div>
-              </form>
+              <Row>
+                <Col md={12} className="mb-3">
+                  <div className="h-50">
+                    <Form.Group className="mb-3">
+                      <Form.Label> API Name</Form.Label>
+                      <br />
+
+                      <Form.Control
+                        className="mt-2"
+                        type="text"
+                        id="apiName"
+                        placeholder="Enter API Name"
+                        name="apiName"
+                        data-testid="name-input"
+                        value={apisUpdateForm.apiName}
+                        isInvalid={!!err.apiName}
+                        isValid={!err.apiName && !!apisUpdateForm.apiName}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {err.apiName}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </div>
+                </Col>
+              </Row>
               <br />
               <div>
                 <ListenPath />

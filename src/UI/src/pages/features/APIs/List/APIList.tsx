@@ -71,6 +71,13 @@ export default function APIList() {
   //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
   //   };
 
+  const NavigateToCreateApi = (
+    val: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    val.preventDefault();
+    // console.log(val);
+    navigate("/createapi");
+  };
   const NavigateUpdate = () => {
     // console.log(val);
     navigate("/update", {
@@ -101,7 +108,7 @@ export default function APIList() {
               <div>
                 <button
                   className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                  onClick={(e) => searchFilter(e)}
+                  onClick={(e) => NavigateToCreateApi(e)}
                 >
                   {" "}
                   Create API &nbsp;

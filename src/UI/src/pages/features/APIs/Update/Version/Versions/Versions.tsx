@@ -10,7 +10,7 @@ export default function Versions() {
             Versions
           </div>
           <div className="card-body">
-            <Form className="p-4">
+            <div className="p-4">
               <Row>
                 <Col md={12} className="mb-3">
                   <i>
@@ -40,9 +40,10 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      id="striplistenpath"
                       name="striplistenpath"
-                      value=""
                       placeholder="Version Name"
+                      required
                     />
                   </Form.Group>
                 </Col>
@@ -50,9 +51,10 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      id="striplistenpath"
                       name="striplistenpath"
-                      value=""
                       placeholder="Override Target Host"
+                      required
                     />
                   </Form.Group>
                 </Col>
@@ -60,9 +62,10 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
+                      id="striplistenpath"
                       name="striplistenpath"
-                      value=""
                       placeholder="Expires"
+                      required
                     />
                   </Form.Group>
                 </Col>
@@ -72,7 +75,7 @@ export default function Versions() {
                   </Form.Group>
                 </Col>
               </Row>
-            </Form>
+            </div>
           </div>
         </div>
       </div>
