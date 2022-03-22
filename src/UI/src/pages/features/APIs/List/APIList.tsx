@@ -65,6 +65,12 @@ export default function APIList() {
     // console.log(val);
     navigate("/createapi");
   };
+  const NavigateUpdate = () => {
+    // console.log(val);
+    navigate("/update", {
+      // state: { val },
+    });
+  };
 
   const headings = [
     { title: "Name" },
@@ -77,6 +83,7 @@ export default function APIList() {
     {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
+      buttonFunction: NavigateUpdate,
     },
   ];
   return (
@@ -101,7 +108,7 @@ export default function APIList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search Tenant"
+                      placeholder="Search Api"
                       // onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
