@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import { Button } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
@@ -9,7 +9,7 @@ import { IApiDataList, IApiListState } from "../../../../types/api/index";
 import Spinner from "../../../../components/loader/Loader";
 
 export default function APIList() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
   // const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
@@ -58,12 +58,13 @@ export default function APIList() {
   //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
   //   };
 
-  // const NavigateTenant = (val: IApiDetails) => {
-  //   console.log(val);
-  //   navigate("/tenantdetails", {
-  //     state: { val },
-  //   });
-  // };
+  const NavigateToCreateApi = (
+    val: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    val.preventDefault();
+    // console.log(val);
+    navigate("/createapi");
+  };
 
   const headings = [
     { title: "Name" },
@@ -87,7 +88,7 @@ export default function APIList() {
               <div>
                 <button
                   className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                  onClick={(e) => searchFilter(e)}
+                  onClick={(e) => NavigateToCreateApi(e)}
                 >
                   {" "}
                   Create API &nbsp;

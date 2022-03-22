@@ -80,7 +80,7 @@ export default function Login() {
               <div className="brand-logo">
                 <img src={logo} alt="logo" />
               </div>
-              <h4>Hello! let&apos;s get started</h4>
+              <h4>Application Gateway</h4>
               <h6 className="font-weight-light">Sign in to continue.</h6>
               <Form className="pt-3">
                 <Form.Group className="mb-3">

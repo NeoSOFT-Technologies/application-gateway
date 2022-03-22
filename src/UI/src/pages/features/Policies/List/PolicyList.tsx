@@ -73,13 +73,17 @@ export default function PolicyList() {
     { title: "Policy Name" },
     { title: "Access Rights" },
     { title: "Authentication Type" },
-    { title: "Action" },
+    { title: "Action", className: "text-center" },
   ];
   const actions = [
     {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
     },
+    // {
+    //   className: "btn btn-sm btn-light",
+    //   iconClassName: "bi bi-trash-fill menu-icon",
+    // },
   ];
   return (
     <>

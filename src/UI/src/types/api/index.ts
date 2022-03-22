@@ -17,3 +17,17 @@ export interface IApiData {
   TargetUrl: string;
   IsActive: boolean;
 }
+
+export interface IErrorApiInput {
+  name: string;
+  targetUrl: string;
+  listenPath: string;
+  status: boolean;
+}
+export interface IApiFormData {
+  name: string;
+  listenPath: string;
+  targetUrl: string;
+  isActive: Boolean;
+  id?: number;
+}
