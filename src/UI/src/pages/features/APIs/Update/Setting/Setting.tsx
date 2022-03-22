@@ -3,6 +3,7 @@ import ListenPath from "./ListenPath/ListenPath";
 // import { Accordion } from "react-bootstrap";
 import RateLimit from "./RateLimit/RateLimit";
 import TargetUrl from "./TargetUrl/TargetUrl";
+import { Col, Form, Row } from "react-bootstrap";
 
 export default function Setting() {
   return (
@@ -34,8 +35,10 @@ export default function Setting() {
 
             <div className="card-body">
               {/* <Accordion.Body> */}
-              <form className="h-50">
-                <div>
+              <Row>
+                <Col md={12} className="mb-3">
+                  <div className="h-50">
+                    {/* <div>
                   <label>API Name :</label>
                 </div>
                 <div className="input-group">
@@ -44,8 +47,23 @@ export default function Setting() {
                     className="form-control bg-parent border-1"
                     placeholder="Enter API Name"
                   />
-                </div>
-              </form>
+                </div> */}
+                    <Form.Group className="mb-3">
+                      <Form.Label> API Name</Form.Label>
+                      <br />
+
+                      <Form.Control
+                        className="mt-2"
+                        type="text"
+                        id="apiname"
+                        placeholder="Enter API Name"
+                        name="apiname"
+                        required
+                      />
+                    </Form.Group>
+                  </div>
+                </Col>
+              </Row>
               <br />
               <div>
                 <ListenPath />

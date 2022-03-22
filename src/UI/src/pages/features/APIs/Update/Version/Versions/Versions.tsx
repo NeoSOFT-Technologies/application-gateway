@@ -10,7 +10,7 @@ export default function Versions() {
             Versions
           </div>
           <div className="card-body">
-            <Form className="p-4">
+            <div className="p-4">
               <Row>
                 <Col md={12} className="mb-3">
                   <i>
@@ -75,7 +75,7 @@ export default function Versions() {
                   </Form.Group>
                 </Col>
               </Row>
-            </Form>
+            </div>
           </div>
         </div>
       </div>

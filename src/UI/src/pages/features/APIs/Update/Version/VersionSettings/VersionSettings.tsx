@@ -9,7 +9,7 @@ export default function VersionSettings() {
           <div className="align-items-center justify-content-around">
             <div className="card-header !important">Version Settings</div>
             <div className="card-body">
-              <Form>
+              <div>
                 <Row>
                   <Col md="12">
                     <Form.Group className="mb-3">
@@ -47,7 +47,7 @@ export default function VersionSettings() {
                     </Form.Group>
                   </Col>
                 </Row>
-              </Form>
+              </div>
             </div>
           </div>
         </div>
