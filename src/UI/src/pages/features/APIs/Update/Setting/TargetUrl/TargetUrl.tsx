@@ -24,7 +24,7 @@ export default function TargetUrl() {
                         className="mt-2"
                         type="text"
                         id="name"
-                        placeholder="Enter Name"
+                        placeholder="Enter Target Url"
                         name="name"
                         required
                       />

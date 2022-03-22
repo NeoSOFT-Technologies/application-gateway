@@ -5,7 +5,6 @@ import VersionSettings from "./VersionSettings/VersionSettings";
 export default function Version() {
   return (
     <div>
-      Version
       <div>
         <VersionSettings />
         <Versions />
