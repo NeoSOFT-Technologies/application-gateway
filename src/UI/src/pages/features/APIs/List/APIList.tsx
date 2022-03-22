@@ -7,8 +7,19 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
 import { IApiDataList, IApiListState } from "../../../../types/api/index";
 import Spinner from "../../../../components/loader/Loader";
+import { useErrorHandler } from "react-error-boundary";
+
+function Bomb() {
+  throw new Error("Boom");
+}
 
 export default function APIList() {
+  const handleError = useErrorHandler();
+  try {
+    Bomb();
+  } catch (err) {
+    // handleError(err);
+  }
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
   // const [search, setSearch] = useState(" ");
@@ -25,11 +36,13 @@ export default function APIList() {
     list: [],
     fields: [],
   });
-  const mainCall = (currentPage: number) => {
-    dispatch(getApiList({ currentPage }));
+
+  const mainCall = async (currentPage: number) => {
+    const resp = await dispatch(getApiList({ currentPage }));
+    handleError(resp.payload);
   };
   useEffect(() => {
-    console.log("UseEffect", apiList.data);
+    // console.log("UseEffect", apiList.data);
     if (apiList.data) {
       setDataList({
         list: [...apiList.data.Apis],
@@ -117,7 +130,7 @@ export default function APIList() {
             <br />
             {apiList.loading && <Spinner />}
             <div className="table-responsive">
-              {!apiList.loading && apiList.data && (
+              {!apiList.loading && apiList.error === null && apiList.data && (
                 <RenderList
                   headings={headings}
                   data={datalist}

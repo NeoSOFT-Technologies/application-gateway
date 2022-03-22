@@ -12,17 +12,17 @@ const initialState: IApiListState = {
   loading: false,
   error: null,
 };
-
 export const getApiList = createAsyncThunk(
   "api/list",
   async (conditions: IConditions) => {
     const { currentPage } = conditions;
     try {
       const response = await apiListService(currentPage);
-      console.log(response);
-      return response.data;
+      return response?.data;
     } catch (err) {
-      return err;
+      const myError = err as Error;
+      // console.log("");
+      throw myError;
     }
   }
 );
@@ -46,6 +46,7 @@ const slice = createSlice({
       state.loading = false;
       // action.payload contains error information
       state.error = error(action.payload);
+      action.payload = action.error;
     });
   },
 });
