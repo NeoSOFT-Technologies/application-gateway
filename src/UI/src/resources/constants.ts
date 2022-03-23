@@ -9,4 +9,4 @@ export const regexForUser =
   /^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$/;
 export const regForPassword = /^[a-zA-Z0-9@*!&%$]{8,15}$/;
 
-//export const regexForListenPath = /^[/][a-zA-Z0-9]*[/]$/; // "//" + "[a-z]*" + "//"; // /^[a-z]*ing$/i; (\/)(A-Z a-z)?(\/)
+// export const regexForListenPath = /^[/][a-zA-Z0-9]*[/]$/; // "//" + "[a-z]*" + "//"; // /^[a-z]*ing$/i; (\/)(A-Z a-z)?(\/)

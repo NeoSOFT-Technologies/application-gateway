@@ -10,6 +10,8 @@ import addNewUserReducer from "./features/tenant/add-user/slice";
 import apiListReducer from "./features/api/list/slice";
 import policyListReducer from "./features/policy/list/slice";
 import keyListReducer from "./features/key/list/slice";
+import addApiReducer from "./features/api/create/slice";
+import deleteApiReducer from "./features/api/delete/slice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +26,8 @@ const store = configureStore({
     apiList: apiListReducer,
     policyList: policyListReducer,
     keyList: keyListReducer,
+    addApi: addApiReducer,
+    deleteApi: deleteApiReducer,
   },
 });
 

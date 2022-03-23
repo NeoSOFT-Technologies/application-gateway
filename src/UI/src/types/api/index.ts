@@ -16,6 +16,7 @@ export interface IApiData {
   CreatedDate: string;
   TargetUrl: string;
   IsActive: boolean;
+  Id?: string;
 }
 
 export interface IErrorApiInput {
@@ -29,5 +30,5 @@ export interface IApiFormData {
   listenPath: string;
   targetUrl: string;
   isActive: Boolean;
-  id?: number;
+  Id?: string;
 }

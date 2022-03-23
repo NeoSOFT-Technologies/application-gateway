@@ -1,5 +1,5 @@
 // import { IApiData } from "../../types/api/index";
-import { IApiData } from "../../types/api";
+import { IApiFormData } from "../../types/api";
 import apiFactory from "../../utils/api";
 
 export function apiListService(currentPage: number) {
@@ -7,6 +7,10 @@ export function apiListService(currentPage: number) {
     `ApplicationGateway?pageNum=${currentPage}&pageSize=3`
   );
 }
-export function addApiDataService(data: IApiData) {
+export function addApiDataService(data: IApiFormData) {
   return apiFactory().post(`ApplicationGateway/CreateApi`, data);
+}
+
+export function deleteApiDataService(Id: string) {
+  return apiFactory().delete(`ApplicationGateway/` + Id);
 }

@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-// import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
-import { IApiDataList, IApiListState } from "../../../../types/api/index";
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import {
+  IApiDataList,
+  IApiData,
+  IApiListState,
+} from "../../../../types/api/index";
 import Spinner from "../../../../components/loader/Loader";
+import { deleteApi } from "../../../../store/features/api/delete/slice";
 
 export default function APIList() {
   const navigate = useNavigate();
@@ -16,6 +22,7 @@ export default function APIList() {
   const apiList: IApiListState = useAppSelector(
     (state: RootState) => state.apiList
   );
+  const [deleteshow, setDeleteshow] = useState(false);
   // const [checkactive, setCheckactive] = useState({
   //   btn1: false,
   //   btn2: false,
@@ -65,6 +72,7 @@ export default function APIList() {
     // console.log(val);
     navigate("/createapi");
   };
+
   const NavigateUpdate = () => {
     // console.log(val);
     navigate("/update", {
@@ -72,6 +80,17 @@ export default function APIList() {
     });
   };
 
+  const deleteApiFunction = (val: IApiData) => {
+    // console.log(val: IApiFormData);
+    // const { val } = location.state as LocationState;
+    console.log(val);
+    console.log(val.Id);
+    if (val.Id) {
+      dispatch(deleteApi(val.Id));
+      ToastAlert("Api Removed", "success");
+      navigate("/apilist");
+    }
+  };
   const headings = [
     { title: "Name" },
     { title: "Target Url" },
@@ -84,6 +103,12 @@ export default function APIList() {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
       buttonFunction: NavigateUpdate,
+    },
+    {
+      className: "btn btn-sm btn-light",
+      iconClassName: "bi bi-trash-fill menu-icon",
+      // buttonFunction: () => setDeleteshow(true),
+      buttonFunction: deleteApiFunction,
     },
   ];
   return (
@@ -138,6 +163,18 @@ export default function APIList() {
           </div>
         </div>
       </div>
+
+      <Modal show={deleteshow} onHide={() => setDeleteshow(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Api</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Do You want To delete the Api</Modal.Body>
+        <Modal.Footer>
+          <Button className="btn-danger" onClick={() => deleteApiFunction}>
+            Remove
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
