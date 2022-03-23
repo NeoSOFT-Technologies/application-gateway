@@ -16,6 +16,7 @@ export interface IApiData {
   CreatedDate: string;
   TargetUrl: string;
   IsActive: boolean;
+  Status: string;
 }
 
 export interface IErrorApiInput {

@@ -44,9 +44,19 @@ export default function APIList() {
   useEffect(() => {
     // console.log("UseEffect", apiList.data);
     if (apiList.data) {
+      apiList.data.Apis.map(item=>{
+        if(item.IsActive === true)
+        {
+          item.Status = "Active";
+        }
+        else
+        {
+          item.Status = "In-Active";
+        }
+      });
       setDataList({
         list: [...apiList.data.Apis],
-        fields: ["Name", "TargetUrl", "IsActive", "CreatedDate"],
+        fields: ["Name", "TargetUrl", "Status", "CreatedDate"],
       });
     }
   }, [apiList.data]);
