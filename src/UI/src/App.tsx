@@ -9,6 +9,8 @@ import { Navigate } from "react-router-dom";
 import { IUserDataState } from "./types/index";
 import Sidebar from "./components/sidebar/Sidebar";
 import { RootState } from "./store";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback, { ErrorHandler } from "./ErrorFallback";
 interface IState {
   isFullPageLayout: boolean;
 }
@@ -40,7 +42,12 @@ class App extends Component<IProp, IState> {
           {sidebarComponent}
           <div className="main-panel">
             <div className="content-wrapper">
-              <AppRoutes />
+              <ErrorBoundary
+                FallbackComponent={ErrorFallback}
+                onError={ErrorHandler}
+              >
+                <AppRoutes />
+              </ErrorBoundary>
             </div>
             {footerComponent}
           </div>

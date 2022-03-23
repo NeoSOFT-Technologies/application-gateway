@@ -10,12 +10,19 @@ const TenantList = lazy(
   () => import("./pages/features/Admin/tenant-list/TenantList")
 );
 const APIList = lazy(() => import("./pages/features/APIs/List/APIList"));
+const CreateApi = lazy(() => import("./pages/features/APIs/Create/CreateApi"));
+const RegisterTenant = lazy(
+  () => import("./pages/features/Admin/register-tenant/RegisterTenant")
+);
 const PolicyList = lazy(
   () => import("./pages/features/Policies/List/PolicyList")
 );
 const KeyList = lazy(() => import("./pages/features/Keys/List/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/Dashboard"));
-
+const Update = lazy(() => import("./pages/features/APIs/Update/Update"));
+const TenantDetails = lazy(
+  () => import("./pages/features/Admin/tenant-details/TenantDetails")
+);
 function AppRoutes() {
   return (
     <Suspense fallback={<Spinner />}>
@@ -28,7 +35,11 @@ function AppRoutes() {
         <Route path="/apilist" element={<APIList />} />
         <Route path="/policylist" element={<PolicyList />} />
         <Route path="/keylist" element={<KeyList />} />
+        <Route path="/createapi" element={<CreateApi />} />
+        <Route path="/registertenant" element={<RegisterTenant />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/update" element={<Update />} />
+        <Route path="/tenantdetail" element={<TenantDetails />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />
       </Routes>

@@ -78,6 +78,8 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
     {
 #nullable enable
         public List<UpdateMethodTransform>? MethodTransforms { get; set; }
+        public List<UpdateUrlRewrite>? UrlRewrites { get; set; }
+        public List<UpdateValidateJson>? ValidateJsons { get; set; }
         public List<UpdateTransformHeader>? TransformHeaders { get; set; }
         public List<UpdateTransformResponseHeader>? TransformResponseHeaders { get; set; }
         public List<UpdateTransform>? Transform { get; set; }
@@ -85,11 +87,83 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
 #nullable disable
     }
 
+    public class UpdateValidateJson
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public string Schema { get; set; }
+        public int ErrorResponseCode { get; set; }
+    }
+
     public class UpdateMethodTransform
     {
         public string Method { get; set; }
         public string Path { get; set; }
         public string ToMethod { get; set; }
+    }
+
+    public class UpdateUrlRewrite
+    {
+        public string Path { get; set; }
+        public string Method { get; set; }
+        public string MatchPattern { get; set; }
+        public string RewriteTo { get; set; }
+        public List<UpdateTrigger> Triggers { get; set; }
+    }
+
+    public class UpdateTrigger
+    {
+        public string On { get; set; }
+        public UpdateOption Options { get; set; }
+        public string RewriteTo { get; set; }
+
+    }
+
+    public class UpdateOption
+    {
+        public UpdateHeaderMatch HeaderMatches { get; set; }
+        public UpdateQueryValMatch QueryValMatches { get; set; }
+        public UpdatePathPartMatch PathPartMatches { get; set; }
+        public UpdateRequestContexMatch RequestContexMatches { get; set; }
+        public UpdateSessionMetaMatch SessionMetaMatches { get; set; }
+        public UpdatePayloadMatch PayloadMatches { get; set; }
+    }
+
+    public class UpdateHeaderMatch
+    {
+        public UpdateCulprits Culprit { get; set; }
+    }
+
+    public class UpdatePathPartMatch
+    {
+        public UpdateCulprits Culprit { get; set; }
+    }
+
+    public class UpdatePayloadMatch
+    {
+        public string MatchRx { get; set; }
+    }
+
+    public class UpdateQueryValMatch
+    {
+        public UpdateCulprits Culprit { get; set; }
+    }
+
+    public class UpdateRequestContexMatch
+    {
+
+    }
+
+    public class UpdateSessionMetaMatch
+    {
+
+    }
+
+    public class UpdateCulprits
+    {
+        public string Key { get; set; }
+        public string MatchRx { get; set; }
+        public bool Reverse { get; set; }
     }
     public class UpdateTransformHeader
     {

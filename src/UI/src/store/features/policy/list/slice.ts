@@ -13,7 +13,7 @@ const initialState: IPolicyListState = {
 };
 
 export const getPolicyList = createAsyncThunk(
-  "api/list",
+  "policy/list",
   async (conditions: IConditions) => {
     const { currentPage } = conditions;
     try {
@@ -27,7 +27,7 @@ export const getPolicyList = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "api",
+  name: "policy",
   initialState,
   reducers: {},
   extraReducers(builder): void {

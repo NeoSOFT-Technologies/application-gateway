@@ -37,6 +37,17 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<VersionModel, UpdateVersionModel>().ReverseMap();
             CreateMap<ExtendedPaths, UpdateExtendedPaths>().ReverseMap();
             CreateMap<MethodTransform, UpdateMethodTransform>().ReverseMap();
+            CreateMap<ValidateJson, UpdateValidateJson>().ReverseMap();
+            CreateMap<UrlRewrite, UpdateUrlRewrite>().ReverseMap();
+            CreateMap<Trigger, UpdateTrigger>().ReverseMap();
+            CreateMap<Option, UpdateOption>().ReverseMap();
+            CreateMap<QueryValMatch, UpdateQueryValMatch>().ReverseMap();
+            CreateMap<HeaderMatch, UpdateHeaderMatch>().ReverseMap();
+            CreateMap<PathPartMatch, UpdatePathPartMatch>().ReverseMap();
+            CreateMap<RequestContexMatch, UpdateRequestContexMatch>().ReverseMap();
+            CreateMap<SessionMetaMatch, UpdateSessionMetaMatch>().ReverseMap();
+            CreateMap<PayloadMatch, UpdatePayloadMatch>().ReverseMap();
+            CreateMap<Culprits, UpdateCulprits>().ReverseMap();
             CreateMap<OpenIdOptions, UpdateOpenIdOptions>().ReverseMap();
             CreateMap<Provider, UpdateProvider>().ReverseMap();
             CreateMap<ClientPolicy, UpdateClientPolicy>().ReverseMap();
@@ -51,7 +62,17 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<ClientPolicy, GetClientPolicy>().ReverseMap();
             CreateMap<ExtendedPaths,GetExtendedPaths>().ReverseMap();
             CreateMap<MethodTransform, GetMethodTransform>().ReverseMap();
-
+            CreateMap<ValidateJson, GetValidateJson>().ReverseMap();
+            CreateMap<UrlRewrite, GetUrlRewrite>().ReverseMap();
+            CreateMap<Trigger, GetTrigger>().ReverseMap();
+            CreateMap<Option, GetOption>().ReverseMap();
+            CreateMap<QueryValMatch, GetQueryValMatch>().ReverseMap();
+            CreateMap<HeaderMatch, GetHeaderMatch>().ReverseMap();
+            CreateMap<PathPartMatch, GetPathPartMatch>().ReverseMap();
+            CreateMap<RequestContexMatch, GetRequestContexMatch>().ReverseMap();
+            CreateMap<SessionMetaMatch, GetSessionMetaMatch>().ReverseMap();
+            CreateMap<PayloadMatch, GetPayloadMatch>().ReverseMap();
+            CreateMap<Culprits, GetCulprits>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyDto>().ReverseMap();
             CreateMap<PolicyApi, CreatePolicyApi>().ReverseMap();

@@ -76,11 +76,22 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
     {
 #nullable enable
         public List<GetMethodTransform>? MethodTransforms { get; set; }
+
+        public List<GetUrlRewrite>? UrlRewrites { get; set; }
+        public List<GetValidateJson>? ValidateJsons { get; set; }
+
         public List<GetTransformHeader>? TransformHeaders { get; set; }
         public List<GetTransformResponseHeader>? TransformResponseHeaders { get; set; }
         public List<GetTransform>? Transform { get; set; }
         public List<GetTransformResponse>? TransformResponse { get; set; }
 #nullable disable
+    }
+    public class GetValidateJson
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public string Schema { get; set; }
+        public int ErrorResponseCode { get; set; }
     }
 
     public class GetMethodTransform
@@ -88,6 +99,69 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public string Method { get; set; }
         public string Path { get; set; }
         public string ToMethod { get; set; }
+    }
+
+    public class GetUrlRewrite
+    {
+        public string Path { get; set; }
+        public string Method { get; set; }
+        public string MatchPattern { get; set; }
+        public string RewriteTo { get; set; }
+        public List<GetTrigger> Triggers { get; set; }
+    }
+
+    public class GetTrigger
+    {
+        public string On { get; set; }
+        public GetOption Options { get; set; }
+        public string RewriteTo { get; set; }
+    }
+
+    public class GetOption
+    {
+        public GetHeaderMatch HeaderMatches { get; set; }
+        public GetPathPartMatch PathPartMatches { get; set; }
+        public GetPayloadMatch PayloadMatches { get; set; }
+        public GetQueryValMatch QueryValMatches { get; set; }
+        public GetRequestContexMatch RequestContexMatches { get; set; }
+        public GetSessionMetaMatch SessionMetaMatches { get; set; }
+    }
+
+    public class GetHeaderMatch
+    {
+        public GetCulprits Culprit { get; set; }
+    }
+
+    public class GetPathPartMatch
+    {
+        public GetCulprits Culprit { get; set; }
+    }
+
+    public class GetPayloadMatch
+    {
+        public string MatchRx { get; set; }
+    }
+
+    public class GetQueryValMatch
+    {
+        public GetCulprits Culprit { get; set; }
+    }
+
+    public class GetRequestContexMatch
+    {
+
+    }
+
+    public class GetSessionMetaMatch
+    {
+
+    }
+
+    public class GetCulprits
+    {
+        public string Key { get; set; }
+        public string MatchRx { get; set; }
+        public bool Reverse { get; set; }
     }
 
     public class GetTransformHeader
