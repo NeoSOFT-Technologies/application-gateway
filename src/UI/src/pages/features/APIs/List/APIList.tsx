@@ -14,7 +14,7 @@ import Spinner from "../../../../components/loader/Loader";
 import { deleteApi } from "../../../../store/features/api/delete/slice";
 import { useErrorHandler } from "react-error-boundary";
 import moment from "moment";
-
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 function Bomb() {
   console.log("");
   // throw new Error("Boom");
