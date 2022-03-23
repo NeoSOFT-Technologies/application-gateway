@@ -6,6 +6,7 @@ import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getPolicyList } from "../../../../store/features/policy/list/slice";
 import {
+  // IPolicyData,
   IPolicyDataList,
   IPolicyListState,
 } from "../../../../types/Policy/index";
@@ -33,10 +34,20 @@ export default function PolicyList() {
   };
   useEffect(() => {
     console.log("UseEffect", policyList.data);
-    if (policyList.data) {
+    if (policyList.data && policyList.data?.Policies?.length > 0) {
+      // const listPOLICY: IPolicyData[] = [];
+      // policyList.data?.Policies.forEach((item) => {
+      //   const listObj = Object.create(item);
+      //   listObj.Status = listObj.IsActive === true ? "Active" : "In-Active";
+      //   listObj.CreatedDateTxt =
+      //     listObj.CreatedDate !== ""
+      //       ? moment(listObj.CreatedDate).format("DD/MM/YYYY")
+      //       : "";
+      //   listPOLICY.push(listObj);
+      // });
       setDataList({
         list: [...policyList.data.Policies],
-        fields: ["State", "Name", "Apis", "AuthType"],
+        fields: ["Name", "State", "Apis", "AuthType"],
       });
     }
   }, [policyList.data]);
@@ -69,8 +80,8 @@ export default function PolicyList() {
   // };
 
   const headings = [
-    { title: "State" },
     { title: "Policy Name" },
+    { title: "Status" },
     { title: "Access Rights" },
     { title: "Authentication Type" },
     { title: "Action", className: "text-center" },

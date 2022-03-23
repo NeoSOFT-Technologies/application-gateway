@@ -340,6 +340,9 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 (apiObject["extendedPaths"] as JObject).Add("transform", transforms);
                 GetTemplateData(apiObject, extendedPaths);
 
+            }
+            return apiObject;
+        }
         private static JObject GetValidateJson(JObject apiObject, JObject extendedPaths)
         {
             JArray validate = new JArray();
@@ -541,9 +544,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             }
             return apiObject;
         }
-            }
-            return apiObject;
-        }
+            
+        
         private static JObject GetTemplateData(JObject apiObject, JObject extendedPaths)
         {
             JArray transform = extendedPaths.Value<JArray>("transform");
@@ -957,8 +959,20 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 transformedObject.Add("response_processors", new JArray());
                 (transformedObject["response_processors"] as JArray).Add(resObj);
                 (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_response_headers", new JArray());
-
-
+                foreach (JToken headerResponseTransform in extendedPaths["TransformResponseHeaders"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("act_on", headerResponseTransform.Value<bool>("ActOn"));
+                    tempObj.Add("add_headers", headerResponseTransform.Value<JObject>("AddHeaders"));
+                    tempObj.Add("delete_headers", headerResponseTransform.Value<JArray>("DeleteHeaders"));
+                    tempObj.Add("method", headerResponseTransform.Value<string>("Method"));
+                    tempObj.Add("path", headerResponseTransform.Value<string>("Path"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_response_headers"] as JArray).Add(tempObj);
+                }
+            }
+            return transformedObject;
+        }
+      
         private static JObject Culprit(JObject transformedObject, JObject version, JObject extendedPaths)
         {
             JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
@@ -975,20 +989,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 }
             }
             return transformedObject;
-        }
-                foreach (JToken headerResponseTransform in extendedPaths["TransformResponseHeaders"])
-                {
-                    JObject tempObj = new JObject();
-                    tempObj.Add("act_on", headerResponseTransform.Value<bool>("ActOn"));
-                    tempObj.Add("add_headers", headerResponseTransform.Value<JObject>("AddHeaders"));
-                    tempObj.Add("delete_headers", headerResponseTransform.Value<JArray>("DeleteHeaders"));
-                    tempObj.Add("method", headerResponseTransform.Value<string>("Method"));
-                    tempObj.Add("path", headerResponseTransform.Value<string>("Path"));
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_response_headers"] as JArray).Add(tempObj);
-                }
-            }
-            return transformedObject;
-        }
+        }             
         private static JObject SetAddRemoveGlobalHeaders(JObject transformedObject, JObject version)
         {
             if (version.Value<JObject>("GlobalRequestHeaders") is not null)
