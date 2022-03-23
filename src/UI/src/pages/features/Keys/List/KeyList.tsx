@@ -100,7 +100,7 @@ export default function KeyList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search Tenant"
+                      placeholder="Search Key"
                       // onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
