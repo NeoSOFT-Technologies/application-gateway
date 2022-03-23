@@ -328,7 +328,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     tempObj.Add("method", transform.Value<string>("method"));
                     tempObj.Add("path", transform.Value<string>("path"));
                     transforms.Add(tempObj);
-                }              
+                }
                 (apiObject["extendedPaths"] as JObject).Add("transform", transforms);
                 GetTemplateData(apiObject, extendedPaths);
 
@@ -338,15 +338,17 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         private static JObject GetTemplateData(JObject apiObject, JObject extendedPaths)
         {
             JArray transform = extendedPaths.Value<JArray>("transform");
+            var item = 0;
             foreach (JToken templatedata in transform.Values<JObject>("template_data"))
             {
                 JObject tempObj = new JObject();
-                tempObj.Add("enableSession", templatedata.Value<bool>("enable_session"));              
+                tempObj.Add("enableSession", templatedata.Value<bool>("enable_session"));
                 tempObj.Add("inputType", templatedata.Value<string>("input_type"));
                 tempObj.Add("templateMode", templatedata.Value<string>("template_mode"));
                 tempObj.Add("templateSource", templatedata.Value<string>("template_source"));
-                (apiObject["extendedPaths"]["transform"][0] as JObject).Add("templateData", tempObj);
-            }           
+                (apiObject["extendedPaths"]["transform"][item] as JObject).Add("templateData", tempObj);
+                item++;
+            }
             return apiObject;
         }
         private static JObject GetTransformResponse(JObject apiObject, JObject extendedPaths)
@@ -370,6 +372,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         private static JObject GetResponseTemplateData(JObject apiObject, JObject extendedPaths)
         {
             JArray transform = extendedPaths.Value<JArray>("transform_response");
+            var item = 0;
             foreach (JToken templatedata in transform.Values<JObject>("template_data"))
             {
                 JObject tempObj = new JObject();
@@ -377,7 +380,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 tempObj.Add("inputType", templatedata.Value<string>("input_type"));
                 tempObj.Add("templateMode", templatedata.Value<string>("template_mode"));
                 tempObj.Add("templateSource", templatedata.Value<string>("template_source"));
-                (apiObject["extendedPaths"]["transformResponse"][0] as JObject).Add("templateData", tempObj);
+                (apiObject["extendedPaths"]["transformResponse"][item] as JObject).Add("templateData", tempObj);
+                item++;
             }
             return apiObject;
         }
@@ -486,16 +490,16 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         {
             if (extendedPaths["Transform"] is not null)
             {
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform", new JArray());
                 foreach (JToken transform in extendedPaths["Transform"])
                 {
                     JObject tempObj = new JObject();
                     tempObj.Add("method", transform.Value<string>("Method"));
                     tempObj.Add("path", transform.Value<string>("Path"));
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform", new JArray());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform"] as JArray).Add(tempObj);
-                    var tempdata = SetTemplateData(transformedObject, version, extendedPaths);
-                    transformedObject = tempdata;
                 }
+                var tempdata = SetTemplateData(transformedObject, version, extendedPaths);
+                transformedObject = tempdata;
             }
             return transformedObject;
         }
@@ -507,22 +511,23 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 resObj.Add("name", "response_body_transform");
                 resObj.Add("options", new JObject());
                 (transformedObject["response_processors"] as JArray).Add(resObj);
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_response", new JArray());
                 foreach (JToken transform in extendedPaths["TransformResponse"])
                 {
                     JObject tempObj = new JObject();
                     tempObj.Add("method", transform.Value<string>("Method"));
                     tempObj.Add("path", transform.Value<string>("Path"));
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_response", new JArray());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_response"] as JArray).Add(tempObj);
-                    var tempdata = SetResponseTemplateData(transformedObject, version, extendedPaths);
-                    transformedObject = tempdata;
                 }
+                var tempdata = SetResponseTemplateData(transformedObject, version, extendedPaths);
+                transformedObject = tempdata;
             }
             return transformedObject;
         }
         private static JObject SetTemplateData(JObject transformedObject, JObject version, JObject extendedPaths)
         {
             JArray transform = extendedPaths.Value<JArray>("Transform");
+            var item = 0;
             foreach (JToken templatedata in transform.Values<JObject>("TemplateData"))
             {
                 JObject tempObj = new JObject();
@@ -530,13 +535,15 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 tempObj.Add("input_type", templatedata.Value<string>("InputType"));
                 tempObj.Add("template_mode", templatedata.Value<string>("TemplateMode"));
                 tempObj.Add("template_source", templatedata.Value<string>("TemplateSource"));
-                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform"][0] as JObject).Add("template_data", tempObj);
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform"][item] as JObject).Add("template_data", tempObj);
+                item++;
             }
             return transformedObject;
         }
         private static JObject SetResponseTemplateData(JObject transformedObject, JObject version, JObject extendedPaths)
         {
             JArray transform = extendedPaths.Value<JArray>("TransformResponse");
+            var item = 0;
             foreach (JToken templatedata in transform.Values<JObject>("TemplateData"))
             {
                 JObject tempObj = new JObject();
@@ -544,15 +551,17 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 tempObj.Add("input_type", templatedata.Value<string>("InputType"));
                 tempObj.Add("template_mode", templatedata.Value<string>("TemplateMode"));
                 tempObj.Add("template_source", templatedata.Value<string>("TemplateSource"));
-                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_response"][0] as JObject).Add("template_data", tempObj);
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_response"][item] as JObject).Add("template_data", tempObj);
+                item++;
             }
             return transformedObject;
         }
-       
+
         private static JObject SetTransformHeaders(JObject transformedObject, JObject version, JObject extendedPaths)
         {
             if (extendedPaths["TransformHeaders"] is not null)
             {
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_headers", new JArray());
                 foreach (JToken headerTransform in extendedPaths["TransformHeaders"])
                 {
                     JObject tempObj = new JObject();
@@ -561,7 +570,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     tempObj.Add("delete_headers", headerTransform.Value<JArray>("DeleteHeaders"));
                     tempObj.Add("method", headerTransform.Value<string>("Method"));
                     tempObj.Add("path", headerTransform.Value<string>("Path"));
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_headers", new JArray());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_headers"] as JArray).Add(tempObj);
                 }
             }
@@ -576,6 +584,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 resObj.Add("options", new JObject());
                 transformedObject.Add("response_processors", new JArray());
                 (transformedObject["response_processors"] as JArray).Add(resObj);
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_response_headers", new JArray());
+
                 foreach (JToken headerResponseTransform in extendedPaths["TransformResponseHeaders"])
                 {
                     JObject tempObj = new JObject();
@@ -584,7 +594,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     tempObj.Add("delete_headers", headerResponseTransform.Value<JArray>("DeleteHeaders"));
                     tempObj.Add("method", headerResponseTransform.Value<string>("Method"));
                     tempObj.Add("path", headerResponseTransform.Value<string>("Path"));
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("transform_response_headers", new JArray());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["transform_response_headers"] as JArray).Add(tempObj);
                 }
             }
