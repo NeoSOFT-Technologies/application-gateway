@@ -74,7 +74,17 @@
     {
 #nullable enable
         public List<MethodTransform>? MethodTransforms { get; set; }
+        public List<UrlRewrite>? UrlRewrites { get; set; }
+        public List<ValidateJson>? ValidateJsons { get; set; } 
 #nullable disable
+    }
+
+    public class ValidateJson
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public string Schema { get; set; }
+        public int  ErrorResponseCode { get; set; }
     }
 
     public class MethodTransform
@@ -91,4 +101,69 @@
         url,
         url_param
     }
+
+    public class UrlRewrite
+    {
+        public string Path { get; set; }
+        public string Method { get; set; }
+        public string MatchPattern { get; set; }
+        public string RewriteTo { get; set; }
+        public List<Trigger> Triggers { get; set; }
+    }
+
+    public class Trigger
+    {
+        public string On { get; set; }
+        public Option Options { get; set; }
+        public string RewriteTo { get; set; }
+    }
+
+    public class Option
+    {
+        public HeaderMatch HeaderMatches { get; set; }
+        public QueryValMatch QueryValMatches { get; set; }
+        public PathPartMatch PathPartMatches { get; set; }
+        public RequestContexMatch RequestContexMatches { get; set; }
+        public SessionMetaMatch SessionMetaMatches { get; set; }
+        public PayloadMatch PayloadMatches { get; set; }
+    }
+
+    public class HeaderMatch
+    {
+        public Culprits Culprit { get; set; }
+    }
+
+    public class PathPartMatch
+    {
+        public Culprits Culprit { get; set; }
+    }
+
+    public class PayloadMatch
+    {
+        public string MatchRx { get; set; }
+    }
+
+    public class QueryValMatch
+    {
+        public Culprits Culprit { get; set; }
+    }
+
+    public class RequestContexMatch
+    {
+
+    }
+
+    public class SessionMetaMatch
+    {
+
+    }
+
+    public class Culprits
+    {
+        public string Key { get; set; }
+        public string MatchRx { get; set; }
+        public bool Reverse { get; set; }
+    }
+
+    
 }

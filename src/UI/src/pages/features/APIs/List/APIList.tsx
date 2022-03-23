@@ -13,8 +13,21 @@ import {
 } from "../../../../types/api/index";
 import Spinner from "../../../../components/loader/Loader";
 import { deleteApi } from "../../../../store/features/api/delete/slice";
+import { useErrorHandler } from "react-error-boundary";
+// import moment from "moment";
+
+function Bomb() {
+  console.log("");
+  // throw new Error("Boom");
+}
 
 export default function APIList() {
+  const handleError = useErrorHandler();
+  try {
+    Bomb();
+  } catch (err) {
+    handleError(err);
+  }
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
   // const [search, setSearch] = useState(" ");
@@ -32,11 +45,24 @@ export default function APIList() {
     list: [],
     fields: [],
   });
-  const mainCall = (currentPage: number) => {
+
+  const mainCall = async (currentPage: number) => {
+    // const resp = await
     dispatch(getApiList({ currentPage }));
+    // handleError(resp.payload);
   };
   useEffect(() => {
-    console.log("UseEffect", apiList.data);
+    // console.log("UseEffect", apiList.data);
+    // apiList.data?.Apis.forEach((item) => {
+    //   // if (item.IsActive === true) {
+    //   //   item.Status = "Active";
+    //   // } else {
+    //   //   item.Status = "In-Active";
+    //   // }
+    //   if (item.CreatedDate !== "") {
+    //     item.CreatedDate = moment(item.CreatedDate).format("DD/MM/YYYY");
+    //   }
+    // });
     if (apiList.data) {
       setDataList({
         list: [...apiList.data.Apis],
@@ -149,7 +175,7 @@ export default function APIList() {
             <br />
             {apiList.loading && <Spinner />}
             <div className="table-responsive">
-              {!apiList.loading && apiList.data && (
+              {!apiList.loading && apiList.error === null && apiList.data && (
                 <RenderList
                   headings={headings}
                   data={datalist}
