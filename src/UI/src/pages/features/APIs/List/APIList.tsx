@@ -8,9 +8,11 @@ import { getApiList } from "../../../../store/features/api/list/slice";
 import { IApiDataList, IApiListState } from "../../../../types/api/index";
 import Spinner from "../../../../components/loader/Loader";
 import { useErrorHandler } from "react-error-boundary";
+// import moment from "moment";
 
 function Bomb() {
-  throw new Error("Boom");
+  console.log("");
+  // throw new Error("Boom");
 }
 
 export default function APIList() {
@@ -18,7 +20,7 @@ export default function APIList() {
   try {
     Bomb();
   } catch (err) {
-    // handleError(err);
+    handleError(err);
   }
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
@@ -38,25 +40,26 @@ export default function APIList() {
   });
 
   const mainCall = async (currentPage: number) => {
-    const resp = await dispatch(getApiList({ currentPage }));
-    handleError(resp.payload);
+    // const resp = await
+    dispatch(getApiList({ currentPage }));
+    // handleError(resp.payload);
   };
   useEffect(() => {
     // console.log("UseEffect", apiList.data);
+    // apiList.data?.Apis.forEach((item) => {
+    //   // if (item.IsActive === true) {
+    //   //   item.Status = "Active";
+    //   // } else {
+    //   //   item.Status = "In-Active";
+    //   // }
+    //   if (item.CreatedDate !== "") {
+    //     item.CreatedDate = moment(item.CreatedDate).format("DD/MM/YYYY");
+    //   }
+    // });
     if (apiList.data) {
-      apiList.data.Apis.map(item=>{
-        if(item.IsActive === true)
-        {
-          item.Status = "Active";
-        }
-        else
-        {
-          item.Status = "In-Active";
-        }
-      });
       setDataList({
         list: [...apiList.data.Apis],
-        fields: ["Name", "TargetUrl", "Status", "CreatedDate"],
+        fields: ["Name", "TargetUrl", "IsActive", "CreatedDate"],
       });
     }
   }, [apiList.data]);
