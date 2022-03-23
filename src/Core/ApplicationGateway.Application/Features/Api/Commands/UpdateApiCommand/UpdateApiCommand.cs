@@ -80,6 +80,8 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public List<UpdateMethodTransform>? MethodTransforms { get; set; }
         public List<UpdateTransformHeader>? TransformHeaders { get; set; }
         public List<UpdateTransformResponseHeader>? TransformResponseHeaders { get; set; }
+        public List<UpdateTransform>? Transform { get; set; }
+        public List<UpdateTransformResponse>? TransformResponse { get; set; }
 #nullable disable
     }
 
@@ -109,6 +111,26 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public List<string> DeleteHeaders { get; set; }
         public string Method { get; set; }
         public string Path { get; set; }
+    }
+    public class UpdateTransform
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public UpdateTemplateData TemplateData { get; set; }
+    }
+    public class UpdateTransformResponse
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public UpdateTemplateData TemplateData { get; set; }
+    }
+    public class UpdateTemplateData
+    {
+        public bool EnableSession { get; set; }
+        public string InputType { get; set; }
+        public string TemplateMode { get; set; }
+        public string TemplateSource { get; set; }
+
     }
 
 }

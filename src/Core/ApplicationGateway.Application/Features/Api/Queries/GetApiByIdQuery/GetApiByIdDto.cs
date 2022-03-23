@@ -78,6 +78,8 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public List<GetMethodTransform>? MethodTransforms { get; set; }
         public List<GetTransformHeader>? TransformHeaders { get; set; }
         public List<GetTransformResponseHeader>? TransformResponseHeaders { get; set; }
+        public List<GetTransform>? Transform { get; set; }
+        public List<GetTransformResponse>? TransformResponse { get; set; }
 #nullable disable
     }
 
@@ -107,5 +109,25 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public List<string> DeleteHeaders { get; set; }
         public string Method { get; set; }
         public string Path { get; set; }
+    }
+    public class GetTransform
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public GetTemplateData TemplateData { get; set; }
+    }
+    public class GetTransformResponse
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public GetTemplateData TemplateData { get; set; }
+    }
+    public class GetTemplateData
+    {
+        public bool EnableSession { get; set; }
+        public string InputType { get; set; }
+        public string TemplateMode { get; set; }
+        public string TemplateSource { get; set; }
+
     }
 }

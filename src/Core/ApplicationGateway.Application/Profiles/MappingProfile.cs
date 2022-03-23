@@ -108,6 +108,15 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<TransformResponseHeader, UpdateTransformResponseHeader>().ReverseMap();
             CreateMap<TransformResponseHeader, GetTransformResponseHeader>().ReverseMap();
 
+            CreateMap<Transform, UpdateTransform>().ReverseMap();
+            CreateMap<Transform, GetTransform>().ReverseMap();
+            CreateMap<TransformResponse, UpdateTransformResponse>().ReverseMap();
+            CreateMap<TransformResponse, GetTransformResponse>().ReverseMap();
+            CreateMap<TemplateData,UpdateTemplateData>().ReverseMap();
+            CreateMap<TemplateData, GetTemplateData>().ReverseMap();
+
+
+
         }
 
     }
