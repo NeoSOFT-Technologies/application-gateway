@@ -18,8 +18,19 @@
   "versions": [
     {
       "name": "string",
-      "overrideTarget": ""
+      "overrideTarget": "",
+      "extendedPaths": {
+        "urlRewrites": [
+          {
+            "path": "/WeatherForecastnew",
+            "method": "GET",
+            "matchPattern": "/WeatherForecastnew",
+            "rewriteTo": "/WeatherForecast"
+          }
+        ]
+      }
     }
+
   ],
   "authType": "keyless",
   "openidOptions": {
@@ -44,23 +55,3 @@
 
   ]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

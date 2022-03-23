@@ -32,7 +32,7 @@ namespace DownstreamApi.Controllers
             .ToArray();
         }
 
-        [HttpPost(Name = "GetWeatherForecast")]
+        [HttpPost(Name = "PostWeatherForecast")]
         public IEnumerable<WeatherForecast> Weather2(Postweatherforecast postweatherforecast)
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -47,6 +47,7 @@ namespace DownstreamApi.Controllers
         public class Postweatherforecast
         {
             public string Test { get; set; }
+            public string Test2 { get; set; } 
         } 
     }
 }
