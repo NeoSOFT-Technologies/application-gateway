@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
-import {
-  IApiUpdateFormData,
-  IErrorApiUpdateInput,
-} from "../../../../types/api";
+import { IApiUpdateForm, IErrorApiUpdate } from "../../../../types/api";
+// import {
+//   IApiUpdateFormData,
+//   IErrorApiUpdateInput,
+// } from "../../../../types/api";
+
 // import { regexForListenPath } from "../../../../resources/APIS/ApiConstants";
 // import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 // import { useNavigate } from "react-router-dom";
@@ -13,70 +15,53 @@ import {
 export default function Update() {
   // const navigate = useNavigate();
 
-  const [apisUpdateForm, setApisUpdateForm] = useState<IApiUpdateFormData>({
+  // const [apisUpdateForm, setApisUpdateForm] = useState<IApiUpdateFormData>({
+  //   apiName: "",
+  //   listenPath: "",
+  //   targetUrl: "",
+  //   stripListenPath: false,
+  //   internal: false,
+  //   roundRobin: false,
+  //   service: false,
+  //   rateLimit: false,
+  //   rate: "",
+  //   perSecond: "",
+  //   quotas: false,
+  // });
+  // const [err, setErr] = useState<IErrorApiUpdateInput>({
+  //   apiName: "",
+  //   targetUrl: "",
+  //   listenPath: "",
+  //   rate: "",
+  //   perSecond: "",
+  // });
+  const [apisUpdateForm, setApisUpdateForm] = useState<IApiUpdateForm>({
     apiName: "",
-    listenPath: "",
-    targetUrl: "",
-    stripListenPath: false,
-    internal: false,
-    roundRobin: false,
-    service: false,
-    rateLimit: false,
-    rate: "",
-    perSecond: "",
-    quotas: false,
   });
-  const [err, setErr] = useState<IErrorApiUpdateInput>({
+  const [err, setErr] = useState<IErrorApiUpdate>({
     apiName: "",
-    targetUrl: "",
-    listenPath: "",
-    rate: "",
-    perSecond: "",
   });
-
-  const handleValidate = () => {
-    const validate = !!(
-      err.apiName === "" &&
-      err.listenPath === "" &&
-      err.rate === "" &&
-      err.targetUrl === "" &&
-      err.perSecond === ""
-    );
-    return validate;
-  };
-  const handleSubmitApi = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (handleValidate()) {
-      console.log("apisUpdateForm", apisUpdateForm);
-      if (
-        apisUpdateForm.apiName !== "" &&
-        apisUpdateForm.listenPath !== "" &&
-        apisUpdateForm.targetUrl !== ""
-      ) {
-        setApisUpdateForm({
-          apiName: "",
-          listenPath: "",
-          targetUrl: "",
-          stripListenPath: false,
-          internal: false,
-          roundRobin: false,
-          service: false,
-          rateLimit: false,
-          rate: "",
-          perSecond: "",
-          quotas: false,
-        });
-      }
-    } else {
-      setErr({
-        apiName: "",
-        listenPath: "",
-        targetUrl: "",
-        rate: "",
-        perSecond: "",
-      });
-    }
-  };
+  // const handleValidate = () => {
+  //   const validate = !!(err.apiName === "");
+  //   return validate;
+  // };
+  // const handleSubmitApi = (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   if (handleValidate()) {
+  //     console.log("apisUpdateForm", apisUpdateForm);
+  //     if (apisUpdateForm.apiName !== "") {
+  //       setApisUpdateForm({
+  //         apiName: "",
+  //       });
+  //     }
+  //   } else {
+  //     setErr({
+  //       apiName: "",
+  //     });
+  //   }
+  // };
+  console.log("update componenet", apisUpdateForm);
+  console.log("update error", err);
   // const NavigateToApisList = (
   //   val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   // ) => {
@@ -89,7 +74,7 @@ export default function Update() {
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">
-            <Form onSubmit={handleSubmitApi} data-testid="form-input">
+            <Form data-testid="form-input">
               <div className="align-items-center">
                 <div>
                   <button className=" btn  btn-success btn-md d-flex float-right mb-4">
@@ -104,7 +89,10 @@ export default function Update() {
                   className="mb-3 small"
                 >
                   <Tab eventKey="setting" title="Setting">
-                    <Setting />
+                    <Setting
+                      setApisUpdateForm={setApisUpdateForm}
+                      setErr={setErr}
+                    />
                   </Tab>
                   <Tab eventKey="version" title="Version">
                     <Version />

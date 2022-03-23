@@ -52,3 +52,11 @@ export interface IApiUpdateFormData {
   perSecond: string;
   quotas: Boolean;
 }
+
+export interface IErrorApiUpdate {
+  apiName: string;
+}
+
+export interface IApiUpdateForm {
+  apiName: string;
+}

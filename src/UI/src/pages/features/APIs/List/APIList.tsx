@@ -5,16 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import {
-  IApiDataList,
   IApiData,
+  IApiDataList,
   IApiListState,
 } from "../../../../types/api/index";
 import Spinner from "../../../../components/loader/Loader";
 import { deleteApi } from "../../../../store/features/api/delete/slice";
 import { useErrorHandler } from "react-error-boundary";
-// import moment from "moment";
+import moment from "moment";
 
 function Bomb() {
   console.log("");
@@ -53,20 +52,20 @@ export default function APIList() {
   };
   useEffect(() => {
     // console.log("UseEffect", apiList.data);
-    // apiList.data?.Apis.forEach((item) => {
-    //   // if (item.IsActive === true) {
-    //   //   item.Status = "Active";
-    //   // } else {
-    //   //   item.Status = "In-Active";
-    //   // }
-    //   if (item.CreatedDate !== "") {
-    //     item.CreatedDate = moment(item.CreatedDate).format("DD/MM/YYYY");
-    //   }
-    // });
-    if (apiList.data) {
+    if (apiList.data && apiList.data?.Apis?.length > 0) {
+      const listAPI: IApiData[] = [];
+      apiList.data?.Apis.forEach((item) => {
+        const listObj = Object.create(item);
+        listObj.Status = listObj.IsActive === true ? "Active" : "In-Active";
+        listObj.CreatedDateTxt =
+          listObj.CreatedDate !== ""
+            ? moment(listObj.CreatedDate).format("DD/MM/YYYY")
+            : "";
+        listAPI.push(listObj);
+      });
       setDataList({
-        list: [...apiList.data.Apis],
-        fields: ["Name", "TargetUrl", "IsActive", "CreatedDate"],
+        list: [...listAPI],
+        fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
       });
     }
   }, [apiList.data]);
