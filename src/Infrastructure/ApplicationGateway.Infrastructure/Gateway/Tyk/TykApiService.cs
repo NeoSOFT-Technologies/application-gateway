@@ -311,9 +311,218 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 }
                 (apiObject["extendedPaths"] as JObject).Add("methodTransforms", methodTransforms);
             }
+            if (extendedPaths["url_rewrites"] is not null)
+            {
+                GetUrlRewrite(apiObject, extendedPaths);
+            }
+            if(extendedPaths["validate_json"] is not null)
+            {
+                GetValidateJson(apiObject,extendedPaths);
+            }
             return apiObject;
         }
 
+        private static JObject GetValidateJson(JObject apiObject, JObject extendedPaths)
+        {
+            JArray validate = new JArray();
+            foreach (JToken jsonvalidate in extendedPaths["validate_json"])
+            {
+                
+                JObject tempObj = new JObject();
+                var schema = (jsonvalidate.Value<JObject>("schema")).ToString();
+                tempObj.Add("method", jsonvalidate.Value<string>("method"));
+                tempObj.Add("path", jsonvalidate.Value<string>("path"));
+                tempObj.Add("schema", schema);
+                tempObj.Add("errorResponseCode", jsonvalidate.Value<int>("error_response_code"));
+                validate.Add(tempObj);
+            }
+            (apiObject["extendedPaths"] as JObject).Add("ValidateJsons", validate);
+            return apiObject;
+        }
+        private static JObject SetJsonValidate(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            foreach (JToken jsonvalidate in extendedPaths["ValidateJsons"])
+            {
+                JObject tempObj = new JObject();
+                JObject schema = JObject.Parse(jsonvalidate.Value<string>("Schema"));
+                tempObj.Add("method", jsonvalidate.Value<string>("Method"));
+                tempObj.Add("path", jsonvalidate.Value<string>("Path"));
+                tempObj.Add("schema", schema);
+                tempObj.Add("error_response_code", jsonvalidate.Value<int>("ErrorResponseCode"));
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("validate_json", new JArray());
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["validate_json"] as JArray).Add(tempObj);
+            }
+            return transformedObject;
+        }
+        private static JObject GetUrlRewrite(JObject apiObject, JObject extendedPaths)
+        {
+            JArray urlRewrite = new JArray();
+            if (extendedPaths["url_rewrites"] is not null)
+            {
+                foreach (JToken urlRewrites in extendedPaths["url_rewrites"])
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("path", urlRewrites.Value<string>("path"));
+                    tempObj.Add("method", urlRewrites.Value<string>("method"));
+                    tempObj.Add("matchPattern", urlRewrites.Value<string>("match_pattern"));
+                    tempObj.Add("rewriteTo", urlRewrites.Value<string>("rewrite_to"));
+                    urlRewrite.Add(tempObj);
+                    (apiObject["extendedPaths"] as JObject).Add("urlRewrites", urlRewrite);
+                    if (urlRewrites.Value<JArray>("triggers") is not null)
+                    {
+                        var trans = GetTrigger(apiObject, extendedPaths);
+                        apiObject = trans;
+                    }
+                }
+                
+            }
+            return apiObject;
+        }
+
+        private static JObject GetTrigger(JObject apiObject, JObject extendedPaths)
+        {
+            JArray trigger = new JArray();
+            for(var j=0;j< extendedPaths["url_rewrites"].Count(); j++)
+            {
+                for (var i = 0; i < extendedPaths["url_rewrites"][j]["triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("on", extendedPaths["url_rewrites"][j]["triggers"][i].Value<string>("on"));
+                    tempObj.Add("options", extendedPaths["url_rewrites"][j]["triggers"][i].Value<JObject>("options"));
+                    tempObj.Add("rewriteTo", extendedPaths["url_rewrites"][j]["triggers"][i].Value<string>("rewrite_to"));
+                    trigger.Add(tempObj);
+                    (apiObject["extendedPaths"]["urlRewrites"][j] as JObject).Add("triggers", trigger);
+                    var trans = GetOptions(apiObject, extendedPaths);
+                    apiObject = trans;
+                }
+            }
+            return apiObject;
+        }
+
+        private static JObject GetOptions(JObject apiObject, JObject extendedPaths)
+        {
+            JArray trigger = new JArray();
+            for (var j = 0; j < extendedPaths["url_rewrites"].Count(); j++)
+            {
+                for (var i = 0; i < extendedPaths["url_rewrites"][j]["triggers"].Count(); i++)
+                {
+                    (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i] as JObject).Property("options").Remove();
+                    (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i] as JObject).Add("options",new JObject());
+                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("query_val_matches") is not null)
+                    {
+                        var trans = GetQuery(apiObject, extendedPaths);
+                        apiObject = trans;
+                    }
+                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("header_matches") is not null)
+                    {
+                        var trans = GetHeader(apiObject, extendedPaths);
+                        apiObject = trans;
+                    }
+                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("path_part_matches") is not null)
+                    {
+                        var trans = GetPathPart(apiObject, extendedPaths);
+                        apiObject = trans;
+                    }
+                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("payload_matches") is not null)
+                    {
+                        var trans = GetPayload(apiObject, extendedPaths);
+                        apiObject = trans;
+                    }
+                }
+            }
+            return apiObject;
+        }
+
+        private static JObject GetQuery(JObject apiObject, JObject extendedPaths)
+        {
+            for (var j = 0; j < extendedPaths["url_rewrites"].Count(); j++)
+            {
+                for (var i = 0; i < extendedPaths["url_rewrites"][j]["triggers"].Count(); i++)
+                {
+                    (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i]["options"] as JObject).Add("queryValMatches", new JObject());
+                    var trans = GetCulprit(apiObject, extendedPaths, "queryValMatches");
+                    apiObject = trans;
+                }
+            }
+            return apiObject;
+        }
+
+        private static JObject GetHeader(JObject apiObject, JObject extendedPaths)
+        {
+            for (var j = 0; j < extendedPaths["url_rewrites"].Count(); j++)
+            {
+                for (var i = 0; i < extendedPaths["url_rewrites"][j]["triggers"].Count(); i++)
+                {
+                    (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i]["options"] as JObject).Add("headerMatches", new JObject());
+                    var trans = GetCulprit(apiObject, extendedPaths, "headerMatches");
+                    apiObject = trans;
+                }
+            }
+            return apiObject;
+        }
+
+        private static JObject GetPathPart(JObject apiObject, JObject extendedPaths)
+        {
+            for (var j = 0; j < extendedPaths["url_rewrites"].Count(); j++)
+            {
+                for (var i = 0; i < extendedPaths["url_rewrites"][j]["triggers"].Count(); i++)
+                {
+                    (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i]["options"] as JObject).Add("pathPartMatches", new JObject());
+                    var trans = GetCulprit(apiObject, extendedPaths, "pathPartMatches");
+                    apiObject = trans;
+                }
+            }
+            return apiObject;
+        }
+
+        private static JObject GetPayload(JObject apiObject, JObject extendedPaths)
+        {
+            for (var j = 0; j < extendedPaths["url_rewrites"].Count(); j++)
+            {
+                for (var i = 0; i < extendedPaths["url_rewrites"][j]["triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("matchRx", extendedPaths["url_rewrites"][j]["triggers"][i]["options"]["payload_matches"].Value<string>("match_rx"));
+                    (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i]["options"] as JObject).Add("payloadMatches", new JObject());
+                    
+                }
+            }
+            return apiObject;
+        }
+
+        private static JObject GetCulprit(JObject apiObject, JObject extendedPaths,string culpritname)
+        {
+            for (var j = 0; j < extendedPaths["url_rewrites"].Count(); j++)
+            {
+                for (var i = 0; i < extendedPaths["url_rewrites"][j]["triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    var culprit = culpritname;
+                    if(culpritname == "queryValMatches")
+                    {
+                        culprit = "query_val_matches";
+                    }else if(culpritname == "headerMatches")
+                    {
+                        culprit = "header_matches";
+                    }
+                    else if(culpritname == "pathPartMatches")
+                    {
+                        culprit = "path_part_matches";
+                    }
+                    var value = extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>(culprit);
+                    var propertyName = "";
+                    foreach(var item in value.Properties())
+                    {
+                        propertyName = item.Name;
+                    }
+                    tempObj.Add("key",propertyName);
+                    tempObj.Add("matchRx", extendedPaths["url_rewrites"][j]["triggers"][i]["options"][culprit][propertyName].Value<string>("match_rx"));
+                    tempObj.Add("reverse", extendedPaths["url_rewrites"][j]["triggers"][i]["options"][culprit][propertyName].Value<bool>("reverse"));
+                    (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i]["options"][culpritname] as JObject).Add("Culprit", tempObj);
+                }
+            }
+            return apiObject;
+        }
         private static JObject GetAddRemoveGlobalHeaders(JObject apiObject, JObject version)
         {
             if (version.Value<JObject>("global_headers") is not null)
@@ -352,10 +561,10 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             }
             return apiObject;
         }
-
         private static JObject SetExtendedPaths(JObject transformedObject, JObject version)
         {
             JObject extendedPaths = version.Value<JObject>("ExtendedPaths");
+            (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("extended_paths", new JObject());
             if (extendedPaths["MethodTransforms"] is not null)
             {
                 foreach (JToken methodTransform in extendedPaths["MethodTransforms"])
@@ -364,15 +573,195 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     tempObj.Add("method", methodTransform.Value<string>("Method"));
                     tempObj.Add("path", methodTransform.Value<string>("Path"));
                     tempObj.Add("to_method", methodTransform.Value<string>("ToMethod"));
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("extended_paths", new JObject());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("method_transforms", new JArray());
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["method_transforms"] as JArray).Add(tempObj);
-                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("ExtendedPaths").Remove();
+                   
+                }
+            }
+            if (extendedPaths["UrlRewrites"] is not null)
+            {
+                SetUrlRewrite(transformedObject, version, extendedPaths);
+            }
+            if (extendedPaths["ValidateJsons"] is not null)
+            {
+                SetJsonValidate(transformedObject, version, extendedPaths);
+            }
+            (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("ExtendedPaths").Remove();
+            return transformedObject;
+        }
+        private static JObject SetUrlRewrite(JObject transformedObject, JObject version,JObject extendedPaths)
+        {
+            if (extendedPaths["UrlRewrites"] is not null)
+            {
+                foreach (JToken urlRewrites in extendedPaths["UrlRewrites"])
+                { 
+                    JObject tempObj = new JObject();
+                    tempObj.Add("path", urlRewrites.Value<string>("Path"));
+                    tempObj.Add("method", urlRewrites.Value<string>("Method"));
+                    tempObj.Add("match_pattern", urlRewrites.Value<string>("MatchPattern"));
+                    tempObj.Add("rewrite_to", urlRewrites.Value<string>("RewriteTo"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"] as JObject).Add("url_rewrites", new JArray());
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"] as JArray).Add(tempObj);
+                    if(urlRewrites.Value<JArray>("Triggers") is not null)
+                    {
+                        var transobj = SetTrigger(transformedObject, version, extendedPaths);
+                        transformedObject = transobj;
+                    }
+                }
+            }
+            return transformedObject;
+        }
+        
+        private static JObject SetTrigger(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
+            var length = transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"].Count();
+            for (var i = 0; i < length; i++)
+            {
+                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][i] as JObject).Add("triggers", new JArray());
+            } 
+         
+            for(var j=0;j<trig.Count();j++)    
+            {
+                for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("on", trig[j]["Triggers"][i].Value<string>("On"));
+                    tempObj.Add("options", trig[j]["Triggers"][i].Value<JObject>("Options"));
+                    tempObj.Add("rewrite_to", trig[j]["Triggers"][i].Value<string>("RewriteTo"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"] as JArray).Add(tempObj);
+                    var transobj = SetOptions(transformedObject, version, extendedPaths);
+                    transformedObject = transobj;
+                }
+               
+            }
+            return transformedObject;
+        }
+
+        private static JObject SetOptions(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
+            for (var j = 0; j < trig.Count(); j++)
+            {
+                for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    //tempObj.Add("query_val_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("QueryValMatches"));
+                    //tempObj.Add("payload_matches", trig[j]["Triggers"][i]["Options"].Value<string>("PayloadMatches"));
+                    //tempObj.Add("header_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("HeaderMatches"));
+                    //tempObj.Add("path_part_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("PathPartMatches"));
+                    //tempObj.Add("request_context_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("RequestContexMatches"));
+                    //tempObj.Add("session_meta_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("SessionMetaMatches"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i] as JObject).Property("options").Remove();
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i] as JObject).Add("options", tempObj);
+                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("QueryValMatches") is not null)
+                    {
+                        var trans = Query(transformedObject, version, extendedPaths);
+                        transformedObject = trans;
+                    }
+                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("HeaderMatches") is not null)
+                    {
+                        var trans = Header(transformedObject, version, extendedPaths);
+                        transformedObject = trans;
+                    }
+                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("PathPartMatches") is not null)
+                    {
+                        var trans = pathpart(transformedObject, version, extendedPaths);
+                        transformedObject = trans;
+                    }
+                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("PayloadMatches") is not null)
+                    {
+                        var trans = payload(transformedObject, version, extendedPaths);
+                        transformedObject = trans;
+                    }
+                }
+            }
+            return transformedObject;
+
+        }
+
+        private static JObject Query(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
+            for (var j = 0; j < trig.Count(); j++)
+            {
+                for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    //tempObj.Add("X-Rewrite2", trig[j]["Triggers"][i]["Options"]["QueryValMatches"].Value<JObject>("Culprit"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("query_val_matches", tempObj);
+                    var trans = Culprit(transformedObject, version, extendedPaths);
+                    transformedObject = trans;
+                }
+            }
+            return transformedObject;
+        }
+        private static JObject Header(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
+            for (var j = 0; j < trig.Count(); j++)
+            {
+                for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    //tempObj.Add("X-Rewrite2", trig[j]["Triggers"][i]["Options"]["QueryValMatches"].Value<JObject>("Culprit"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("header_matches", tempObj);
+                    var trans = Culprit(transformedObject, version, extendedPaths);
+                    transformedObject = trans;
+                }
+            }
+            return transformedObject;
+        }
+        private static JObject pathpart(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
+            for (var j = 0; j < trig.Count(); j++)
+            {
+                for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    //tempObj.Add("X-Rewrite2", trig[j]["Triggers"][i]["Options"]["QueryValMatches"].Value<JObject>("Culprit"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("path_part_matches", tempObj);
+                    var trans = Culprit(transformedObject, version, extendedPaths);
+                    transformedObject = trans;
                 }
             }
             return transformedObject;
         }
 
+        private static JObject payload(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
+            for (var j = 0; j < trig.Count(); j++)
+            {
+                for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    tempObj.Add("match_rx", trig[j]["Triggers"][i]["Options"]["PayloadMatches"].Value<JObject>("MatchRx"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("payload_matches", tempObj);
+                }
+            }
+            return transformedObject;
+        }
+
+
+        private static JObject Culprit(JObject transformedObject, JObject version, JObject extendedPaths)
+        {
+            JArray trig = extendedPaths.Value<JArray>("UrlRewrites");
+            for (var j = 0; j < trig.Count(); j++)
+            {
+                for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
+                {
+                    JObject tempObj = new JObject();
+                    var key = trig[j]["Triggers"][i]["Options"]["QueryValMatches"]["Culprit"].Value<string>("Key");
+                    tempObj.Add("match_rx", trig[j]["Triggers"][i]["Options"]["QueryValMatches"]["Culprit"].Value<string>("MatchRx"));
+                    tempObj.Add("reverse", trig[j]["Triggers"][i]["Options"]["QueryValMatches"]["Culprit"].Value<bool>("Reverse"));
+                    (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"]["query_val_matches"] as JObject).Add(key, tempObj);
+
+                }
+            }
+            return transformedObject;
+        }
         private static JObject SetAddRemoveGlobalHeaders(JObject transformedObject, JObject version)
         {
             if(version.Value<JObject>("GlobalRequestHeaders") is not null)
