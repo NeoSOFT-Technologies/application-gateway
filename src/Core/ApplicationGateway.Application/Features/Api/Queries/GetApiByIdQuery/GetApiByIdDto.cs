@@ -80,6 +80,10 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public List<GetUrlRewrite>? UrlRewrites { get; set; }
         public List<GetValidateJson>? ValidateJsons { get; set; }
 
+        public List<GetTransformHeader>? TransformHeaders { get; set; }
+        public List<GetTransformResponseHeader>? TransformResponseHeaders { get; set; }
+        public List<GetTransform>? Transform { get; set; }
+        public List<GetTransformResponse>? TransformResponse { get; set; }
 #nullable disable
     }
     public class GetValidateJson
@@ -158,5 +162,46 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public string Key { get; set; }
         public string MatchRx { get; set; }
         public bool Reverse { get; set; }
+    }
+
+    public class GetTransformHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+    public class GetTransformResponseHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+    public class GetTransform
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public GetTemplateData TemplateData { get; set; }
+    }
+    public class GetTransformResponse
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public GetTemplateData TemplateData { get; set; }
+    }
+    public class GetTemplateData
+    {
+        public bool EnableSession { get; set; }
+        public string InputType { get; set; }
+        public string TemplateMode { get; set; }
+        public string TemplateSource { get; set; }
+
     }
 }

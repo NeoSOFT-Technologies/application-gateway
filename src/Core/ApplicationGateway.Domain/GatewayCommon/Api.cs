@@ -25,7 +25,6 @@
 #nullable disable
         public bool IsQuotaDisabled { get; set; }
     }
-
     public class RateLimit
     {
         public int Rate { get; set; }
@@ -76,6 +75,10 @@
         public List<MethodTransform>? MethodTransforms { get; set; }
         public List<UrlRewrite>? UrlRewrites { get; set; }
         public List<ValidateJson>? ValidateJsons { get; set; } 
+        public List<TransformHeader>? TransformHeaders { get; set; }
+        public List<TransformResponseHeader>? TransformResponseHeaders { get; set; }
+        public List<Transform>? Transform { get; set; }
+        public List<TransformResponse>? TransformResponse{ get; set;}
 #nullable disable
     }
 
@@ -92,6 +95,47 @@
         public string Method { get; set; }
         public string Path { get; set; }
         public string ToMethod { get; set; }
+    }
+    public class TransformHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+
+    public class TransformResponseHeader
+    {
+        public bool ActOn { get; set; }
+#nullable enable
+        public Dictionary<string, string>? AddHeaders { get; set; }
+#nullable disable
+        public List<string> DeleteHeaders { get; set; }
+        public string Method { get; set; }
+        public string Path { get; set; }
+    }
+    public class Transform
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public TemplateData TemplateData { get; set; }
+    }
+    public class TransformResponse
+    {
+        public string Method { get; set; }
+        public string Path { get; set; }
+        public TemplateData TemplateData { get; set; }
+    }
+    public class TemplateData
+    {
+        public bool EnableSession { get; set; }   
+        public string InputType { get; set; }
+        public string TemplateMode { get; set; }
+        public string TemplateSource { get; set; }
+
     }
 
     public enum VersioningLocation

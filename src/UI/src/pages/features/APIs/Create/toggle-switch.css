@@ -1,4 +1,4 @@
-.container h4 {
+.card-header {
   background-color: rgb(172, 203, 243);
 }
 .toggle-switch {
@@ -24,13 +24,13 @@
   background-color: rgb(163, 163, 163);
   transition: 0.4s;
   border-radius: 15px;
-  width: 5.5rem;
-  height: 2rem;
+  width: 5rem;
+  height: 1.5rem;
 }
 .slider::before {
   position: absolute;
-  height: 2rem;
-  width: 2rem;
+  height: 1.5rem;
+  width: 1.5rem;
   left: 2px;
   right: 0;
   bottom: 0px;
