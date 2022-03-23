@@ -572,7 +572,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             if (extendedPaths["TransformResponseHeaders"] is not null)
             {
                 JObject resObj = new JObject();
-                resObj.Add("name", "header_injector");               
+                resObj.Add("name", "header_injector");
+                resObj.Add("options", new JObject());
                 transformedObject.Add("response_processors", new JArray());
                 (transformedObject["response_processors"] as JArray).Add(resObj);
                 foreach (JToken headerResponseTransform in extendedPaths["TransformResponseHeaders"])
