@@ -4,13 +4,27 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 export default function Versions() {
   return (
     <>
-      <div id="accordion">
-        <div className="card">
-          <div className="card-header" id="headingOne">
-            Versions
-          </div>
-          <div className="card-body">
-            <div className="p-4">
+      <div className="accordion" id="accordionVersions">
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="headingSix">
+            <button
+              className="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseSix"
+              aria-expanded="true"
+              aria-controls="collapseSix"
+            >
+              Versions
+            </button>
+          </h2>
+          <div
+            id="collapseSix"
+            className="accordion-collapse collapse show"
+            aria-labelledby="headingSix"
+            data-bs-parent="#accordionVersions"
+          >
+            <div className="accordion-body">
               <Row>
                 <Col md={12} className="mb-3">
                   <i>
@@ -25,9 +39,7 @@ export default function Versions() {
                     <br></br>
                     <Form.Select>
                       <option>Choose a version</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
+                      <option>Default</option>
                     </Form.Select>
                   </Form.Group>
 
