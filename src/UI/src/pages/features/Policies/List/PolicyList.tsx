@@ -118,7 +118,7 @@ export default function PolicyList() {
                     <input
                       type="text"
                       className="form-control bg-parent border-1"
-                      placeholder="Search Tenant"
+                      placeholder="Search Policy"
                       // onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
