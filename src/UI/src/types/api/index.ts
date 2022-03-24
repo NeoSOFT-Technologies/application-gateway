@@ -60,3 +60,9 @@ export interface IErrorApiUpdate {
 export interface IApiUpdateForm {
   apiName: string;
 }
+
+export interface IAddApiResponse {
+  Succeeded: boolean;
+  Message: string | null;
+  Errors: string[] | null | unknown | any | string;
+}
