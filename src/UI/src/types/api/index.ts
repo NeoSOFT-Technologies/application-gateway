@@ -68,3 +68,7 @@ export interface IAddApiResponse {
   Message: string | null;
   Errors: string[] | null | unknown | any | string;
 }
+
+export interface IProps {
+  onChange: Function;
+}

@@ -4,14 +4,13 @@ import ListenPath from "./ListenPath/ListenPath";
 import RateLimit from "./RateLimit/RateLimit";
 import TargetUrl from "./TargetUrl/TargetUrl";
 import { Col, Form, Row } from "react-bootstrap";
+import { IProps } from "../../../../../types/api";
+import { changeApiUpdateForm } from "../../../../../resources/common";
 
-interface IProps {
-  onChange: Function;
-}
 export default function Setting(props: IProps) {
-  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
-    props.onChange(e);
-  }
+  // function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
+  //   props.onChange(e);
+  // }
   return (
     <div>
       <div className="card">
@@ -55,7 +54,9 @@ export default function Setting(props: IProps) {
                               // value={api.apiName}
                               // isInvalid={!!props.err}
                               // isValid={!props.err && !!props.apisUpdateForm}
-                              onChange={changeApiUpdateForm}
+                              onChange={(e: any) =>
+                                changeApiUpdateForm(e, props)
+                              }
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -67,7 +68,11 @@ export default function Setting(props: IProps) {
                     </Row>
                     <br />
                     <div>
-                      <ListenPath onChange={changeApiUpdateForm} />
+                      <ListenPath
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          changeApiUpdateForm(e, props)
+                        }
+                      />
                     </div>
                     <div>
                       <TargetUrl />

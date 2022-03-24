@@ -1,36 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
-import { IApiUpdateError } from "../../../../types/api";
 import {
   regexForListenPath,
   regexForName,
-  setForm,
 } from "../../../../resources/APIS/ApiConstants";
+import { setForm, err } from "../../../../resources/common";
 
 export default function Update() {
   // updateForm, setUpdateForm
   // form, setForm
   // errors, SetErrors
-
-  const [errors, setErrors] = useState<IApiUpdateError>({
-    apiName: "",
-    listenPath: "",
-  });
+  const form = setForm();
+  const error = err();
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     switch (name) {
       case "apiName":
-        setErrors({
-          ...errors,
+        error[1]({
+          ...error[0],
           [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
         });
         break;
 
       case "listenPath":
-        setErrors({
-          ...errors,
+        error[1]({
+          ...error[0],
           [name]: regexForListenPath.test(value)
             ? ""
             : "Enter a Valid Listen Path",
@@ -40,13 +36,13 @@ export default function Update() {
         break;
     }
   }
-  const form = setForm();
+
   function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
     validateForm(e);
     form[1]({ ...form[0], [e.target.name]: e.target.value });
   }
   console.log("Form - ", form[0]);
-  console.log("Error -", errors);
+  console.log("Error -", error[0]);
   return (
     <div>
       <div className="col-lg-12 grid-margin stretch-card">
