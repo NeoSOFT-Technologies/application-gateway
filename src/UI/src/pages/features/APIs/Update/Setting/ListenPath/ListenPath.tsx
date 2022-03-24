@@ -46,13 +46,29 @@ export default function ListenPath() {
   };
   return (
     <>
-      <div id="accordion">
-        <div className="card">
-          <div className="card-header" id="headingOne">
-            Listen Path
-          </div>
-          <div className="card-body">
-            <div className="p-4">
+      <div className="accordion" id="accordionExample">
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="headingTwo">
+            <button
+              className="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="true"
+              aria-controls="collapseTwo"
+            >
+              Listen Path
+            </button>
+          </h2>
+          <div
+            id="collapseTwo"
+            className="accordion-collapse collapse show"
+            aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample"
+          >
+            <div className="accordion-body">
+              <p>This is test</p>
+
               <Row>
                 <Col md={12} className="mb-3">
                   <p>

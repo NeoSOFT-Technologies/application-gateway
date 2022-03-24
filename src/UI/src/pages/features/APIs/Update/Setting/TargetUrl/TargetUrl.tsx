@@ -4,11 +4,27 @@ import { Col, Form, Row } from "react-bootstrap";
 export default function TargetUrl() {
   return (
     <div>
-      <div className="card">
-        <div>
-          <div className="align-items-center justify-content-around">
-            <div className="card-header !important">Targets</div>
-            <div className="card-body">
+      <div className="accordion" id="accordionExample">
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="headingThree">
+            <button
+              className="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="true"
+              aria-controls="collapseThree"
+            >
+              Targets
+            </button>
+          </h2>
+          <div
+            id="collapseThree"
+            className="accordion-collapse collapse show"
+            aria-labelledby="headingThree"
+            data-bs-parent="#accordionExample"
+          >
+            <div className="accordion-body">
               <div>
                 <Row>
                   <Col md="12">
