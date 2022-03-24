@@ -7,7 +7,7 @@ export default function RateLimit() {
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionExample">
+            <div className="accordion" id="accordionRateLimit">
               <div className="accordion-item">
                 <h2 className="accordion-header" id="headingFour">
                   <button
@@ -25,7 +25,7 @@ export default function RateLimit() {
                   id="collapseFour"
                   className="accordion-collapse collapse show"
                   aria-labelledby="headingFour"
-                  data-bs-parent="#accordionExample"
+                  data-bs-parent="#accordionRateLimit"
                 >
                   <div className="accordion-body">
                     <div>

@@ -4,7 +4,7 @@ import { Col, Form, Row } from "react-bootstrap";
 export default function TargetUrl() {
   return (
     <div>
-      <div className="accordion" id="accordionExample">
+      <div className="accordion" id="accordionTargetUrl">
         <div className="accordion-item">
           <h2 className="accordion-header" id="headingThree">
             <button
@@ -22,7 +22,7 @@ export default function TargetUrl() {
             id="collapseThree"
             className="accordion-collapse collapse show"
             aria-labelledby="headingThree"
-            data-bs-parent="#accordionExample"
+            data-bs-parent="#accordionTargetUrl"
           >
             <div className="accordion-body">
               <div>

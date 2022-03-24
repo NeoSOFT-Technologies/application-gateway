@@ -46,7 +46,7 @@ export default function ListenPath() {
   };
   return (
     <>
-      <div className="accordion" id="accordionExample">
+      <div className="accordion" id="accordionListenPath">
         <div className="accordion-item">
           <h2 className="accordion-header" id="headingTwo">
             <button
@@ -64,11 +64,9 @@ export default function ListenPath() {
             id="collapseTwo"
             className="accordion-collapse collapse show"
             aria-labelledby="headingTwo"
-            data-bs-parent="#accordionExample"
+            data-bs-parent="#accordionListenPath"
           >
             <div className="accordion-body">
-              <p>This is test</p>
-
               <Row>
                 <Col md={12} className="mb-3">
                   <p>

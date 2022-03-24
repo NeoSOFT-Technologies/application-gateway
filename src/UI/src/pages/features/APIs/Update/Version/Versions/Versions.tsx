@@ -4,7 +4,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 export default function Versions() {
   return (
     <>
-      <div className="accordion" id="accordionExample">
+      <div className="accordion" id="accordionVersions">
         <div className="accordion-item">
           <h2 className="accordion-header" id="headingSix">
             <button
@@ -22,7 +22,7 @@ export default function Versions() {
             id="collapseSix"
             className="accordion-collapse collapse show"
             aria-labelledby="headingSix"
-            data-bs-parent="#accordionExample"
+            data-bs-parent="#accordionVersions"
           >
             <div className="accordion-body">
               <Row>

@@ -7,7 +7,7 @@ export default function VersionSettings() {
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionExample">
+            <div className="accordion" id="accordionVersionSettings">
               <div className="accordion-item">
                 <h2 className="accordion-header" id="headingFive">
                   <button
@@ -25,7 +25,7 @@ export default function VersionSettings() {
                   id="collapseFive"
                   className="accordion-collapse collapse show"
                   aria-labelledby="headingFive"
-                  data-bs-parent="#accordionExample"
+                  data-bs-parent="#accordionVersionSettings"
                 >
                   <div className="accordion-body">
                     <div>

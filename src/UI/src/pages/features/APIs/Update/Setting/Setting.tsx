@@ -52,7 +52,7 @@ export default function Setting(props: IProps) {
       <div className="card">
         <div>
           <div className="align-items-center justify-content-around">
-            <div className="accordion" id="accordionExample">
+            <div className="accordion" id="accordionSetting">
               <div className="accordion-item">
                 <h2 className="accordion-header" id="headingOne">
                   <button
@@ -70,7 +70,7 @@ export default function Setting(props: IProps) {
                   id="collapseOne"
                   className="accordion-collapse collapse show"
                   aria-labelledby="headingOne"
-                  data-bs-parent="#accordionExample"
+                  data-bs-parent="#accordionSetting"
                 >
                   <div className="accordion-body">
                     <Row>
