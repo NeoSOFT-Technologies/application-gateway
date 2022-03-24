@@ -4,49 +4,14 @@ import ListenPath from "./ListenPath/ListenPath";
 import RateLimit from "./RateLimit/RateLimit";
 import TargetUrl from "./TargetUrl/TargetUrl";
 import { Col, Form, Row } from "react-bootstrap";
-import { IApiUpdateForm, IErrorApiUpdate } from "../../../../../types/api";
-import { regexForName } from "../../../../../resources/APIS/ApiConstants";
 
 interface IProps {
-  setApisUpdateForm: React.Dispatch<React.SetStateAction<IApiUpdateForm>>;
-  setErr: React.Dispatch<React.SetStateAction<IErrorApiUpdate>>;
+  onChange: Function;
 }
 export default function Setting(props: IProps) {
-  const api: IApiUpdateForm = {
-    apiName: "",
-  };
-  const error: IErrorApiUpdate = {
-    apiName: "",
-  };
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // api.apiName = event.target.value;
-    // props.setApisUpdateForm(api);
-    //   // console.log(event.target.value);
-    const { name, value } = event.target;
-    switch (name) {
-      case "apiName":
-        props.setErr({
-          ...error,
-          [name]: regexForName.test(value)
-            ? ""
-            : "Name should only consist Alphabets",
-        });
-        break;
-      // case "listenPath":
-      //   props.setErr({
-      //     ...error,
-      //     [name]: regexForListenPath.test(value)
-      //       ? ""
-      //       : "ListenPath should be in correct format eg: /abc/",
-      //   });
-      //   break;
-      default:
-        break;
-    }
-    // api.apiName = value;
-    props.setApisUpdateForm({ ...api, [name]: value });
-  };
-  console.log("api", api);
+  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
+    props.onChange(e);
+  }
   return (
     <div>
       <div className="card">
@@ -90,7 +55,7 @@ export default function Setting(props: IProps) {
                               // value={api.apiName}
                               // isInvalid={!!props.err}
                               // isValid={!props.err && !!props.apisUpdateForm}
-                              onChange={handleInputChange}
+                              onChange={changeApiUpdateForm}
                               // required
                             />
                             {/* <Form.Control.Feedback type="invalid">
@@ -102,7 +67,7 @@ export default function Setting(props: IProps) {
                     </Row>
                     <br />
                     <div>
-                      <ListenPath />
+                      <ListenPath onChange={changeApiUpdateForm} />
                     </div>
                     <div>
                       <TargetUrl />

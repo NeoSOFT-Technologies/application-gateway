@@ -53,10 +53,12 @@ export interface IApiUpdateFormData {
   quotas: Boolean;
 }
 
-export interface IErrorApiUpdate {
+export interface IApiUpdateError {
   apiName: string;
+  listenPath: string;
 }
 
 export interface IApiUpdateForm {
   apiName: string;
+  listenPath: string;
 }
