@@ -13,8 +13,9 @@ import {
 import Spinner from "../../../../components/loader/Loader";
 import { deleteApi } from "../../../../store/features/api/delete/slice";
 import { useErrorHandler } from "react-error-boundary";
-import moment from "moment";
+// import moment from "moment";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import helper from "../../../../utils/helper";
 function Bomb() {
   console.log("");
   // throw new Error("Boom");
@@ -55,13 +56,8 @@ export default function APIList() {
     if (apiList.data && apiList.data?.Apis?.length > 0) {
       const listAPI: IApiData[] = [];
       apiList.data?.Apis.forEach((item) => {
-        const listObj = Object.create(item);
-        listObj.Status = listObj.IsActive === true ? "Active" : "In-Active";
-        listObj.CreatedDateTxt =
-          listObj.CreatedDate !== ""
-            ? moment(listObj.CreatedDate).format("DD/MM/YYYY")
-            : "";
-        listAPI.push(listObj);
+        const api = helper(item);
+        listAPI.push(api);
       });
       setDataList({
         list: [...listAPI],

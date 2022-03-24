@@ -35,16 +35,6 @@ export default function PolicyList() {
   useEffect(() => {
     console.log("UseEffect", policyList.data);
     if (policyList.data && policyList.data?.Policies?.length > 0) {
-      // const listPOLICY: IPolicyData[] = [];
-      // policyList.data?.Policies.forEach((item) => {
-      //   const listObj = Object.create(item);
-      //   listObj.Status = listObj.IsActive === true ? "Active" : "In-Active";
-      //   listObj.CreatedDateTxt =
-      //     listObj.CreatedDate !== ""
-      //       ? moment(listObj.CreatedDate).format("DD/MM/YYYY")
-      //       : "";
-      //   listPOLICY.push(listObj);
-      // });
       setDataList({
         list: [...policyList.data.Policies],
         fields: ["Name", "State", "Apis", "AuthType"],
