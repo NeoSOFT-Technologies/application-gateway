@@ -698,6 +698,10 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             {
                 SetJsonValidate(transformedObject, version, extendedPaths);
             }
+            SetTransformHeaders(transformedObject, version, extendedPaths);
+            SetTransformResponseHeaders(transformedObject, version, extendedPaths);
+            SetTransform(transformedObject, version, extendedPaths);
+            SetTransformResponse(transformedObject, version, extendedPaths);
             (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("ExtendedPaths").Remove();
             return transformedObject;
         }
@@ -757,13 +761,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             {
                 for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
                 {
-                    JObject tempObj = new JObject();
-                    //tempObj.Add("query_val_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("QueryValMatches"));
-                    //tempObj.Add("payload_matches", trig[j]["Triggers"][i]["Options"].Value<string>("PayloadMatches"));
-                    //tempObj.Add("header_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("HeaderMatches"));
-                    //tempObj.Add("path_part_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("PathPartMatches"));
-                    //tempObj.Add("request_context_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("RequestContexMatches"));
-                    //tempObj.Add("session_meta_matches", trig[j]["Triggers"][i]["Options"].Value<JObject>("SessionMetaMatches"));
+                    JObject tempObj = new JObject();                    
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i] as JObject).Property("options").Remove();
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i] as JObject).Add("options", tempObj);
                     if (trig[j]["Triggers"][i]["Options"].Value<JObject>("QueryValMatches") is not null)
@@ -800,7 +798,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
                 {
                     JObject tempObj = new JObject();
-                    //tempObj.Add("X-Rewrite2", trig[j]["Triggers"][i]["Options"]["QueryValMatches"].Value<JObject>("Culprit"));
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("query_val_matches", tempObj);
                     var trans = Culprit(transformedObject, version, extendedPaths);
                     transformedObject = trans;
@@ -816,7 +813,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
                 {
                     JObject tempObj = new JObject();
-                    //tempObj.Add("X-Rewrite2", trig[j]["Triggers"][i]["Options"]["QueryValMatches"].Value<JObject>("Culprit"));
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("header_matches", tempObj);
                     var trans = Culprit(transformedObject, version, extendedPaths);
                     transformedObject = trans;
@@ -832,7 +828,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 for (var i = 0; i < trig[j]["Triggers"].Count(); i++)
                 {
                     JObject tempObj = new JObject();
-                    //tempObj.Add("X-Rewrite2", trig[j]["Triggers"][i]["Options"]["QueryValMatches"].Value<JObject>("Culprit"));
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("path_part_matches", tempObj);
                     var trans = Culprit(transformedObject, version, extendedPaths);
                     transformedObject = trans;
@@ -852,12 +847,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     tempObj.Add("match_rx", trig[j]["Triggers"][i]["Options"]["PayloadMatches"].Value<JObject>("MatchRx"));
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i]["options"] as JObject).Add("payload_matches", tempObj);
                 }
-            }
-            SetTransformHeaders(transformedObject, version, extendedPaths);
-            SetTransformResponseHeaders(transformedObject, version, extendedPaths);
-            SetTransform(transformedObject, version, extendedPaths);
-            SetTransformResponse(transformedObject, version, extendedPaths);
-            (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("ExtendedPaths").Remove();
+            }           
             return transformedObject;
         }
         private static JObject SetTransform(JObject transformedObject, JObject version, JObject extendedPaths)
