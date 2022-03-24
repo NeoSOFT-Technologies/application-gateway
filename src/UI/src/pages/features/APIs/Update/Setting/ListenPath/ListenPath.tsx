@@ -1,49 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { regexForListenPath } from "../../../../../../resources/APIS/ApiConstants";
-import {
-  IApiUpdateFormData,
-  IErrorApiUpdateInput,
-} from "../../../../../../types/api";
-
-export default function ListenPath() {
-  const [apisUpdateForm, setApisUpdateForm] = useState<IApiUpdateFormData>({
-    apiName: "",
-    listenPath: "",
-    targetUrl: "",
-    stripListenPath: false,
-    internal: false,
-    roundRobin: false,
-    service: false,
-    rateLimit: false,
-    rate: "",
-    perSecond: "",
-    quotas: false,
-  });
-  const [err, setErr] = useState<IErrorApiUpdateInput>({
-    apiName: "",
-    targetUrl: "",
-    listenPath: "",
-    rate: "",
-    perSecond: "",
-  });
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(event.target.value);
-    const { name, value } = event.target;
-    switch (name) {
-      case "listenPath":
-        setErr({
-          ...err,
-          [name]: regexForListenPath.test(value)
-            ? ""
-            : "ListenPath should be in correct format eg: /abc/",
-        });
-        break;
-      default:
-        break;
-    }
-    setApisUpdateForm({ ...apisUpdateForm, [name]: value });
-  };
+interface IProps {
+  onChange: Function;
+}
+export default function ListenPath(props: IProps) {
+  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
+    props.onChange(e);
+  }
   return (
     <>
       <div className="accordion" id="accordionExample">
@@ -87,15 +50,8 @@ export default function ListenPath() {
                       id="listenPath"
                       name="listenPath"
                       data-testid="name-input"
-                      value={apisUpdateForm.listenPath}
-                      isInvalid={!!err.listenPath}
-                      isValid={!err.listenPath && !!apisUpdateForm.listenPath}
-                      onChange={handleInputChange}
-                      required
+                      onChange={changeApiUpdateForm}
                     />
-                    <Form.Control.Feedback type="invalid">
-                      {err.listenPath}
-                    </Form.Control.Feedback>
                   </Form.Group>
                   <i>
                     If you add a trailing &apos;/ &apos; to your listen path,

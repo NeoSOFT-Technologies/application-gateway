@@ -2,73 +2,51 @@ import React, { useState } from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
-import { IApiUpdateForm, IErrorApiUpdate } from "../../../../types/api";
-// import {
-//   IApiUpdateFormData,
-//   IErrorApiUpdateInput,
-// } from "../../../../types/api";
-
-// import { regexForListenPath } from "../../../../resources/APIS/ApiConstants";
-// import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-// import { useNavigate } from "react-router-dom";
+import { IApiUpdateError } from "../../../../types/api";
+import {
+  regexForListenPath,
+  regexForName,
+  setForm,
+} from "../../../../resources/APIS/ApiConstants";
 
 export default function Update() {
-  // const navigate = useNavigate();
+  // updateForm, setUpdateForm
+  // form, setForm
+  // errors, SetErrors
 
-  // const [apisUpdateForm, setApisUpdateForm] = useState<IApiUpdateFormData>({
-  //   apiName: "",
-  //   listenPath: "",
-  //   targetUrl: "",
-  //   stripListenPath: false,
-  //   internal: false,
-  //   roundRobin: false,
-  //   service: false,
-  //   rateLimit: false,
-  //   rate: "",
-  //   perSecond: "",
-  //   quotas: false,
-  // });
-  // const [err, setErr] = useState<IErrorApiUpdateInput>({
-  //   apiName: "",
-  //   targetUrl: "",
-  //   listenPath: "",
-  //   rate: "",
-  //   perSecond: "",
-  // });
-  const [apisUpdateForm, setApisUpdateForm] = useState<IApiUpdateForm>({
+  const [errors, setErrors] = useState<IApiUpdateError>({
     apiName: "",
+    listenPath: "",
   });
-  const [err, setErr] = useState<IErrorApiUpdate>({
-    apiName: "",
-  });
-  // const handleValidate = () => {
-  //   const validate = !!(err.apiName === "");
-  //   return validate;
-  // };
-  // const handleSubmitApi = (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   if (handleValidate()) {
-  //     console.log("apisUpdateForm", apisUpdateForm);
-  //     if (apisUpdateForm.apiName !== "") {
-  //       setApisUpdateForm({
-  //         apiName: "",
-  //       });
-  //     }
-  //   } else {
-  //     setErr({
-  //       apiName: "",
-  //     });
-  //   }
-  // };
-  console.log("update componenet", apisUpdateForm);
-  console.log("update error", err);
-  // const NavigateToApisList = (
-  //   val: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  // ) => {
-  //   val.preventDefault();
-  //   // console.log(val);
-  //   navigate("/apilist");
-  // };
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    switch (name) {
+      case "apiName":
+        setErrors({
+          ...errors,
+          [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
+        });
+        break;
+
+      case "listenPath":
+        setErrors({
+          ...errors,
+          [name]: regexForListenPath.test(value)
+            ? ""
+            : "Enter a Valid Listen Path",
+        });
+        break;
+      default:
+        break;
+    }
+  }
+  const form = setForm();
+  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
+    validateForm(e);
+    form[1]({ ...form[0], [e.target.name]: e.target.value });
+  }
+  console.log("Form - ", form[0]);
+  console.log("Error -", errors);
   return (
     <div>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -89,10 +67,7 @@ export default function Update() {
                   className="mb-3 small"
                 >
                   <Tab eventKey="setting" title="Setting">
-                    <Setting
-                      setApisUpdateForm={setApisUpdateForm}
-                      setErr={setErr}
-                    />
+                    <Setting onChange={changeApiUpdateForm} />
                   </Tab>
                   <Tab eventKey="version" title="Version">
                     <Version />
