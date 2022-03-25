@@ -75,10 +75,18 @@ export default function Setting(props: IProps) {
                       />
                     </div>
                     <div>
-                      <TargetUrl />
+                      <TargetUrl
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          changeApiUpdateForm(e, props)
+                        }
+                      />
                     </div>
                     <div>
-                      <RateLimit />
+                      <RateLimit
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          changeApiUpdateForm(e, props)
+                        }
+                      />
                     </div>
                   </div>
                 </div>

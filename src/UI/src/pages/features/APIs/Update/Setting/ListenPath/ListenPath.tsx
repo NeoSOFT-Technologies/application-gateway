@@ -1,12 +1,12 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-interface IProps {
-  onChange: Function;
-}
+import { IProps } from "../../../../../../types/api";
+import { changeApiUpdateForm } from "../../../../../../resources/common";
+
 export default function ListenPath(props: IProps) {
-  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
-    props.onChange(e);
-  }
+  // function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
+  //   props.onChange(e);
+  // }
   return (
     <>
       <div className="accordion" id="accordionListenPath">
@@ -48,7 +48,7 @@ export default function ListenPath(props: IProps) {
                       id="listenPath"
                       name="listenPath"
                       data-testid="name-input"
-                      onChange={changeApiUpdateForm}
+                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                   <i>
@@ -79,6 +79,9 @@ export default function ListenPath(props: IProps) {
                       id="stripListenPath"
                       name="stripListenPath"
                       label="Strip the Listen path"
+                      onChangeCapture={(e: any) =>
+                        changeApiUpdateForm(e, props)
+                      }
                     />
                   </Form.Group>
                 </Col>

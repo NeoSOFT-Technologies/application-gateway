@@ -1,7 +1,9 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
+import { IProps } from "../../../../../../types/api";
+import { changeApiUpdateForm } from "../../../../../../resources/common";
 
-export default function TargetUrl() {
+export default function TargetUrl(props: IProps) {
   return (
     <div>
       <div className="accordion" id="accordionTargetUrl">
@@ -41,7 +43,8 @@ export default function TargetUrl() {
                         type="text"
                         id="name"
                         placeholder="Enter Target Url"
-                        name="name"
+                        name="targetUrl"
+                        onChange={(e: any) => changeApiUpdateForm(e, props)}
                         required
                       />
                       <i>

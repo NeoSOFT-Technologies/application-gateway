@@ -5,6 +5,8 @@ import { Tab, Tabs, Form } from "react-bootstrap";
 import {
   regexForListenPath,
   regexForName,
+  regexForTagetUrl,
+  regexForNumber,
 } from "../../../../resources/APIS/ApiConstants";
 import { setForm, err } from "../../../../resources/common";
 
@@ -15,7 +17,7 @@ export default function Update() {
   const form = setForm();
   const error = err();
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
     switch (name) {
       case "apiName":
         error[1]({
@@ -32,14 +34,35 @@ export default function Update() {
             : "Enter a Valid Listen Path",
         });
         break;
+      case "targetUrl":
+        error[1]({
+          ...error[0],
+          [name]: regexForTagetUrl.test(value) ? "" : "Enter a Valid TargetUrl",
+        });
+        break;
+      case "rate":
+        error[1]({
+          ...error[0],
+          [name]: regexForNumber.test(value) ? "" : "Enter only Number",
+        });
+        break;
+      case "perSecond":
+        error[1]({
+          ...error[0],
+          [name]: regexForNumber.test(value) ? "" : "Enter only Number",
+        });
+        break;
       default:
         break;
     }
+    if (type === "checkbox") {
+      const isChecked = event.target.checked;
+      form[1]({ ...form[0], [event.target.name]: isChecked });
+    } else form[1]({ ...form[0], [event.target.name]: event.target.value });
   }
 
   function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
     validateForm(e);
-    form[1]({ ...form[0], [e.target.name]: e.target.value });
   }
   console.log("Form - ", form[0]);
   console.log("Error -", error[0]);
