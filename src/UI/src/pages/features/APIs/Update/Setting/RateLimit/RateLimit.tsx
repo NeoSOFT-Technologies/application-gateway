@@ -97,7 +97,11 @@ export default function RateLimit(props: IProps) {
                           <Form.Group className="mb-3">
                             <Form.Check
                               type="switch"
-                              id="custom-switch"
+                              id="disableQuotas"
+                              name="disableQuotas"
+                              onChangeCapture={(e: any) =>
+                                changeApiUpdateForm(e, props)
+                              }
                               label="Disable quotas"
                             />
                           </Form.Group>

@@ -58,7 +58,11 @@ export default function TargetUrl(props: IProps) {
                     <Form.Group className="mb-3">
                       <Form.Check
                         type="switch"
-                        id="custom-switch"
+                        id="enableRobin"
+                        name="enableRobin"
+                        onChangeCapture={(e: any) =>
+                          changeApiUpdateForm(e, props)
+                        }
                         label="Enable round-robin load balancing"
                       />
                     </Form.Group>
@@ -67,7 +71,11 @@ export default function TargetUrl(props: IProps) {
                     <Form.Group className="mb-3">
                       <Form.Check
                         type="switch"
-                        id="custom-switch"
+                        id="enableService"
+                        name="enableService"
+                        onChangeCapture={(e: any) =>
+                          changeApiUpdateForm(e, props)
+                        }
                         label="Enable service discovery"
                       />
                     </Form.Group>

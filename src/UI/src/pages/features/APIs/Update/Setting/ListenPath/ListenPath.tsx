@@ -97,7 +97,11 @@ export default function ListenPath(props: IProps) {
 
                     <Form.Check
                       type="switch"
-                      id="custom-switch"
+                      id="activated"
+                      name="activated"
+                      onChangeCapture={(e: any) =>
+                        changeApiUpdateForm(e, props)
+                      }
                       label="Activated"
                     />
                   </Form.Group>

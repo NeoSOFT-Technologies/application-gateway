@@ -59,8 +59,8 @@ export default function Versions(props: IProps) {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="versionname"
-                      name="versionname"
+                      id="versionName"
+                      name="versionName"
                       placeholder="Version Name"
                       required
                       onChange={(e: any) => changeApiUpdateForm(e, props)}
@@ -71,8 +71,8 @@ export default function Versions(props: IProps) {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="targethost"
-                      name="targethost"
+                      id="overrideTargetHost"
+                      name="overrideTargetHost"
                       placeholder="Override Target Host"
                       required
                       onChange={(e: any) => changeApiUpdateForm(e, props)}

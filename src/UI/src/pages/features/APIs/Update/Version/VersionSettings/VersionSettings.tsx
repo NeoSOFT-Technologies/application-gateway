@@ -36,9 +36,12 @@ export default function VersionSettings(props: IProps) {
                           <Form.Group className="mb-3">
                             <Form.Check
                               type="switch"
-                              id="versioning"
-                              name="versioning"
+                              id="enableVersioning"
+                              name="enableVersioning"
                               label="Enable Versioning"
+                              onChangeCapture={(e: any) =>
+                                changeApiUpdateForm(e, props)
+                              }
                             />
                           </Form.Group>
                         </Col>
@@ -48,7 +51,7 @@ export default function VersionSettings(props: IProps) {
                             <br />
                             <Form.Select
                               aria-label="Default select example"
-                              name="versiondatalocation"
+                              name="versionDataLocation"
                               onClick={(e: any) =>
                                 changeApiUpdateForm(e, props)
                               }
@@ -76,9 +79,9 @@ export default function VersionSettings(props: IProps) {
                             <Form.Control
                               className="mt-2"
                               type="text"
-                              id="keyname"
+                              id="keyName"
                               placeholder="Enter key Name"
-                              name="keyname"
+                              name="keyName"
                               required
                               onChange={(e: any) =>
                                 changeApiUpdateForm(e, props)
