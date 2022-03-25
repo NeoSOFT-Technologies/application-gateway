@@ -66,7 +66,7 @@ export default function Update() {
                     <Setting onChange={changeApiUpdateForm} />
                   </Tab>
                   <Tab eventKey="version" title="Version">
-                    <Version />
+                    <Version onChange={changeApiUpdateForm} />
                   </Tab>
                 </Tabs>
               </div>
