@@ -38,7 +38,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.ControlandLimit
 
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecastnew";
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/ControlandLimit/createApiData.json");
