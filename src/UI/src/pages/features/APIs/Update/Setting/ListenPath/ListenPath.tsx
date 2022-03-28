@@ -71,7 +71,10 @@ export default function ListenPath() {
                       id="listenPath"
                       name="listenPath"
                       data-testid="name-input"
-                      onChange={changeApiUpdateForm}
+                      value={state.form?.listenPath}
+                      isInvalid={!!state.errors?.listenPath}
+                      isValid={!state.errors?.listenPath}
+                      onChange={(e: any) => validateForm(e)}
                     />
                     <Form.Control.Feedback type="invalid">
                       {state.errors?.listenPath}
@@ -105,9 +108,6 @@ export default function ListenPath() {
                       id="stripListenPath"
                       name="stripListenPath"
                       label="Strip the Listen path"
-                      onChangeCapture={(e: any) =>
-                        changeApiUpdateForm(e, props)
-                      }
                     />
                   </Form.Group>
                 </Col>
@@ -125,9 +125,6 @@ export default function ListenPath() {
                       type="switch"
                       id="activated"
                       name="activated"
-                      onChangeCapture={(e: any) =>
-                        changeApiUpdateForm(e, props)
-                      }
                       label="Activated"
                     />
                   </Form.Group>
