@@ -30,6 +30,7 @@ export interface IApiFormData {
   listenPath: string;
   targetUrl: string;
   isActive: Boolean;
+  StripListenPath?: Boolean;
   Id?: string;
 }
 export interface IErrorApiUpdateInput {

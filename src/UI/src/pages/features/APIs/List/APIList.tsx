@@ -3,6 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
+import store from "../../../../store/index";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
 import {
@@ -90,25 +91,35 @@ export default function APIList() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    // console.log(val);
     navigate("/createapi");
   };
 
   const NavigateUpdate = () => {
-    // console.log(val);
     navigate("/update", {
       // state: { val },
     });
   };
 
-  const deleteApiFunction = (val: IApiData) => {
+  const deleteApiFunction = async (val: IApiData) => {
     // console.log(val: IApiFormData);
     // const { val } = location.state as LocationState;
     console.log(val);
     console.log(val.Id);
     if (val.Id) {
-      dispatch(deleteApi(val.Id));
-      ToastAlert("Api Removed", "success");
+      if (window.confirm("Are you sure that you want to delete Api ?")) {
+        const result = await dispatch(deleteApi(val.Id));
+        if (result.meta.requestStatus === "rejected") {
+          await ToastAlert(result.payload.message, "error");
+        } else {
+          console.log(store.subscribe(() => store.getState().apiList));
+          await ToastAlert("Api Deleted Successfully", "success");
+        }
+      }
+      // const unsubscribe = store.subscribe(() => store.getState());
+      // dispatch(deleteApi(val.Id));
+      // unsubscribe();
+
+      // ToastAlert("Api Removed", "success");
       navigate("/apilist");
     }
   };

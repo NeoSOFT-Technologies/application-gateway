@@ -42,3 +42,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 export default store;
+
+// store.subscribe(() => store.getState());
