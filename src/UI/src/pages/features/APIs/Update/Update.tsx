@@ -2,6 +2,7 @@ import React from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
+import Spinner from "../../../../components/loader/Loader";
 import {
   regexForListenPath,
   regexForName,
@@ -9,11 +10,20 @@ import {
   regexForNumber,
 } from "../../../../resources/APIS/ApiConstants";
 import { setForm, err } from "../../../../resources/common";
+import { IApiGetByIdState } from "../../../../types/api";
+import { RootState } from "../../../../store";
+import { useAppSelector } from "../../../../store/hooks";
 
 export default function Update() {
   // updateForm, setUpdateForm
   // form, setForm
   // errors, SetErrors
+
+  const apiData: IApiGetByIdState = useAppSelector(
+    (state: RootState) => state.getApiById
+  );
+  console.log("data", apiData);
+
   const form = setForm();
   const error = err();
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
@@ -62,40 +72,53 @@ export default function Update() {
   }
 
   function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
+    const data = apiData;
     validateForm(e);
+    return data;
   }
   console.log("Form - ", form[0]);
   console.log("Error -", error[0]);
+
   return (
     <div>
+      {apiData.loading && <Spinner />}
+
       <div className="col-lg-12 grid-margin stretch-card">
-        <div className="card">
-          <div className="card-body">
-            <Form data-testid="form-input">
-              <div className="align-items-center">
-                <div>
-                  <button className=" btn  btn-success btn-md d-flex float-right mb-4">
-                    {" "}
-                    Update
-                  </button>
+        {!apiData.loading && apiData.error === null && apiData.data && (
+          <div className="card">
+            <div className="card-body">
+              <Form data-testid="form-input">
+                <div className="align-items-center">
+                  <div>
+                    <button className=" btn  btn-success btn-md d-flex float-right mb-4">
+                      {" "}
+                      Update
+                    </button>
+                  </div>
+                  <Tabs
+                    defaultActiveKey="setting"
+                    id="uncontrolled-tab"
+                    // transition={false}
+                    className="mb-3 small"
+                  >
+                    <Tab eventKey="setting" title="Setting">
+                      <Setting
+                        onChange={changeApiUpdateForm}
+                        updateApiData={apiData}
+                      />
+                    </Tab>
+                    <Tab eventKey="version" title="Version">
+                      <Version
+                        onChange={changeApiUpdateForm}
+                        updateApiData={apiData}
+                      />
+                    </Tab>
+                  </Tabs>
                 </div>
-                <Tabs
-                  defaultActiveKey="setting"
-                  id="uncontrolled-tab"
-                  // transition={false}
-                  className="mb-3 small"
-                >
-                  <Tab eventKey="setting" title="Setting">
-                    <Setting onChange={changeApiUpdateForm} />
-                  </Tab>
-                  <Tab eventKey="version" title="Version">
-                    <Version onChange={changeApiUpdateForm} />
-                  </Tab>
-                </Tabs>
-              </div>
-            </Form>
+              </Form>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

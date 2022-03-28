@@ -69,6 +69,44 @@ export interface IAddApiResponse {
   Errors: string[] | null | unknown | any | string;
 }
 
+export interface IApiGetByIdState {
+  data?: IGetApiByIdData | null;
+  loading: boolean;
+  error?: string | null;
+}
+
+export interface IGetApiByIdData {
+  apiId: string;
+  apiName: string;
+  listenPath: string;
+  stripListenPath: string;
+  targetUrl: string;
+  isActive: boolean;
+  rateLimit: IRateLimitData[];
+  versioningInfo: IVersioningInfo[];
+  defaultVersion: string;
+  version: IVersion[];
+  isQuotaDisabled: boolean;
+}
+
+export interface IRateLimitData {
+  rate: number;
+  per: number;
+  isDisabled: boolean;
+}
+
+export interface IVersioningInfo {
+  location: number;
+  key: string;
+}
+
+export interface IVersion {
+  name: string;
+  overrideTarget: string;
+  expires: string;
+}
+
 export interface IProps {
   onChange: Function;
+  updateApiData: any;
 }

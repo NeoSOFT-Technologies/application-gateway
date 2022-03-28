@@ -7,6 +7,11 @@ export default function ListenPath(props: IProps) {
   // function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
   //   props.onChange(e);
   // }
+
+  const apiData = props.updateApiData;
+  // console.log(apiData);
+  // console.log("ListenPath:", apiData.data.ListenPath);
+
   return (
     <>
       <div className="accordion" id="accordionListenPath">
@@ -33,9 +38,9 @@ export default function ListenPath(props: IProps) {
               <Row>
                 <Col md={12} className="mb-3">
                   <p>
-                    The listen path dictates what path Tyk will listen on, if
-                    you leave this blank, it will be automatically populated by
-                    the ID of the API.
+                    The listen path dictates what path API Gateway will listen
+                    on, if you leave this blank, it will be automatically
+                    populated by the ID of the API.
                   </p>
                   <Form.Group className="mb-3">
                     <Form.Label>
@@ -48,6 +53,7 @@ export default function ListenPath(props: IProps) {
                       id="listenPath"
                       name="listenPath"
                       data-testid="name-input"
+                      value={apiData.data.ListenPath}
                       onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
@@ -63,9 +69,9 @@ export default function ListenPath(props: IProps) {
                       <b>Strip the Listen path</b>
                     </Form.Label>
                     <p>
-                      If this setting is checked, then Tyk will remove the above
-                      listen path from the inbound URL so that it does not
-                      interfere with routing upstream.
+                      If this setting is checked, then API Gateway will remove
+                      the above listen path from the inbound URL so that it does
+                      not interfere with routing upstream.
                     </p>
                     {/* <Form.Control
                             className="text-left"

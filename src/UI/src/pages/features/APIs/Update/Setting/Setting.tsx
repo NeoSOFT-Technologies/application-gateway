@@ -11,6 +11,20 @@ export default function Setting(props: IProps) {
   // function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
   //   props.onChange(e);
   // }
+
+  const apiData = props.updateApiData;
+  // console.log(apiData);
+  console.log("ApiName:", apiData.data.Name);
+  // useEffect(() => {
+  //   // console.log(tenantList.data);
+  //   if (apiData.data) {
+  //     setDataList({
+  //       list: [...tenantList.data.list],
+  //       fields: ["userid", "description", "lastlogin"],
+  //     });
+  //   }
+  // }, [apiData.data]);
+
   return (
     <div>
       <div className="card">
@@ -50,6 +64,7 @@ export default function Setting(props: IProps) {
                               id="apiName"
                               placeholder="Enter API Name"
                               name="apiName"
+                              value={apiData.data.Name}
                               // data-testid="name-input"
                               // value={api.apiName}
                               // isInvalid={!!props.err}
@@ -72,6 +87,7 @@ export default function Setting(props: IProps) {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           changeApiUpdateForm(e, props)
                         }
+                        updateApiData={apiData}
                       />
                     </div>
                     <div>
@@ -79,6 +95,7 @@ export default function Setting(props: IProps) {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           changeApiUpdateForm(e, props)
                         }
+                        updateApiData={apiData}
                       />
                     </div>
                     <div>
@@ -86,6 +103,7 @@ export default function Setting(props: IProps) {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           changeApiUpdateForm(e, props)
                         }
+                        updateApiData={apiData}
                       />
                     </div>
                   </div>

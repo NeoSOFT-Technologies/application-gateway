@@ -16,6 +16,7 @@ import { useErrorHandler } from "react-error-boundary";
 // import moment from "moment";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import helper from "../../../../utils/helper";
+import { getApiById } from "../../../../store/features/api/getById/slice";
 function Bomb() {
   console.log("");
   // throw new Error("Boom");
@@ -94,11 +95,11 @@ export default function APIList() {
     navigate("/createapi");
   };
 
-  const NavigateUpdate = () => {
-    // console.log(val);
-    navigate("/update", {
-      // state: { val },
-    });
+  const NavigateUpdate = (val: IApiData) => {
+    if (val.Id) {
+      dispatch(getApiById(val.Id));
+      navigate("/update", {});
+    }
   };
 
   const deleteApiFunction = (val: IApiData) => {
