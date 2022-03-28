@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { updateApiService } from "../../../../services/api/api";
-import { IApiUpdateFormData, IApiListState } from "../../../../types/api";
+import { IApiUpdateFormData, IApiUpdateState } from "../../../../types/api";
 
 interface IConditions {
   data: IApiUpdateFormData;
 }
-const initialState: IApiListState = {
+const initialState: IApiUpdateState = {
   data: null,
   loading: false,
   error: null,

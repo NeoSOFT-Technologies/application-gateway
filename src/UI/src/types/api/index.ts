@@ -70,6 +70,11 @@ export interface IAddApiResponse {
   Errors: string[] | null | unknown | any | string;
 }
 
+export interface IApiUpdateState {
+  data?: IApiUpdateFormData | null;
+  loading: boolean;
+  error?: string | null;
+}
 export interface IProps {
   onChange: Function;
 }
