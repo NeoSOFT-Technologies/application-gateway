@@ -1,7 +1,9 @@
 import React from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { changeApiUpdateForm } from "../../../../../../resources/common";
+import { IProps } from "../../../../../../types/api";
 
-export default function Versions() {
+export default function Versions(props: IProps) {
   return (
     <>
       <div className="accordion" id="accordionVersions">
@@ -37,9 +39,14 @@ export default function Versions() {
                       <b>Choose a version:</b>
                     </Form.Label>
                     <br></br>
-                    <Form.Select>
-                      <option>Choose a version</option>
-                      <option>Default</option>
+                    <Form.Select
+                      name="version"
+                      onClick={(e: any) => changeApiUpdateForm(e, props)}
+                    >
+                      <option disabled>Choose a version</option>
+                      <option id="1" value="default">
+                        Default
+                      </option>
                     </Form.Select>
                   </Form.Group>
 
@@ -52,10 +59,11 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="striplistenpath"
-                      name="striplistenpath"
+                      id="versionName"
+                      name="versionName"
                       placeholder="Version Name"
                       required
+                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>
@@ -63,10 +71,11 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="striplistenpath"
-                      name="striplistenpath"
+                      id="overrideTargetHost"
+                      name="overrideTargetHost"
                       placeholder="Override Target Host"
                       required
+                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>
@@ -74,10 +83,11 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="striplistenpath"
-                      name="striplistenpath"
+                      id="expires"
+                      name="expires"
                       placeholder="Expires"
                       required
+                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>

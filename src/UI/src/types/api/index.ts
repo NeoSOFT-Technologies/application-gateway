@@ -30,6 +30,7 @@ export interface IApiFormData {
   listenPath: string;
   targetUrl: string;
   isActive: Boolean;
+  StripListenPath?: Boolean;
   Id?: string;
 }
 export interface IErrorApiUpdateInput {
@@ -67,4 +68,8 @@ export interface IAddApiResponse {
   Succeeded: boolean;
   Message: string | null;
   Errors: string[] | null | unknown | any | string;
+}
+
+export interface IProps {
+  onChange: Function;
 }

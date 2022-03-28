@@ -1,7 +1,9 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
+import { changeApiUpdateForm } from "../../../../../../resources/common";
+import { IProps } from "../../../../../../types/api";
 
-export default function RateLimit() {
+export default function RateLimit(props: IProps) {
   return (
     <div>
       <div className="card">
@@ -34,8 +36,12 @@ export default function RateLimit() {
                           <Form.Group className="mb-3">
                             <Form.Check
                               type="switch"
-                              id="custom-switch"
+                              id="disableRate"
+                              name="disableRate"
                               label="Disable rate limiting"
+                              onChange={(e: any) =>
+                                changeApiUpdateForm(e, props)
+                              }
                             />
                           </Form.Group>
                         </Col>
@@ -57,6 +63,9 @@ export default function RateLimit() {
                               id="rate"
                               placeholder="Enter rate"
                               name="rate"
+                              onChange={(e: any) =>
+                                changeApiUpdateForm(e, props)
+                              }
                               required
                             />
                             <i>
@@ -74,9 +83,12 @@ export default function RateLimit() {
                             <Form.Control
                               className="mt-2"
                               type="text"
-                              id="per"
+                              id="perSecond"
                               placeholder="Enter time"
-                              name="per"
+                              name="perSecond"
+                              onChange={(e: any) =>
+                                changeApiUpdateForm(e, props)
+                              }
                               required
                             />
                           </Form.Group>
@@ -85,7 +97,11 @@ export default function RateLimit() {
                           <Form.Group className="mb-3">
                             <Form.Check
                               type="switch"
-                              id="custom-switch"
+                              id="disableQuotas"
+                              name="disableQuotas"
+                              onChangeCapture={(e: any) =>
+                                changeApiUpdateForm(e, props)
+                              }
                               label="Disable quotas"
                             />
                           </Form.Group>

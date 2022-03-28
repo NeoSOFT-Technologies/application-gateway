@@ -22,7 +22,10 @@ export const deleteApi = createAsyncThunk(
       console.log(response);
       return response.data;
     } catch (err) {
-      return err;
+      console.log(err);
+      const myError = err as Error;
+      // console.log("");
+      throw myError;
     }
   }
 );
@@ -45,6 +48,7 @@ const slice = createSlice({
       state.isDeleted = false;
       // action.payload contains error information
       state.error = error(action.payload);
+      action.payload = action.error;
     });
   },
 });

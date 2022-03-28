@@ -75,7 +75,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApi
                     Name = createdApi.Name,
                     TargetUrl = createdApi.TargetUrl,
                     Version = "",
-                    IsActive = true
+                    IsActive = createdApi.IsActive
                 };
                 await _apiRepository.AddAsync(apiDto);
                 #endregion
