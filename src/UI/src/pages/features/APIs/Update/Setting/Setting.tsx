@@ -4,14 +4,36 @@ import ListenPath from "./ListenPath/ListenPath";
 import RateLimit from "./RateLimit/RateLimit";
 import TargetUrl from "./TargetUrl/TargetUrl";
 import { Col, Form, Row } from "react-bootstrap";
+import {
+  regexForName,
+  setFormData,
+  setFormErrors,
+} from "../../../../../resources/APIS/ApiConstants";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
-interface IProps {
-  onChange: Function;
-}
-export default function Setting(props: IProps) {
-  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
-    props.onChange(e);
+export default function Setting() {
+  const state = useAppSelector((RootState) => RootState.updateApiState);
+  const dispatch = useAppDispatch();
+
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "apiName":
+        setFormErrors(
+          {
+            ...state.errors,
+            [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+    setFormData(event, dispatch, state);
   }
+
   return (
     <div>
       <div className="card">
@@ -51,23 +73,21 @@ export default function Setting(props: IProps) {
                               id="apiName"
                               placeholder="Enter API Name"
                               name="apiName"
-                              // data-testid="name-input"
-                              // value={api.apiName}
-                              // isInvalid={!!props.err}
-                              // isValid={!props.err && !!props.apisUpdateForm}
-                              onChange={changeApiUpdateForm}
-                              // required
+                              value={state.form?.apiName}
+                              isInvalid={!!state.errors?.apiName}
+                              isValid={!state.errors?.apiName}
+                              onChange={(e: any) => validateForm(e)}
                             />
-                            {/* <Form.Control.Feedback type="invalid">
-                      {props.err}
-                    </Form.Control.Feedback> */}
+                            <Form.Control.Feedback type="invalid">
+                              {state.errors?.apiName}
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </div>
                       </Col>
                     </Row>
                     <br />
                     <div>
-                      <ListenPath onChange={changeApiUpdateForm} />
+                      <ListenPath />
                     </div>
                     <div>
                       <TargetUrl />

@@ -1,52 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
-import { IApiUpdateError } from "../../../../types/api";
-import {
-  regexForListenPath,
-  regexForName,
-  setForm,
-} from "../../../../resources/APIS/ApiConstants";
+// import {
+//   regexForListenPath,
+//   regexForName,
+//   configureForm,
+// } from "../../../../resources/APIS/ApiConstants";
 
 export default function Update() {
-  // updateForm, setUpdateForm
-  // form, setForm
-  // errors, SetErrors
+  // const model = configureForm();
 
-  const [errors, setErrors] = useState<IApiUpdateError>({
-    apiName: "",
-    listenPath: "",
-  });
-  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    switch (name) {
-      case "apiName":
-        setErrors({
-          ...errors,
-          [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
-        });
-        break;
+  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+  //   const { name, value, type } = event.target;
 
-      case "listenPath":
-        setErrors({
-          ...errors,
-          [name]: regexForListenPath.test(value)
-            ? ""
-            : "Enter a Valid Listen Path",
-        });
-        break;
-      default:
-        break;
-    }
-  }
-  const form = setForm();
-  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
-    validateForm(e);
-    form[1]({ ...form[0], [e.target.name]: e.target.value });
-  }
-  console.log("Form - ", form[0]);
-  console.log("Error -", errors);
+  //   switch (name) {
+  //     case "apiName":
+  //       model.setErrors({
+  //         ...model.errors,
+  //         [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
+  //       });
+  //       break;
+
+  //     case "listenPath":
+  //       model.setErrors({
+  //         ...model.errors,
+  //         [name]: regexForListenPath.test(value)
+  //           ? ""
+  //           : "Enter a Valid Listen Path",
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+
+  //   if (type === "checkbox") {
+  //     const isChecked = event.target.checked;
+  //     model.setForm({ ...model.form, [event.target.name]: isChecked });
+  //   } else {
+  //     model.setForm({ ...model.form, [event.target.name]: event.target.value });
+  //   }
+  // }
+
+  // function changeForm(e: React.ChangeEvent<HTMLInputElement>) {
+  //   validateForm(e);
+  // }
+  // console.log("Form - ", model.form);
+  // console.log("Error -", model.errors);
   return (
     <div>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -67,7 +67,7 @@ export default function Update() {
                   className="mb-3 small"
                 >
                   <Tab eventKey="setting" title="Setting">
-                    <Setting onChange={changeApiUpdateForm} />
+                    <Setting />
                   </Tab>
                   <Tab eventKey="version" title="Version">
                     <Version />

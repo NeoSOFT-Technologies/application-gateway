@@ -34,7 +34,8 @@ export default function VersionSettings() {
                           <Form.Group className="mb-3">
                             <Form.Check
                               type="switch"
-                              id="custom-switch"
+                              id="enable"
+                              name="enable"
                               label="Enable Versioning"
                             />
                           </Form.Group>

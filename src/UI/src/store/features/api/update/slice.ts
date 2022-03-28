@@ -11,7 +11,6 @@ const initialState: IApiListState = {
   loading: false,
   error: null,
 };
-
 export const updateApi = createAsyncThunk(
   "api/update",
   async (conditions: IConditions) => {

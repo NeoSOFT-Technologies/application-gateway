@@ -1,7 +1,35 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
+import {
+  setFormData,
+  setFormErrors,
+  regexForTagetUrl,
+} from "../../../../../../resources/APIS/ApiConstants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function TargetUrl() {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.updateApiState);
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "targetUrl":
+        setFormErrors(
+          {
+            ...state.errors,
+            [name]: regexForTagetUrl.test(value)
+              ? ""
+              : "Enter a Valid Target URL",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+    setFormData(event, dispatch, state);
+  }
   return (
     <div>
       <div className="accordion" id="accordionTargetUrl">
@@ -39,11 +67,18 @@ export default function TargetUrl() {
                       <Form.Control
                         className="mt-2"
                         type="text"
-                        id="name"
+                        id="targetUrl"
                         placeholder="Enter Target Url"
-                        name="name"
+                        name="targetUrl"
+                        value={state.form?.targetUrl}
+                        isInvalid={!!state.errors?.targetUrl}
+                        isValid={!state.errors?.targetUrl}
+                        onChange={(e: any) => validateForm(e)}
                         required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {state.errors?.targetUrl}
+                      </Form.Control.Feedback>
                       <i>
                         If you add a trailing &apos;/ &apos; to your listen
                         path, you can only make requests that include the
