@@ -4,26 +4,35 @@ import ListenPath from "./ListenPath/ListenPath";
 import RateLimit from "./RateLimit/RateLimit";
 import TargetUrl from "./TargetUrl/TargetUrl";
 import { Col, Form, Row } from "react-bootstrap";
-import { IProps } from "../../../../../types/api";
-import { changeApiUpdateForm } from "../../../../../resources/common";
+import {
+  regexForName,
+  setFormData,
+  setFormErrors,
+} from "../../../../../resources/APIS/ApiConstants";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
-export default function Setting(props: IProps) {
-  // function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
-  //   props.onChange(e);
-  // }
+export default function Setting() {
+  const state = useAppSelector((RootState) => RootState.updateApiState);
+  const dispatch = useAppDispatch();
 
-  const apiData = props.updateApiData;
-  // console.log(apiData);
-  console.log("ApiName:", apiData.data.Name);
-  // useEffect(() => {
-  //   // console.log(tenantList.data);
-  //   if (apiData.data) {
-  //     setDataList({
-  //       list: [...tenantList.data.list],
-  //       fields: ["userid", "description", "lastlogin"],
-  //     });
-  //   }
-  // }, [apiData.data]);
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "apiName":
+        setFormErrors(
+          {
+            ...state.errors,
+            [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+    setFormData(event, dispatch, state);
+  }
 
   return (
     <div>
@@ -64,47 +73,27 @@ export default function Setting(props: IProps) {
                               id="apiName"
                               placeholder="Enter API Name"
                               name="apiName"
-                              value={apiData.data.Name}
-                              // data-testid="name-input"
-                              // value={api.apiName}
-                              // isInvalid={!!props.err}
-                              // isValid={!props.err && !!props.apisUpdateForm}
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
-                              // required
+                              value={state.form?.apiName}
+                              isInvalid={!!state.errors?.apiName}
+                              isValid={!state.errors?.apiName}
+                              onChange={(e: any) => validateForm(e)}
                             />
-                            {/* <Form.Control.Feedback type="invalid">
-                      {props.err}
-                    </Form.Control.Feedback> */}
+                            <Form.Control.Feedback type="invalid">
+                              {state.errors?.apiName}
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </div>
                       </Col>
                     </Row>
                     <br />
                     <div>
-                      <ListenPath
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          changeApiUpdateForm(e, props)
-                        }
-                        updateApiData={apiData}
-                      />
+                      <ListenPath />
                     </div>
                     <div>
-                      <TargetUrl
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          changeApiUpdateForm(e, props)
-                        }
-                        updateApiData={apiData}
-                      />
+                      <TargetUrl />
                     </div>
                     <div>
-                      <RateLimit
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          changeApiUpdateForm(e, props)
-                        }
-                        updateApiData={apiData}
-                      />
+                      <RateLimit />
                     </div>
                   </div>
                 </div>

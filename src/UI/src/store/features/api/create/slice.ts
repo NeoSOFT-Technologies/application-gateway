@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
+// import error from "../../../../utils/error";
 import { IApiFormData } from "../../../../types/api/index";
 import { addApiDataService } from "../../../../services/api/api";
 
@@ -22,7 +22,11 @@ export const addNewApi = createAsyncThunk(
       console.log(response);
       return response.data;
     } catch (err) {
-      return err;
+      console.log(err);
+      const myError = err as Error;
+
+      console.log(myError);
+      throw myError;
     }
   }
 );
@@ -38,11 +42,13 @@ const slice = createSlice({
     builder.addCase(addNewApi.fulfilled, (state, action) => {
       state.loading = false;
       state.apiAdded = true;
+      // state.error = action.payload.Error;
     });
     builder.addCase(addNewApi.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+      // state.error = error(action.payload);
+      action.payload = action.error;
     });
   },
 });

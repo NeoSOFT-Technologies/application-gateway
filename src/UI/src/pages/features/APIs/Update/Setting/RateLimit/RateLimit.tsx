@@ -1,9 +1,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { changeApiUpdateForm } from "../../../../../../resources/common";
-import { IProps } from "../../../../../../types/api";
 
-export default function RateLimit(props: IProps) {
+export default function RateLimit() {
   return (
     <div>
       <div className="card">
@@ -39,9 +37,6 @@ export default function RateLimit(props: IProps) {
                               id="disableRate"
                               name="disableRate"
                               label="Disable rate limiting"
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                             />
                           </Form.Group>
                         </Col>
@@ -63,9 +58,6 @@ export default function RateLimit(props: IProps) {
                               id="rate"
                               placeholder="Enter rate"
                               name="rate"
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                               required
                             />
                             <i>
@@ -86,9 +78,6 @@ export default function RateLimit(props: IProps) {
                               id="perSecond"
                               placeholder="Enter time"
                               name="perSecond"
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                               required
                             />
                           </Form.Group>
@@ -99,9 +88,6 @@ export default function RateLimit(props: IProps) {
                               type="switch"
                               id="disableQuotas"
                               name="disableQuotas"
-                              onChangeCapture={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                               label="Disable quotas"
                             />
                           </Form.Group>

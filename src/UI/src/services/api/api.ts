@@ -1,5 +1,5 @@
 // import { IApiData } from "../../types/api/index";
-import { IApiFormData, IApiUpdateForm } from "../../types/api";
+import { IApiFormData, IApiUpdateFormData } from "../../types/api";
 import apiFactory from "../../utils/api";
 
 export function apiListService(currentPage: number) {
@@ -15,7 +15,7 @@ export function getApiByIdService(Id: string) {
   return apiFactory().get(`ApplicationGateway/` + Id);
 }
 
-export function updateApiService(data: IApiUpdateForm) {
+export function updateApiService(data: IApiUpdateFormData) {
   return apiFactory().put(`ApplicationGateway`, data);
 }
 
