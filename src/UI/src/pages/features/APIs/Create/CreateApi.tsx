@@ -26,7 +26,7 @@ function CreateApi() {
     name: "",
     listenPath: "",
     targetUrl: "",
-    StripListenPath: true,
+    stripListenPath: true,
     isActive: true,
   });
 
@@ -108,17 +108,19 @@ function CreateApi() {
         apisForm.targetUrl !== ""
         // && (apisForm.isActive === true || apisForm.isActive === false)
       ) {
+        // const listObj: IApiFormData = Object.create(apisForm);
+        // listObj.stripListenPath = true;
         const newApi = {
           ...apisForm,
         };
-        //  newApi.isActive = isToggled;
+        newApi.stripListenPath = true;
+        // newApi.isActive = isToggled;
         const result = await dispatch(addNewApi(newApi));
-        // .then((res) => unwrapResult(res))
-        // .then((obj) => console.log({ obj }))
-        // .catch((obj) => console.log({ objErr: obj }));
-        //  console.log("err", result.payload.name); // result.type="api/createapi/rejected"
-        if (result.meta.requestStatus === "rejected") {
-          ToastAlert(result.payload.message, "error");
+        console.log("result", result);
+        // console.log("result", result.payload.Errors.length);
+        // console.log("result", result.payload.Errors[0]);
+        if (result.payload.Errors !== null) {
+          ToastAlert(result.payload.Errors[0], "error");
           setapisForm({
             name: apisForm.name,
             listenPath: apisForm.listenPath,
@@ -292,36 +294,19 @@ function CreateApi() {
                               // onChange={onToggled}
                               label={isToggled ? "  Active" : "  InActive"}
                             />
-
-                            {/* <span>
-                              {isToggled
-                                ? (apisForm.isActive = true)
-                                : // ,(apisForm.StripListenPath = true))
-                                  (apisForm.isActive = false)}
-                            </span> */}
                           </Form.Group>
                         </Col>
-                        <Col md="12">
+                        {/* <Col md="12">
                           <Form.Group className="mb-3 mt-3">
-                            <Form.Label>Strip ListenPath :</Form.Label>
+                            <Form.Label>Strip the Listen path :</Form.Label>
                             <Form.Check
-                              // className=""
                               type="switch"
                               onChangeCapture={handleInputChange}
-                              // checked={isToggled}
                               name="StripListenPath"
                               id="StripListenPath"
-                              // onChange={onToggled}
                             />
-                            {/* 
-                            <span>
-                              {isToggled
-                                ? ((apisForm.isActive = true),
-                                  (apisForm.StripListenPath = true))
-                                : (apisForm.isActive = false)}
-                            </span> */}
                           </Form.Group>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </div>
                   </div>

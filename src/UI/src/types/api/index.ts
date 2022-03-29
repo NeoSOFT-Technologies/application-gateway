@@ -1,8 +1,20 @@
 export interface IApiListState {
   data?: ISetApiList | null;
+  loading?: boolean;
+  error?: string | null;
+}
+export interface IAddApiState {
+  apiAdded?: boolean;
   loading: boolean;
   error?: string | null;
 }
+export interface IDeleteApiState {
+  isDeleted?: boolean;
+  loading: boolean;
+  error?: string | null;
+  data?: IApiListState | null;
+}
+
 export interface IApiDataList {
   list: IApiData[];
   fields: string[];
@@ -30,7 +42,7 @@ export interface IApiFormData {
   listenPath: string;
   targetUrl: string;
   isActive: Boolean;
-  StripListenPath?: Boolean;
+  stripListenPath?: Boolean;
   Id?: string;
 }
 export interface IErrorApiUpdateInput {
