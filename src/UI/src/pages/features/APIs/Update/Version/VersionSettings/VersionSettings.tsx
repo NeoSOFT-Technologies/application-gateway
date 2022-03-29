@@ -1,7 +1,15 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
+// import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
+// import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
 
 export default function VersionSettings() {
+  // const state = useAppSelector((RootState) => RootState.getApiById);
+  // const dispatch = useAppDispatch();
+  // console.log("setting", state);
+  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+  //   setFormData(event, dispatch, state);
+  // }
   return (
     <div>
       <div className="card">
@@ -65,6 +73,8 @@ export default function VersionSettings() {
                               id="versionIdentifier"
                               placeholder="Enter key Name"
                               name="versionIdentifier"
+                              // value={state.data.form?.VersioningInfo.Key}
+                              // onChange={(e: any) => validateForm(e)}
                               required
                             />
                           </Form.Group>

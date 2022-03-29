@@ -8,7 +8,7 @@ export const regexForNumber = /^[0-9]*$/;
 
 export function setFormData(e: any, dispatch: any, state: any) {
   // console.log("ye object hai - ", e);
-  dispatch(setForm({ ...state.form, [e.target.name]: e.target.value }));
+  dispatch(setForm({ ...state.data.form, [e.target.name]: e.target.value }));
 }
 export function setFormErrors(e: any, dispatch: any) {
   // console.log("ye apna err - ", e);

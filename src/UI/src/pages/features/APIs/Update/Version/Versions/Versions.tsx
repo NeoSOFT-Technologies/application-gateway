@@ -2,8 +2,16 @@ import React from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 // import { changeApiUpdateForm } from "../../../../../../resources/common";
 // import { IProps } from "../../../../../../types/api";
+// import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
+// import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
 
 export default function Versions() {
+  // const state = useAppSelector((RootState) => RootState.getApiById);
+  // console.log("version", state.data.form?.Versions[0].Name);
+  // const dispatch = useAppDispatch();
+  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+  //   setFormData(event, dispatch, state);
+  // }
   return (
     <>
       <div className="accordion" id="accordionVersions">
@@ -59,6 +67,8 @@ export default function Versions() {
                       id="versionName"
                       name="versionName"
                       placeholder="Version Name"
+                      // value={state.data.form?.Versions[0].Name}
+                      // onChange={(e: any) => validateForm(e)}
                       required
                     />
                   </Form.Group>
@@ -70,6 +80,8 @@ export default function Versions() {
                       id="overrideTargetHost"
                       name="overrideTargetHost"
                       placeholder="Override Target Host"
+                      // value={state.data.form?.Versions[0].OverrideTarget}
+                      // onChange={(e: any) => validateForm(e)}
                       required
                     />
                   </Form.Group>
@@ -81,6 +93,8 @@ export default function Versions() {
                       id="expires"
                       name="expires"
                       placeholder="Expires"
+                      // value={state.data.form?.Versions[0].Expires}
+                      // onChange={(e: any) => validateForm(e)}
                       required
                     />
                   </Form.Group>

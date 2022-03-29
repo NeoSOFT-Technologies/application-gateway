@@ -89,21 +89,44 @@ export interface IApiGetByIdState {
 }
 // get by id
 export interface IGetApiByIdData {
-  apiId: string;
-  apiName: string;
-  listenPath: string;
-  stripListenPath: string;
-  targetUrl: string;
-  isActive: boolean;
-  rateLimit: {
-    rate: number;
-    per: number;
-    isDisabled: boolean;
+  ApiId: string;
+  Name: string;
+  ListenPath: string;
+  StripListenPath: Boolean;
+  TargetUrl: string;
+  IsActive: Boolean;
+  IsInternal: Boolean;
+  Protocol: string;
+  RateLimit: {
+    Rate: number;
+    Per: number;
+    IsDisabled: Boolean;
   };
-  versioningInfo: { location: number; key: string };
-  defaultVersion: string;
-  version: { name: string; overrideTarget: string; expires: string };
-  isQuotaDisabled: boolean;
+  Blacklist: [];
+  Whitelist: [];
+  VersioningInfo: {
+    Location: number;
+    Key: string;
+  };
+  DefaultVersion: string;
+  Versions: [
+    {
+      Name: string;
+      OverrideTarget: string;
+      Expires: string;
+      GlobalRequestHeaders: {};
+      GlobalRequestHeadersRemove: [];
+      GlobalResponseHeaders: {};
+      GlobalResponseHeadersRemove: [];
+      ExtendedPaths: null;
+    }
+  ];
+  AuthType: string;
+  OpenidOptions: {
+    Providers: [];
+  };
+  LoadBalancingTargets: [];
+  IsQuotaDisabled: false;
 }
 
 export interface IRateLimitData {
@@ -130,11 +153,11 @@ export interface IApiUpdateState {
 }
 // get by id error
 export interface IError {
-  apiId: string;
-  apiName: string;
-  listenPath: string;
+  ApiId: string;
+  Name: string;
+  ListenPath: string;
   stripListenPath: string;
-  targetUrl: string;
+  TargetUrl: string;
   isActive: string;
   rate: string;
   perSecond: string;

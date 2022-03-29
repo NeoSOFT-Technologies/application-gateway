@@ -14,7 +14,7 @@ export default function ListenPath() {
     const { name, value } = event.target;
 
     switch (name) {
-      case "listenPath":
+      case "ListenPath":
         setFormErrors(
           {
             ...state.data.errors,
@@ -69,15 +69,15 @@ export default function ListenPath() {
                       type="text"
                       placeholder="Enter listen path"
                       id="listenPath"
-                      name="listenPath"
+                      name="ListenPath"
                       data-testid="name-input"
-                      value={state.data.form?.listenPath}
-                      isInvalid={!!state.data.errors?.listenPath}
-                      isValid={!state.data.errors?.listenPath}
+                      value={state.data.form?.ListenPath}
+                      isInvalid={!!state.data.errors?.ListenPath}
+                      isValid={!state.data.errors?.ListenPath}
                       onChange={(e: any) => validateForm(e)}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {state.data.errors?.listenPath}
+                      {state.data.errors?.ListenPath}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <i>

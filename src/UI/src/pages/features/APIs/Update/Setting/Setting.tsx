@@ -14,12 +14,12 @@ import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 export default function Setting() {
   const state = useAppSelector((RootState) => RootState.getApiById);
   const dispatch = useAppDispatch();
-
+  // console.log("setting", state);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
     switch (name) {
-      case "apiName":
+      case "Name":
         setFormErrors(
           {
             ...state.data.errors,
@@ -72,14 +72,14 @@ export default function Setting() {
                               type="text"
                               id="apiName"
                               placeholder="Enter API Name"
-                              name="apiName"
-                              value={state.data.form?.apiName}
-                              isInvalid={!!state.data.errors?.apiName}
-                              isValid={!state.data.errors?.apiName}
+                              name="Name"
+                              value={state.data.form?.Name}
+                              isInvalid={!!state.data.errors?.Name}
+                              isValid={!state.data.errors?.Name}
                               onChange={(e: any) => validateForm(e)}
                             />
                             <Form.Control.Feedback type="invalid">
-                              {state.data.errors?.apiName}
+                              {state.data.errors?.Name}
                             </Form.Control.Feedback>
                           </Form.Group>
                         </div>

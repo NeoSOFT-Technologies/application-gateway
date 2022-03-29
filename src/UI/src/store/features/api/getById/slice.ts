@@ -6,22 +6,46 @@ import { getApiByIdService } from "../../../../services/api/api";
 const initialState: IApiGetByIdState = {
   data: {
     form: {
-      apiId: "",
-      apiName: "",
-      listenPath: "",
-      stripListenPath: "",
-      targetUrl: "",
-      isActive: true,
-      rateLimit: {
-        rate: 0,
-        per: 0,
-        isDisabled: false,
+      ApiId: "",
+      Name: "",
+      ListenPath: "",
+      StripListenPath: true,
+      TargetUrl: "",
+      IsActive: true,
+      IsInternal: false,
+      Protocol: "",
+      RateLimit: {
+        Rate: 0,
+        Per: 0,
+        IsDisabled: false,
       },
-      versioningInfo: { location: 0, key: "" },
-      defaultVersion: "",
-      version: { name: "", overrideTarget: "", expires: "" },
-      isQuotaDisabled: false,
+      Blacklist: [],
+      Whitelist: [],
+      VersioningInfo: {
+        Location: 0,
+        Key: "",
+      },
+      DefaultVersion: "",
+      Versions: [
+        {
+          Name: "",
+          OverrideTarget: "",
+          Expires: "",
+          GlobalRequestHeaders: {},
+          GlobalRequestHeadersRemove: [],
+          GlobalResponseHeaders: {},
+          GlobalResponseHeadersRemove: [],
+          ExtendedPaths: null,
+        },
+      ],
+      AuthType: "",
+      OpenidOptions: {
+        Providers: [],
+      },
+      LoadBalancingTargets: [],
+      IsQuotaDisabled: false,
     },
+
     errors: null,
   },
   loading: false,
@@ -63,7 +87,7 @@ const slice = createSlice({
     builder.addCase(getApiById.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
-      console.log("form slice1 - ", state.data.form);
+      // console.log("form slice1 - ", state.data.form);
     });
     builder.addCase(getApiById.rejected, (state, action) => {
       state.loading = false;

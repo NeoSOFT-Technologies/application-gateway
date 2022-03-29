@@ -9,15 +9,15 @@ import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function TargetUrl() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((RootState) => RootState.updateApiState);
+  const state = useAppSelector((RootState) => RootState.getApiById);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
     switch (name) {
-      case "targetUrl":
+      case "TargetUrl":
         setFormErrors(
           {
-            ...state.errors,
+            ...state.data.errors,
             [name]: regexForTagetUrl.test(value)
               ? ""
               : "Enter a Valid Target URL",
@@ -69,15 +69,15 @@ export default function TargetUrl() {
                         type="text"
                         id="targetUrl"
                         placeholder="Enter Target Url"
-                        name="targetUrl"
-                        value={state.form?.targetUrl}
-                        isInvalid={!!state.errors?.targetUrl}
-                        isValid={!state.errors?.targetUrl}
+                        name="TargetUrl"
+                        value={state.data.form?.TargetUrl}
+                        isInvalid={!!state.data.errors?.TargetUrl}
+                        isValid={!state.data.errors?.TargetUrl}
                         onChange={(e: any) => validateForm(e)}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
-                        {state.errors?.targetUrl}
+                        {state.data.errors?.TargetUrl}
                       </Form.Control.Feedback>
                       <i>
                         If you add a trailing &apos;/ &apos; to your listen
