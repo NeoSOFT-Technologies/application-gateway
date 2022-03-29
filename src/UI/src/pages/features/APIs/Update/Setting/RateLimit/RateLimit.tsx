@@ -1,9 +1,42 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { changeApiUpdateForm } from "../../../../../../resources/common";
-import { IProps } from "../../../../../../types/api";
+import {
+  setFormErrors,
+  setFormData,
+  regexForNumber,
+} from "../../../../../../resources/APIS/ApiConstants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
-export default function RateLimit(props: IProps) {
+export default function RateLimit() {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.updateApiState);
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "rate":
+        setFormErrors(
+          {
+            ...state.errors,
+            [name]: regexForNumber.test(value) ? "" : "Enter only Numbers",
+          },
+          dispatch
+        );
+        break;
+      case "perSecond":
+        setFormErrors(
+          {
+            ...state.errors,
+            [name]: regexForNumber.test(value) ? "" : "Enter only Numbers",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+    setFormData(event, dispatch, state);
+  }
   return (
     <div>
       <div className="card">
@@ -39,9 +72,6 @@ export default function RateLimit(props: IProps) {
                               id="disableRate"
                               name="disableRate"
                               label="Disable rate limiting"
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                             />
                           </Form.Group>
                         </Col>
@@ -63,11 +93,15 @@ export default function RateLimit(props: IProps) {
                               id="rate"
                               placeholder="Enter rate"
                               name="rate"
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
+                              value={state.form?.rateLimit.rate}
+                              isInvalid={!!state.errors?.rate}
+                              isValid={!state.errors?.rate}
+                              onChange={(e: any) => validateForm(e)}
                               required
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {state.errors?.rate}
+                            </Form.Control.Feedback>
                             <i>
                               If you add a trailing &apos;/ &apos; to your
                               listen path, you can only make requests that
@@ -86,11 +120,15 @@ export default function RateLimit(props: IProps) {
                               id="perSecond"
                               placeholder="Enter time"
                               name="perSecond"
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
+                              value={state.form?.rateLimit.per}
+                              isInvalid={!!state.errors?.perSecond}
+                              isValid={!state.errors?.perSecond}
+                              onChange={(e: any) => validateForm(e)}
                               required
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {state.errors?.perSecond}
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                         <Col md="12">
@@ -99,9 +137,6 @@ export default function RateLimit(props: IProps) {
                               type="switch"
                               id="disableQuotas"
                               name="disableQuotas"
-                              onChangeCapture={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                               label="Disable quotas"
                             />
                           </Form.Group>

@@ -1,9 +1,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { changeApiUpdateForm } from "../../../../../../resources/common";
-import { IProps } from "../../../../../../types/api";
 
-export default function VersionSettings(props: IProps) {
+export default function VersionSettings() {
   return (
     <div>
       <div className="card">
@@ -36,12 +34,9 @@ export default function VersionSettings(props: IProps) {
                           <Form.Group className="mb-3">
                             <Form.Check
                               type="switch"
-                              id="enableVersioning"
-                              name="enableVersioning"
+                              id="enable"
+                              name="enable"
                               label="Enable Versioning"
-                              onChangeCapture={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                             />
                           </Form.Group>
                         </Col>
@@ -49,22 +44,10 @@ export default function VersionSettings(props: IProps) {
                           <Form.Group className="mb-3">
                             <Form.Label> Version Data Location</Form.Label>
                             <br />
-                            <Form.Select
-                              aria-label="Default select example"
-                              name="versionDataLocation"
-                              onClick={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
-                            >
-                              <option id="1" value="header">
-                                Header
-                              </option>
-                              <option id="2" value="url">
-                                Url
-                              </option>
-                              <option id="3" value="queryurl">
-                                Query Url
-                              </option>
+                            <Form.Select aria-label="Default select example">
+                              <option value="1">Header</option>
+                              <option value="2">Url</option>
+                              <option value="3">Query Url</option>
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -79,13 +62,10 @@ export default function VersionSettings(props: IProps) {
                             <Form.Control
                               className="mt-2"
                               type="text"
-                              id="keyName"
+                              id="versionIdentifier"
                               placeholder="Enter key Name"
-                              name="keyName"
+                              name="versionIdentifier"
                               required
-                              onChange={(e: any) =>
-                                changeApiUpdateForm(e, props)
-                              }
                             />
                           </Form.Group>
                         </Col>
