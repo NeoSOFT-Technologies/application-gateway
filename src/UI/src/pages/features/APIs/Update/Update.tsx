@@ -2,6 +2,9 @@ import React from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
+import { useAppSelector } from "../../../../store/hooks";
+import { IApiGetByIdState } from "../../../../types/api";
+import { RootState } from "../../../../store";
 // import {
 //   regexForListenPath,
 //   regexForName,
@@ -9,6 +12,11 @@ import { Tab, Tabs, Form } from "react-bootstrap";
 // } from "../../../../resources/APIS/ApiConstants";
 
 export default function Update() {
+  const apiData: IApiGetByIdState = useAppSelector(
+    (state: RootState) => state.getApiById
+  );
+  console.log(apiData);
+
   // const model = configureForm();
 
   // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
