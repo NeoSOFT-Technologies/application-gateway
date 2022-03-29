@@ -1,14 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState: any = {
+import { IUpdateState } from "../../../../types/api";
+
+const initialState: IUpdateState = {
   form: {
-    apiName: "Demo Api Name",
-    listenPath: "/Demo Listen Path/",
-    targetUrl: "https://google.com",
-  },
-  errors: {
+    apiId: "",
     apiName: "",
     listenPath: "",
+    stripListenPath: "",
     targetUrl: "",
+    isActive: true,
+    rateLimit: {
+      rate: 0,
+      per: 0,
+      isDisabled: false,
+    },
+    versioningInfo: { location: 0, key: "" },
+    defaultVersion: "",
+    version: { name: "", overrideTarget: "", expires: "" },
+    isQuotaDisabled: false,
+  },
+  errors: {
+    apiId: "",
+    apiName: "",
+    listenPath: "",
+    stripListenPath: "",
+    targetUrl: "",
+    isActive: "",
+    rate: "",
+    perSecond: "",
+    versioningInfo: "",
+    defaultVersion: "",
+    version: "",
+    isQuotaDisabled: "",
   },
 };
 export const userSlice = createSlice({
@@ -17,11 +40,11 @@ export const userSlice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.form = action.payload; // OnChange
-      console.log("form - ", state.form);
+      console.log("form slice - ", state.form);
     },
     setFormError: (state, action) => {
       state.errors = action.payload; // OnChange
-      console.log("error - ", state.errors);
+      console.log("error slice - ", state.errors);
     },
   },
 });

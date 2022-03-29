@@ -71,11 +71,11 @@ export interface IAddApiResponse {
 }
 
 export interface IApiGetByIdState {
-  data?: IGetApiByIdData | null;
+  data: IUpdateState;
   loading: boolean;
   error?: string | null;
 }
-
+// get by id
 export interface IGetApiByIdData {
   apiId: string;
   apiName: string;
@@ -83,10 +83,14 @@ export interface IGetApiByIdData {
   stripListenPath: string;
   targetUrl: string;
   isActive: boolean;
-  rateLimit: IRateLimitData[];
-  versioningInfo: IVersioningInfo[];
+  rateLimit: {
+    rate: number;
+    per: number;
+    isDisabled: boolean;
+  };
+  versioningInfo: { location: number; key: string };
   defaultVersion: string;
-  version: IVersion[];
+  version: { name: string; overrideTarget: string; expires: string };
   isQuotaDisabled: boolean;
 }
 
@@ -107,13 +111,29 @@ export interface IVersion {
   expires: string;
 }
 
-export interface IProps {
-  onChange: Function;
-  updateApiData: any;
-}
-
 export interface IApiUpdateState {
-  data?: IApiUpdateFormData | null;
+  data?: IApiUpdateFormData;
   loading: boolean;
   error?: string | null;
+}
+// get by id error
+export interface IError {
+  apiId: string;
+  apiName: string;
+  listenPath: string;
+  stripListenPath: string;
+  targetUrl: string;
+  isActive: string;
+  rate: string;
+  perSecond: string;
+  versioningInfo: string;
+  defaultVersion: string;
+  version: string;
+  isQuotaDisabled: string;
+}
+// update state slice
+
+export interface IUpdateState {
+  form: IGetApiByIdData | null;
+  errors?: IError | null;
 }
