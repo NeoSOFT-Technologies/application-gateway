@@ -5,7 +5,23 @@ import { getApiByIdService } from "../../../../services/api/api";
 
 const initialState: IApiGetByIdState = {
   data: {
-    form: null,
+    form: {
+      apiId: "",
+      apiName: "",
+      listenPath: "",
+      stripListenPath: "",
+      targetUrl: "",
+      isActive: true,
+      rateLimit: {
+        rate: 0,
+        per: 0,
+        isDisabled: false,
+      },
+      versioningInfo: { location: 0, key: "" },
+      defaultVersion: "",
+      version: { name: "", overrideTarget: "", expires: "" },
+      isQuotaDisabled: false,
+    },
     errors: null,
   },
   loading: false,
@@ -46,7 +62,8 @@ const slice = createSlice({
     });
     builder.addCase(getApiById.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload.Data;
+      state.data.form = action.payload.Data;
+      console.log("form slice1 - ", state.data.form);
     });
     builder.addCase(getApiById.rejected, (state, action) => {
       state.loading = false;

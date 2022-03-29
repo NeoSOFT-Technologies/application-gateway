@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function ListenPath() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((RootState) => RootState.updateApiState);
+  const state = useAppSelector((RootState) => RootState.getApiById);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
@@ -17,7 +17,7 @@ export default function ListenPath() {
       case "listenPath":
         setFormErrors(
           {
-            ...state.errors,
+            ...state.data.errors,
             [name]: regexForListenPath.test(value)
               ? ""
               : "Enter a Valid Listen Path",
@@ -71,13 +71,13 @@ export default function ListenPath() {
                       id="listenPath"
                       name="listenPath"
                       data-testid="name-input"
-                      value={state.form?.listenPath}
-                      isInvalid={!!state.errors?.listenPath}
-                      isValid={!state.errors?.listenPath}
+                      value={state.data.form?.listenPath}
+                      isInvalid={!!state.data.errors?.listenPath}
+                      isValid={!state.data.errors?.listenPath}
                       onChange={(e: any) => validateForm(e)}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {state.errors?.listenPath}
+                      {state.data.errors?.listenPath}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <i>
