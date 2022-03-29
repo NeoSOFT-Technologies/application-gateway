@@ -13,7 +13,7 @@ import keyListReducer from "./features/key/list/slice";
 import addApiReducer from "./features/api/create/slice";
 import deleteApiReducer from "./features/api/delete/slice";
 import getApiByIdReducer from "./features/api/getById/slice";
-import apiBReducer from "./features/api/update/bslice";
+import apiBReducer from "./features/api/update-state/slice";
 
 const store = configureStore({
   reducer: {
