@@ -3,7 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
-import store from "../../../../store/index";
+// import store from "../../../../store/index";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
 import {
@@ -71,6 +71,11 @@ export default function APIList() {
     mainCall(1);
   }, []);
 
+  // useEffect(() => {
+  //   store.subscribe(() =>
+  //     console.log("apilist store updated   ", store.getState())
+  //   );
+  // }, [apiList.data]);
   const handlePageClick = (pageSelected: number) => {
     mainCall(pageSelected);
     setSelected(pageSelected);
@@ -106,21 +111,26 @@ export default function APIList() {
     console.log(val);
     console.log(val.Id);
     if (val.Id) {
-      if (window.confirm("Are you sure that you want to delete Api ?")) {
+      if (window.confirm("Are you sure you want to delete this Api ?")) {
         const result = await dispatch(deleteApi(val.Id));
+
+        console.log("result", result);
+        if (result.meta.requestStatus === "fulfilled") {
+          // const index = apiList.data?.Apis.findIndex(
+          //   (item) => item.Id === val.Id
+          // );
+          // console.log(index);
+          // apiList.data?.Apis.splice(index, 1);
+
+          console.log(apiList);
+        }
         if (result.meta.requestStatus === "rejected") {
           await ToastAlert(result.payload.message, "error");
         } else {
-          console.log(store.subscribe(() => store.getState().apiList));
           await ToastAlert("Api Deleted Successfully", "success");
         }
       }
-      // const unsubscribe = store.subscribe(() => store.getState());
-      // dispatch(deleteApi(val.Id));
-      // unsubscribe();
-
-      // ToastAlert("Api Removed", "success");
-      navigate("/apilist");
+      // navigate("/apilist");
     }
   };
   const headings = [
