@@ -107,7 +107,7 @@ export default function APIList() {
     }
   };
 
-  const deleteApiFunction = (val: IApiData) => {
+  const deleteApiFunction = async (val: IApiData) => {
     // console.log(val: IApiFormData);
     // const { val } = location.state as LocationState;
     console.log(val);
