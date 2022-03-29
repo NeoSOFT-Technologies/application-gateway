@@ -26,7 +26,7 @@ function CreateApi() {
     name: "",
     listenPath: "",
     targetUrl: "",
-    StripListenPath: true,
+    stripListenPath: true,
     isActive: true,
   });
 

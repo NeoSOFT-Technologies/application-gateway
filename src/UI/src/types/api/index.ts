@@ -29,6 +29,7 @@ export interface IApiFormData {
   name: string;
   listenPath: string;
   targetUrl: string;
+  stripListenPath?: Boolean;
   isActive: Boolean;
   Id?: string;
 }
@@ -109,4 +110,10 @@ export interface IVersion {
 export interface IProps {
   onChange: Function;
   updateApiData: any;
+}
+
+export interface IApiUpdateState {
+  data?: IApiUpdateFormData | null;
+  loading: boolean;
+  error?: string | null;
 }
