@@ -727,22 +727,23 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     JObject tempObj = new JObject();                    
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i] as JObject).Property("options").Remove();
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["extended_paths"]["url_rewrites"][j]["triggers"][i] as JObject).Add("options", tempObj);
-                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("QueryValMatches") is not null)
+                    JObject options = trig[j]["Triggers"][i]["Options"] as JObject;
+                    if (options.Value<JObject>("QueryValMatches") is not null)
                     {
                         var trans = Trigger(transformedObject, version, extendedPaths, "query_val_matches");
                         transformedObject = trans;
                     }
-                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("HeaderMatches") is not null)
+                    if (options.Value<JObject>("HeaderMatches") is not null)
                     {
                         var trans = Trigger(transformedObject, version, extendedPaths, "header_matches");
                         transformedObject = trans;
                     }
-                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("PathPartMatches") is not null)
+                    if (options.Value<JObject>("PathPartMatches") is not null)
                     {
                         var trans = Trigger(transformedObject, version, extendedPaths, "path_part_matches");
                         transformedObject = trans;
                     }
-                    if (trig[j]["Triggers"][i]["Options"].Value<JObject>("PayloadMatches") is not null)
+                    if (options.Value<JObject>("PayloadMatches") is not null)
                     {
                         var trans = Payload(transformedObject, version, extendedPaths);
                         transformedObject = trans;
@@ -750,7 +751,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 }
             }
             return transformedObject;
-
         }
 
         private static JObject Trigger(JObject transformedObject, JObject version, JObject extendedPaths, string triggerType)
