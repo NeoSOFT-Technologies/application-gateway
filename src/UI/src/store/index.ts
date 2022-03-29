@@ -12,7 +12,7 @@ import policyListReducer from "./features/policy/list/slice";
 import keyListReducer from "./features/key/list/slice";
 import addApiReducer from "./features/api/create/slice";
 import deleteApiReducer from "./features/api/delete/slice";
-import apiBReducer from "./features/api/update/bslice";
+import getApiByIdReducer from "./features/api/getById/slice";
 
 const store = configureStore({
   reducer: {
@@ -29,7 +29,7 @@ const store = configureStore({
     keyList: keyListReducer,
     addApi: addApiReducer,
     deleteApi: deleteApiReducer,
-    updateApiState: apiBReducer,
+    getApiById: getApiByIdReducer,
   },
 });
 
@@ -44,5 +44,3 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 export default store;
-
-// store.subscribe(() => store.getState());
