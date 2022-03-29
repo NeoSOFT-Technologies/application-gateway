@@ -398,22 +398,23 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 {
                     (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i] as JObject).Property("options").Remove();
                     (apiObject["extendedPaths"]["urlRewrites"][j]["triggers"][i] as JObject).Add("options",new JObject());
-                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("query_val_matches") is not null)
+                    JObject options = (extendedPaths["url_rewrites"][j]["triggers"][i]["options"] as JObject);
+                    if (options.Value<JObject>("query_val_matches") is not null)
                     {
                         var trans = GetTrigger(apiObject, extendedPaths, "queryValMatches");
                         apiObject = trans;
                     }
-                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("header_matches") is not null)
+                    if (options.Value<JObject>("header_matches") is not null)
                     {
                         var trans = GetTrigger(apiObject, extendedPaths, "headerMatches");
                         apiObject = trans;
                     }
-                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("path_part_matches") is not null)
+                    if (options.Value<JObject>("path_part_matches") is not null)
                     {
                         var trans = GetTrigger(apiObject, extendedPaths, "pathPartMatches");
                         apiObject = trans;
                     }
-                    if (extendedPaths["url_rewrites"][j]["triggers"][i]["options"].Value<JObject>("payload_matches") is not null)
+                    if (options.Value<JObject>("payload_matches") is not null)
                     {
                         var trans = GetPayload(apiObject, extendedPaths);
                         apiObject = trans;
