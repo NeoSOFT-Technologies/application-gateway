@@ -4,7 +4,10 @@ import { IApiGetByIdState } from "../../../../types/api/index";
 import { getApiByIdService } from "../../../../services/api/api";
 
 const initialState: IApiGetByIdState = {
-  data: null,
+  data: {
+    form: null,
+    errors: null,
+  },
   loading: false,
   error: null,
 };
@@ -27,7 +30,16 @@ export const getApiById = createAsyncThunk(
 const slice = createSlice({
   name: "getApiById",
   initialState,
-  reducers: {},
+  reducers: {
+    setForm: (state, action) => {
+      state.data.form = action.payload; // OnChange
+      console.log("form slice - ", state.data.form);
+    },
+    setFormError: (state, action) => {
+      state.data.errors = action.payload; // OnChange
+      console.log("error slice - ", state.data.errors);
+    },
+  },
   extraReducers(builder): void {
     builder.addCase(getApiById.pending, (state) => {
       state.loading = true;
@@ -45,4 +57,5 @@ const slice = createSlice({
   },
 });
 
+export const { setForm, setFormError } = slice.actions;
 export default slice.reducer;

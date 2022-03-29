@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { changeApiUpdateForm } from "../../../../../../resources/common";
-import { IProps } from "../../../../../../types/api";
+// import { changeApiUpdateForm } from "../../../../../../resources/common";
+// import { IProps } from "../../../../../../types/api";
 
-export default function Versions(props: IProps) {
+export default function Versions() {
   return (
     <>
       <div className="accordion" id="accordionVersions">
@@ -39,10 +39,7 @@ export default function Versions(props: IProps) {
                       <b>Choose a version:</b>
                     </Form.Label>
                     <br></br>
-                    <Form.Select
-                      name="version"
-                      onClick={(e: any) => changeApiUpdateForm(e, props)}
-                    >
+                    <Form.Select name="version">
                       <option disabled>Choose a version</option>
                       <option id="1" value="default">
                         Default
@@ -63,7 +60,6 @@ export default function Versions(props: IProps) {
                       name="versionName"
                       placeholder="Version Name"
                       required
-                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>
@@ -75,7 +71,6 @@ export default function Versions(props: IProps) {
                       name="overrideTargetHost"
                       placeholder="Override Target Host"
                       required
-                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>
@@ -87,7 +82,6 @@ export default function Versions(props: IProps) {
                       name="expires"
                       placeholder="Expires"
                       required
-                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>
