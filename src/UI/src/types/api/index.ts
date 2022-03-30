@@ -12,7 +12,6 @@ export interface IDeleteApiState {
   isDeleted?: boolean;
   loading: boolean;
   error?: string | null;
-  data?: IApiListState | null;
 }
 
 export interface IApiDataList {

@@ -44,7 +44,9 @@ const RenderList: React.FC<IProps> = (props) => {
         <tbody>
           {data && data.list.length === 0 ? (
             <tr>
-              <td rowSpan={headings.length}>No data Available</td>
+              <td className="text-center" colSpan={headings.length}>
+                No data Available
+              </td>
             </tr>
           ) : (
             // actions that is required on buttons
