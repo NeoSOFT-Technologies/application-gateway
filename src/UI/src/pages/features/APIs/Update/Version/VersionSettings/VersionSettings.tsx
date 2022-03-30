@@ -100,14 +100,14 @@ export default function VersionSettings() {
                               placeholder="Enter Version key Name"
                               name="VersioningInfo.Key"
                               value={state.data.form?.VersioningInfo.Key}
-                              isInvalid={!!state.data.errors?.VersionKey}
-                              isValid={!state.data.errors?.VersionKey}
+                              // isInvalid={!!state.data.errors?.VersionKey}
+                              // isValid={!state.data.errors?.VersionKey}
                               onChange={(e: any) => validateForm(e)}
                               required
                             />
-                            <Form.Control.Feedback type="invalid">
+                            {/* <Form.Control.Feedback type="invalid">
                               {state.data.errors?.VersionKey}
-                            </Form.Control.Feedback>
+                            </Form.Control.Feedback> */}
                           </Form.Group>
                         </Col>
                       </Row>
