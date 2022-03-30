@@ -1,43 +1,41 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-// import {
-//   setFormErrors,
-//   setFormData,
-//   regexForNumber,
-// } from "../../../../../../resources/APIS/ApiConstants";
-// import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import {
+  setFormErrors,
+  setFormData,
+  regexForNumber,
+} from "../../../../../../resources/APIS/ApiConstants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function RateLimit() {
-  // const dispatch = useAppDispatch();
-  // const state = useAppSelector((RootState) => RootState.getApiById);
-  // console.log("Rate", state.data.form?.RateLimit.Rate);
-  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-  //   const { name, value } = event.target;
-
-  //   switch (name) {
-  //     case "rate":
-  //       setFormErrors(
-  //         {
-  //           ...state.data.errors,
-  //           [name]: regexForNumber.test(value) ? "" : "Enter only Numbers",
-  //         },
-  //         dispatch
-  //       );
-  //       break;
-  //     case "perSecond":
-  //       setFormErrors(
-  //         {
-  //           ...state.data.errors,
-  //           [name]: regexForNumber.test(value) ? "" : "Enter only Numbers",
-  //         },
-  //         dispatch
-  //       );
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   setFormData(event, dispatch, state);
-  // }
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.getApiById);
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    switch (name) {
+      case "RateLimit.Rate":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            Rate: regexForNumber.test(value) ? "" : "Enter only Numbers",
+          },
+          dispatch
+        );
+        break;
+      case "RateLimit.Per":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            Per: regexForNumber.test(value) ? "" : "Enter only Numbers",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+    setFormData(event, dispatch, state);
+  }
   return (
     <div>
       <div className="card">
@@ -71,8 +69,10 @@ export default function RateLimit() {
                             <Form.Check
                               type="switch"
                               id="disableRate"
-                              name="disableRate"
+                              name="RateLimit.IsDisabled"
                               label="Disable rate limiting"
+                              checked={state.data.form?.RateLimit.IsDisabled}
+                              onChange={(e: any) => validateForm(e)}
                             />
                           </Form.Group>
                         </Col>
@@ -92,17 +92,19 @@ export default function RateLimit() {
                               className="mt-2"
                               type="text"
                               id="rate"
-                              placeholder="Enter rate"
-                              name="rate"
-                              // value={state.data.form?.RateLimit.Rate}
-                              // isInvalid={!!state.data.errors?.rate}
-                              // isValid={!state.data.errors?.rate}
-                              // onChange={(e: any) => validateForm(e)}
-                              required
+                              placeholder="Enter Rate"
+                              name="RateLimit.Rate"
+                              disabled={
+                                state.data.form?.RateLimit.IsDisabled === true
+                              }
+                              value={state.data.form?.RateLimit.Rate}
+                              isInvalid={!!state.data.errors?.Rate}
+                              isValid={!state.data.errors?.Rate}
+                              onChange={(e: any) => validateForm(e)}
                             />
-                            {/* <Form.Control.Feedback type="invalid">
-                              {state.data.errors?.rate}
-                            </Form.Control.Feedback> */}
+                            <Form.Control.Feedback type="invalid">
+                              {state.data.errors?.Rate}
+                            </Form.Control.Feedback>
                             <i>
                               If you add a trailing &apos;/ &apos; to your
                               listen path, you can only make requests that
@@ -120,16 +122,19 @@ export default function RateLimit() {
                               type="text"
                               id="perSecond"
                               placeholder="Enter time"
-                              name="perSecond"
-                              // value={state.data.form?.RateLimit.Per}
-                              // isInvalid={!!state.data.errors?.perSecond}
-                              // isValid={!state.data.errors?.perSecond}
-                              // onChange={(e: any) => validateForm(e)}
+                              name="RateLimit.Per"
+                              disabled={
+                                state.data.form?.RateLimit.IsDisabled === true
+                              }
+                              value={state.data.form?.RateLimit.Per}
+                              isInvalid={!!state.data.errors?.Per}
+                              isValid={!state.data.errors?.Per}
+                              onChange={(e: any) => validateForm(e)}
                               required
                             />
-                            {/* <Form.Control.Feedback type="invalid">
-                              {state.data.errors?.perSecond}
-                            </Form.Control.Feedback> */}
+                            <Form.Control.Feedback type="invalid">
+                              {state.data.errors?.Per}
+                            </Form.Control.Feedback>
                           </Form.Group>
                         </Col>
                         <Col md="12">
@@ -137,8 +142,10 @@ export default function RateLimit() {
                             <Form.Check
                               type="switch"
                               id="disableQuotas"
-                              name="disableQuotas"
+                              name="IsQuotaDisabled"
                               label="Disable quotas"
+                              checked={state.data.form?.IsQuotaDisabled}
+                              onChange={(e: any) => validateForm(e)}
                             />
                           </Form.Group>
                         </Col>

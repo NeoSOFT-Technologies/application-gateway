@@ -9,7 +9,7 @@ const initialState: IApiGetByIdState = {
       ApiId: "",
       Name: "",
       ListenPath: "",
-      StripListenPath: true,
+      StripListenPath: false,
       TargetUrl: "",
       IsActive: true,
       IsInternal: false,
@@ -72,6 +72,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setForm: (state, action) => {
+      console.log("action - ", action.payload);
       state.data.form = action.payload; // OnChange
       console.log("form slice - ", state.data.form);
     },

@@ -28,7 +28,9 @@ export default function ListenPath() {
       default:
         break;
     }
+
     setFormData(event, dispatch, state);
+    console.log("listenpath", name, value);
   }
   return (
     <>
@@ -96,18 +98,13 @@ export default function ListenPath() {
                       listen path from the inbound URL so that it does not
                       interfere with routing upstream.
                     </p>
-                    {/* <Form.Control
-                            className="text-left"
-                            type="checkbox"
-                            name="striplistenpath"
-                            value=""
-                          />
-                          <span>Strip the Listen path</span> */}
                     <Form.Check
                       type="switch"
                       id="stripListenPath"
-                      name="stripListenPath"
+                      name="StripListenPath"
                       label="Strip the Listen path"
+                      checked={state.data.form?.StripListenPath}
+                      onChange={(e: any) => validateForm(e)}
                     />
                   </Form.Group>
                 </Col>
@@ -124,8 +121,10 @@ export default function ListenPath() {
                     <Form.Check
                       type="switch"
                       id="activated"
-                      name="activated"
+                      name="IsInternal"
                       label="Activated"
+                      checked={state.data.form?.IsInternal}
+                      onChange={(e: any) => validateForm(e)}
                     />
                   </Form.Group>
                 </Col>
