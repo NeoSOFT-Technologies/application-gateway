@@ -2,24 +2,46 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IUpdateState } from "../../../../types/api";
 
 const initialState: IUpdateState = {
-  form: null,
-  // form: {
-  //   apiId: "",
-  //   apiName: "",
-  //   listenPath: "",
-  //   stripListenPath: "",
-  //   targetUrl: "",
-  //   isActive: true,
-  //   rateLimit: {
-  //     rate: 0,
-  //     per: 0,
-  //     isDisabled: false,
-  //   },
-  //   versioningInfo: { location: 0, key: "" },
-  //   defaultVersion: "",
-  //   version: { name: "", overrideTarget: "", expires: "" },
-  //   isQuotaDisabled: false,
-  // },
+  form: {
+    ApiId: "",
+    Name: "",
+    ListenPath: "",
+    StripListenPath: false,
+    TargetUrl: "",
+    IsActive: true,
+    IsInternal: false,
+    Protocol: "",
+    RateLimit: {
+      Rate: 0,
+      Per: 0,
+      IsDisabled: false,
+    },
+    Blacklist: [],
+    Whitelist: [],
+    VersioningInfo: {
+      Location: 0,
+      Key: "",
+    },
+    DefaultVersion: "",
+    Versions: [
+      {
+        Name: "",
+        OverrideTarget: "",
+        Expires: "",
+        GlobalRequestHeaders: {},
+        GlobalRequestHeadersRemove: [],
+        GlobalResponseHeaders: {},
+        GlobalResponseHeadersRemove: [],
+        ExtendedPaths: null,
+      },
+    ],
+    AuthType: "",
+    OpenidOptions: {
+      Providers: [],
+    },
+    LoadBalancingTargets: [],
+    IsQuotaDisabled: false,
+  },
   errors: null,
   // errors: {
   //   apiId: "",

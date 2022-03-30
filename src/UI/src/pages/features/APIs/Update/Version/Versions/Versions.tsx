@@ -1,17 +1,33 @@
 import React from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-// import { changeApiUpdateForm } from "../../../../../../resources/common";
-// import { IProps } from "../../../../../../types/api";
-// import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
-// import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
+import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
+
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function Versions() {
-  // const state = useAppSelector((RootState) => RootState.getApiById);
-  // console.log("version", state.data.form?.Versions[0].Name);
-  // const dispatch = useAppDispatch();
-  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-  //   setFormData(event, dispatch, state);
-  // }
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.getApiById);
+
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    // const { name, value } = event.target;
+    // switch (name) {
+    //   case "VersionKey":
+    //     setFormErrors(
+    //       {
+    //         ...state.data.errors,
+    //         [name]: regexForListenPath.test(value)
+    //           ? ""
+    //           : "Enter a Valid Version Key Name",
+    //       },
+    //       dispatch
+    //     );
+    //     break;
+    //   default:
+    //     break;
+    // }
+    setFormData(event, dispatch, state);
+  }
+
   return (
     <>
       <div className="accordion" id="accordionVersions">
@@ -47,7 +63,7 @@ export default function Versions() {
                       <b>Choose a version:</b>
                     </Form.Label>
                     <br></br>
-                    <Form.Select name="version">
+                    <Form.Select name="DefaultVersion">
                       <option disabled>Choose a version</option>
                       <option id="1" value="default">
                         Default
@@ -64,39 +80,54 @@ export default function Versions() {
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="versionName"
-                      name="versionName"
                       placeholder="Version Name"
-                      // value={state.data.form?.Versions[0].Name}
-                      // onChange={(e: any) => validateForm(e)}
+                      id="versionName"
+                      name="Versions.Name"
+                      value={state.data.form?.Versions[0].Name}
+                      // isInvalid={!!state.data.errors?.VersionName}
+                      // isValid={!state.data.errors?.VersionName}
+                      onChange={(e: any) => validateForm(e)}
                       required
                     />
+                    {/* <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.VersionName}
+                    </Form.Control.Feedback> */}
                   </Form.Group>
                 </Col>
                 <Col md={4}>
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="overrideTargetHost"
-                      name="overrideTargetHost"
                       placeholder="Override Target Host"
-                      // value={state.data.form?.Versions[0].OverrideTarget}
-                      // onChange={(e: any) => validateForm(e)}
+                      id="overrideTarget"
+                      name="Versions.OverrideTarget"
+                      value={state.data.form?.Versions[0].OverrideTarget}
+                      // isInvalid={!!state.data.errors?.OverrideTarget}
+                      // isValid={!state.data.errors?.OverrideTarget}
+                      onChange={(e: any) => validateForm(e)}
                       required
                     />
+                    {/* <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.OverrideTarget}
+                    </Form.Control.Feedback> */}
                   </Form.Group>
                 </Col>
                 <Col md={3}>
                   <Form.Group className="mb-3">
                     <Form.Control
                       type="text"
-                      id="expires"
-                      name="expires"
                       placeholder="Expires"
-                      // value={state.data.form?.Versions[0].Expires}
-                      // onChange={(e: any) => validateForm(e)}
+                      id="expires"
+                      name="Versions.Expires"
+                      value={state.data.form?.Versions[0].Expires}
+                      // isInvalid={!!state.data.errors?.Expires}
+                      // isValid={!state.data.errors?.Expires}
+                      onChange={(e: any) => validateForm(e)}
                       required
                     />
+                    {/* <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.Expires}
+                    </Form.Control.Feedback> */}
                   </Form.Group>
                 </Col>
                 <Col md={2}>

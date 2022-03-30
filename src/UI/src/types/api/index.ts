@@ -40,8 +40,8 @@ export interface IApiFormData {
   name: string;
   listenPath: string;
   targetUrl: string;
-  isActive: Boolean;
-  stripListenPath?: Boolean;
+  isActive: boolean;
+  stripListenPath?: boolean;
   Id?: string;
 }
 export interface IErrorApiUpdateInput {
@@ -55,14 +55,14 @@ export interface IApiUpdateFormData {
   apiName: string;
   listenPath: string;
   targetUrl: string;
-  stripListenPath: Boolean;
-  internal: Boolean;
-  roundRobin: Boolean;
-  service: Boolean;
-  rateLimit: Boolean;
+  stripListenPath: boolean;
+  internal: boolean;
+  roundRobin: boolean;
+  service: boolean;
+  rateLimit: boolean;
   rate: string;
   perSecond: string;
-  quotas: Boolean;
+  quotas: boolean;
 }
 
 export interface IApiUpdateError {
@@ -91,15 +91,15 @@ export interface IGetApiByIdData {
   ApiId: string;
   Name: string;
   ListenPath: string;
-  StripListenPath: Boolean;
+  StripListenPath: boolean;
   TargetUrl: string;
-  IsActive: Boolean;
-  IsInternal: Boolean;
+  IsActive: boolean;
+  IsInternal: boolean;
   Protocol: string;
   RateLimit: {
     Rate: number;
     Per: number;
-    IsDisabled: Boolean;
+    IsDisabled: boolean;
   };
   Blacklist: [];
   Whitelist: [];
@@ -125,13 +125,13 @@ export interface IGetApiByIdData {
     Providers: [];
   };
   LoadBalancingTargets: [];
-  IsQuotaDisabled: false;
+  IsQuotaDisabled: boolean;
 }
 
-export interface IRateLimitData {
-  rate: number;
-  per: number;
-  isDisabled: boolean;
+export interface RateLimit {
+  Rate: number;
+  Per: number;
+  IsDisabled: boolean;
 }
 
 export interface IVersioningInfo {
@@ -158,8 +158,8 @@ export interface IError {
   stripListenPath: string;
   TargetUrl: string;
   isActive: string;
-  rate: string;
-  perSecond: string;
+  Rate: string;
+  Per: string;
   versioningInfo: string;
   defaultVersion: string;
   version: string;
@@ -168,6 +168,6 @@ export interface IError {
 // update state slice
 
 export interface IUpdateState {
-  form: IGetApiByIdData | null;
+  form: IGetApiByIdData;
   errors?: IError | null;
 }

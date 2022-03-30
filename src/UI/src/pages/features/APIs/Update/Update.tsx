@@ -5,6 +5,7 @@ import { Tab, Tabs, Form } from "react-bootstrap";
 import { useAppSelector } from "../../../../store/hooks";
 import { IApiGetByIdState } from "../../../../types/api";
 import { RootState } from "../../../../store";
+import Spinner from "../../../../components/loader/Loader";
 // import {
 //   regexForListenPath,
 //   regexForName,
@@ -15,7 +16,7 @@ export default function Update() {
   const apiData: IApiGetByIdState = useAppSelector(
     (state: RootState) => state.getApiById
   );
-  console.log(apiData);
+  console.log("update", apiData);
 
   // const model = configureForm();
 
@@ -57,6 +58,7 @@ export default function Update() {
   // console.log("Error -", model.errors);
   return (
     <div>
+      {apiData.loading && <Spinner />}
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
           <div className="card-body">

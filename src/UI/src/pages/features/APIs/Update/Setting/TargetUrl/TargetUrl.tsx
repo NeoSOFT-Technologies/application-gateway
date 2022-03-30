@@ -90,8 +90,11 @@ export default function TargetUrl() {
                     <Form.Group className="mb-3">
                       <Form.Check
                         type="switch"
-                        id="custom-switch"
+                        id="isLoadBalancing"
+                        name="isLoadBalancing"
                         label="Enable round-robin load balancing"
+                        // checked={state.data.form?.isLoadBalancing}
+                        onChange={(e: any) => validateForm(e)}
                       />
                     </Form.Group>
                   </Col>
@@ -99,8 +102,11 @@ export default function TargetUrl() {
                     <Form.Group className="mb-3">
                       <Form.Check
                         type="switch"
-                        id="custom-switch"
+                        id="IsService"
+                        name="IsService"
                         label="Enable service discovery"
+                        // checked={state.data.form?.IsService}
+                        onChange={(e: any) => validateForm(e)}
                       />
                     </Form.Group>
                   </Col>
