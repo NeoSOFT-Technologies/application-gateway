@@ -2,70 +2,59 @@ import React from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
-import {
-  regexForListenPath,
-  regexForName,
-  regexForTagetUrl,
-  regexForNumber,
-} from "../../../../resources/APIS/ApiConstants";
-import { setForm, err } from "../../../../resources/common";
+import { useAppSelector } from "../../../../store/hooks";
+import { IApiGetByIdState } from "../../../../types/api";
+import { RootState } from "../../../../store";
+// import {
+//   regexForListenPath,
+//   regexForName,
+//   configureForm,
+// } from "../../../../resources/APIS/ApiConstants";
 
 export default function Update() {
-  // updateForm, setUpdateForm
-  // form, setForm
-  // errors, SetErrors
-  const form = setForm();
-  const error = err();
-  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value, type } = event.target;
-    switch (name) {
-      case "apiName":
-        error[1]({
-          ...error[0],
-          [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
-        });
-        break;
+  const apiData: IApiGetByIdState = useAppSelector(
+    (state: RootState) => state.getApiById
+  );
+  console.log(apiData);
 
-      case "listenPath":
-        error[1]({
-          ...error[0],
-          [name]: regexForListenPath.test(value)
-            ? ""
-            : "Enter a Valid Listen Path",
-        });
-        break;
-      case "targetUrl":
-        error[1]({
-          ...error[0],
-          [name]: regexForTagetUrl.test(value) ? "" : "Enter a Valid TargetUrl",
-        });
-        break;
-      case "rate":
-        error[1]({
-          ...error[0],
-          [name]: regexForNumber.test(value) ? "" : "Enter only Number",
-        });
-        break;
-      case "perSecond":
-        error[1]({
-          ...error[0],
-          [name]: regexForNumber.test(value) ? "" : "Enter only Number",
-        });
-        break;
-      default:
-        break;
-    }
-    if (type === "checkbox") {
-      const isChecked = event.target.checked;
-      form[1]({ ...form[0], [event.target.name]: isChecked });
-    } else form[1]({ ...form[0], [event.target.name]: event.target.value });
-  }
+  // const model = configureForm();
 
-  function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
-    validateForm(e);
-  }
-  console.log("Form - ", form[0]);
-  console.log("Error -", error[0]);
+  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+  //   const { name, value, type } = event.target;
+
+  //   switch (name) {
+  //     case "apiName":
+  //       model.setErrors({
+  //         ...model.errors,
+  //         [name]: regexForName.test(value) ? "" : "Enter a valid Api Name ",
+  //       });
+  //       break;
+
+  //     case "listenPath":
+  //       model.setErrors({
+  //         ...model.errors,
+  //         [name]: regexForListenPath.test(value)
+  //           ? ""
+  //           : "Enter a Valid Listen Path",
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+
+  //   if (type === "checkbox") {
+  //     const isChecked = event.target.checked;
+  //     model.setForm({ ...model.form, [event.target.name]: isChecked });
+  //   } else {
+  //     model.setForm({ ...model.form, [event.target.name]: event.target.value });
+  //   }
+  // }
+
+  // function changeForm(e: React.ChangeEvent<HTMLInputElement>) {
+  //   validateForm(e);
+  // }
+  // console.log("Form - ", model.form);
+  // console.log("Error -", model.errors);
   return (
     <div>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -86,10 +75,10 @@ export default function Update() {
                   className="mb-3 small"
                 >
                   <Tab eventKey="setting" title="Setting">
-                    <Setting onChange={changeApiUpdateForm} />
+                    <Setting />
                   </Tab>
                   <Tab eventKey="version" title="Version">
-                    <Version onChange={changeApiUpdateForm} />
+                    <Version />
                   </Tab>
                 </Tabs>
               </div>

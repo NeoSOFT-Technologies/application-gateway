@@ -1,12 +1,35 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { IProps } from "../../../../../../types/api";
-import { changeApiUpdateForm } from "../../../../../../resources/common";
+import {
+  setFormErrors,
+  setFormData,
+  regexForListenPath,
+} from "../../../../../../resources/APIS/ApiConstants";
+import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
-export default function ListenPath(props: IProps) {
-  // function changeApiUpdateForm(e: React.ChangeEvent<HTMLInputElement>) {
-  //   props.onChange(e);
-  // }
+export default function ListenPath() {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.getApiById);
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "ListenPath":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForListenPath.test(value)
+              ? ""
+              : "Enter a Valid Listen Path",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+    setFormData(event, dispatch, state);
+  }
   return (
     <>
       <div className="accordion" id="accordionListenPath">
@@ -46,10 +69,16 @@ export default function ListenPath(props: IProps) {
                       type="text"
                       placeholder="Enter listen path"
                       id="listenPath"
-                      name="listenPath"
+                      name="ListenPath"
                       data-testid="name-input"
-                      onChange={(e: any) => changeApiUpdateForm(e, props)}
+                      value={state.data.form?.ListenPath}
+                      isInvalid={!!state.data.errors?.ListenPath}
+                      isValid={!state.data.errors?.ListenPath}
+                      onChange={(e: any) => validateForm(e)}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.ListenPath}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <i>
                     If you add a trailing &apos;/ &apos; to your listen path,
@@ -79,9 +108,6 @@ export default function ListenPath(props: IProps) {
                       id="stripListenPath"
                       name="stripListenPath"
                       label="Strip the Listen path"
-                      onChangeCapture={(e: any) =>
-                        changeApiUpdateForm(e, props)
-                      }
                     />
                   </Form.Group>
                 </Col>
@@ -99,9 +125,6 @@ export default function ListenPath(props: IProps) {
                       type="switch"
                       id="activated"
                       name="activated"
-                      onChangeCapture={(e: any) =>
-                        changeApiUpdateForm(e, props)
-                      }
                       label="Activated"
                     />
                   </Form.Group>

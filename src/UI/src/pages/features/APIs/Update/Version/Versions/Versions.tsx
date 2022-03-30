@@ -1,9 +1,17 @@
 import React from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { changeApiUpdateForm } from "../../../../../../resources/common";
-import { IProps } from "../../../../../../types/api";
+// import { changeApiUpdateForm } from "../../../../../../resources/common";
+// import { IProps } from "../../../../../../types/api";
+// import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
+// import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
 
-export default function Versions(props: IProps) {
+export default function Versions() {
+  // const state = useAppSelector((RootState) => RootState.getApiById);
+  // console.log("version", state.data.form?.Versions[0].Name);
+  // const dispatch = useAppDispatch();
+  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+  //   setFormData(event, dispatch, state);
+  // }
   return (
     <>
       <div className="accordion" id="accordionVersions">
@@ -39,10 +47,7 @@ export default function Versions(props: IProps) {
                       <b>Choose a version:</b>
                     </Form.Label>
                     <br></br>
-                    <Form.Select
-                      name="version"
-                      onClick={(e: any) => changeApiUpdateForm(e, props)}
-                    >
+                    <Form.Select name="version">
                       <option disabled>Choose a version</option>
                       <option id="1" value="default">
                         Default
@@ -62,8 +67,9 @@ export default function Versions(props: IProps) {
                       id="versionName"
                       name="versionName"
                       placeholder="Version Name"
+                      // value={state.data.form?.Versions[0].Name}
+                      // onChange={(e: any) => validateForm(e)}
                       required
-                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>
@@ -74,8 +80,9 @@ export default function Versions(props: IProps) {
                       id="overrideTargetHost"
                       name="overrideTargetHost"
                       placeholder="Override Target Host"
+                      // value={state.data.form?.Versions[0].OverrideTarget}
+                      // onChange={(e: any) => validateForm(e)}
                       required
-                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>
@@ -86,8 +93,9 @@ export default function Versions(props: IProps) {
                       id="expires"
                       name="expires"
                       placeholder="Expires"
+                      // value={state.data.form?.Versions[0].Expires}
+                      // onChange={(e: any) => validateForm(e)}
                       required
-                      onChange={(e: any) => changeApiUpdateForm(e, props)}
                     />
                   </Form.Group>
                 </Col>

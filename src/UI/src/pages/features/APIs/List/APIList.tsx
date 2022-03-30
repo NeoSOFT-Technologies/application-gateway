@@ -3,6 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
+// import store from "../../../../store/index";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
 import {
@@ -16,6 +17,7 @@ import { useErrorHandler } from "react-error-boundary";
 // import moment from "moment";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import helper from "../../../../utils/helper";
+import { getApiById } from "../../../../store/features/api/getById/slice";
 function Bomb() {
   console.log("");
   // throw new Error("Boom");
@@ -70,6 +72,11 @@ export default function APIList() {
     mainCall(1);
   }, []);
 
+  // useEffect(() => {
+  //   store.subscribe(() =>
+  //     console.log("apilist store updated   ", store.getState())
+  //   );
+  // }, [apiList.data]);
   const handlePageClick = (pageSelected: number) => {
     mainCall(pageSelected);
     setSelected(pageSelected);
@@ -90,26 +97,42 @@ export default function APIList() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    // console.log(val);
     navigate("/createapi");
   };
 
-  const NavigateUpdate = () => {
-    // console.log(val);
-    navigate("/update", {
-      // state: { val },
-    });
+  const NavigateUpdate = (val: IApiData) => {
+    if (val.Id) {
+      dispatch(getApiById(val.Id));
+      navigate("/update", {});
+    }
   };
 
-  const deleteApiFunction = (val: IApiData) => {
+  const deleteApiFunction = async (val: IApiData) => {
     // console.log(val: IApiFormData);
     // const { val } = location.state as LocationState;
     console.log(val);
     console.log(val.Id);
     if (val.Id) {
-      dispatch(deleteApi(val.Id));
-      ToastAlert("Api Removed", "success");
-      navigate("/apilist");
+      if (window.confirm("Are you sure you want to delete this Api ?")) {
+        const result = await dispatch(deleteApi(val.Id));
+
+        console.log("result", result);
+        if (result.meta.requestStatus === "fulfilled") {
+          // const index = apiList.data?.Apis.findIndex(
+          //   (item) => item.Id === val.Id
+          // );
+          // console.log(index);
+          // apiList.data?.Apis.splice(index, 1);
+
+          console.log(apiList);
+        }
+        if (result.meta.requestStatus === "rejected") {
+          await ToastAlert(result.payload.message, "error");
+        } else {
+          await ToastAlert("Api Deleted Successfully", "success");
+        }
+      }
+      // navigate("/apilist");
     }
   };
   const headings = [
