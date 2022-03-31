@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 function CreateApi() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [isToggled, setIsToggled] = useState(false);
+  const [isToggled, setIsToggled] = useState(true);
   // const onToggled = () => setIsToggled(!isToggled);
   console.log(isToggled);
   const [apisForm, setapisForm] = useState<IApiFormData>({
@@ -288,7 +288,7 @@ function CreateApi() {
                             <Form.Check
                               type="switch"
                               onChangeCapture={handleInputChange}
-                              // checked={isToggled}
+                              checked={isToggled}
                               name="isActive"
                               id="isActive"
                               // onChange={onToggled}

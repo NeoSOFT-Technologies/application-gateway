@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../../store";
+import store, { RootState } from "../../../../store";
 // import store from "../../../../store/index";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
@@ -32,6 +32,7 @@ export default function APIList() {
   }
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
+  console.log(selected);
   // const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
   const apiList: IApiListState = useAppSelector(
@@ -72,11 +73,6 @@ export default function APIList() {
     mainCall(1);
   }, []);
 
-  // useEffect(() => {
-  //   store.subscribe(() =>
-  //     console.log("apilist store updated   ", store.getState())
-  //   );
-  // }, [apiList.data]);
   const handlePageClick = (pageSelected: number) => {
     mainCall(pageSelected);
     setSelected(pageSelected);
@@ -106,7 +102,6 @@ export default function APIList() {
       navigate("/update", {});
     }
   };
-
   const deleteApiFunction = async (val: IApiData) => {
     // console.log(val: IApiFormData);
     // const { val } = location.state as LocationState;
@@ -116,23 +111,27 @@ export default function APIList() {
       if (window.confirm("Are you sure you want to delete this Api ?")) {
         const result = await dispatch(deleteApi(val.Id));
 
-        console.log("result", result);
-        if (result.meta.requestStatus === "fulfilled") {
-          // const index = apiList.data?.Apis.findIndex(
-          //   (item) => item.Id === val.Id
-          // );
-          // console.log(index);
-          // apiList.data?.Apis.splice(index, 1);
+        if (
+          store.getState().apiList.data?.Apis.length === 1 &&
+          store.getState().apiList.data?.TotalCount !== 1
+        )
+          mainCall(selected - 1);
+        else if (
+          store.getState().apiList.data?.Apis.length === 1 &&
+          store.getState().apiList.data?.TotalCount === 1
+        )
+          mainCall(1);
+        else mainCall(selected);
 
-          console.log(apiList);
-        }
+        console.log("result", result);
+
         if (result.meta.requestStatus === "rejected") {
-          await ToastAlert(result.payload.message, "error");
+          await ToastAlert(" Request failed ", "error");
         } else {
+          // navigate("/apilist");
           await ToastAlert("Api Deleted Successfully", "success");
         }
       }
-      // navigate("/apilist");
     }
   };
   const headings = [
@@ -214,9 +213,13 @@ export default function APIList() {
         </Modal.Header>
         <Modal.Body>Do You want To delete the Api</Modal.Body>
         <Modal.Footer>
-          <Button className="btn-danger" onClick={() => deleteApiFunction}>
+          <button
+            type="button"
+            className="btn-danger"
+            onClick={() => deleteApiFunction}
+          >
             Remove
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </>
