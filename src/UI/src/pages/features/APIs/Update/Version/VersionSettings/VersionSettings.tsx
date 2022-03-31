@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function VersionSettings() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((RootState) => RootState.getApiById);
+  const state = useAppSelector((RootState) => RootState.updateApi);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     // const { name, value } = event.target;
@@ -103,7 +103,6 @@ export default function VersionSettings() {
                               // isInvalid={!!state.data.errors?.VersionKey}
                               // isValid={!state.data.errors?.VersionKey}
                               onChange={(e: any) => validateForm(e)}
-                              required
                             />
                             {/* <Form.Control.Feedback type="invalid">
                               {state.data.errors?.VersionKey}

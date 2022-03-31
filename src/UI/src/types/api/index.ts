@@ -1,8 +1,5 @@
-export interface IApiListState {
-  data?: ISetApiList | null;
-  loading?: boolean;
-  error?: string | null;
-}
+import { IApiData } from "../../store/features/api/list";
+
 export interface IAddApiState {
   apiAdded?: boolean;
   loading: boolean;
@@ -17,17 +14,6 @@ export interface IDeleteApiState {
 export interface IApiDataList {
   list: IApiData[];
   fields: string[];
-}
-export interface ISetApiList {
-  Apis: IApiData[];
-  TotalCount: number;
-}
-export interface IApiData {
-  Name: string;
-  CreatedDate: string;
-  TargetUrl: string;
-  IsActive: boolean;
-  Id?: string;
 }
 
 export interface IErrorApiInput {
@@ -52,17 +38,60 @@ export interface IErrorApiUpdateInput {
   perSecond: string;
 }
 export interface IApiUpdateFormData {
-  apiName: string;
+  apiId: string;
+  name: string;
   listenPath: string;
-  targetUrl: string;
   stripListenPath: boolean;
-  internal: boolean;
-  roundRobin: boolean;
-  service: boolean;
-  rateLimit: boolean;
-  rate: string;
-  perSecond: string;
-  quotas: boolean;
+  targetUrl: string;
+  isActive: boolean;
+  isInternal: boolean;
+  protocol: string;
+  rateLimit: {
+    rate: number;
+    per: number;
+    isDisabled: boolean;
+  };
+  blacklist: [];
+  whitelist: [];
+  versioningInfo: {
+    location: string;
+    key: string;
+  };
+  defaultVersion: string;
+  versions: [
+    {
+      name: string;
+      overrideTarget: string;
+      expires: string;
+      globalRequestHeaders: {
+        additionalProp1: string;
+        additionalProp2: string;
+        additionalProp3: string;
+      };
+      globalRequestHeadersRemove: [];
+      globalResponseHeaders: {
+        additionalProp1: string;
+        additionalProp2: string;
+        additionalProp3: string;
+      };
+      globalResponseHeadersRemove: [];
+      extendedPaths: {
+        methodTransforms: [];
+        urlRewrites: [];
+        validateJsons: [];
+        transformHeaders: [];
+        transformResponseHeaders: [];
+        transform: [];
+        transformResponse: [];
+      };
+    }
+  ];
+  authType: string;
+  openidOptions: {
+    providers: [];
+  };
+  loadBalancingTargets: [];
+  isQuotaDisabled: boolean;
 }
 
 export interface IApiUpdateError {
@@ -81,52 +110,7 @@ export interface IAddApiResponse {
   Errors: string[] | null | unknown | any | string;
 }
 
-export interface IApiGetByIdState {
-  data: IUpdateState;
-  loading: boolean;
-  error?: string | null;
-}
 // get by id
-export interface IGetApiByIdData {
-  ApiId: string;
-  Name: string;
-  ListenPath: string;
-  StripListenPath: boolean;
-  TargetUrl: string;
-  IsActive: boolean;
-  IsInternal: boolean;
-  Protocol: string;
-  RateLimit: {
-    Rate: number;
-    Per: number;
-    IsDisabled: boolean;
-  };
-  Blacklist: [];
-  Whitelist: [];
-  VersioningInfo: {
-    Location: number;
-    Key: string;
-  };
-  DefaultVersion: string;
-  Versions: [
-    {
-      Name: string;
-      OverrideTarget: string;
-      Expires: string;
-      GlobalRequestHeaders: {};
-      GlobalRequestHeadersRemove: [];
-      GlobalResponseHeaders: {};
-      GlobalResponseHeadersRemove: [];
-      ExtendedPaths: null;
-    }
-  ];
-  AuthType: string;
-  OpenidOptions: {
-    Providers: [];
-  };
-  LoadBalancingTargets: [];
-  IsQuotaDisabled: boolean;
-}
 
 export interface RateLimit {
   Rate: number;
@@ -146,7 +130,7 @@ export interface IVersion {
 }
 
 export interface IApiUpdateState {
-  data?: IApiUpdateFormData;
+  data?: IApiUpdateFormData | null;
   loading: boolean;
   error?: string | null;
 }
@@ -166,8 +150,3 @@ export interface IError {
   isQuotaDisabled: string;
 }
 // update state slice
-
-export interface IUpdateState {
-  form: IGetApiByIdData;
-  errors?: IError | null;
-}

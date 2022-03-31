@@ -12,7 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 export default function Setting() {
-  const state = useAppSelector((RootState) => RootState.getApiById);
+  const state = useAppSelector((RootState) => RootState.updateApi);
   const dispatch = useAppDispatch();
   // console.log("setting", state);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {

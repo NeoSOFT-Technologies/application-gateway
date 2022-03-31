@@ -1,4 +1,5 @@
-import { setFormError, setForm } from "../../store/features/api/getById/slice";
+import { setFormError, setForm } from "../../store/features/api/update/slice";
+import { camelCase } from "lodash";
 export const regexForName = /^[A-Z a-z][A-Z a-z 0-9+&@#\\/%=_|$?!:,.-]{3,29}$/;
 export const regexForListenPath = /^[/][a-zA-Z0-9]*[/]$/;
 export const regexForTagetUrl =
@@ -32,30 +33,21 @@ export function setFormData(e: any, dispatch: any, state: any) {
   dispatch(setForm(newState));
 }
 
-// export function setFormData(
-//   e: any,
-//   dispatch: any,
-//   state: any,
-//   complex?: any,
-//   objName?: string
-// ) {
-//   console.log("ye object hai - ", complex);
-//   if (complex !== null && complex !== undefined) {
-//     if (objName === "RateLimit") {
-//       dispatch(setForm({ ...state.data.form, RateLimit: complex }));
-//     }
-//   } else if (e.target.type === "checkbox") {
-//     dispatch(
-//       setForm({ ...state.data.form, [e.target.name]: e.target.checked })
-//     );
-//   } else {
-//     dispatch(setForm({ ...state.data.form, [e.target.name]: e.target.value }));
-//   }
-//   // dispatch(setForm({ ...state.data.form, [e.target.name]: e.target.value }));
-// }
-
 export function setFormErrors(e: any, dispatch: any) {
-  // console.log("ye apna err - ", e);
-  // {listenPath: "Enter Valid Listen Path", apiName: "Enter Valid Api Name"}
   dispatch(setFormError(e));
 }
+
+export const camelizeKeys: any = (obj: any) => {
+  if (Array.isArray(obj)) {
+    return obj.map((v) => camelizeKeys(v));
+  } else if (obj != null && obj.constructor === Object) {
+    return Object.keys(obj).reduce(
+      (result, key) => ({
+        ...result,
+        [camelCase(key)]: camelizeKeys(obj[key]),
+      }),
+      {}
+    );
+  }
+  return obj;
+};

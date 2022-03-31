@@ -1,20 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { updateApiService } from "../../../../services/api/api";
-import { IApiUpdateFormData } from "../../../../types/api";
+import {
+  getApiByIdService,
+  updateApiService,
+} from "../../../../services/api/api";
+import { initialState } from "./payload";
+import { IGetApiByIdData } from ".";
 
-interface IConditions {
-  data: IApiUpdateFormData;
-}
-const initialState: any = {
-  data: null,
-  loading: false,
-  error: null,
-};
+export const getApiById = createAsyncThunk(
+  "api/getApiById",
+  async (Id: string) => {
+    try {
+      const response = await getApiByIdService(Id);
+      // console.log(response);
+      return response?.data;
+    } catch (err) {
+      const myError = err as Error;
+      // console.log("");
+      throw myError;
+    }
+  }
+);
 export const updateApi = createAsyncThunk(
   "api/update",
-  async (conditions: IConditions) => {
-    const { data } = conditions;
+  async (data: IGetApiByIdData) => {
+    // const { data } = conditions;
     try {
       const response = await updateApiService(data);
       console.log(response);
@@ -28,8 +38,32 @@ export const updateApi = createAsyncThunk(
 const slice = createSlice({
   name: "apiUpdate",
   initialState,
-  reducers: {},
+  reducers: {
+    setForm: (state, action) => {
+      console.log("action - ", action.payload);
+      state.data.form = action.payload; // OnChange
+      console.log("form slice - ", state.data.form);
+    },
+    setFormError: (state, action) => {
+      state.data.errors = action.payload; // OnChange
+      console.log("error slice - ", state.data.errors);
+    },
+  },
   extraReducers(builder): void {
+    builder.addCase(getApiById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getApiById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data.form = action.payload.Data;
+      // console.log("form slice1 - ", state.data.form);
+    });
+    builder.addCase(getApiById.rejected, (state, action) => {
+      state.loading = false;
+      // action.payload contains error information
+      state.error = error(action.payload);
+      action.payload = action.error;
+    });
     builder.addCase(updateApi.pending, (state) => {
       state.loading = true;
     });
@@ -45,4 +79,5 @@ const slice = createSlice({
   },
 });
 
+export const { setForm, setFormError } = slice.actions;
 export default slice.reducer;

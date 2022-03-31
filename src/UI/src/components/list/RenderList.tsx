@@ -7,10 +7,11 @@ import {
   ITenantUserDataList,
   ITenantUserData,
 } from "../../types/index";
-import { IApiData, IApiDataList } from "../../types/api/index";
+import { IApiDataList } from "../../types/api/index";
 import { IPolicyData, IPolicyDataList } from "../../types/Policy/index";
 import Pagination from "./Pagination";
 import { IKeyData, IKeyDataList } from "../../types/key/index";
+import { IApiData } from "../../store/features/api/list";
 
 interface IProps {
   headings: IHeadings[];
