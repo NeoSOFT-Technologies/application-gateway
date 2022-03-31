@@ -2,73 +2,10 @@ import React from "react";
 import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-// import { IApiGetByIdState } from "../../../../types/api";
-
 import Spinner from "../../../../components/loader/Loader";
-import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-// import { updateApi } from "../../../../store/features/api/update/slice";
-// import { IApiUpdateFormData } from "../../../../types/api";
-
-import { updateApi } from "../../../../store/features/api/update/slice";
-// import { camelizeKeys } from "../../../../resources/APIS/ApiConstants";
+import handleSubmitApiUpdate, { state } from "./Update";
 
 export default function Update() {
-  //   const apiData: IApiGetByIdState = useAppSelector(
-  //     (state: RootState) => state.getApiById
-  //   );
-  //   console.log("update", apiData);
-
-  const state: any = useAppSelector((RootState) => RootState.getApiById);
-  const dispatch = useAppDispatch();
-
-  // const updateApiFormState: any = useAppSelector(
-  //   (RootState) => RootState.updateApi
-  // );
-
-  // const oldState = updateApiFormState.data;
-  // const newstate = { ...oldState };
-  // const updateApiData = newstate;
-
-  // const formData = camelizeKeys(state.data.form);
-
-  const handleSubmitApiUpdate = async (event: React.FormEvent) => {
-    event.preventDefault();
-    // console.log("state form", state.data.form);
-    // console.log("error", state.data.errors);
-
-    // const isEmpty: any = Object.values(state.data.errors).every(
-    //   (x) => x === null || x === ""
-    // );
-    // console.log("Error state isEmpty", isEmpty);
-
-    // if (isEmpty) {
-    if (
-      state.data.form.Name !== "" &&
-      state.data.form.ListenPath !== "" &&
-      state.data.form.TargetUrl !== ""
-    ) {
-      // console.log("original updateApiData", updateApiData);
-      // console.log("formData", formData);
-
-      const formData = state.data.form;
-      console.log("formData", formData);
-      // Object.keys(updateApiData).forEach(
-      //   (key) => (updateApiData[key] = formData[key])
-      // );
-
-      // console.log("modified updateApiData", updateApiData);
-      const result = await dispatch(updateApi(formData));
-      console.log("result", result);
-      ToastAlert("Api Updated Successfully!!", "success");
-    } else {
-      ToastAlert("Please correct the error", "error");
-    }
-    // } else {
-    //   ToastAlert("Please fill all the fields correctly! ", "error");
-    // }
-  };
-
   return (
     <div>
       {state.loading && <Spinner />}
