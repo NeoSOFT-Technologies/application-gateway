@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { updateApiService } from "../../../../services/api/api";
-import { IApiUpdateFormData, IApiUpdateState } from "../../../../types/api";
+import { IGetApiByIdData, IApiUpdateState } from "../../../../types/api";
 
 // interface IConditions {
 //   data: IApiUpdateFormData;
@@ -70,7 +70,7 @@ const initialState: IApiUpdateState = {
 };
 export const updateApi = createAsyncThunk(
   "api/update",
-  async (data: IApiUpdateFormData) => {
+  async (data: IGetApiByIdData) => {
     // const { data } = conditions;
     try {
       const response = await updateApiService(data);

@@ -11,7 +11,7 @@ import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 // import { IApiUpdateFormData } from "../../../../types/api";
 
 import { updateApi } from "../../../../store/features/api/update/slice";
-import { camelizeKeys } from "../../../../resources/APIS/ApiConstants";
+// import { camelizeKeys } from "../../../../resources/APIS/ApiConstants";
 
 export default function Update() {
   //   const apiData: IApiGetByIdState = useAppSelector(
@@ -22,45 +22,51 @@ export default function Update() {
   const state: any = useAppSelector((RootState) => RootState.getApiById);
   const dispatch = useAppDispatch();
 
-  const updateApiFormState: any = useAppSelector(
-    (RootState) => RootState.updateApi
-  );
+  // const updateApiFormState: any = useAppSelector(
+  //   (RootState) => RootState.updateApi
+  // );
 
-  const oldState = updateApiFormState.data;
-  const newstate = { ...oldState };
-  const updateApiData = newstate;
+  // const oldState = updateApiFormState.data;
+  // const newstate = { ...oldState };
+  // const updateApiData = newstate;
 
-  const formData = camelizeKeys(state.data.form);
+  // const formData = camelizeKeys(state.data.form);
 
   const handleSubmitApiUpdate = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("state form", state.data.form);
-    console.log("error", state.data.errors);
-    console.log("error state", !state.data.errors);
+    // console.log("state form", state.data.form);
+    // console.log("error", state.data.errors);
 
-    if (state.data.errors === null) {
-      if (
-        state.data.form.Name !== "" &&
-        state.data.form.ListenPath !== "" &&
-        state.data.form.TargetUrl !== ""
-      ) {
-        console.log("original updateApiData", updateApiData);
-        console.log("formData", formData);
+    // const isEmpty: any = Object.values(state.data.errors).every(
+    //   (x) => x === null || x === ""
+    // );
+    // console.log("Error state isEmpty", isEmpty);
 
-        Object.keys(updateApiData).forEach(
-          (key) => (updateApiData[key] = formData[key])
-        );
+    // if (isEmpty) {
+    if (
+      state.data.form.Name !== "" &&
+      state.data.form.ListenPath !== "" &&
+      state.data.form.TargetUrl !== ""
+    ) {
+      // console.log("original updateApiData", updateApiData);
+      // console.log("formData", formData);
 
-        console.log("modified updateApiData", updateApiData);
-        const result = await dispatch(updateApi(updateApiData));
-        console.log("result", result);
-        ToastAlert("Api Update", "success");
-      } else {
-        ToastAlert("Please correct the error", "error");
-      }
+      const formData = state.data.form;
+      console.log("formData", formData);
+      // Object.keys(updateApiData).forEach(
+      //   (key) => (updateApiData[key] = formData[key])
+      // );
+
+      // console.log("modified updateApiData", updateApiData);
+      const result = await dispatch(updateApi(formData));
+      console.log("result", result);
+      ToastAlert("Api Updated Successfully!!", "success");
     } else {
-      ToastAlert("Please fill all the fields correctly! ", "error");
+      ToastAlert("Please correct the error", "error");
     }
+    // } else {
+    //   ToastAlert("Please fill all the fields correctly! ", "error");
+    // }
   };
 
   return (
