@@ -3,15 +3,30 @@ import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import Spinner from "../../../../components/loader/Loader";
-import handleSubmitApiUpdate from "./_Update";
 import { IApiGetByIdState } from "../../../../types/api";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { updateApi } from "../../../../store/features/api/update/slice";
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.getApiById
   );
   const dispatch = useAppDispatch();
+
+  async function handleSubmitApiUpdate(event: FormEvent) {
+    event.preventDefault();
+    if (
+      state.data.form.Name !== "" &&
+      state.data.form.ListenPath !== "" &&
+      state.data.form.TargetUrl !== ""
+    ) {
+      await dispatch(updateApi(state.data.form));
+      ToastAlert("Api Updated Successfully!!", "success");
+    } else {
+      ToastAlert("Please correct the error", "error");
+    }
+  }
 
   return (
     <div>
@@ -20,9 +35,7 @@ export default function Update() {
         <div className="card">
           <div className="card-body">
             <Form
-              onSubmit={(e: FormEvent) =>
-                handleSubmitApiUpdate(e, state, dispatch)
-              }
+              onSubmit={(e: FormEvent) => handleSubmitApiUpdate(e)}
               data-testid="form-input"
             >
               <div className="align-items-center">
