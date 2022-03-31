@@ -3,14 +3,14 @@ import Setting from "./Setting/Setting";
 import Version from "./Version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import Spinner from "../../../../components/loader/Loader";
-import { IApiGetByIdState } from "../../../../types/api";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { updateApi } from "../../../../store/features/api/update/slice";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { IApiGetByIdState } from "../../../../store/features/api/update";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
-    (RootState) => RootState.getApiById
+    (RootState) => RootState.updateApi
   );
   const dispatch = useAppDispatch();
 

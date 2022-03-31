@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function Versions() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((RootState) => RootState.getApiById);
+  const state = useAppSelector((RootState) => RootState.updateApi);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     // const { name, value } = event.target;
@@ -83,7 +83,7 @@ export default function Versions() {
                       placeholder="Version Name"
                       id="versionName"
                       name="Versions.Name"
-                      value={state.data.form?.Versions[0].Name}
+                      // value={state.data.form?.Versions.Name}
                       // isInvalid={!!state.data.errors?.VersionName}
                       // isValid={!state.data.errors?.VersionName}
                       onChange={(e: any) => validateForm(e)}
@@ -100,7 +100,7 @@ export default function Versions() {
                       placeholder="Override Target Host"
                       id="overrideTarget"
                       name="Versions.OverrideTarget"
-                      value={state.data.form?.Versions[0].OverrideTarget}
+                      // value={state.data.form?.Versions.OverrideTarget}
                       // isInvalid={!!state.data.errors?.OverrideTarget}
                       // isValid={!state.data.errors?.OverrideTarget}
                       onChange={(e: any) => validateForm(e)}
@@ -117,7 +117,7 @@ export default function Versions() {
                       placeholder="Expires"
                       id="expires"
                       name="Versions.Expires"
-                      value={state.data.form?.Versions[0].Expires}
+                      // value={state.data.form?.Versions.Expires}
                       // isInvalid={!!state.data.errors?.Expires}
                       // isValid={!state.data.errors?.Expires}
                       onChange={(e: any) => validateForm(e)}

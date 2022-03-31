@@ -124,52 +124,7 @@ export interface IAddApiResponse {
   Errors: string[] | null | unknown | any | string;
 }
 
-export interface IApiGetByIdState {
-  data: IUpdateState;
-  loading: boolean;
-  error?: string | null;
-}
 // get by id
-export interface IGetApiByIdData {
-  ApiId: string;
-  Name: string;
-  ListenPath: string;
-  StripListenPath: boolean;
-  TargetUrl: string;
-  IsActive: boolean;
-  IsInternal: boolean;
-  Protocol: string;
-  RateLimit: {
-    Rate: number;
-    Per: number;
-    IsDisabled: boolean;
-  };
-  Blacklist: [];
-  Whitelist: [];
-  VersioningInfo: {
-    Location: number;
-    Key: string;
-  };
-  DefaultVersion: string;
-  Versions: [
-    {
-      Name: string;
-      OverrideTarget: string;
-      Expires: string;
-      GlobalRequestHeaders: {};
-      GlobalRequestHeadersRemove: [];
-      GlobalResponseHeaders: {};
-      GlobalResponseHeadersRemove: [];
-      ExtendedPaths: null;
-    }
-  ];
-  AuthType: string;
-  OpenidOptions: {
-    Providers: [];
-  };
-  LoadBalancingTargets: [];
-  IsQuotaDisabled: boolean;
-}
 
 export interface RateLimit {
   Rate: number;
@@ -209,8 +164,3 @@ export interface IError {
   isQuotaDisabled: string;
 }
 // update state slice
-
-export interface IUpdateState {
-  form: IGetApiByIdData;
-  errors?: IError | null;
-}

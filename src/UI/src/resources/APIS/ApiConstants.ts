@@ -1,4 +1,4 @@
-import { setFormError, setForm } from "../../store/features/api/getById/slice";
+import { setFormError, setForm } from "../../store/features/api/update/slice";
 import { camelCase } from "lodash";
 
 export const regexForName = /^[A-Z a-z]{1,29}$/;

@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function RateLimit() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((RootState) => RootState.getApiById);
+  const state = useAppSelector((RootState) => RootState.updateApi);
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     switch (name) {

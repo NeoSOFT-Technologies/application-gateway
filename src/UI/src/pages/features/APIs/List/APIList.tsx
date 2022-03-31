@@ -17,7 +17,7 @@ import { useErrorHandler } from "react-error-boundary";
 // import moment from "moment";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import helper from "../../../../utils/helper";
-import { getApiById } from "../../../../store/features/api/getById/slice";
+import { getApiById } from "../../../../store/features/api/update/slice";
 function Bomb() {
   console.log("");
   // throw new Error("Boom");
