@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import error from "../../../../utils/error";
-import { IAddApiState, IApiFormData } from "../../../../types/api/index";
 import { addApiDataService } from "../../../../services/api/api";
 import { AxiosError } from "axios";
+import { IAddApiState, IApiFormData } from ".";
 
 const initialState: IAddApiState = {
   apiAdded: false,

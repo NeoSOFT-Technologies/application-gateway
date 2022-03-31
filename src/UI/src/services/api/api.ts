@@ -1,6 +1,6 @@
 // import { IApiData } from "../../types/api/index";
+import { IApiFormData } from "../../store/features/api/create";
 import { IGetApiByIdData } from "../../store/features/api/update";
-import { IApiFormData } from "../../types/api";
 import apiFactory from "../../utils/api";
 
 export function apiListService(currentPage: number) {

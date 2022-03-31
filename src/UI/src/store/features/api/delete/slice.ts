@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { deleteApiDataService } from "../../../../services/api/api";
-import { IDeleteApiState } from "../../../../types/api/index";
 import { AxiosError } from "axios";
+import { IDeleteApiState } from ".";
 
 const initialState: IDeleteApiState = {
   isDeleted: false,

@@ -8,13 +8,12 @@ import {
   regexForTagetUrl,
 } from "../../../../resources/APIS/ApiConstants";
 import { useAppDispatch } from "../../../../store/hooks";
-import {
-  IErrorApiInput,
-  IApiFormData,
-  // IAddApiResponse,
-} from "../../../../types/api/index";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { useNavigate } from "react-router-dom";
+import {
+  IApiFormData,
+  IErrorApiInput,
+} from "../../../../store/features/api/create";
 // import { unwrapResult } from "@reduxjs/toolkit";
 function CreateApi() {
   const dispatch = useAppDispatch();
