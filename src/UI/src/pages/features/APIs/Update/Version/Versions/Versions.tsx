@@ -87,7 +87,6 @@ export default function Versions() {
                       // isInvalid={!!state.data.errors?.VersionName}
                       // isValid={!state.data.errors?.VersionName}
                       onChange={(e: any) => validateForm(e)}
-                      required
                     />
                     {/* <Form.Control.Feedback type="invalid">
                       {state.data.errors?.VersionName}
@@ -105,7 +104,6 @@ export default function Versions() {
                       // isInvalid={!!state.data.errors?.OverrideTarget}
                       // isValid={!state.data.errors?.OverrideTarget}
                       onChange={(e: any) => validateForm(e)}
-                      required
                     />
                     {/* <Form.Control.Feedback type="invalid">
                       {state.data.errors?.OverrideTarget}
@@ -123,7 +121,6 @@ export default function Versions() {
                       // isInvalid={!!state.data.errors?.Expires}
                       // isValid={!state.data.errors?.Expires}
                       onChange={(e: any) => validateForm(e)}
-                      required
                     />
                     {/* <Form.Control.Feedback type="invalid">
                       {state.data.errors?.Expires}

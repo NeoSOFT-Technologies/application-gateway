@@ -103,7 +103,6 @@ export default function VersionSettings() {
                               // isInvalid={!!state.data.errors?.VersionKey}
                               // isValid={!state.data.errors?.VersionKey}
                               onChange={(e: any) => validateForm(e)}
-                              required
                             />
                             {/* <Form.Control.Feedback type="invalid">
                               {state.data.errors?.VersionKey}

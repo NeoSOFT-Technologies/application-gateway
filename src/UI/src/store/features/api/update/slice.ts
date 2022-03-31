@@ -1,20 +1,77 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { updateApiService } from "../../../../services/api/api";
-import { IApiUpdateFormData } from "../../../../types/api";
+import { IApiUpdateFormData, IApiUpdateState } from "../../../../types/api";
 
-interface IConditions {
-  data: IApiUpdateFormData;
-}
-const initialState: any = {
-  data: null,
+// interface IConditions {
+//   data: IApiUpdateFormData;
+// }
+const initialState: IApiUpdateState = {
+  // data: null,
+  data: {
+    apiId: "",
+    name: "",
+    listenPath: "",
+    stripListenPath: false,
+    targetUrl: "",
+    isActive: true,
+    isInternal: false,
+    protocol: "",
+    rateLimit: {
+      rate: 0,
+      per: 0,
+      isDisabled: false,
+    },
+    blacklist: [],
+    whitelist: [],
+    versioningInfo: {
+      location: "",
+      key: "",
+    },
+    defaultVersion: "",
+    versions: [
+      {
+        name: "",
+        overrideTarget: "",
+        expires: "",
+        globalRequestHeaders: {
+          additionalProp1: "",
+          additionalProp2: "",
+          additionalProp3: "",
+        },
+        globalRequestHeadersRemove: [],
+        globalResponseHeaders: {
+          additionalProp1: "",
+          additionalProp2: "",
+          additionalProp3: "",
+        },
+        globalResponseHeadersRemove: [],
+        extendedPaths: {
+          methodTransforms: [],
+          urlRewrites: [],
+          validateJsons: [],
+          transformHeaders: [],
+          transformResponseHeaders: [],
+          transform: [],
+          transformResponse: [],
+        },
+      },
+    ],
+    authType: "",
+    openidOptions: {
+      providers: [],
+    },
+    loadBalancingTargets: [],
+    isQuotaDisabled: false,
+  },
+
   loading: false,
   error: null,
 };
 export const updateApi = createAsyncThunk(
   "api/update",
-  async (conditions: IConditions) => {
-    const { data } = conditions;
+  async (data: IApiUpdateFormData) => {
+    // const { data } = conditions;
     try {
       const response = await updateApiService(data);
       console.log(response);

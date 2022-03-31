@@ -53,17 +53,60 @@ export interface IErrorApiUpdateInput {
   perSecond: string;
 }
 export interface IApiUpdateFormData {
-  apiName: string;
+  apiId: string;
+  name: string;
   listenPath: string;
-  targetUrl: string;
   stripListenPath: boolean;
-  internal: boolean;
-  roundRobin: boolean;
-  service: boolean;
-  rateLimit: boolean;
-  rate: string;
-  perSecond: string;
-  quotas: boolean;
+  targetUrl: string;
+  isActive: boolean;
+  isInternal: boolean;
+  protocol: string;
+  rateLimit: {
+    rate: number;
+    per: number;
+    isDisabled: boolean;
+  };
+  blacklist: [];
+  whitelist: [];
+  versioningInfo: {
+    location: string;
+    key: string;
+  };
+  defaultVersion: string;
+  versions: [
+    {
+      name: string;
+      overrideTarget: string;
+      expires: string;
+      globalRequestHeaders: {
+        additionalProp1: string;
+        additionalProp2: string;
+        additionalProp3: string;
+      };
+      globalRequestHeadersRemove: [];
+      globalResponseHeaders: {
+        additionalProp1: string;
+        additionalProp2: string;
+        additionalProp3: string;
+      };
+      globalResponseHeadersRemove: [];
+      extendedPaths: {
+        methodTransforms: [];
+        urlRewrites: [];
+        validateJsons: [];
+        transformHeaders: [];
+        transformResponseHeaders: [];
+        transform: [];
+        transformResponse: [];
+      };
+    }
+  ];
+  authType: string;
+  openidOptions: {
+    providers: [];
+  };
+  loadBalancingTargets: [];
+  isQuotaDisabled: boolean;
 }
 
 export interface IApiUpdateError {
@@ -147,7 +190,7 @@ export interface IVersion {
 }
 
 export interface IApiUpdateState {
-  data?: IApiUpdateFormData;
+  data?: IApiUpdateFormData | null;
   loading: boolean;
   error?: string | null;
 }
