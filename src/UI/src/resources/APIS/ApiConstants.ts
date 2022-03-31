@@ -1,9 +1,9 @@
 import { setFormError, setForm } from "../../store/features/api/getById/slice";
-export const regexForName = /^[A-Z a-z]{1,29}$/;
-export const regexForListenPath = /^[/][a-zA-Z0-9]*[/]$/; // "//" + "[a-z]*" + "//"; // /^[a-z]*ing$/i; (\/)(A-Z a-z)?(\/)
+export const regexForName = /^[A-Z a-z][A-Z a-z 0-9+&@#\\/%=_|$?!:,.-]{3,29}$/;
+export const regexForListenPath = /^[/][a-zA-Z0-9]*[/]$/;
 export const regexForTagetUrl =
-  /[(http(s)?):\\\\(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)/;
-// /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+  /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([a-zA-Z0-9+&@#\\/%=_|$?!:,.]*\)|[-A-Z0-9+&@#\\/%=_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=_|$?!:,.]*\)|[A-Z0-9+&@#\\/%=_|$])*/;
+
 export const regexForNumber = /^[0-9]*$/;
 
 function setNestedState(e: any, state: any) {

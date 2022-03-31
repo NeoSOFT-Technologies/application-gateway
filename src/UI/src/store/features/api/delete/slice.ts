@@ -34,7 +34,6 @@ const slice = createSlice({
     });
     builder.addCase(deleteApi.fulfilled, (state, action) => {
       state.loading = false;
-      // state.data = action.payload;
       state.isDeleted = true;
       console.log("state ", current(state));
     });

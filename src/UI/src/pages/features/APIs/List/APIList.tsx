@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
-import store, { RootState } from "../../../../store";
-// import store from "../../../../store/index";
+import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
 import {
@@ -32,8 +31,7 @@ export default function APIList() {
   }
   const navigate = useNavigate();
   const [selected, setSelected] = useState(1);
-  console.log(selected);
-  // const [search, setSearch] = useState(" ");
+  const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
   const apiList: IApiListState = useAppSelector(
     (state: RootState) => state.apiList
@@ -55,7 +53,6 @@ export default function APIList() {
     // handleError(resp.payload);
   };
   useEffect(() => {
-    // console.log("UseEffect", apiList.data);
     if (apiList.data && apiList.data?.Apis?.length > 0) {
       const listAPI: IApiData[] = [];
       apiList.data?.Apis.forEach((item) => {
@@ -80,8 +77,14 @@ export default function APIList() {
 
   const searchFilter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    setSelected(1);
-    mainCall(1);
+    const newSearchList = datalist.list.filter((item) =>
+      item.Name.toLocaleLowerCase().includes(search)
+    );
+
+    setDataList({
+      list: [...newSearchList],
+      fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
+    });
   };
   //   const handleUserDetails = (val: ITenantUserData) => {
   //     console.log(val);
@@ -102,33 +105,33 @@ export default function APIList() {
       navigate("/update", {});
     }
   };
+
+  function deleteapifromState(id: string) {
+    const newState = datalist.list.filter((item) => item.Id !== id);
+    console.log(newState);
+    const pageCount = apiList.data?.TotalCount;
+    if (newState.length === 0 && pageCount !== 1) {
+      mainCall(selected - 1);
+      setSelected(selected - 1);
+      // } else if (newState.length === 0 && pageCount! < selected) {
+      //   mainCall(selected + 1);
+      //   setSelected(selected + 1);
+    } else mainCall(selected);
+
+    setDataList({
+      list: [...newState],
+      fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
+    });
+  }
   const deleteApiFunction = async (val: IApiData) => {
-    // console.log(val: IApiFormData);
-    // const { val } = location.state as LocationState;
-    console.log(val);
-    console.log(val.Id);
     if (val.Id) {
       if (window.confirm("Are you sure you want to delete this Api ?")) {
         const result = await dispatch(deleteApi(val.Id));
 
-        if (
-          store.getState().apiList.data?.Apis.length === 1 &&
-          store.getState().apiList.data?.TotalCount !== 1
-        )
-          mainCall(selected - 1);
-        else if (
-          store.getState().apiList.data?.Apis.length === 1 &&
-          store.getState().apiList.data?.TotalCount === 1
-        )
-          mainCall(1);
-        else mainCall(selected);
-
-        console.log("result", result);
-
         if (result.meta.requestStatus === "rejected") {
           await ToastAlert(" Request failed ", "error");
         } else {
-          // navigate("/apilist");
+          deleteapifromState(val.Id);
           await ToastAlert("Api Deleted Successfully", "success");
         }
       }
@@ -177,7 +180,7 @@ export default function APIList() {
                       type="text"
                       className="form-control bg-parent border-1"
                       placeholder="Search Api"
-                      // onChange={(e) => setSearch(e.target.value)}
+                      onChange={(e) => setSearch(e.target.value)}
                     />
                     <button
                       className=" btn  btn-success btn-sm"

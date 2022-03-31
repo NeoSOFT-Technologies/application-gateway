@@ -18,7 +18,6 @@ export const addNewApi = createAsyncThunk(
       console.log(response);
       return response.data;
     } catch (err) {
-      console.log(err);
       const myError = err as AxiosError;
       const ErrorResponse = myError.response?.data;
       console.log(myError.response?.data);
