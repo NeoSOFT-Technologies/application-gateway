@@ -1,12 +1,13 @@
 import { FormEvent } from "react";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { updateApi } from "../../../../store/features/api/update/slice";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { IApiGetByIdState } from "../../../../types/api";
 
-export const state: any = useAppSelector((RootState) => RootState.getApiById);
-const dispatch = useAppDispatch();
-
-const handleSubmitApiUpdate = async (event: FormEvent) => {
+async function handleSubmitApiUpdate(
+  event: FormEvent,
+  state: IApiGetByIdState,
+  dispatch: any
+) {
   event.preventDefault();
   if (
     state.data.form.Name !== "" &&
@@ -18,5 +19,5 @@ const handleSubmitApiUpdate = async (event: FormEvent) => {
   } else {
     ToastAlert("Please correct the error", "error");
   }
-};
+}
 export default handleSubmitApiUpdate;
