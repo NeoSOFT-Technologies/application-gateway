@@ -12,11 +12,9 @@ export const getApiById = createAsyncThunk(
   async (Id: string) => {
     try {
       const response = await getApiByIdService(Id);
-      // console.log(response);
       return response?.data;
     } catch (err) {
       const myError = err as Error;
-      // console.log("");
       throw myError;
     }
   }
@@ -24,10 +22,8 @@ export const getApiById = createAsyncThunk(
 export const updateApi = createAsyncThunk(
   "api/update",
   async (data: IGetApiByIdData) => {
-    // const { data } = conditions;
     try {
       const response = await updateApiService(data);
-      console.log(response);
       return response.data;
     } catch (err) {
       return err;
@@ -40,13 +36,10 @@ const slice = createSlice({
   initialState,
   reducers: {
     setForm: (state, action) => {
-      console.log("action - ", action.payload);
-      state.data.form = action.payload; // OnChange
-      console.log("form slice - ", state.data.form);
+      state.data.form = action.payload;
     },
     setFormError: (state, action) => {
-      state.data.errors = action.payload; // OnChange
-      console.log("error slice - ", state.data.errors);
+      state.data.errors = action.payload;
     },
   },
   extraReducers(builder): void {
@@ -56,7 +49,6 @@ const slice = createSlice({
     builder.addCase(getApiById.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
-      // console.log("form slice1 - ", state.data.form);
     });
     builder.addCase(getApiById.rejected, (state, action) => {
       state.loading = false;

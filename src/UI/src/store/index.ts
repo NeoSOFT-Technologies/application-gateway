@@ -43,5 +43,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-store.subscribe(() => console.log("store updated   ", store.getState()));
 export default store;

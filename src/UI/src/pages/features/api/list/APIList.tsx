@@ -12,7 +12,7 @@ import { deleteApi } from "../../../../store/features/api/delete/slice";
 import { useErrorHandler } from "react-error-boundary";
 // import moment from "moment";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
-import helper from "../../../../utils/helper";
+import statusAndDateHelper from "../../../../utils/helper";
 import { getApiById } from "../../../../store/features/api/update/slice";
 import { IApiData, IApiListState } from "../../../../store/features/api/list";
 function Bomb() {
@@ -54,7 +54,7 @@ export default function APIList() {
     if (apiList.data && apiList.data?.Apis?.length > 0) {
       const listAPI: IApiData[] = [];
       apiList.data?.Apis.forEach((item) => {
-        const api = helper(item);
+        const api = statusAndDateHelper(item);
         listAPI.push(api);
       });
       setDataList({
