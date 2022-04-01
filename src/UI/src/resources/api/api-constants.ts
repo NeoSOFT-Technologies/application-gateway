@@ -1,7 +1,7 @@
 import { setFormError, setForm } from "../../store/features/api/update/slice";
 import { setNestedState } from "../common";
 
-export const regexForName = /^[A-Z a-z][A-Z a-z 0-9+&@#\\/%=_|$?!:,.-]{3,29}$/;
+export const regexForName = /^[A-Z a-z][A-Z a-z 0-9]{3,29}$/;
 export const regexForListenPath = /^[/][a-zA-Z0-9]*[/]$/;
 export const regexForTagetUrl =
   /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([a-zA-Z0-9+&@#\\/%=_|$?!:,.]*\)|[-A-Z0-9+&@#\\/%=_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=_|$?!:,.]*\)|[A-Z0-9+&@#\\/%=_|$])*/;

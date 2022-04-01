@@ -5,12 +5,10 @@ import RenderList from "../../../../components/list/RenderList";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getKeyList } from "../../../../store/features/key/list/slice";
-import {
-  IKeyData,
-  IKeyDataList,
-  IKeyListState,
-} from "../../../../types/key/index";
+import { IKeyDataList } from "../../../../types/key/index";
 import Spinner from "../../../../components/loader/Loader";
+import { IKeyData, IKeyListState } from "../../../../store/features/key/list";
+
 import statusAndDateHelper from "../../../../utils/helper";
 
 export default function KeyList() {

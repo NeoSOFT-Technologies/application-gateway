@@ -16,9 +16,7 @@ import { useNavigate } from "react-router-dom";
 function CreateApi() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [isToggled, setIsToggled] = useState(true);
-  // const onToggled = () => setIsToggled(!isToggled);
-  const [apisForm, setapisForm] = useState<IApiFormData>({
+  const [apisForm, setForm] = useState<IApiFormData>({
     name: "",
     listenPath: "",
     targetUrl: "",
@@ -26,17 +24,17 @@ function CreateApi() {
     isActive: true,
   });
 
-  const [err, setErr] = useState<IErrorApiInput>({
+  const [err, setFormErrors] = useState<IErrorApiInput>({
     name: "",
     targetUrl: "",
     listenPath: "",
     status: true,
   });
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type } = event.target;
+  const validateForm = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     switch (name) {
       case "name":
-        setErr({
+        setFormErrors({
           ...err,
           [name]: regexForName.test(value)
             ? ""
@@ -44,7 +42,7 @@ function CreateApi() {
         });
         break;
       case "listenPath":
-        setErr({
+        setFormErrors({
           ...err,
           [name]: regexForListenPath.test(value)
             ? ""
@@ -53,7 +51,7 @@ function CreateApi() {
         break;
 
       case "targetUrl":
-        setErr({
+        setFormErrors({
           ...err,
           [name]: regexForTagetUrl.test(value) ? "" : "Enter a Valid url",
         });
@@ -62,16 +60,11 @@ function CreateApi() {
       default:
         break;
     }
-    if (type === "checkbox") {
-      const isChecked = event.target.checked;
-      if (event.target.name === "isActive") {
-        setIsToggled(isChecked);
-      }
-      setapisForm({ ...apisForm, [event.target.name]: isChecked });
-    } else
-      setapisForm({ ...apisForm, [event.target.name]: event.target.value });
-
-    // setapisForm({ ...apisForm, [name]: value });
+    const value1 =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    setForm({ ...apisForm, [name]: value1 });
   };
 
   const handleValidate = () => {
@@ -96,9 +89,9 @@ function CreateApi() {
         newApi.stripListenPath = true;
         const result = await dispatch(addNewApi(newApi));
         console.log("result", result);
-        if (result.payload.Errors !== null) {
-          ToastAlert(result.payload.Errors[0], "error");
-          setapisForm({
+        if (result.payload !== null) {
+          ToastAlert(result.payload.message, "error");
+          setForm({
             name: apisForm.name,
             listenPath: apisForm.listenPath,
             targetUrl: apisForm.targetUrl,
@@ -107,7 +100,7 @@ function CreateApi() {
         } else {
           ToastAlert("Api created successfully", "success");
           navigate("/apilist");
-          setapisForm({
+          setForm({
             name: "",
             listenPath: "",
             targetUrl: "",
@@ -119,7 +112,7 @@ function CreateApi() {
       }
     } else {
       ToastAlert("Please correct the error", "error");
-      // setErr({
+      // setFormErrors({
       //   name: "",
       //   listenPath: "",
       //   targetUrl: "",
@@ -191,7 +184,7 @@ function CreateApi() {
                               value={apisForm.name}
                               isInvalid={!!err.name}
                               isValid={!err.name && !!apisForm.name}
-                              onChange={handleInputChange}
+                              onChange={validateForm}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
@@ -211,7 +204,7 @@ function CreateApi() {
                               isValid={!err.listenPath && !!apisForm.listenPath}
                               value={apisForm.listenPath}
                               isInvalid={!!err.listenPath}
-                              onChange={handleInputChange}
+                              onChange={validateForm}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
@@ -230,7 +223,7 @@ function CreateApi() {
                               isValid={!err.targetUrl && !!apisForm.targetUrl}
                               value={apisForm.targetUrl}
                               isInvalid={!!err.targetUrl}
-                              onChange={handleInputChange}
+                              onChange={validateForm}
                               required
                             />
                             <Form.Control.Feedback type="invalid">
@@ -244,13 +237,15 @@ function CreateApi() {
                             <Form.Label>API Status :</Form.Label>
                             <Form.Check
                               type="switch"
-                              // onChangeCapture={handleInputChange}
-                              onChange={handleInputChange}
-                              checked={isToggled}
+                              // onChangeCapture={validateForm}
+                              onChange={validateForm}
+                              checked={apisForm.isActive}
                               name="isActive"
                               id="isActive"
                               // onChange={onToggled}
-                              label={isToggled ? "  Active" : "  InActive"}
+                              label={
+                                apisForm.isActive ? "  Active" : "  InActive"
+                              }
                             />
                           </Form.Group>
                         </Col>

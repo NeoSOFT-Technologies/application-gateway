@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { IKeyListState } from "../../../../types/key/index";
+import { IKeyListState } from "../../../../store/features/key/list";
 import { keyListService } from "../../../../services/key/key";
 
 interface IConditions {
