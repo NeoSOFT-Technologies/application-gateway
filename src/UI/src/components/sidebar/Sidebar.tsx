@@ -12,12 +12,31 @@ import withRouter from "../../WithRouter";
 export const Sidebar = () => {
   const location = useLocation();
   const isPathActive = (path: string) => {
-    return location.pathname.startsWith(path);
+    let classholder = "nav-item";
+    if (
+      (path === "api" &&
+        (location.pathname === "/api/list" ||
+          location.pathname === "/api/create" ||
+          location.pathname === "/api/update")) ||
+      (path === "key" &&
+        (location.pathname === "/key/list" ||
+          location.pathname === "/key/create" ||
+          location.pathname === "/key/update")) ||
+      (path === "policy" &&
+        (location.pathname === "/policy/list" ||
+          location.pathname === "/policy/create" ||
+          location.pathname === "/policy/update"))
+    ) {
+      classholder = "nav-item active";
+    }
+    return classholder;
   };
   // const user: IUserDataState = useSelector(
   //   (state: RootState) => state.userData
   // );
-  const [routes, setRoutes] = useState([{ path: "", title: "", icon: "" }]);
+  const [routes, setRoutes] = useState([
+    { path: "", title: "", icon: "", id: "" },
+  ]);
   useEffect(() => {
     setRoutes(adminRoutes);
   }, []);
@@ -53,10 +72,9 @@ export const Sidebar = () => {
           </li>
           {routes.map((route, index) => (
             <li
+              id={`${route.id}`}
               key={`route${index}`}
-              className={
-                isPathActive(route.path) ? "nav-item active" : "nav-item"
-              }
+              className={isPathActive(route.id)}
             >
               <Link className="nav-link" to={route.path}>
                 <span className="menu-title">

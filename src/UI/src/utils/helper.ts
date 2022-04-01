@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const helper = (item: any) => {
+const statusAndDateHelper = (item: any) => {
   const listObj = Object.create(item);
   listObj.Status = listObj.IsActive === true ? "Active" : "In-Active";
   listObj.CreatedDateTxt =
@@ -9,4 +9,4 @@ const helper = (item: any) => {
       : "";
   return listObj;
 };
-export default helper;
+export default statusAndDateHelper;

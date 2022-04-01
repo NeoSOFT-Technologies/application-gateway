@@ -7,10 +7,13 @@ import {
   ITenantUserDataList,
   ITenantUserData,
 } from "../../types/index";
-import { IApiData, IApiDataList } from "../../types/api/index";
-import { IPolicyData, IPolicyDataList } from "../../types/Policy/index";
+import {
+  IPolicyData,
+  IPolicyDataList,
+} from "../../store/features/policy/list/index";
 import Pagination from "./Pagination";
-import { IKeyData, IKeyDataList } from "../../types/key/index";
+import { IKeyData, IKeyDataList } from "../../store/features/key/list/index";
+import { IApiData, IApiDataList } from "../../store/features/api/list";
 
 interface IProps {
   headings: IHeadings[];
@@ -44,7 +47,9 @@ const RenderList: React.FC<IProps> = (props) => {
         <tbody>
           {data && data.list.length === 0 ? (
             <tr>
-              <td rowSpan={headings.length}>No data Available</td>
+              <td className="text-center" colSpan={headings.length}>
+                No data Available
+              </td>
             </tr>
           ) : (
             // actions that is required on buttons
