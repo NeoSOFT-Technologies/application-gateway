@@ -86,7 +86,7 @@ function CreateApi() {
         ToastAlert(result.payload.message, "error");
       } else {
         ToastAlert("Api created successfully", "success");
-        navigate("/apilist");
+        navigate("/api/list");
       }
     } else {
       ToastAlert("Please correct the error", "error");
