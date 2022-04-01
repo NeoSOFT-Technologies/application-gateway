@@ -10,7 +10,7 @@ import { IApiGetByIdState } from "../../../../store/features/api/update";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
-    (RootState) => RootState.updateApi
+    (RootState) => RootState.updateApiState
   );
   const dispatch = useAppDispatch();
 

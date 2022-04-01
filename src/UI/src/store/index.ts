@@ -24,12 +24,12 @@ const store = configureStore({
     deleteTenant: deleteTenantReducer,
     updateTenant: updateTenantReducer,
     addNewUser: addNewUserReducer,
-    apiList: apiListReducer,
-    policyList: policyListReducer,
-    keyList: keyListReducer,
-    addApi: addApiReducer,
-    deleteApi: deleteApiReducer,
-    updateApi: updateApiReducer,
+    apiListState: apiListReducer,
+    policyListState: policyListReducer,
+    keyListState: keyListReducer,
+    addApiState: addApiReducer,
+    deleteApiState: deleteApiReducer,
+    updateApiState: updateApiReducer,
   },
 });
 

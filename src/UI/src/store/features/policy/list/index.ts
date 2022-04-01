@@ -14,3 +14,7 @@ export interface IPolicyData {
   Apis: string[];
   AuthType: string;
 }
+export interface IPolicyDataList {
+  list: IPolicyData[];
+  fields: string[];
+}

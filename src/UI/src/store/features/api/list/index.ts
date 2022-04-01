@@ -15,3 +15,8 @@ export interface IApiData {
   IsActive: boolean;
   Id?: string;
 }
+
+export interface IApiDataList {
+  list: IApiData[];
+  fields: string[];
+}

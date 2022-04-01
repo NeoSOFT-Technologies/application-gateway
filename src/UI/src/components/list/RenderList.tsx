@@ -7,13 +7,13 @@ import {
   ITenantUserDataList,
   ITenantUserData,
 } from "../../types/index";
-import { IApiDataList } from "../../types/api/index";
-import { IPolicyData } from "../../store/features/policy/list/index";
-import { IPolicyDataList } from "../../types/policy/index";
+import {
+  IPolicyData,
+  IPolicyDataList,
+} from "../../store/features/policy/list/index";
 import Pagination from "./Pagination";
-import { IKeyData } from "../../store/features/key/list/index";
-import { IKeyDataList } from "../../types/key/index";
-import { IApiData } from "../../store/features/api/list";
+import { IKeyData, IKeyDataList } from "../../store/features/key/list/index";
+import { IApiData, IApiDataList } from "../../store/features/api/list";
 
 interface IProps {
   headings: IHeadings[];

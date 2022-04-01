@@ -6,10 +6,9 @@ import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getPolicyList } from "../../../../store/features/policy/list/slice";
 import {
-  // IPolicyData,
+  IPolicyListState,
   IPolicyDataList,
-} from "../../../../types/policy/index";
-import { IPolicyListState } from "../../../../store/features/policy/list/index";
+} from "../../../../store/features/policy/list/index";
 
 import Spinner from "../../../../components/loader/Loader";
 
@@ -19,7 +18,7 @@ export default function PolicyList() {
   // const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
   const policyList: IPolicyListState = useAppSelector(
-    (state: RootState) => state.policyList
+    (state: RootState) => state.policyListState
   );
   // const [checkactive, setCheckactive] = useState({
   //   btn1: false,
