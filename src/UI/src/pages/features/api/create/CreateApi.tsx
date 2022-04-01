@@ -76,48 +76,20 @@ function CreateApi() {
     event.preventDefault();
 
     if (handleValidate()) {
-      if (
-        apisForm.name !== "" &&
-        apisForm.listenPath !== "" &&
-        apisForm.targetUrl !== ""
-      ) {
-        // const listObj: IApiFormData = Object.create(apisForm);
-        // listObj.stripListenPath = true;
-        const newApi = {
+      const result = await dispatch(
+        addNewApi({
           ...apisForm,
-        };
-        newApi.stripListenPath = true;
-        const result = await dispatch(addNewApi(newApi));
-        console.log("result", result);
-        if (result.payload !== null) {
-          ToastAlert(result.payload.message, "error");
-          setForm({
-            name: apisForm.name,
-            listenPath: apisForm.listenPath,
-            targetUrl: apisForm.targetUrl,
-            isActive: apisForm.isActive,
-          });
-        } else {
-          ToastAlert("Api created successfully", "success");
-          navigate("/apilist");
-          setForm({
-            name: "",
-            listenPath: "",
-            targetUrl: "",
-            isActive: true,
-          });
-        }
+        })
+      );
+      console.log("result", result);
+      if (result.meta.requestStatus === "rejected") {
+        ToastAlert(result.payload.message, "error");
       } else {
-        ToastAlert("Please Fill All Fields", "warning");
+        ToastAlert("Api created successfully", "success");
+        navigate("/apilist");
       }
     } else {
       ToastAlert("Please correct the error", "error");
-      // setFormErrors({
-      //   name: "",
-      //   listenPath: "",
-      //   targetUrl: "",
-      //   status: true,
-      // });
     }
   };
 
