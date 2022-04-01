@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { apiListService } from "../../../../services/api/api";
-import { IApiListState } from ".";
+import { IApiListState } from "./index";
 
 interface IConditions {
   currentPage: number;

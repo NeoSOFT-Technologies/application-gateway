@@ -8,7 +8,7 @@ export interface IApiGetByIdState {
 
 export interface IUpdateState {
   form: IGetApiByIdData;
-  errors?: IError | null;
+  errors?: IError;
 }
 
 export interface IGetApiByIdData {

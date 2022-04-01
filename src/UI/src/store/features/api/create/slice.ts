@@ -38,7 +38,7 @@ const slice = createSlice({
     builder.addCase(addNewApi.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(addNewApi.fulfilled, (state, action) => {
+    builder.addCase(addNewApi.fulfilled, (state) => {
       state.loading = false;
       state.apiAdded = true;
     });

@@ -5,13 +5,11 @@ import RenderList from "../../../../components/list/RenderList";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getKeyList } from "../../../../store/features/key/list/slice";
-import {
-  IKeyData,
-  IKeyDataList,
-  IKeyListState,
-} from "../../../../types/key/index";
+import { IKeyDataList } from "../../../../types/key/index";
 import Spinner from "../../../../components/loader/Loader";
-import helper from "../../../../utils/helper";
+import { IKeyData, IKeyListState } from "../../../../store/features/key/list";
+
+import statusAndDateHelper from "../../../../utils/helper";
 
 export default function KeyList() {
   // const navigate = useNavigate();
@@ -38,7 +36,7 @@ export default function KeyList() {
     if (keyList.data && keyList.data?.Keys?.length > 0) {
       const listKey: IKeyData[] = [];
       keyList.data?.Keys.forEach((item) => {
-        const key = helper(item);
+        const key = statusAndDateHelper(item);
         listKey.push(key);
       });
       setDataList({
