@@ -9,17 +9,17 @@ const Login = lazy(() => import("./pages/login/Login"));
 const TenantList = lazy(
   () => import("./pages/features/Admin/tenant-list/TenantList")
 );
-const APIList = lazy(() => import("./pages/features/APIs/list/APIList"));
-const CreateApi = lazy(() => import("./pages/features/APIs/create/CreateApi"));
+const APIList = lazy(() => import("./pages/features/api/list/APIList"));
+const CreateApi = lazy(() => import("./pages/features/api/create/CreateApi"));
 const RegisterTenant = lazy(
   () => import("./pages/features/Admin/register-tenant/RegisterTenant")
 );
 const PolicyList = lazy(
-  () => import("./pages/features/Policies/list/PolicyList")
+  () => import("./pages/features/policy/list/PolicyList")
 );
-const KeyList = lazy(() => import("./pages/features/Keys/list/KeyList"));
+const KeyList = lazy(() => import("./pages/features/key/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/Dashboard"));
-const Update = lazy(() => import("./pages/features/APIs/Update/Update"));
+const Update = lazy(() => import("./pages/features/api/update/Update"));
 const TenantDetails = lazy(
   () => import("./pages/features/Admin/tenant-details/TenantDetails")
 );

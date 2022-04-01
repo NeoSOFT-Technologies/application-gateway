@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
-import Setting from "./Setting/Setting";
-import Version from "./Version/Version";
+import Setting from "./setting/Setting";
+import Version from "./version/Version";
 import { Tab, Tabs, Form } from "react-bootstrap";
 import Spinner from "../../../../components/loader/Loader";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";

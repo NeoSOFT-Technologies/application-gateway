@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import { IPolicyListState } from "../../../../types/policy/index";
 import { policyListService } from "../../../../services/policy/policy";
+import { IPolicyListState } from "../../../../types/policy";
+import error from "../../../../utils/error";
 interface IConditions {
   currentPage: number;
 }
