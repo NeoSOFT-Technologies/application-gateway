@@ -35,31 +35,37 @@ export default function Update() {
       {state.loading && <Spinner />}
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
-          <div className="card-body">
+          <div>
+            {/*  className="card-body" */}
             <Form
               onSubmit={(e: FormEvent) => handleSubmitApiUpdate(e)}
               data-testid="form-input"
             >
               <div className="align-items-center">
-                <div>
+                <div className="card-header bg-white pl-5 pr-5 mt-3 pt-2 pb-4">
                   <button className=" btn  btn-success btn-md d-flex float-right mb-4">
                     {" "}
                     Update
                   </button>
+                  <h5>
+                    <b>UPDATE API</b>
+                  </h5>
                 </div>
-                <Tabs
-                  defaultActiveKey="setting"
-                  id="uncontrolled-tab"
-                  // transition={false}
-                  className="mb-3 small"
-                >
-                  <Tab eventKey="setting" title="Setting">
-                    <Setting />
-                  </Tab>
-                  <Tab eventKey="version" title="Version">
-                    <Version />
-                  </Tab>
-                </Tabs>
+                <div className="card-body pt-2">
+                  <Tabs
+                    defaultActiveKey="setting"
+                    id="uncontrolled-tab"
+                    // transition={false}
+                    className="mb-2 small"
+                  >
+                    <Tab eventKey="setting" title="Setting">
+                      <Setting />
+                    </Tab>
+                    <Tab eventKey="version" title="Version">
+                      <Version />
+                    </Tab>
+                  </Tabs>
+                </div>
               </div>
             </Form>
           </div>

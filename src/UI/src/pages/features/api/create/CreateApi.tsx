@@ -105,7 +105,7 @@ function CreateApi() {
         <div className="card">
           <div className="align-items-center">
             <Form onSubmit={handleSubmitApi} data-testid="form-input">
-              <div className="card-header bg-white pl-4 mt-3 pt-2">
+              <div className="card-header bg-white pl-4 mt-3 pt-2 pb-4">
                 <Button
                   className="btn btn-success btn-md d-flex float-right mb-4 mr-3"
                   type="submit"
@@ -123,7 +123,9 @@ function CreateApi() {
                 >
                   Cancel
                 </Button>
-                <h4>CREATE API</h4>
+                <h5>
+                  <b>CREATE API</b>
+                </h5>
               </div>
               <div className="accordion m-4" id="accordionExample">
                 <div>

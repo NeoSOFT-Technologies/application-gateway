@@ -145,18 +145,26 @@ export default function APIList() {
     <>
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
-          <div className="card-body">
+          <div
+            className="card-header mt-4 mb-3 bg-white"
+            style={{ padding: "0.5rem 2.5rem" }}
+          >
             <div className="align-items-center">
-              <div>
-                <button
-                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                  onClick={(e) => NavigateCreateApi(e)}
-                >
-                  {" "}
-                  Create API &nbsp;
-                  <span className="bi bi-plus-lg"></span> &nbsp;
-                </button>
-              </div>
+              <button
+                className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                onClick={(e) => NavigateCreateApi(e)}
+              >
+                {" "}
+                Create API &nbsp;
+                <span className="bi bi-plus-lg"></span> &nbsp;
+              </button>
+              <h5>
+                <b>API LIST</b>
+              </h5>
+            </div>
+          </div>
+          <div className="card-body pt-4">
+            <div className="align-items-center">
               <div className="search-field justify-content-around ">
                 <form className="h-50">
                   <div className="input-group">
