@@ -73,6 +73,7 @@ export default function ListenPath() {
                       id="listenPath"
                       name="ListenPath"
                       data-testid="name-input"
+                      disabled={state.data.form?.IsInternal}
                       value={state.data.form?.ListenPath}
                       isInvalid={!!state.data.errors?.ListenPath}
                       isValid={!state.data.errors?.ListenPath}
@@ -103,6 +104,7 @@ export default function ListenPath() {
                       id="stripListenPath"
                       name="StripListenPath"
                       label="Strip the Listen path"
+                      disabled={state.data.form?.IsInternal}
                       checked={state.data.form?.StripListenPath}
                       onChange={(e: any) => validateForm(e)}
                     />
