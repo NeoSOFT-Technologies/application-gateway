@@ -93,7 +93,10 @@ export default function KeyList() {
     <>
       <div className="col-lg-12 grid-margin stretch-card">
         <div className="card">
-          <div className="card-body">
+          <div
+            className="card-header mt-4 mb-3 bg-white"
+            style={{ padding: "0.5rem 2.5rem" }}
+          >
             <div className="align-items-center">
               <div>
                 <button
@@ -104,7 +107,14 @@ export default function KeyList() {
                   Create Key &nbsp;
                   <span className="bi bi-plus-lg"></span> &nbsp;
                 </button>
+                <h5>
+                  <b>KEY LIST</b>
+                </h5>
               </div>
+            </div>
+          </div>
+          <div className="card-body pt-4">
+            <div className="align-items-center">
               <div className="search-field justify-content-around">
                 <form className="h-50">
                   <div className="input-group">
