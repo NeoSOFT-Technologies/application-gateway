@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getApiList } from "../../../../store/features/api/list/slice";
-import { IApiDataList } from "../../../../types/api/index";
-
 import Spinner from "../../../../components/loader/Loader";
 import { deleteApi } from "../../../../store/features/api/delete/slice";
 import { useErrorHandler } from "react-error-boundary";
@@ -14,7 +12,12 @@ import { useErrorHandler } from "react-error-boundary";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import statusAndDateHelper from "../../../../utils/helper";
 import { getApiById } from "../../../../store/features/api/update/slice";
-import { IApiData, IApiListState } from "../../../../store/features/api/list";
+import {
+  IApiData,
+  IApiListState,
+  IApiDataList,
+} from "../../../../store/features/api/list";
+
 function Bomb() {
   console.log("");
   // throw new Error("Boom");
@@ -32,7 +35,7 @@ export default function APIList() {
   const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
   const apiList: IApiListState = useAppSelector(
-    (state: RootState) => state.apiList
+    (state: RootState) => state.apiListState
   );
   const [deleteshow, setDeleteshow] = useState(false);
   // const [checkactive, setCheckactive] = useState({

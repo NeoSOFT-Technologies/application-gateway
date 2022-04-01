@@ -1,5 +1,3 @@
-import { IError } from "../../../../types/api";
-
 export interface IApiGetByIdState {
   data: IUpdateState;
   loading: boolean;
@@ -50,4 +48,19 @@ export interface IGetApiByIdData {
   };
   LoadBalancingTargets: [];
   IsQuotaDisabled: boolean;
+}
+
+export interface IError {
+  ApiId: string;
+  Name: string;
+  ListenPath: string;
+  stripListenPath: string;
+  TargetUrl: string;
+  isActive: string;
+  Rate: string;
+  Per: string;
+  versioningInfo: string;
+  defaultVersion: string;
+  version: string;
+  isQuotaDisabled: string;
 }

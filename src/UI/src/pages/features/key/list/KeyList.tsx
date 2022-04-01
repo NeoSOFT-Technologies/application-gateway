@@ -5,9 +5,12 @@ import RenderList from "../../../../components/list/RenderList";
 import { RootState } from "../../../../store";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { getKeyList } from "../../../../store/features/key/list/slice";
-import { IKeyDataList } from "../../../../types/key/index";
 import Spinner from "../../../../components/loader/Loader";
-import { IKeyData, IKeyListState } from "../../../../store/features/key/list";
+import {
+  IKeyData,
+  IKeyListState,
+  IKeyDataList,
+} from "../../../../store/features/key/list";
 
 import statusAndDateHelper from "../../../../utils/helper";
 
@@ -17,7 +20,7 @@ export default function KeyList() {
   // const [search, setSearch] = useState(" ");
   const dispatch = useAppDispatch();
   const keyList: IKeyListState = useAppSelector(
-    (state: RootState) => state.keyList
+    (state: RootState) => state.keyListState
   );
   // const [checkactive, setCheckactive] = useState({
   //   btn1: false,

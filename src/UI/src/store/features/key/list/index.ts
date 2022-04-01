@@ -14,3 +14,8 @@ export interface IKeyData {
   Id: string;
   Policies?: string[];
 }
+
+export interface IKeyDataList {
+  list: IKeyData[];
+  fields: string[];
+}
