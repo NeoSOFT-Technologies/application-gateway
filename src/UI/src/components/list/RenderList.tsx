@@ -8,7 +8,8 @@ import {
   ITenantUserData,
 } from "../../types/index";
 import { IApiDataList } from "../../types/api/index";
-import { IPolicyData, IPolicyDataList } from "../../types/policy/index";
+import { IPolicyData } from "../../store/features/policy/list/index";
+import { IPolicyDataList } from "../../types/Policy/index";
 import Pagination from "./Pagination";
 import { IKeyData, IKeyDataList } from "../../types/key/index";
 import { IApiData } from "../../store/features/api/list";

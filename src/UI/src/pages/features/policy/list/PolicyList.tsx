@@ -8,8 +8,9 @@ import { getPolicyList } from "../../../../store/features/policy/list/slice";
 import {
   // IPolicyData,
   IPolicyDataList,
-  IPolicyListState,
-} from "../../../../types/policy/index";
+} from "../../../../types/Policy/index";
+import { IPolicyListState } from "../../../../store/features/policy/list/index";
+
 import Spinner from "../../../../components/loader/Loader";
 
 export default function PolicyList() {
