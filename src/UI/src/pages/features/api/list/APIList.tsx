@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Modal } from "react-bootstrap";
 import RenderList from "../../../../components/list/RenderList";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../../store";
@@ -37,19 +36,12 @@ export default function APIList() {
   const apiList: IApiListState = useAppSelector(
     (state: RootState) => state.apiListState
   );
-  const [deleteshow, setDeleteshow] = useState(false);
-  // const [checkactive, setCheckactive] = useState({
-  //   btn1: false,
-  //   btn2: false,
-  //   btn3: true,
-  // });
   const [datalist, setDataList] = useState<IApiDataList>({
     list: [],
     fields: [],
   });
 
   const mainCall = async (currentPage: number) => {
-    // const resp = await
     dispatch(getApiList({ currentPage }));
     // handleError(resp.payload);
   };
@@ -87,13 +79,7 @@ export default function APIList() {
       fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
     });
   };
-  //   const handleUserDetails = (val: ITenantUserData) => {
-  //     console.log(val);
-  //     // navigate("/userdetails");
-  //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
-  //   };
-
-  const NavigateToCreateApi = (
+  const NavigateCreateApi = (
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
@@ -107,16 +93,13 @@ export default function APIList() {
     }
   };
 
-  function deleteapifromState(id: string) {
+  function deleteApiFromState(id: string) {
     const newState = datalist.list.filter((item) => item.Id !== id);
     console.log(newState);
     const pageCount = apiList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
       mainCall(selected - 1);
       setSelected(selected - 1);
-      // } else if (newState.length === 0 && pageCount! < selected) {
-      //   mainCall(selected + 1);
-      //   setSelected(selected + 1);
     } else mainCall(selected);
 
     setDataList({
@@ -132,7 +115,7 @@ export default function APIList() {
         if (result.meta.requestStatus === "rejected") {
           await ToastAlert(" Request failed ", "error");
         } else {
-          deleteapifromState(val.Id);
+          deleteApiFromState(val.Id);
           await ToastAlert("Api Deleted Successfully", "success");
         }
       }
@@ -167,7 +150,7 @@ export default function APIList() {
               <div>
                 <button
                   className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                  onClick={(e) => NavigateToCreateApi(e)}
+                  onClick={(e) => NavigateCreateApi(e)}
                 >
                   {" "}
                   Create API &nbsp;
@@ -210,22 +193,6 @@ export default function APIList() {
           </div>
         </div>
       </div>
-
-      <Modal show={deleteshow} onHide={() => setDeleteshow(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Api</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Do You want To delete the Api</Modal.Body>
-        <Modal.Footer>
-          <button
-            type="button"
-            className="btn-danger"
-            onClick={() => deleteApiFunction}
-          >
-            Remove
-          </button>
-        </Modal.Footer>
-      </Modal>
     </>
   );
 }

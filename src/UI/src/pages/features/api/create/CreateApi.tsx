@@ -86,7 +86,7 @@ function CreateApi() {
         ToastAlert(result.payload.message, "error");
       } else {
         ToastAlert("Api created successfully", "success");
-        navigate("/apilist");
+        navigate("/api/list");
       }
     } else {
       ToastAlert("Please correct the error", "error");
@@ -97,7 +97,7 @@ function CreateApi() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/apilist");
+    navigate("/api/list");
   };
   return (
     <>
@@ -105,24 +105,27 @@ function CreateApi() {
         <div className="card">
           <div className="align-items-center">
             <Form onSubmit={handleSubmitApi} data-testid="form-input">
-              <Button
-                className="btn btn-success btn-md d-flex float-right mb-4 mr-5"
-                type="submit"
-                data-testid="submit-input"
-              >
-                Save
-              </Button>
-              <Button
-                className="btn btn-light btn-md d-flex float-right mb-4"
-                type="button"
-                data-testid="cancel-input"
-                onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-                  NavigateToApisList(event)
-                }
-              >
-                Cancel
-              </Button>
-              <div className="accordion m-5" id="accordionExample">
+              <div className="card-header bg-white pl-4 mt-3 pt-2">
+                <Button
+                  className="btn btn-success btn-md d-flex float-right mb-4 mr-3"
+                  type="submit"
+                  data-testid="submit-input"
+                >
+                  Save
+                </Button>
+                <Button
+                  className="btn btn-light btn-md d-flex float-right mb-4"
+                  type="button"
+                  data-testid="cancel-input"
+                  onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                    NavigateToApisList(event)
+                  }
+                >
+                  Cancel
+                </Button>
+                <h4>CREATE API</h4>
+              </div>
+              <div className="accordion m-4" id="accordionExample">
                 <div>
                   <h2 className="accordion-header " id="headingOne">
                     <button

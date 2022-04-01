@@ -16,23 +16,15 @@ export default function Update() {
 
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
-    let isEmpty: any;
+    let validate: any;
     if (state.data.errors !== undefined) {
-      isEmpty = Object.values(state.data.errors).every(
+      validate = Object.values(state.data.errors).every(
         (x) => x === null || x === ""
       );
     }
-    if (isEmpty) {
-      if (
-        state.data.form.Name !== "" &&
-        state.data.form.ListenPath !== "" &&
-        state.data.form.TargetUrl !== ""
-      ) {
-        await dispatch(updateApi(state.data.form));
-        ToastAlert("Api Updated Successfully!!", "success");
-      } else {
-        ToastAlert("Please fill the required fields!", "error");
-      }
+    if (validate) {
+      await dispatch(updateApi(state.data.form));
+      ToastAlert("Api Updated Successfully!!", "success");
     } else {
       ToastAlert("Please fill all the fields correctly! ", "error");
     }
