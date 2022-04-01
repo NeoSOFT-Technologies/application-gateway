@@ -7,19 +7,19 @@ const adminRoutes = [
   },
   {
     id: "api",
-    path: "/apilist",
+    path: "/api/list",
     title: "API",
     icon: "bi bi-list menu-icon",
   },
   {
     id: "key",
-    path: "/keylist",
+    path: "/key/list",
     title: "Key",
     icon: "bi bi-key-fill menu-icon",
   },
   {
     id: "policy",
-    path: "/policylist",
+    path: "/policy/list",
     title: "Policy",
     icon: "bi bi-file-earmark-fill menu-icon",
   },

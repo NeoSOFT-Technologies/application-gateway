@@ -14,24 +14,18 @@ export const Sidebar = () => {
   const isPathActive = (path: string) => {
     let classholder = "nav-item";
     if (
-      path === "api" &&
-      (location.pathname === "/apilist" ||
-        location.pathname === "/createapi" ||
-        location.pathname === "/update")
-    ) {
-      classholder = "nav-item active";
-    } else if (
-      path === "key" &&
-      (location.pathname === "/keylist" ||
-        location.pathname === "/createkey" ||
-        location.pathname === "/update")
-    ) {
-      classholder = "nav-item active";
-    } else if (
-      path === "policy" &&
-      (location.pathname === "/policylist" ||
-        location.pathname === "/createpolicy" ||
-        location.pathname === "/update")
+      (path === "api" &&
+        (location.pathname === "/api/list" ||
+          location.pathname === "/api/create" ||
+          location.pathname === "/api/update")) ||
+      (path === "key" &&
+        (location.pathname === "/key/list" ||
+          location.pathname === "/key/create" ||
+          location.pathname === "/key/update")) ||
+      (path === "policy" &&
+        (location.pathname === "/policy/list" ||
+          location.pathname === "/policy/create" ||
+          location.pathname === "/policy/update"))
     ) {
       classholder = "nav-item active";
     }

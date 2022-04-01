@@ -19,7 +19,7 @@ const PolicyList = lazy(
 );
 const KeyList = lazy(() => import("./pages/features/key/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/Dashboard"));
-const Update = lazy(() => import("./pages/features/api/update/Update"));
+const UpdateApi = lazy(() => import("./pages/features/api/update/Update"));
 const TenantDetails = lazy(
   () => import("./pages/features/Admin/tenant-details/TenantDetails")
 );
@@ -32,13 +32,13 @@ function AppRoutes() {
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
         <Route path="/tenantlist" element={<TenantList />} />
-        <Route path="/apilist" element={<APIList />} />
-        <Route path="/policylist" element={<PolicyList />} />
-        <Route path="/keylist" element={<KeyList />} />
-        <Route path="/createapi" element={<CreateApi />} />
+        <Route path="/api/list" element={<APIList />} />
+        <Route path="/policy/list" element={<PolicyList />} />
+        <Route path="/key/list" element={<KeyList />} />
+        <Route path="/api/create" element={<CreateApi />} />
         <Route path="/registertenant" element={<RegisterTenant />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/update" element={<Update />} />
+        <Route path="/api/update" element={<UpdateApi />} />
         <Route path="/tenantdetail" element={<TenantDetails />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />
