@@ -9,15 +9,15 @@ const Login = lazy(() => import("./pages/login/Login"));
 const TenantList = lazy(
   () => import("./pages/features/Admin/tenant-list/TenantList")
 );
-const APIList = lazy(() => import("./pages/features/APIs/List/APIList"));
-const CreateApi = lazy(() => import("./pages/features/APIs/Create/CreateApi"));
+const APIList = lazy(() => import("./pages/features/APIs/list/APIList"));
+const CreateApi = lazy(() => import("./pages/features/APIs/create/CreateApi"));
 const RegisterTenant = lazy(
   () => import("./pages/features/Admin/register-tenant/RegisterTenant")
 );
 const PolicyList = lazy(
-  () => import("./pages/features/Policies/List/PolicyList")
+  () => import("./pages/features/Policies/list/PolicyList")
 );
-const KeyList = lazy(() => import("./pages/features/Keys/List/KeyList"));
+const KeyList = lazy(() => import("./pages/features/Keys/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/Dashboard"));
 const Update = lazy(() => import("./pages/features/APIs/Update/Update"));
 const TenantDetails = lazy(

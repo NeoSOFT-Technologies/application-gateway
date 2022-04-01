@@ -1,14 +1,14 @@
 import React from "react";
-import ListenPath from "./ListenPath/ListenPath";
+import ListenPath from "./listen-path/ListenPath";
 // import { Accordion } from "react-bootstrap";
-import RateLimit from "./RateLimit/RateLimit";
-import TargetUrl from "./TargetUrl/TargetUrl";
+import RateLimit from "./rate-limit/RateLimit";
+import TargetUrl from "./target-url/TargetUrl";
 import { Col, Form, Row } from "react-bootstrap";
 import {
   regexForName,
   setFormData,
   setFormErrors,
-} from "../../../../../resources/APIS/ApiConstants";
+} from "../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 export default function Setting() {

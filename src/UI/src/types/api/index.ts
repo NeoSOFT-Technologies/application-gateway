@@ -1,35 +1,10 @@
 import { IApiData } from "../../store/features/api/list";
 
-export interface IAddApiState {
-  apiAdded?: boolean;
-  loading: boolean;
-  error?: string | null;
-}
-export interface IDeleteApiState {
-  isDeleted?: boolean;
-  loading: boolean;
-  error?: string | null;
-}
-
 export interface IApiDataList {
   list: IApiData[];
   fields: string[];
 }
 
-export interface IErrorApiInput {
-  name: string;
-  targetUrl: string;
-  listenPath: string;
-  status: boolean;
-}
-export interface IApiFormData {
-  name: string;
-  listenPath: string;
-  targetUrl: string;
-  isActive: boolean;
-  stripListenPath?: boolean;
-  Id?: string;
-}
 export interface IErrorApiUpdateInput {
   apiName: string;
   targetUrl: string;
