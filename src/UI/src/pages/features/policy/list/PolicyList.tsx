@@ -8,7 +8,7 @@ import { getPolicyList } from "../../../../store/features/policy/list/slice";
 import {
   // IPolicyData,
   IPolicyDataList,
-} from "../../../../types/Policy/index";
+} from "../../../../types/policy/index";
 import { IPolicyListState } from "../../../../store/features/policy/list/index";
 
 import Spinner from "../../../../components/loader/Loader";
