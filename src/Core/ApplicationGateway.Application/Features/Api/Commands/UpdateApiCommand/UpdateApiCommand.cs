@@ -23,7 +23,9 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public string DefaultVersion { get; set; }
         public List<UpdateVersionModel> Versions { get; set; }
         public string AuthType { get; set; }
+        public bool EnableMTLS { get; set; }
 #nullable enable
+        public List<Guid>? CertIds { get; set; }
         public UpdateOpenIdOptions? OpenidOptions { get; set; }
         public List<string>? LoadBalancingTargets { get; set; }
 #nullable disable

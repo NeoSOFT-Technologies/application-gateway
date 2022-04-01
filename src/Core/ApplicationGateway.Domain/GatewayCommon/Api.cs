@@ -19,7 +19,9 @@
         public string DefaultVersion { get; set; }
         public List<VersionModel> Versions { get; set; }
         public string AuthType { get; set; }
+        public bool EnableMTLS { get; set; }
 #nullable enable
+        public List<Guid>? CertIds { get; set; }
         public OpenIdOptions? OpenidOptions { get; set; }
         public List<string>? LoadBalancingTargets { get; set; }
 #nullable disable
