@@ -125,7 +125,7 @@ function CreateApi() {
     val: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     val.preventDefault();
-    navigate("/apilist");
+    navigate("/api/list");
   };
   return (
     <>
