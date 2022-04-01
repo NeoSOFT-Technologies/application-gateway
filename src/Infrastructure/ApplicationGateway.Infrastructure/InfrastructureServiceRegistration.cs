@@ -32,6 +32,7 @@ namespace ApplicationGateway.Infrastructure
             services.AddTransient<IApiService, TykApiService>();
             services.AddTransient<IBaseService, TykBaseService>();
             services.AddTransient<IKeyService, TykKeyService>();
+            services.AddTransient<ICertificateService, TykCertificateService>();
             services.Configure<TykConfiguration>(configuration.GetSection("TykConfiguration"));
             services.AddSendGrid(options => { options.ApiKey = configuration.GetValue<string>("EmailSettings:ApiKey"); });
             return services;

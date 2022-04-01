@@ -28,17 +28,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.15" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Text.Json" Version="6.0.2" />
 	<PackageReference Include="JUST.net" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ApplicationGateway.Domain\ApplicationGateway.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Certificate\Commands\DeleteCertificate\" />
-    <Folder Include="Features\Certificate\Queries\" />
   </ItemGroup>
 
 </Project>
