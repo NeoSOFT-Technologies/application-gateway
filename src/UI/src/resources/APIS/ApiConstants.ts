@@ -1,6 +1,6 @@
 import { setFormError, setForm } from "../../store/features/api/update/slice";
 import { camelCase } from "lodash";
-export const regexForName = /^[A-Z a-z][A-Z a-z 0-9+&@#\\/%=_|$?!:,.-]{3,29}$/;
+export const regexForName = /^[A-Z a-z][A-Z a-z 0-9]{2,29}$/;
 export const regexForListenPath = /^[/][a-zA-Z0-9]*[/]$/;
 export const regexForTagetUrl =
   /^(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([a-zA-Z0-9+&@#\\/%=_|$?!:,.]*\)|[-A-Z0-9+&@#\\/%=_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=_|$?!:,.]*\)|[A-Z0-9+&@#\\/%=_|$])*/;

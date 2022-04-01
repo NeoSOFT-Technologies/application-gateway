@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 function CreateApi() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [isToggled, setIsToggled] = useState(true);
+  // const [isToggled, setIsToggled] = useState(true);
   // const onToggled = () => setIsToggled(!isToggled);
   const [apisForm, setapisForm] = useState<IApiFormData>({
     name: "",
@@ -30,7 +30,7 @@ function CreateApi() {
     status: true,
   });
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type } = event.target;
+    const { name, value } = event.target;
     switch (name) {
       case "name":
         setErr({
@@ -59,16 +59,20 @@ function CreateApi() {
       default:
         break;
     }
-    if (type === "checkbox") {
-      const isChecked = event.target.checked;
-      if (event.target.name === "isActive") {
-        setIsToggled(isChecked);
-      }
-      setapisForm({ ...apisForm, [event.target.name]: isChecked });
-    } else
-      setapisForm({ ...apisForm, [event.target.name]: event.target.value });
+    const value1 =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    // if (type === "checkbox") {
+    //   const isChecked = event.target.checked;
+    //   if (event.target.name === "isActive") {
+    //     setIsToggled(isChecked);
+    //   }
+    //   setapisForm({ ...apisForm, [event.target.name]: isChecked });
+    // } else
+    //   setapisForm({ ...apisForm, [event.target.name]: event.target.value });
 
-    // setapisForm({ ...apisForm, [name]: value });
+    setapisForm({ ...apisForm, [name]: value1 });
   };
 
   const handleValidate = () => {
@@ -93,8 +97,8 @@ function CreateApi() {
         newApi.stripListenPath = true;
         const result = await dispatch(addNewApi(newApi));
         console.log("result", result);
-        if (result.payload.Errors !== null) {
-          ToastAlert(result.payload.Errors[0], "error");
+        if (result.payload !== null) {
+          ToastAlert(result.payload.message, "error");
           setapisForm({
             name: apisForm.name,
             listenPath: apisForm.listenPath,
@@ -243,11 +247,13 @@ function CreateApi() {
                               type="switch"
                               // onChangeCapture={handleInputChange}
                               onChange={handleInputChange}
-                              checked={isToggled}
+                              checked={apisForm.isActive}
                               name="isActive"
                               id="isActive"
                               // onChange={onToggled}
-                              label={isToggled ? "  Active" : "  InActive"}
+                              label={
+                                apisForm.isActive ? "  Active" : "  InActive"
+                              }
                             />
                           </Form.Group>
                         </Col>
