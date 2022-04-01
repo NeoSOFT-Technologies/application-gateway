@@ -111,7 +111,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
    
             JObject jsonObj = JObject.Parse(transformedObj);
             jsonObj["access_rights"] = new JObject();
-            jsonObj = await CreateUpdateKey(key, jsonObj);
+            jsonObj = CreateUpdateKey(key, jsonObj);
 
             string keyResponse = await _restClient.PostAsync(jsonObj);
             await _baseService.HotReload();
@@ -130,7 +130,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
 
             JObject jsonObj = JObject.Parse(transformedObj);
-            jsonObj = await CreateUpdateKey(key, jsonObj);
+            jsonObj = CreateUpdateKey(key, jsonObj);
 
             await _restClient.PutKeyAsync(jsonObj, key.KeyId);
             await _baseService.HotReload();
@@ -191,7 +191,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             return versions;
         }
 
-        private async Task<JObject> CreateUpdateKey(Key key, JObject jsonObj)
+        private JObject CreateUpdateKey(Key key, JObject jsonObj)
         {
             #region Add Policies, id exists
             if (key.Policies.Any())
