@@ -4,7 +4,7 @@ import {
   setFormData,
   setFormErrors,
   regexForTagetUrl,
-} from "../../../../../../resources/APIS/ApiConstants";
+} from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function TargetUrl() {

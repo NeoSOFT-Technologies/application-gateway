@@ -5,9 +5,12 @@ import {
   regexForName,
   regexForListenPath,
   regexForTagetUrl,
-} from "../../../../resources/APIS/ApiConstants";
+} from "../../../../resources/api/api-constants";
 import { useAppDispatch } from "../../../../store/hooks";
-import { IErrorApiInput, IApiFormData } from "../../../../types/api/index";
+import {
+  IErrorApiInput,
+  IApiFormData,
+} from "../../../../store/features/api/create/index";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { useNavigate } from "react-router-dom";
 function CreateApi() {

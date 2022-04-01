@@ -1,6 +1,6 @@
 import React from "react";
-import Versions from "./Versions/Versions";
-import VersionSettings from "./VersionSettings/VersionSettings";
+import Versions from "./versions/Versions";
+import VersionSettings from "./version-settings/VersionSettings";
 
 export default function Version() {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
+import { setFormData } from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 // import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
 // import { setFormData } from "../../../../../../resources/APIS/ApiConstants";

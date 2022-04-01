@@ -9,7 +9,7 @@ import {
   // IPolicyData,
   IPolicyDataList,
   IPolicyListState,
-} from "../../../../types/Policy/index";
+} from "../../../../types/policy/index";
 import Spinner from "../../../../components/loader/Loader";
 
 export default function PolicyList() {

@@ -4,7 +4,7 @@ import {
   setFormErrors,
   setFormData,
   regexForNumber,
-} from "../../../../../../resources/APIS/ApiConstants";
+} from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function RateLimit() {
