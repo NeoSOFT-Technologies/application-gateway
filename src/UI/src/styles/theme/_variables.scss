@@ -62,7 +62,7 @@ $theme-gradient-colors: (
 ////////// COLOR SYSTEM //////////
 
 ////////// COLOR VARIABLES //////////
-$content-bg: #eefffb;
+$content-bg: #e7f1ff;
 $footer-bg: $content-bg;
 $footer-color: color(dark);
 $border-color: #ebedf2;
@@ -383,3 +383,4 @@ $private-btn-bg: #eae2ec;
 ///////// KANBAN ///////
 
 $bullet-line-list-shape-bg: color(white) !default;
+$nav-item-active: #e7f1ff;
