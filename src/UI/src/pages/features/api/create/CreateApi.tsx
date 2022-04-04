@@ -28,7 +28,7 @@ function CreateApi() {
     name: "",
     targetUrl: "",
     listenPath: "",
-    status: true,
+    // status: true,
   });
   const validateForm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -81,7 +81,6 @@ function CreateApi() {
           ...apisForm,
         })
       );
-      console.log("result", result);
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else {
@@ -89,7 +88,7 @@ function CreateApi() {
         navigate("/api/list");
       }
     } else {
-      ToastAlert("Please correct the error", "error");
+      ToastAlert("Please fill all the fields correctly", "error");
     }
   };
 
@@ -105,7 +104,10 @@ function CreateApi() {
         <div className="card">
           <div className="align-items-center">
             <Form onSubmit={handleSubmitApi} data-testid="form-input">
-              <div className="card-header bg-white pl-4 mt-3 pt-2 pb-4">
+              <div
+                className="card-header bg-white mt-3 pt-2 pb-4"
+                style={{ padding: "0.5rem 2.5rem" }}
+              >
                 <Button
                   className="btn btn-success btn-md d-flex float-right mb-4 mr-3"
                   type="submit"
@@ -127,8 +129,8 @@ function CreateApi() {
                   <b>CREATE API</b>
                 </h5>
               </div>
-              <div className="accordion m-4" id="accordionExample">
-                <div>
+              <div className="accordion m-2" id="accordionExample">
+                <div className="card-body pt-2">
                   <h2 className="accordion-header " id="headingOne">
                     <button
                       className="accordion-button"
@@ -214,12 +216,10 @@ function CreateApi() {
                             <Form.Label>API Status :</Form.Label>
                             <Form.Check
                               type="switch"
-                              // onChangeCapture={validateForm}
                               onChange={validateForm}
                               checked={apisForm.isActive}
                               name="isActive"
                               id="isActive"
-                              // onChange={onToggled}
                               label={
                                 apisForm.isActive ? "  Active" : "  InActive"
                               }

@@ -36,6 +36,8 @@ export default function APIList() {
   const apiList: IApiListState = useAppSelector(
     (state: RootState) => state.apiListState
   );
+  // handleError(apiList.error);
+  const failure: any = () => ToastAlert(apiList.error!, "error");
   const [datalist, setDataList] = useState<IApiDataList>({
     list: [],
     fields: [],
@@ -113,7 +115,7 @@ export default function APIList() {
         const result = await dispatch(deleteApi(val.Id));
 
         if (result.meta.requestStatus === "rejected") {
-          await ToastAlert(" Request failed ", "error");
+          await ToastAlert(result.payload.message, "error");
         } else {
           deleteApiFromState(val.Id);
           await ToastAlert("Api Deleted Successfully", "success");
@@ -198,6 +200,8 @@ export default function APIList() {
                 />
               )}
             </div>
+            {!apiList.loading && apiList.error !== null}
+            <div>{failure()}</div>
           </div>
         </div>
       </div>

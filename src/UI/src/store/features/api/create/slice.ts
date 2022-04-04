@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import error from "../../../../utils/error";
 import { addApiDataService } from "../../../../services/api/api";
-// import { AxiosError } from "axios";
 import { IAddApiState, IApiFormData } from ".";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 const initialState: IAddApiState = {
   apiAdded: false,
@@ -16,16 +15,12 @@ export const addNewApi = createAsyncThunk(
   async (conditions: IApiFormData) => {
     try {
       const response = await addApiDataService(conditions);
-      console.log(response);
       return response.data;
     } catch (err) {
-      const myError = err as AxiosError;
-      console.log(typeof myError.message);
-      // if (myError !== undefined) throw myError.response?.data.Errors[0];
-      // else
-      throw myError;
-      //  const ErrorResponse = myError.response?.data;
-      // return ErrorResponse;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -44,7 +39,6 @@ const slice = createSlice({
     });
     builder.addCase(addNewApi.rejected, (state, action) => {
       state.loading = false;
-      console.log("actiOn", action);
       action.payload = action.error;
     });
   },

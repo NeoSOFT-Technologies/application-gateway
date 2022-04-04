@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { policyListService } from "../../../../services/policy/policy";
 import { IPolicyListState } from "./index";
 import error from "../../../../utils/error";
+import axios, { AxiosError } from "axios";
 interface IConditions {
   currentPage: number;
 }
@@ -18,10 +19,12 @@ export const getPolicyList = createAsyncThunk(
     const { currentPage } = conditions;
     try {
       const response = await policyListService(currentPage);
-      console.log(response);
       return response.data;
     } catch (err) {
-      return err;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -44,6 +47,7 @@ const slice = createSlice({
     builder.addCase(getPolicyList.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
+      action.payload = action.error;
       state.error = error(action.payload);
     });
   },

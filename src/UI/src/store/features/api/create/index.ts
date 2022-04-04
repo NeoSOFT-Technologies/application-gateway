@@ -17,5 +17,5 @@ export interface IErrorApiInput {
   name: string;
   targetUrl: string;
   listenPath: string;
-  status: boolean;
+  // status: boolean;
 }

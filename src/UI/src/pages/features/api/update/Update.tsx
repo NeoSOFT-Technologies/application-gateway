@@ -7,13 +7,14 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { updateApi } from "../../../../store/features/api/update/slice";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { IApiGetByIdState } from "../../../../store/features/api/update";
+import { useNavigate } from "react-router-dom";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
     (RootState) => RootState.updateApiState
   );
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
     let validate: any;
@@ -29,7 +30,12 @@ export default function Update() {
       ToastAlert("Please fill all the fields correctly! ", "error");
     }
   }
-
+  const NavigateToApisList = (
+    val: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    val.preventDefault();
+    navigate("/api/list");
+  };
   return (
     <div>
       {state.loading && <Spinner />}
@@ -42,10 +48,20 @@ export default function Update() {
               data-testid="form-input"
             >
               <div className="align-items-center">
-                <div className="card-header bg-white pl-5 pr-5 mt-3 pt-2 pb-4">
+                <div
+                  className="card-header bg-white mt-3 pt-2 pb-4"
+                  style={{ padding: "0.5rem 2.5rem" }}
+                >
                   <button className=" btn  btn-success btn-md d-flex float-right mb-4">
                     {" "}
                     Update
+                  </button>
+                  <button
+                    className=" btn  btn-light btn-md d-flex float-right mb-4"
+                    onClick={(e) => NavigateToApisList(e)}
+                  >
+                    {" "}
+                    Cancel
                   </button>
                   <h5>
                     <b>UPDATE API</b>

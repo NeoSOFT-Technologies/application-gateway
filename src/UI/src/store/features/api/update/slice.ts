@@ -6,6 +6,7 @@ import {
 } from "../../../../services/api/api";
 import { initialState } from "./payload";
 import { IGetApiByIdData } from ".";
+import axios, { AxiosError } from "axios";
 
 export const getApiById = createAsyncThunk(
   "api/getApiById",
@@ -14,8 +15,10 @@ export const getApiById = createAsyncThunk(
       const response = await getApiByIdService(Id);
       return response?.data;
     } catch (err) {
-      const myError = err as Error;
-      throw myError;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -26,7 +29,10 @@ export const updateApi = createAsyncThunk(
       const response = await updateApiService(data);
       return response.data;
     } catch (err) {
-      return err;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -53,8 +59,8 @@ const slice = createSlice({
     builder.addCase(getApiById.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
-      state.error = error(action.payload);
       action.payload = action.error;
+      state.error = error(action.payload);
     });
     builder.addCase(updateApi.pending, (state) => {
       state.loading = true;
@@ -66,6 +72,7 @@ const slice = createSlice({
     builder.addCase(updateApi.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
+      action.payload = action.error;
       state.error = error(action.payload);
     });
   },
