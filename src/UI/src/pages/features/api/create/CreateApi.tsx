@@ -13,6 +13,7 @@ import {
 } from "../../../../store/features/api/create/index";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { useNavigate } from "react-router-dom";
+import { getApiById } from "../../../../store/features/api/update/slice";
 function CreateApi() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -84,8 +85,13 @@ function CreateApi() {
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else {
+        const valId: string = result.payload.Data.ApiId;
         ToastAlert("Api created successfully", "success");
-        navigate("/api/list");
+        if (valId) {
+          const res = await dispatch(getApiById(valId));
+          console.log(res);
+          navigate("/api/update");
+        }
       }
     } else {
       ToastAlert("Please fill all the fields correctly", "error");

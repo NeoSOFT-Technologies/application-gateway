@@ -8,6 +8,7 @@ const initialState: IAddApiState = {
   apiAdded: false,
   loading: false,
   error: null,
+  data: null,
 };
 
 export const addNewApi = createAsyncThunk(
@@ -33,9 +34,10 @@ const slice = createSlice({
     builder.addCase(addNewApi.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(addNewApi.fulfilled, (state) => {
+    builder.addCase(addNewApi.fulfilled, (state, action) => {
       state.loading = false;
       state.apiAdded = true;
+      state.data = action.payload;
     });
     builder.addCase(addNewApi.rejected, (state, action) => {
       state.loading = false;

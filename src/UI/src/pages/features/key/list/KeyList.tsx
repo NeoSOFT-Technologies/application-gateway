@@ -13,6 +13,7 @@ import {
 } from "../../../../store/features/key/list";
 
 import statusAndDateHelper from "../../../../utils/helper";
+import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 
 export default function KeyList() {
   // const navigate = useNavigate();
@@ -22,6 +23,7 @@ export default function KeyList() {
   const keyList: IKeyListState = useAppSelector(
     (state: RootState) => state.keyListState
   );
+  const failure: any = () => ToastAlert(keyList.error!, "error");
   // const [checkactive, setCheckactive] = useState({
   //   btn1: false,
   //   btn2: false,
@@ -92,64 +94,70 @@ export default function KeyList() {
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
-        <div className="card">
-          <div
-            className="card-header mt-4 mb-3 bg-white"
-            style={{ padding: "0.5rem 2.5rem" }}
-          >
-            <div className="align-items-center">
-              <div>
-                <button
-                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                  onClick={(e) => searchFilter(e)}
-                >
-                  {" "}
-                  Create Key &nbsp;
-                  <span className="bi bi-plus-lg"></span> &nbsp;
-                </button>
-                <h5>
-                  <b>KEY LIST</b>
-                </h5>
+        {keyList.loading ? (
+          <Spinner />
+        ) : !keyList.loading && keyList.error !== null ? (
+          <div>{failure()}</div>
+        ) : (
+          <div className="card">
+            <div
+              className="card-header mt-4 mb-3 bg-white"
+              style={{ padding: "0.5rem 2.5rem" }}
+            >
+              <div className="align-items-center">
+                <div>
+                  <button
+                    className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                    onClick={(e) => searchFilter(e)}
+                  >
+                    {" "}
+                    Create Key &nbsp;
+                    <span className="bi bi-plus-lg"></span> &nbsp;
+                  </button>
+                  <h5>
+                    <b>KEY LIST</b>
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div className="card-body pt-4">
+              <div className="align-items-center">
+                <div className="search-field justify-content-around">
+                  <form className="h-50">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        className="form-control bg-parent border-1"
+                        placeholder="Search Key"
+                        // onChange={(e) => setSearch(e.target.value)}
+                      />
+                      <button
+                        className=" btn  btn-success btn-sm"
+                        onClick={(e) => searchFilter(e)}
+                      >
+                        <i className=" bi bi-search"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <br />
+              {keyList.loading && <Spinner />}
+              <div className="table-responsive">
+                {!keyList.loading && keyList.data && (
+                  <RenderList
+                    headings={headings}
+                    data={datalist}
+                    actions={actions}
+                    handlePageClick={handlePageClick}
+                    pageCount={keyList.data.TotalCount}
+                    selected={selected}
+                  />
+                )}
               </div>
             </div>
           </div>
-          <div className="card-body pt-4">
-            <div className="align-items-center">
-              <div className="search-field justify-content-around">
-                <form className="h-50">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control bg-parent border-1"
-                      placeholder="Search Key"
-                      // onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button
-                      className=" btn  btn-success btn-sm"
-                      onClick={(e) => searchFilter(e)}
-                    >
-                      <i className=" bi bi-search"></i>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <br />
-            {keyList.loading && <Spinner />}
-            <div className="table-responsive">
-              {!keyList.loading && keyList.data && (
-                <RenderList
-                  headings={headings}
-                  data={datalist}
-                  actions={actions}
-                  handlePageClick={handlePageClick}
-                  pageCount={keyList.data.TotalCount}
-                  selected={selected}
-                />
-              )}
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );
