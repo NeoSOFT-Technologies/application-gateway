@@ -17,6 +17,7 @@ const RegisterTenant = lazy(
 const PolicyList = lazy(
   () => import("./pages/features/policy/list/PolicyList")
 );
+const CreateKey = lazy(() => import("./pages/features/key/create/CreateKey"));
 const CreatePolicy = lazy(
   () => import("./pages/features/policy/create/CreatePolicy")
 );
@@ -39,6 +40,7 @@ function AppRoutes() {
         <Route path="/policy/list" element={<PolicyList />} />
         <Route path="/key/list" element={<KeyList />} />
         <Route path="/api/create" element={<CreateApi />} />
+        <Route path="/key/create" element={<CreateKey />} />
         <Route path="/policy/create" element={<CreatePolicy />} />
         <Route path="/registertenant" element={<RegisterTenant />} />
         <Route path="/dashboard" element={<Dashboard />} />

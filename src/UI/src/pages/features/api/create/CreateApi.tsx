@@ -86,6 +86,7 @@ function CreateApi() {
         ToastAlert(result.payload.message, "error");
       } else {
         const valId: string = result.payload.Data.ApiId;
+        console.log(valId);
         ToastAlert("Api created successfully", "success");
         if (valId) {
           const res = await dispatch(getApiById(valId));

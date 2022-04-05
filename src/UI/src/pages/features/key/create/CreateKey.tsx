@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import AccessRights from "./access-rights/AccessRights";
 import Configurations from "./configurations/Configurations";
-export default function CreatePolicy() {
+export default function CreateKey() {
   return (
     <div>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -27,7 +27,7 @@ export default function CreatePolicy() {
                     Cancel
                   </button>
                   <h5>
-                    <b>CREATE POLICY</b>
+                    <b>CREATE KEY</b>
                   </h5>
                 </div>
                 <div className="card-body pt-2">
