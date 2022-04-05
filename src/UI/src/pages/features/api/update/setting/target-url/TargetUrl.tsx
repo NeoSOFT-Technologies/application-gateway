@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import {
   setFormData,
@@ -6,6 +6,7 @@ import {
   regexForTagetUrl,
 } from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import LoadBalancing from "./load-balacing/LoadBalancing";
 
 export default function TargetUrl() {
   const dispatch = useAppDispatch();
@@ -30,6 +31,7 @@ export default function TargetUrl() {
     }
     setFormData(event, dispatch, state);
   }
+  const [check, setCheck] = useState(false);
   return (
     <div>
       <div className="accordion" id="accordionTargetUrl">
@@ -59,33 +61,41 @@ export default function TargetUrl() {
                     <Form.Group className="mb-3">
                       <Form.Label> Target Url :</Form.Label>
                       <br />
-                      <i className="mb-3">
-                        Supported protocol schemes:
-                        http,https,tcp,tls,h2c,tyk,ws,wss.If empty, fallback to
-                        default protocolof current API.:
-                      </i>
-                      <Form.Control
-                        className="mt-2"
-                        type="text"
-                        id="targetUrl"
-                        placeholder="Enter Target Url"
-                        name="TargetUrl"
-                        value={state.data.form?.TargetUrl}
-                        isInvalid={!!state.data.errors?.TargetUrl}
-                        isValid={!state.data.errors?.TargetUrl}
-                        onChange={(e: any) => validateForm(e)}
-                        required
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {state.data.errors?.TargetUrl}
-                      </Form.Control.Feedback>
-                      <i>
-                        If you add a trailing &apos;/ &apos; to your listen
-                        path, you can only make requests that include the
-                        trailing &apos;/ &apos;
-                      </i>
+                      {!check ? (
+                        <>
+                          {" "}
+                          <i className="mb-3">
+                            Supported protocol schemes:
+                            http,https,tcp,tls,h2c,tyk,ws,wss.If empty, fallback
+                            to default protocolof current API.:
+                          </i>
+                          <Form.Control
+                            className="mt-2"
+                            type="text"
+                            id="targetUrl"
+                            placeholder="Enter Target Url"
+                            name="TargetUrl"
+                            value={state.data.form?.TargetUrl}
+                            isInvalid={!!state.data.errors?.TargetUrl}
+                            isValid={!state.data.errors?.TargetUrl}
+                            onChange={(e: any) => validateForm(e)}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {state.data.errors?.TargetUrl}
+                          </Form.Control.Feedback>
+                          <i>
+                            If you add a trailing &apos;/ &apos; to your listen
+                            path, you can only make requests that include the
+                            trailing &apos;/ &apos;
+                          </i>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </Form.Group>
                   </Col>
+
                   <Col md="12">
                     <Form.Group className="mb-3">
                       <Form.Check
@@ -94,9 +104,13 @@ export default function TargetUrl() {
                         name="isLoadBalancing"
                         label="Enable round-robin load balancing"
                         // checked={state.data.form?.isLoadBalancing}
-                        onChange={(e: any) => validateForm(e)}
+                        // onChange={(e: any) => validateForm(e)}
+                        onChange={(e: any) => setCheck(e.target.checked)}
                       />
                     </Form.Group>
+                  </Col>
+                  <Col>
+                    {check === true ? <LoadBalancing /> : <span></span>}
                   </Col>
                   <Col md="12">
                     <Form.Group className="mb-3">
