@@ -76,62 +76,144 @@ export default function Versions() {
                     Your API request will fail with an error.
                   </i>
                 </Col>
-                <Col md={3}>
-                  <Form.Group className="mb-3">
-                    <Form.Control
-                      type="text"
-                      placeholder="Version Name"
-                      id="versionName"
-                      name="Versions.Name"
-                      // value={state.data.form?.Versions.Name}
-                      // isInvalid={!!state.data.errors?.VersionName}
-                      // isValid={!state.data.errors?.VersionName}
-                      onChange={(e: any) => validateForm(e)}
-                    />
-                    {/* <Form.Control.Feedback type="invalid">
+                <Row>
+                  <Col md={3}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>
+                        <b>Version:</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Version name(key value)"
+                        id="versionName"
+                        name="Versions.Name"
+                        // value={state.data.form?.Versions.Name}
+                        // isInvalid={!!state.data.errors?.VersionName}
+                        // isValid={!state.data.errors?.VersionName}
+                        onChange={(e: any) => validateForm(e)}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
                       {state.data.errors?.VersionName}
                     </Form.Control.Feedback> */}
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
-                  <Form.Group className="mb-3">
-                    <Form.Control
-                      type="text"
-                      placeholder="Override Target Host"
-                      id="overrideTarget"
-                      name="Versions.OverrideTarget"
-                      // value={state.data.form?.Versions.OverrideTarget}
-                      // isInvalid={!!state.data.errors?.OverrideTarget}
-                      // isValid={!state.data.errors?.OverrideTarget}
-                      onChange={(e: any) => validateForm(e)}
-                    />
-                    {/* <Form.Control.Feedback type="invalid">
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>
+                        <b>Override Target Host:</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="http://override-default-target.com"
+                        id="overrideTarget"
+                        name="Versions.OverrideTarget"
+                        // value={state.data.form?.Versions.OverrideTarget}
+                        // isInvalid={!!state.data.errors?.OverrideTarget}
+                        // isValid={!state.data.errors?.OverrideTarget}
+                        onChange={(e: any) => validateForm(e)}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
                       {state.data.errors?.OverrideTarget}
                     </Form.Control.Feedback> */}
-                  </Form.Group>
-                </Col>
-                <Col md={3}>
-                  <Form.Group className="mb-3">
-                    <Form.Control
-                      type="text"
-                      placeholder="Expires"
-                      id="expires"
-                      name="Versions.Expires"
-                      // value={state.data.form?.Versions.Expires}
-                      // isInvalid={!!state.data.errors?.Expires}
-                      // isValid={!state.data.errors?.Expires}
-                      onChange={(e: any) => validateForm(e)}
-                    />
-                    {/* <Form.Control.Feedback type="invalid">
+                    </Form.Group>
+                  </Col>
+                  <Col md={3}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>
+                        <b>Expires:</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="expires"
+                        name="Versions.Expires"
+                        // value={state.data.form?.Versions.Expires}
+                        // isInvalid={!!state.data.errors?.Expires}
+                        // isValid={!state.data.errors?.Expires}
+                        onChange={(e: any) => validateForm(e)}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
                       {state.data.errors?.Expires}
                     </Form.Control.Feedback> */}
-                  </Form.Group>
-                </Col>
-                <Col md={2}>
-                  <Form.Group className="mb-3">
-                    <Button variant="dark">Add</Button>{" "}
-                  </Form.Group>
-                </Col>
+                    </Form.Group>
+                  </Col>
+                  <Col md={2} className="pt-2">
+                    <Form.Label></Form.Label>
+                    <Form.Group className="mb-3">
+                      <Button variant="dark">Add</Button>{" "}
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Form.Label>Version List</Form.Label>
+                  <Col md={3}>
+                    <Form.Label>
+                      <b>Version:</b>
+                    </Form.Label>
+                    <Form.Group className="mb-3">
+                      <Form.Control
+                        type="text"
+                        placeholder="Version name(key value)"
+                        id="versionName"
+                        name="Versions.Name"
+                        // value={state.data.form?.Versions.Name}
+                        // isInvalid={!!state.data.errors?.VersionName}
+                        // isValid={!state.data.errors?.VersionName}
+                        onChange={(e: any) => validateForm(e)}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.VersionName}
+                    </Form.Control.Feedback> */}
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>
+                        <b>Override Target Host:</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="http://override-default-target.com"
+                        id="overrideTarget"
+                        name="Versions.OverrideTarget"
+                        // value={state.data.form?.Versions.OverrideTarget}
+                        // isInvalid={!!state.data.errors?.OverrideTarget}
+                        // isValid={!state.data.errors?.OverrideTarget}
+                        onChange={(e: any) => validateForm(e)}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.OverrideTarget}
+                    </Form.Control.Feedback> */}
+                    </Form.Group>
+                  </Col>
+                  <Col md={3}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>
+                        <b>Expires:</b>
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Expiring date"
+                        id="expires"
+                        name="Versions.Expires"
+                        // value={state.data.form?.Versions.Expires}
+                        // isInvalid={!!state.data.errors?.Expires}
+                        // isValid={!state.data.errors?.Expires}
+                        onChange={(e: any) => validateForm(e)}
+                      />
+                      {/* <Form.Control.Feedback type="invalid">
+                      {state.data.errors?.Expires}
+                    </Form.Control.Feedback> */}
+                    </Form.Group>
+                  </Col>
+                  <Col md={2} className="pt-2">
+                    <Form.Label></Form.Label>
+                    <Form.Group className="mb-3">
+                      <Button variant="danger">
+                        <i className="bi bi-x-circle-fill"></i>
+                      </Button>{" "}
+                    </Form.Group>
+                  </Col>
+                </Row>
               </Row>
             </div>
           </div>
