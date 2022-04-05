@@ -25,7 +25,13 @@ export default function Update() {
     }
     if (validate) {
       await dispatch(updateApi(state.data.form));
-      ToastAlert("Api Updated Successfully!!", "success");
+      const result = await dispatch(updateApi(state.data.form));
+      if (result.meta.requestStatus === "rejected") {
+        ToastAlert(result.payload.message, "error");
+      } else {
+        ToastAlert("Api Updated Successfully!!", "success");
+        navigate("/api/list");
+      }
     } else {
       ToastAlert("Please fill all the fields correctly! ", "error");
     }

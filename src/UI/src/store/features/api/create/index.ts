@@ -1,7 +1,10 @@
+import { IApiData } from "../list";
+
 export interface IAddApiState {
   apiAdded?: boolean;
   loading: boolean;
   error?: string | null;
+  data?: IApiData | null;
 }
 
 export interface IApiFormData {

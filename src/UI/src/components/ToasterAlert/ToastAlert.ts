@@ -4,8 +4,8 @@ toast.configure();
 export function ToastAlert(
   message: string,
   type: string,
-  time: number = 5000,
-  position: string = "bottom-right"
+  time: number = 4000,
+  position: string = "top-right"
 ) {
   // @ts-ignore
   toast[type](message, {

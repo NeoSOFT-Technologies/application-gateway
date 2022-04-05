@@ -91,7 +91,7 @@ export default function APIList() {
   const NavigateUpdate = (val: IApiData) => {
     if (val.Id) {
       dispatch(getApiById(val.Id));
-      navigate("/api/update", {});
+      navigate("/api/update");
     }
   };
 
@@ -146,64 +146,70 @@ export default function APIList() {
   return (
     <>
       <div className="col-lg-12 grid-margin stretch-card">
-        <div className="card">
-          <div
-            className="card-header mt-4 mb-3 bg-white"
-            style={{ padding: "0.5rem 2.5rem" }}
-          >
-            <div className="align-items-center">
-              <button
-                className=" btn  btn-success btn-sm d-flex float-right mb-4"
-                onClick={(e) => NavigateCreateApi(e)}
-              >
-                {" "}
-                Create API &nbsp;
-                <span className="bi bi-plus-lg"></span> &nbsp;
-              </button>
-              <h5>
-                <b>API LIST</b>
-              </h5>
-            </div>
-          </div>
-          <div className="card-body pt-4">
-            <div className="align-items-center">
-              <div className="search-field justify-content-around ">
-                <form className="h-50">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control bg-parent border-1"
-                      placeholder="Search Api"
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button
-                      className=" btn  btn-success btn-sm"
-                      onClick={(e) => searchFilter(e)}
-                    >
-                      <i className=" bi bi-search"></i>
-                    </button>
-                  </div>
-                </form>
+        {apiList.loading ? (
+          <Spinner />
+        ) : !apiList.loading && apiList.error !== null ? (
+          <div>{failure()}</div>
+        ) : (
+          <div className="card">
+            <div
+              className="card-header mt-4 mb-3 bg-white"
+              style={{ padding: "0.5rem 2.5rem" }}
+            >
+              <div className="align-items-center">
+                <button
+                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                  onClick={(e) => NavigateCreateApi(e)}
+                >
+                  {" "}
+                  Create API &nbsp;
+                  <span className="bi bi-plus-lg"></span> &nbsp;
+                </button>
+                <h5>
+                  <b>API LIST</b>
+                </h5>
               </div>
             </div>
-            <br />
-            {apiList.loading && <Spinner />}
-            <div className="table-responsive">
-              {!apiList.loading && apiList.error === null && apiList.data && (
-                <RenderList
-                  headings={headings}
-                  data={datalist}
-                  actions={actions}
-                  handlePageClick={handlePageClick}
-                  pageCount={apiList.data.TotalCount}
-                  selected={selected}
-                />
-              )}
-            </div>
-            {!apiList.loading && apiList.error !== null}
-            <div>{failure()}</div>
+            <div className="card-body pt-4">
+              <div className="align-items-center">
+                <div className="search-field justify-content-around ">
+                  <form className="h-50">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        className="form-control bg-parent border-1"
+                        placeholder="Search Api"
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                      <button
+                        className=" btn  btn-success btn-sm"
+                        onClick={(e) => searchFilter(e)}
+                      >
+                        <i className=" bi bi-search"></i>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <br />
+              {apiList.loading && <Spinner />}
+              <div className="table-responsive">
+                {!apiList.loading && apiList.error === null && apiList.data && (
+                  <RenderList
+                    headings={headings}
+                    data={datalist}
+                    actions={actions}
+                    handlePageClick={handlePageClick}
+                    pageCount={apiList.data.TotalCount}
+                    selected={selected}
+                  />
+                )}
+              </div>
+              {/* {!apiList.loading && apiList.error !== null}
+            <div>{failure()}</div> */}
+            </div>{" "}
           </div>
-        </div>
+        )}
       </div>
     </>
   );
