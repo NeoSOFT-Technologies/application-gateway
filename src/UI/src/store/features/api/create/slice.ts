@@ -1,17 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import error from "../../../../utils/error";
-import { IApiFormData } from "../../../../types/api/index";
 import { addApiDataService } from "../../../../services/api/api";
+import { IAddApiState, IApiFormData } from ".";
+import axios, { AxiosError } from "axios";
 
-interface IAddApiState {
-  apiAdded?: boolean;
-  loading: boolean;
-  error?: string | null;
-}
 const initialState: IAddApiState = {
   apiAdded: false,
   loading: false,
   error: null,
+  data: null,
 };
 
 export const addNewApi = createAsyncThunk(
@@ -19,14 +16,12 @@ export const addNewApi = createAsyncThunk(
   async (conditions: IApiFormData) => {
     try {
       const response = await addApiDataService(conditions);
-      console.log(response);
       return response.data;
     } catch (err) {
-      console.log(err);
-      const myError = err as Error;
-
-      console.log(myError);
-      throw myError;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -42,12 +37,10 @@ const slice = createSlice({
     builder.addCase(addNewApi.fulfilled, (state, action) => {
       state.loading = false;
       state.apiAdded = true;
-      // state.error = action.payload.Error;
+      state.data = action.payload;
     });
     builder.addCase(addNewApi.rejected, (state, action) => {
       state.loading = false;
-      // action.payload contains error information
-      // state.error = error(action.payload);
       action.payload = action.error;
     });
   },

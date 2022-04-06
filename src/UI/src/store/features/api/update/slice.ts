@@ -1,26 +1,38 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { updateApiService } from "../../../../services/api/api";
-import { IApiUpdateFormData, IApiUpdateState } from "../../../../types/api";
+import {
+  getApiByIdService,
+  updateApiService,
+} from "../../../../services/api/api";
+import { initialState } from "./payload";
+import { IGetApiByIdData } from ".";
+import axios, { AxiosError } from "axios";
 
-interface IConditions {
-  data: IApiUpdateFormData;
-}
-const initialState: IApiUpdateState = {
-  data: null,
-  loading: false,
-  error: null,
-};
+export const getApiById = createAsyncThunk(
+  "api/getApiById",
+  async (Id: string) => {
+    try {
+      const response = await getApiByIdService(Id);
+      return response?.data;
+    } catch (err) {
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
+    }
+  }
+);
 export const updateApi = createAsyncThunk(
   "api/update",
-  async (conditions: IConditions) => {
-    const { data } = conditions;
+  async (data: IGetApiByIdData) => {
     try {
       const response = await updateApiService(data);
-      console.log(response);
       return response.data;
     } catch (err) {
-      return err;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -28,8 +40,28 @@ export const updateApi = createAsyncThunk(
 const slice = createSlice({
   name: "apiUpdate",
   initialState,
-  reducers: {},
+  reducers: {
+    setForm: (state, action) => {
+      state.data.form = action.payload;
+    },
+    setFormError: (state, action) => {
+      state.data.errors = action.payload;
+    },
+  },
   extraReducers(builder): void {
+    builder.addCase(getApiById.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getApiById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data.form = action.payload.Data;
+    });
+    builder.addCase(getApiById.rejected, (state, action) => {
+      state.loading = false;
+      // action.payload contains error information
+      action.payload = action.error;
+      state.error = error(action.payload);
+    });
     builder.addCase(updateApi.pending, (state) => {
       state.loading = true;
     });
@@ -40,9 +72,11 @@ const slice = createSlice({
     builder.addCase(updateApi.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
+      action.payload = action.error;
       state.error = error(action.payload);
     });
   },
 });
 
+export const { setForm, setFormError } = slice.actions;
 export default slice.reducer;

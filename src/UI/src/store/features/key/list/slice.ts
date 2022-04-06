@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { IKeyListState } from "../../../../types/key/index";
+import { IKeyListState } from "../../../../store/features/key/list";
 import { keyListService } from "../../../../services/key/key";
+import axios, { AxiosError } from "axios";
 
 interface IConditions {
   currentPage: number;
@@ -19,10 +20,12 @@ export const getKeyList = createAsyncThunk(
     const { currentPage } = conditions;
     try {
       const response = await keyListService(currentPage);
-      console.log(response);
       return response.data;
     } catch (err) {
-      return err;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -45,6 +48,7 @@ const slice = createSlice({
     builder.addCase(getKeyList.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
+      action.payload = action.error;
       state.error = error(action.payload);
     });
   },

@@ -6,6 +6,8 @@
   "targetUrl": "#valueof(proxy.target_url)",
   "isActive": "#valueof(active)",
   "isInternal": "#valueof(internal)",
+  "enableMTLS": "#valueof(use_mutual_tls_auth)",
+  "certIds": "#valueof(client_certificates)",
   "protocol": "#valueof(protocol)",
   "rateLimit": {
     "rate": "#valueof(global_rate_limit.rate)",

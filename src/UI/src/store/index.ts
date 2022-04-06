@@ -12,8 +12,7 @@ import policyListReducer from "./features/policy/list/slice";
 import keyListReducer from "./features/key/list/slice";
 import addApiReducer from "./features/api/create/slice";
 import deleteApiReducer from "./features/api/delete/slice";
-import getApiByIdReducer from "./features/api/getById/slice";
-import apiBReducer from "./features/api/update-state/slice";
+import updateApiReducer from "./features/api/update/slice";
 
 const store = configureStore({
   reducer: {
@@ -25,13 +24,12 @@ const store = configureStore({
     deleteTenant: deleteTenantReducer,
     updateTenant: updateTenantReducer,
     addNewUser: addNewUserReducer,
-    apiList: apiListReducer,
-    policyList: policyListReducer,
-    keyList: keyListReducer,
-    addApi: addApiReducer,
-    deleteApi: deleteApiReducer,
-    getApiById: getApiByIdReducer,
-    updateApiState: apiBReducer,
+    apiListState: apiListReducer,
+    policyListState: policyListReducer,
+    keyListState: keyListReducer,
+    addApiState: addApiReducer,
+    deleteApiState: deleteApiReducer,
+    updateApiState: updateApiReducer,
   },
 });
 

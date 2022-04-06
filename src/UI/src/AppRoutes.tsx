@@ -9,17 +9,21 @@ const Login = lazy(() => import("./pages/login/Login"));
 const TenantList = lazy(
   () => import("./pages/features/Admin/tenant-list/TenantList")
 );
-const APIList = lazy(() => import("./pages/features/APIs/List/APIList"));
-const CreateApi = lazy(() => import("./pages/features/APIs/Create/CreateApi"));
+const APIList = lazy(() => import("./pages/features/api/list/APIList"));
+const CreateApi = lazy(() => import("./pages/features/api/create/CreateApi"));
 const RegisterTenant = lazy(
   () => import("./pages/features/Admin/register-tenant/RegisterTenant")
 );
 const PolicyList = lazy(
-  () => import("./pages/features/Policies/List/PolicyList")
+  () => import("./pages/features/policy/list/PolicyList")
 );
-const KeyList = lazy(() => import("./pages/features/Keys/List/KeyList"));
+const CreateKey = lazy(() => import("./pages/features/key/create/CreateKey"));
+const CreatePolicy = lazy(
+  () => import("./pages/features/policy/create/CreatePolicy")
+);
+const KeyList = lazy(() => import("./pages/features/key/list/KeyList"));
 const Dashboard = lazy(() => import("./pages/features/Dashboard"));
-const Update = lazy(() => import("./pages/features/APIs/Update/Update"));
+const UpdateApi = lazy(() => import("./pages/features/api/update/Update"));
 const TenantDetails = lazy(
   () => import("./pages/features/Admin/tenant-details/TenantDetails")
 );
@@ -32,13 +36,15 @@ function AppRoutes() {
         <Route path="/error-pages/error-500" element={<Error500 />} />
         <Route path="/error-pages/error-401" element={<Error401 />} />
         <Route path="/tenantlist" element={<TenantList />} />
-        <Route path="/apilist" element={<APIList />} />
-        <Route path="/policylist" element={<PolicyList />} />
-        <Route path="/keylist" element={<KeyList />} />
-        <Route path="/createapi" element={<CreateApi />} />
+        <Route path="/api/list" element={<APIList />} />
+        <Route path="/policy/list" element={<PolicyList />} />
+        <Route path="/key/list" element={<KeyList />} />
+        <Route path="/api/create" element={<CreateApi />} />
+        <Route path="/key/create" element={<CreateKey />} />
+        <Route path="/policy/create" element={<CreatePolicy />} />
         <Route path="/registertenant" element={<RegisterTenant />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/update" element={<Update />} />
+        <Route path="/api/update" element={<UpdateApi />} />
         <Route path="/tenantdetail" element={<TenantDetails />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />

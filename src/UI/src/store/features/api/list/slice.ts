@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { IApiListState } from "../../../../types/api/index";
 import { apiListService } from "../../../../services/api/api";
+import { IApiListState } from "./index";
+import axios, { AxiosError } from "axios";
 
 interface IConditions {
   currentPage: number;
@@ -20,9 +21,10 @@ export const getApiList = createAsyncThunk(
       const response = await apiListService(currentPage);
       return response?.data;
     } catch (err) {
-      const myError = err as Error;
-      // console.log("");
-      throw myError;
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
     }
   }
 );
@@ -45,8 +47,9 @@ const slice = createSlice({
     builder.addCase(getApiList.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
-      state.error = error(action.payload);
+
       action.payload = action.error;
+      state.error = error(action.payload);
     });
   },
 });

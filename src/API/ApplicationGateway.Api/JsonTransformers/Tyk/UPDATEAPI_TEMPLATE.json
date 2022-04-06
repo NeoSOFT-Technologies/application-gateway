@@ -5,6 +5,8 @@
   "use_basic": "#ifcondition(#valueof($.AuthType),basic,#toboolean(true),#toboolean(false))",
   "use_standard_auth": "#ifcondition(#valueof($.AuthType),standard,#toboolean(true),#toboolean(false))",
   "use_openid": "#ifcondition(#valueof($.AuthType),openid,#toboolean(true),#toboolean(false))",
+  "use_mutual_tls_auth": "#valueof(EnableMTLS)",
+  "client_certificates": null,
   "openid_options": {
     "providers": null,
     "segregate_by_client": false

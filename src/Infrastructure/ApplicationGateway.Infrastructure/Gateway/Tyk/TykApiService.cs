@@ -66,6 +66,11 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     (apiObject["versioningInfo"] as JObject).Add("location", VersioningLocation.url_param.ToString());
                 }
                 #endregion
+                #region Convert address to CertId in client_certificate, if MTLS enabled
+                var t = apiObject["enableMTLS"];
+                if (bool.Parse(t.ToString()))
+                    apiObject["certIds"] = ConvertCertPathToCertId(apiObject["certIds"].ToList());
+                #endregion
                 transformedObject.Add(apiObject);
             }
             #endregion
@@ -105,13 +110,29 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 (transformedObject["versioningInfo"] as JObject).Add("location", VersioningLocation.url_param.ToString());
             }
             #endregion
+
+            #region Convert address to CertId in client_certificate, if MTLS enabled
+            var t = transformedObject["enableMTLS"];
+            if (bool.Parse(t.ToString())) 
+                transformedObject["certIds"] = ConvertCertPathToCertId(transformedObject["certIds"].ToList());
+            #endregion
             #endregion
 
             Api api = JsonConvert.DeserializeObject<Api>(transformedObject.ToString(), new Newtonsoft.Json.Converters.StringEnumConverter());
             _logger.LogInformation("GetApiByIdAsync Completed: {@Api}", api);
             return api;
         }
-
+        private JArray ConvertCertPathToCertId(List<JToken> certIdArray)
+        {
+            JArray certIdList = new();
+            foreach (var cert in certIdArray)
+            {
+                string certPath = cert.ToString();
+                string certId = certPath.Substring(certPath.LastIndexOf("/") + 1);
+                certIdList.Add(Guid.Parse(certId.Remove(certId.Length - 4)));
+            }
+            return certIdList;
+        }
         public async Task<Api> CreateApiAsync(Api api)
         {
             _logger.LogInformation("CreateApiAsync Initiated with {@Api}", api);
@@ -140,7 +161,14 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
 
             JObject inputObject = JObject.Parse(inputJson);
             JObject transformedObject = JObject.Parse(transformed);
-
+            #region insert certificate if MTLS enabled
+            if (api.EnableMTLS)
+            {
+                JArray CertIdArray = new();
+                api.CertIds.ForEach(certId => CertIdArray.Add($"certs/{certId}.pem"));
+                transformedObject["client_certificates"] = CertIdArray;
+            }
+            #endregion
             #region Add version_data to API
             if (inputObject["Versions"].Count() != 0)
             {
