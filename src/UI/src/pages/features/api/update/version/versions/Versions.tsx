@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { setFormData } from "../../../../../../resources/api/api-constants";
 
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
+import DatePicker from "react-date-picker";
 
 export default function Versions() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
+
+  const [selectedDate, setSelectedDate] = useState(null);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     // const { name, value } = event.target;
@@ -190,7 +193,15 @@ export default function Versions() {
                       <Form.Label>
                         <b>Expires:</b>
                       </Form.Label>
-                      <Form.Control
+                      {/* <Form.Control></Form.Control> */}
+                      <DatePicker
+                        onChange={(date: any) => setSelectedDate(date)}
+                        value={selectedDate}
+                        name="Versions.Expires"
+                        className="calendar_icon"
+                        format="y-MM-dd"
+                      />
+                      {/* <Form.Control
                         type="text"
                         placeholder="Expiring date"
                         id="expires"
@@ -199,7 +210,7 @@ export default function Versions() {
                         // isInvalid={!!state.data.errors?.Expires}
                         // isValid={!state.data.errors?.Expires}
                         onChange={(e: any) => validateForm(e)}
-                      />
+                      /> */}
                       {/* <Form.Control.Feedback type="invalid">
                       {state.data.errors?.Expires}
                     </Form.Control.Feedback> */}
