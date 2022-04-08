@@ -5,7 +5,7 @@ import ChooseApi from "./choose-api/ChooseApi";
 export default function AccessRights() {
   return (
     <div>
-      <div className="col-lg-12 grid-margin stretch-card">
+      <div>
         <div>
           <div className="align-items-center">
             <div className="pt-2">

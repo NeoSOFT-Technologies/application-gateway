@@ -1,34 +1,109 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { setFormData } from "../../../../../../resources/api/api-constants";
-
+import { setForm } from "../../../../../../store/features/api/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
-import DatePicker from "react-date-picker";
 
 export default function Versions() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [addFormData, setAddFormData] = useState({
+    Name: "",
+    OverrideTarget: "",
+    Expires: "",
+  });
 
-  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    // const { name, value } = event.target;
-    // switch (name) {
-    //   case "VersionKey":
-    //     setFormErrors(
-    //       {
-    //         ...state.data.errors,
-    //         [name]: regexForListenPath.test(value)
-    //           ? ""
-    //           : "Enter a Valid Version Key Name",
-    //       },
-    //       dispatch
-    //     );
-    //     break;
-    //   default:
-    //     break;
-    // }
+  const handleInputChange = (event: any) => {
+    const { name, value } = event.target;
+    const newFormData: any = { ...addFormData };
+    newFormData[name] = value;
+    setAddFormData(newFormData);
+  };
+
+  const handleAddClick = () => {
+    const list = [
+      ...state.data.form.Versions,
+      {
+        Name: addFormData.Name,
+        OverrideTarget: addFormData.OverrideTarget,
+        Expires: addFormData.Expires,
+        GlobalRequestHeaders: {},
+        GlobalRequestHeadersRemove: [],
+        GlobalResponseHeaders: {},
+        GlobalResponseHeadersRemove: [],
+        ExtendedPaths: null,
+      },
+    ];
+
+    dispatch(setForm({ ...state.data.form, Versions: list }));
+    setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
+  };
+
+  const deleteTableRows = (index: number) => {
+    console.log("deleteTableRows is called!");
+    const list = [...state.data.form.Versions];
+    console.log("list before delete", list);
+    list.splice(index, 1);
+    console.log("list after delete", list);
     setFormData(event, dispatch, state);
+  };
+
+  const handleChange = (index: number, evnt: any) => {
+    // const { name, value } = evnt.target;
+    const rowsInput = [...state.data.form.Versions];
+    console.log("rowsInput", rowsInput);
+  };
+
+  interface IProps {
+    _rowsData: any;
+    _deleteTableRows: any;
+    _handleChange: any;
+  }
+
+  function TableRows({ _rowsData, _deleteTableRows, _handleChange }: IProps) {
+    return _rowsData.map((data: any, index: any) => {
+      const { Name, OverrideTarget, Expires } = data;
+      return (
+        <tr key={index}>
+          <td>
+            <input
+              type="text"
+              value={Name}
+              onChange={(evnt) => _handleChange(index, evnt)}
+              name="Name"
+              className="form-control"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              value={OverrideTarget}
+              onChange={(evnt) => _handleChange(index, evnt)}
+              name="OverrideTarget"
+              className="form-control"
+            />{" "}
+          </td>
+          <td>
+            <input
+              type="date"
+              value={Expires}
+              onChange={(evnt) => _handleChange(index, evnt)}
+              name="Expires"
+              className="form-control"
+            />{" "}
+          </td>
+          <td>
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => deleteTableRows(index)}
+            >
+              x
+            </button>
+          </td>
+        </tr>
+      );
+    });
   }
 
   return (
@@ -67,7 +142,6 @@ export default function Versions() {
                     </Form.Label>
                     <br></br>
                     <Form.Select name="DefaultVersion">
-                      <option disabled>Choose a version</option>
                       <option id="1" value="default">
                         Default
                       </option>
@@ -79,6 +153,8 @@ export default function Versions() {
                     Your API request will fail with an error.
                   </i>
                 </Col>
+              </Row>
+              <Row>
                 <Row>
                   <Col md={3}>
                     <Form.Group className="mb-3">
@@ -89,15 +165,10 @@ export default function Versions() {
                         type="text"
                         placeholder="Version name(key value)"
                         id="versionName"
-                        name="Versions.Name"
-                        // value={state.data.form?.Versions.Name}
-                        // isInvalid={!!state.data.errors?.VersionName}
-                        // isValid={!state.data.errors?.VersionName}
-                        onChange={(e: any) => validateForm(e)}
+                        name="Name"
+                        value={addFormData.Name}
+                        onChange={handleInputChange}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      {state.data.errors?.VersionName}
-                    </Form.Control.Feedback> */}
                     </Form.Group>
                   </Col>
                   <Col md={4}>
@@ -107,17 +178,12 @@ export default function Versions() {
                       </Form.Label>
                       <Form.Control
                         type="text"
-                        placeholder="http://override-default-target.com"
+                        placeholder="http://override-target.com"
                         id="overrideTarget"
-                        name="Versions.OverrideTarget"
-                        // value={state.data.form?.Versions.OverrideTarget}
-                        // isInvalid={!!state.data.errors?.OverrideTarget}
-                        // isValid={!state.data.errors?.OverrideTarget}
-                        onChange={(e: any) => validateForm(e)}
+                        name="OverrideTarget"
+                        value={addFormData.OverrideTarget}
+                        onChange={handleInputChange}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      {state.data.errors?.OverrideTarget}
-                    </Form.Control.Feedback> */}
                     </Form.Group>
                   </Col>
                   <Col md={3}>
@@ -126,104 +192,48 @@ export default function Versions() {
                         <b>Expires:</b>
                       </Form.Label>
                       <Form.Control
-                        type="text"
-                        id="expires"
-                        name="Versions.Expires"
-                        // value={state.data.form?.Versions.Expires}
-                        // isInvalid={!!state.data.errors?.Expires}
-                        // isValid={!state.data.errors?.Expires}
-                        onChange={(e: any) => validateForm(e)}
+                        type="date"
+                        name="Expires"
+                        placeholder="Expiring date"
+                        value={addFormData.Expires}
+                        onChange={handleInputChange}
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                      {state.data.errors?.Expires}
-                    </Form.Control.Feedback> */}
                     </Form.Group>
                   </Col>
                   <Col md={2} className="pt-2">
                     <Form.Label></Form.Label>
                     <Form.Group className="mb-3">
-                      <Button variant="dark">Add</Button>{" "}
+                      <Button variant="dark" onClick={handleAddClick}>
+                        Add
+                      </Button>{" "}
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row>
-                  <Form.Label>Version List</Form.Label>
-                  <Col md={3}>
-                    <Form.Label>
-                      <b>Version:</b>
-                    </Form.Label>
-                    <Form.Group className="mb-3">
-                      <Form.Control
-                        type="text"
-                        placeholder="Version name(key value)"
-                        id="versionName"
-                        name="Versions.Name"
-                        // value={state.data.form?.Versions.Name}
-                        // isInvalid={!!state.data.errors?.VersionName}
-                        // isValid={!state.data.errors?.VersionName}
-                        onChange={(e: any) => validateForm(e)}
-                      />
-                      {/* <Form.Control.Feedback type="invalid">
-                      {state.data.errors?.VersionName}
-                    </Form.Control.Feedback> */}
-                    </Form.Group>
-                  </Col>
-                  <Col md={4}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        <b>Override Target Host:</b>
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="http://override-default-target.com"
-                        id="overrideTarget"
-                        name="Versions.OverrideTarget"
-                        // value={state.data.form?.Versions.OverrideTarget}
-                        // isInvalid={!!state.data.errors?.OverrideTarget}
-                        // isValid={!state.data.errors?.OverrideTarget}
-                        onChange={(e: any) => validateForm(e)}
-                      />
-                      {/* <Form.Control.Feedback type="invalid">
-                      {state.data.errors?.OverrideTarget}
-                    </Form.Control.Feedback> */}
-                    </Form.Group>
-                  </Col>
-                  <Col md={3}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        <b>Expires:</b>
-                      </Form.Label>
-                      {/* <Form.Control></Form.Control> */}
-                      <DatePicker
-                        onChange={(date: any) => setSelectedDate(date)}
-                        value={selectedDate}
-                        name="Versions.Expires"
-                        className="calendar_icon"
-                        format="y-MM-dd"
-                      />
-                      {/* <Form.Control
-                        type="text"
-                        placeholder="Expiring date"
-                        id="expires"
-                        name="Versions.Expires"
-                        // value={state.data.form?.Versions.Expires}
-                        // isInvalid={!!state.data.errors?.Expires}
-                        // isValid={!state.data.errors?.Expires}
-                        onChange={(e: any) => validateForm(e)}
-                      /> */}
-                      {/* <Form.Control.Feedback type="invalid">
-                      {state.data.errors?.Expires}
-                    </Form.Control.Feedback> */}
-                    </Form.Group>
-                  </Col>
-                  <Col md={2} className="pt-2">
-                    <Form.Label></Form.Label>
-                    <Form.Group className="mb-3">
-                      <Button variant="danger">
-                        <i className="bi bi-x-circle-fill"></i>
-                      </Button>{" "}
-                    </Form.Group>
-                  </Col>
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-sm-8">
+                        <table className="table">
+                          <thead>
+                            <tr>
+                              <th>Version</th>
+                              <th>Override Target Host</th>
+                              <th>Expires</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <TableRows
+                              _rowsData={state.data.form.Versions}
+                              _deleteTableRows={deleteTableRows}
+                              _handleChange={handleChange}
+                            />
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className="col-sm-4"></div>
+                    </div>
+                  </div>
                 </Row>
               </Row>
             </div>
