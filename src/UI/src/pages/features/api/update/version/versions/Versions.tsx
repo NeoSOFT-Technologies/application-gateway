@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { setFormData } from "../../../../../../resources/api/api-constants";
 import { setForm } from "../../../../../../store/features/api/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
@@ -14,7 +13,7 @@ export default function Versions() {
     Expires: "",
   });
 
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     const newFormData: any = { ...addFormData };
     newFormData[name] = value;
@@ -41,70 +40,27 @@ export default function Versions() {
   };
 
   const deleteTableRows = (index: number) => {
-    console.log("deleteTableRows is called!");
     const list = [...state.data.form.Versions];
-    console.log("list before delete", list);
     list.splice(index, 1);
-    console.log("list after delete", list);
-    setFormData(event, dispatch, state);
+    dispatch(setForm({ ...state.data.form, Versions: list }));
   };
 
-  const handleChange = (index: number, evnt: any) => {
-    // const { name, value } = evnt.target;
-    const rowsInput = [...state.data.form.Versions];
-    console.log("rowsInput", rowsInput);
+  const handleTableRowsInputChange = (
+    index: number,
+    evnt: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = evnt.target;
+    const versionsList = [...state.data.form.Versions];
+    versionsList[index] = { ...versionsList[index], [name]: value };
+    dispatch(setForm({ ...state.data.form, Versions: versionsList }));
   };
 
-  interface IProps {
-    _rowsData: any;
-    _deleteTableRows: any;
-    _handleChange: any;
-  }
-
-  function TableRows({ _rowsData, _deleteTableRows, _handleChange }: IProps) {
-    return _rowsData.map((data: any, index: any) => {
-      const { Name, OverrideTarget, Expires } = data;
-      return (
-        <tr key={index}>
-          <td>
-            <input
-              type="text"
-              value={Name}
-              onChange={(evnt) => _handleChange(index, evnt)}
-              name="Name"
-              className="form-control"
-            />
-          </td>
-          <td>
-            <input
-              type="text"
-              value={OverrideTarget}
-              onChange={(evnt) => _handleChange(index, evnt)}
-              name="OverrideTarget"
-              className="form-control"
-            />{" "}
-          </td>
-          <td>
-            <input
-              type="date"
-              value={Expires}
-              onChange={(evnt) => _handleChange(index, evnt)}
-              name="Expires"
-              className="form-control"
-            />{" "}
-          </td>
-          <td>
-            <button
-              className="btn btn-outline-danger"
-              onClick={() => deleteTableRows(index)}
-            >
-              x
-            </button>
-          </td>
-        </tr>
-      );
-    });
-  }
+  const handleFormSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const value = event.target.value;
+    dispatch(setForm({ ...state.data.form, DefaultVersion: value }));
+  };
 
   return (
     <>
@@ -141,10 +97,17 @@ export default function Versions() {
                       <b>Choose a version:</b>
                     </Form.Label>
                     <br></br>
-                    <Form.Select name="DefaultVersion">
-                      <option id="1" value="default">
-                        Default
-                      </option>
+                    <Form.Select
+                      name="DefaultVersion"
+                      onChange={handleFormSelectChange}
+                    >
+                      {state.data.form.Versions.map((item) => {
+                        return (
+                          <option key={item.Name} value={item.Name}>
+                            {item.Name}
+                          </option>
+                        );
+                      })}
                     </Form.Select>
                   </Form.Group>
 
@@ -203,7 +166,11 @@ export default function Versions() {
                   <Col md={2} className="pt-2">
                     <Form.Label></Form.Label>
                     <Form.Group className="mb-3">
-                      <Button variant="dark" onClick={handleAddClick}>
+                      <Button
+                        variant="dark"
+                        disabled={!addFormData.Name}
+                        onClick={handleAddClick}
+                      >
                         Add
                       </Button>{" "}
                     </Form.Group>
@@ -223,11 +190,63 @@ export default function Versions() {
                             </tr>
                           </thead>
                           <tbody>
-                            <TableRows
-                              _rowsData={state.data.form.Versions}
-                              _deleteTableRows={deleteTableRows}
-                              _handleChange={handleChange}
-                            />
+                            {state.data.form.Versions.map(
+                              (data: any, index: any) => {
+                                const { Name, OverrideTarget, Expires } = data;
+                                return (
+                                  <tr key={index}>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        value={Name}
+                                        onChange={(evnt) =>
+                                          handleTableRowsInputChange(
+                                            index,
+                                            evnt
+                                          )
+                                        }
+                                        name="Name"
+                                        className="form-control"
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        value={OverrideTarget}
+                                        onChange={(evnt) =>
+                                          handleTableRowsInputChange(
+                                            index,
+                                            evnt
+                                          )
+                                        }
+                                        name="OverrideTarget"
+                                        className="form-control"
+                                      />{" "}
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="date"
+                                        value={Expires}
+                                        onChange={(evnt) =>
+                                          handleTableRowsInputChange(
+                                            index,
+                                            evnt
+                                          )
+                                        }
+                                        name="Expires"
+                                        className="form-control"
+                                      />{" "}
+                                    </td>
+                                    <td>
+                                      <button
+                                        className="btn btn-outline-dark bi bi-trash-fill"
+                                        onClick={() => deleteTableRows(index)}
+                                      ></button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            )}
                           </tbody>
                         </table>
                       </div>
