@@ -86,11 +86,10 @@ function CreateApi() {
         ToastAlert(result.payload.message, "error");
       } else {
         const valId: string = result.payload.Data.ApiId;
-        console.log(valId);
         ToastAlert("Api created successfully", "success");
         if (valId) {
-          const res = await dispatch(getApiById(valId));
-          console.log(res);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await dispatch(getApiById(valId));
           navigate("/api/update");
         }
       }
@@ -136,7 +135,7 @@ function CreateApi() {
                   <b>CREATE API</b>
                 </h5>
               </div>
-              <div className="accordion m-2" id="accordionExample">
+              <div className="accordion" id="accordionExample">
                 <div className="card-body pt-2">
                   <h2 className="accordion-header " id="headingOne">
                     <button

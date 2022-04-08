@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import error from "../../../../utils/error";
-import { addApiDataService } from "../../../../services/api/api";
+import { addApiService } from "../../../../services/api/api";
 import { IAddApiState, IApiFormData } from ".";
 import axios, { AxiosError } from "axios";
 
@@ -15,7 +15,7 @@ export const addNewApi = createAsyncThunk(
   "api/createapi",
   async (conditions: IApiFormData) => {
     try {
-      const response = await addApiDataService(conditions);
+      const response = await addApiService(conditions);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
