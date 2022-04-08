@@ -1,6 +1,10 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { setFormData } from "../../../../../../resources/api/api-constants";
+import {
+  setFormData,
+  setFormErrors,
+  regexForName,
+} from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 // import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
 // import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
@@ -10,23 +14,24 @@ export default function VersionSettings() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    // const { name, value } = event.target;
-    // switch (name) {
-    //   case "VersionKey":
-    //     setFormErrors(
-    //       {
-    //         ...state.data.errors,
-    //         [name]: regexForName.test(value)
-    //           ? ""
-    //           : "Enter a Valid Version Key Name",
-    //       },
-    //       dispatch
-    //     );
-    //     break;
-    //   default:
-    //     break;
-    // }
+    const { name, value } = event.target;
+    switch (name) {
+      case "VersionKey":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForName.test(value)
+              ? ""
+              : "Enter a Valid Version Key Name",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
     setFormData(event, dispatch, state);
+    // console.log("prop: ", name + " value: ", value);
   }
 
   return (
@@ -57,58 +62,66 @@ export default function VersionSettings() {
                   <div className="accordion-body">
                     <div>
                       <Row>
-                        <Col md="12">
+                        {/* <Col md="12">
                           <Form.Group className="mb-3">
                             <Form.Check
                               type="switch"
-                              id="EnableVersioning"
-                              name="EnableVersioning"
+                              id="isEnabledVersioning"
+                              name="isEnabledVersioning"
                               label="Enable Versioning"
+                              onChange={(e: any) =>
+                                setEnabledVersioning(e.target.checked)
+                              }
                             />
                           </Form.Group>
-                        </Col>
-                        <Col md="12">
-                          <Form.Group className="mb-3">
-                            <Form.Label> Version Data Location</Form.Label>
-                            <br />
-                            <Form.Select
-                              aria-label="Default select example"
-                              name="VersioningInfo.Location"
-                              onClick={(e: any) => validateForm(e)}
-                            >
-                              <option id="1" value="1">
-                                1
-                              </option>
-                              <option id="2" value="2">
-                                2
-                              </option>
-                              <option id="3" value="3">
-                                3
-                              </option>
-                            </Form.Select>
-                          </Form.Group>
-                        </Col>
-                        <Col md="12">
-                          <Form.Group className="mb-3">
-                            <Form.Label>Version Identifier Key Name</Form.Label>
-                            <br />
+                        </Col> */}
 
-                            <Form.Control
-                              className="mt-2"
-                              type="text"
-                              id="versionIdentifier"
-                              placeholder="Enter Version key Name"
-                              name="VersioningInfo.Key"
-                              value={state.data.form?.VersioningInfo.Key}
-                              // isInvalid={!!state.data.errors?.VersionKey}
-                              // isValid={!state.data.errors?.VersionKey}
-                              onChange={(e: any) => validateForm(e)}
-                            />
-                            {/* <Form.Control.Feedback type="invalid">
-                              {state.data.errors?.VersionKey}
-                            </Form.Control.Feedback> */}
-                          </Form.Group>
-                        </Col>
+                        <Row>
+                          <Col md="12">
+                            <Form.Group className="mb-3">
+                              <Form.Label> Version Data Location</Form.Label>
+                              <br />
+                              <Form.Select
+                                aria-label="Default select example"
+                                name="VersioningInfo.Location"
+                                onClick={(e: any) => validateForm(e)}
+                              >
+                                <option id="1" value="Header">
+                                  Header
+                                </option>
+                                <option id="2" value="URL">
+                                  URL
+                                </option>
+                                <option id="3" value="Query URL">
+                                  Query URL
+                                </option>
+                              </Form.Select>
+                            </Form.Group>
+                          </Col>
+                          <Col md="12">
+                            <Form.Group className="mb-3">
+                              <Form.Label>
+                                Version Identifier Key Name
+                              </Form.Label>
+                              <br />
+
+                              <Form.Control
+                                className="mt-2"
+                                type="text"
+                                id="versionIdentifier"
+                                placeholder="Enter Version key Name"
+                                name="VersioningInfo.Key"
+                                value={state.data.form?.VersioningInfo.Key}
+                                // isInvalid={!!state.data.errors?.VersionKey}
+                                // isValid={!state.data.errors?.VersionKey}
+                                onChange={(e: any) => validateForm(e)}
+                              />
+                              {/* <Form.Control.Feedback type="invalid">
+                            {state.data.errors?.VersionKey}
+                          </Form.Control.Feedback> */}
+                            </Form.Group>
+                          </Col>
+                        </Row>
                       </Row>
                     </div>
                   </div>
