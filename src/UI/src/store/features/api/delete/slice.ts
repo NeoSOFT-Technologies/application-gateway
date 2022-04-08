@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { deleteApiDataService } from "../../../../services/api/api";
+import { deleteApiService } from "../../../../services/api/api";
 import axios, { AxiosError } from "axios";
 import { IDeleteApiState } from ".";
 
@@ -13,7 +13,7 @@ export const deleteApi = createAsyncThunk(
   "api/deleteapi",
   async (Id: string) => {
     try {
-      const response = await deleteApiDataService(Id);
+      const response = await deleteApiService(Id);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
