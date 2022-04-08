@@ -13,6 +13,7 @@ import keyListReducer from "./features/key/list/slice";
 import addApiReducer from "./features/api/create/slice";
 import deleteApiReducer from "./features/api/delete/slice";
 import updateApiReducer from "./features/api/update/slice";
+import createKeyReducer from "./features/key/create/slice";
 
 const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
     addApiState: addApiReducer,
     deleteApiState: deleteApiReducer,
     updateApiState: updateApiReducer,
+    createKeyState: createKeyReducer,
   },
 });
 

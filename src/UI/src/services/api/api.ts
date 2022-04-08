@@ -8,7 +8,7 @@ export function apiListService(currentPage: number) {
     `ApplicationGateway?pageNum=${currentPage}&pageSize=3`
   );
 }
-export function addApiDataService(data: IApiFormData) {
+export function addApiService(data: IApiFormData) {
   return apiFactory().post(`ApplicationGateway/CreateApi`, data);
 }
 
@@ -20,6 +20,6 @@ export function updateApiService(data: IGetApiByIdData) {
   return apiFactory().put(`ApplicationGateway`, data);
 }
 
-export function deleteApiDataService(Id: string) {
+export function deleteApiService(Id: string) {
   return apiFactory().delete(`ApplicationGateway/` + Id);
 }
