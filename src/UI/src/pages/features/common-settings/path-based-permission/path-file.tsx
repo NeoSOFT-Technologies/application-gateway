@@ -117,12 +117,10 @@ export default function Ipathpermission() {
                         <td>{data.path}</td>
                         <td>{data.method}</td>
                         <td style={{ textAlign: "center" }}>
-                          <button
-                            className="btn btn-outline-danger"
+                          <i
+                            className="bi bi-trash"
                             onClick={(e: any) => deleteTableRows(e, index)}
-                          >
-                            x
-                          </button>
+                          ></i>
                         </td>
                       </tr>
                     );
