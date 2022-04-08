@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
+import GlobalLimit from "../global-limit/GlobalLimit";
 export default function PathBased() {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
@@ -96,6 +97,7 @@ export default function PathBased() {
                       </Form.Label>
                     </Form.Group>
                   </Col>
+                  {isActiveApi ? <GlobalLimit /> : " "}
                 </Row>
               </div>
               <div className="w-100 p-3 mt-3 border rounded">

@@ -45,10 +45,12 @@ export default function AccessList() {
       "Target Url",
       "CreatedDate",
     ],
-    data: {
-      ...apiList.data,
-      fields: ["Name", "TargetUrl", "Status", "CreatedDateTxt"],
-    },
+    data: () =>
+      apiList.data?.Apis.map((data) => [
+        data.Name,
+        data.TargetUrl,
+        data.CreatedDate,
+      ]),
     // apiList.data?.Apis.map((data) => [
     // data.Name,
     // data.TargetUrl,
