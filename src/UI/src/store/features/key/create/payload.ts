@@ -3,7 +3,7 @@ import { IKeyCreateState } from "./index";
 export const initialState: IKeyCreateState = {
   data: {
     form: {
-      keyName: null,
+      keyName: "",
       per: 0,
       rate: 0,
       quota: 0,
@@ -15,7 +15,7 @@ export const initialState: IKeyCreateState = {
       accessRights: [
         {
           apiId: null,
-          apiName: null,
+          apiName: "",
           versions: [],
           allowedUrls: [
             {
