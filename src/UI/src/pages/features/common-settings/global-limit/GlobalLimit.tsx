@@ -4,7 +4,31 @@ export default function GlobalLimit() {
   const [rate, setRate] = useState(false);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
+  const [throttleRetry, setThrottleRetry] = useState("Disabled throttling");
+  const [throttleInterval, setThrottleInterval] = useState(
+    "Disabled throttling"
+  );
+  const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
 
+  function handleThrottleChange(evt: any) {
+    setThrottle(evt.target.checked);
+    if (throttle === false) {
+      setThrottleRetry("Disabled throttling");
+      setThrottleInterval("Disabled throttling");
+    } else {
+      setThrottleRetry("Enter retry limit");
+      setThrottleInterval("Enter interval");
+    }
+  }
+
+  function handleQuotaChange(evt: any) {
+    setQuota(evt.target.checked);
+    if (quota === false) {
+      setQuotaPerPeriod("Unlimited");
+    } else {
+      setQuotaPerPeriod("Enter request per period");
+    }
+  }
   return (
     <>
       <div className="card">
@@ -82,7 +106,7 @@ export default function GlobalLimit() {
                             name="Throttling.IsDisabled"
                             label="Disable Throttling"
                             checked={throttle}
-                            onChange={(e: any) => setThrottle(e.target.checked)}
+                            onChange={(e: any) => handleThrottleChange(e)}
                           />
                           <Form.Label className="mt-3">
                             Throttle retry limit
@@ -92,8 +116,9 @@ export default function GlobalLimit() {
                             className="mt-2"
                             type="text"
                             id="rate"
-                            placeholder="Enter retry limit"
+                            placeholder={throttleRetry}
                             name="Throttling.Retry"
+                            // value={throttleDefault}
                             disabled={throttle}
                           />
 
@@ -106,7 +131,7 @@ export default function GlobalLimit() {
                             className="mt-2"
                             type="text"
                             id="rate"
-                            placeholder="Enter interval"
+                            placeholder={throttleInterval}
                             name="Throttling.Interval"
                             disabled={throttle}
                           />
@@ -123,7 +148,7 @@ export default function GlobalLimit() {
                             name="unlimitedRequests.IsDisabled"
                             label="Unlimited requests"
                             checked={quota}
-                            onChange={(e: any) => setQuota(e.target.checked)}
+                            onChange={(e: any) => handleQuotaChange(e)}
                           />
                           <Form.Label className="mt-3">
                             Max requests per period
@@ -133,7 +158,7 @@ export default function GlobalLimit() {
                             className="mt-2"
                             type="text"
                             id="rate"
-                            placeholder="Enter request per period"
+                            placeholder={quotaPerPeriod}
                             name="Quota.Per"
                             disabled={quota}
                           />
