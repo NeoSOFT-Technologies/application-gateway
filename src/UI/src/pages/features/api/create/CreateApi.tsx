@@ -136,7 +136,7 @@ function CreateApi() {
                   <b>CREATE API</b>
                 </h5>
               </div>
-              <div className="accordion m-2" id="accordionExample">
+              <div className="accordion" id="accordionExample">
                 <div className="card-body pt-2">
                   <h2 className="accordion-header " id="headingOne">
                     <button
