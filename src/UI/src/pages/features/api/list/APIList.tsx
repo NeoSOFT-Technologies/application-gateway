@@ -153,12 +153,12 @@ export default function APIList() {
         ) : (
           <div className="card">
             <div
-              className="card-header mt-4 mb-3 bg-white"
-              style={{ padding: "0.5rem 2.5rem" }}
+              className="card-header mt-2 bg-white"
+              style={{ padding: "0.5rem 1.5rem" }}
             >
               <div className="align-items-center">
                 <button
-                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                  className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
                   onClick={(e) => NavigateCreateApi(e)}
                 >
                   {" "}
