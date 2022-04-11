@@ -1,31 +1,33 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { setFormData } from "../../../../../../resources/api/api-constants";
+import {
+  setFormData,
+  setFormErrors,
+  regexForName,
+} from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
-// import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
-// import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
 
 export default function VersionSettings() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    // const { name, value } = event.target;
-    // switch (name) {
-    //   case "VersionKey":
-    //     setFormErrors(
-    //       {
-    //         ...state.data.errors,
-    //         [name]: regexForName.test(value)
-    //           ? ""
-    //           : "Enter a Valid Version Key Name",
-    //       },
-    //       dispatch
-    //     );
-    //     break;
-    //   default:
-    //     break;
-    // }
+    const { name, value } = event.target;
+    switch (name) {
+      case "VersionKey":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForName.test(value)
+              ? ""
+              : "Enter a Valid Version Key Name",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
     setFormData(event, dispatch, state);
   }
 
@@ -59,16 +61,6 @@ export default function VersionSettings() {
                       <Row>
                         <Col md="12">
                           <Form.Group className="mb-3">
-                            <Form.Check
-                              type="switch"
-                              id="EnableVersioning"
-                              name="EnableVersioning"
-                              label="Enable Versioning"
-                            />
-                          </Form.Group>
-                        </Col>
-                        <Col md="12">
-                          <Form.Group className="mb-3">
                             <Form.Label> Version Data Location</Form.Label>
                             <br />
                             <Form.Select
@@ -76,14 +68,14 @@ export default function VersionSettings() {
                               name="VersioningInfo.Location"
                               onClick={(e: any) => validateForm(e)}
                             >
-                              <option id="1" value="1">
-                                1
+                              <option id="1" value="Header">
+                                Header
                               </option>
-                              <option id="2" value="2">
-                                2
+                              <option id="2" value="URL">
+                                URL
                               </option>
-                              <option id="3" value="3">
-                                3
+                              <option id="3" value="Query URL">
+                                Query URL
                               </option>
                             </Form.Select>
                           </Form.Group>
@@ -105,8 +97,8 @@ export default function VersionSettings() {
                               onChange={(e: any) => validateForm(e)}
                             />
                             {/* <Form.Control.Feedback type="invalid">
-                              {state.data.errors?.VersionKey}
-                            </Form.Control.Feedback> */}
+                            {state.data.errors?.VersionKey}
+                          </Form.Control.Feedback> */}
                           </Form.Group>
                         </Col>
                       </Row>

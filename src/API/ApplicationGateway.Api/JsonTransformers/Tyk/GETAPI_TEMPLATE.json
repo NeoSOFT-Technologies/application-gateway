@@ -33,5 +33,5 @@
   "openidOptions": {
     "providers": null
   },
-  "loadBalancingTargets": "#valueof(target_list)"
+  "loadBalancingTargets": "#valueof(proxy.target_list)"
 }
