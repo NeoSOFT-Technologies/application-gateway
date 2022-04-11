@@ -69,9 +69,9 @@ export default function Update() {
                     {" "}
                     Cancel
                   </button>
-                  <h5>
+                  <span>
                     <b>UPDATE API</b>
-                  </h5>
+                  </span>
                 </div>
                 <div className="card-body pt-2">
                   <Tabs

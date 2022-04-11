@@ -26,9 +26,9 @@ export default function CreateKey() {
                     {" "}
                     Cancel
                   </button>
-                  <h5>
+                  <span>
                     <b>CREATE KEY</b>
-                  </h5>
+                  </span>
                 </div>
                 <div className="card-body pt-2">
                   <Tabs

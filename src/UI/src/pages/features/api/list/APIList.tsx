@@ -165,9 +165,9 @@ export default function APIList() {
                   Create API &nbsp;
                   <span className="bi bi-plus-lg"></span> &nbsp;
                 </button>
-                <h5>
+                <span>
                   <b>API LIST</b>
-                </h5>
+                </span>
               </div>
             </div>
             <div className="card-body pt-4">

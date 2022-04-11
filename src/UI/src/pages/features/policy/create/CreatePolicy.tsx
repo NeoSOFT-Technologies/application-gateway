@@ -26,9 +26,9 @@ export default function CreatePolicy() {
                     {" "}
                     Cancel
                   </button>
-                  <h5>
+                  <span>
                     <b>CREATE POLICY</b>
-                  </h5>
+                  </span>
                 </div>
                 <div className="card-body pt-2">
                   <Tabs
