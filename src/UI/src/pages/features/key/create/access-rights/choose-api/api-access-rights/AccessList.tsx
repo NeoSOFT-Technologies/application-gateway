@@ -1,4 +1,5 @@
 import { Grid } from "gridjs-react";
+import moment from "moment";
 import React, { useEffect } from "react";
 import { RootState } from "../../../../../../../store";
 import { IApiListState } from "../../../../../../../store/features/api/list";
@@ -14,7 +15,7 @@ export default function AccessList() {
   //   (rootState: RootState) => rootState.addKeyState
   // );
 
-  const apiList: IApiListState = useAppSelector(
+  const acessPolicyList: IApiListState = useAppSelector(
     (state: RootState) => state.apiListState
   );
   const dispatch = useAppDispatch();
@@ -25,14 +26,12 @@ export default function AccessList() {
     mainCall(1);
   }, []);
 
-  // const es: IApiData[] = apiList.data?.Apis!;
-
-  console.log(apiList);
-  const grid = new Grid({
+  console.log(acessPolicyList);
+  const gridTable = new Grid({
     columns: [
       {
         name: "Name",
-        attributes: (cell: any) => {
+        attributes: (cell: string) => {
           if (cell) {
             return {
               "data-cell-content": cell,
@@ -42,22 +41,28 @@ export default function AccessList() {
           }
         },
       },
-      "Target Url",
+      "Status",
       "CreatedDate",
     ],
     data: () =>
-      apiList.data?.Apis.map((data) => [
+      acessPolicyList.data?.Apis.map((data) => [
         data.Name,
-        data.TargetUrl,
-        data.CreatedDate,
+        data.IsActive ? "active" : "Inactive",
+        data.CreatedDate !== null
+          ? moment(data.CreatedDate).format("DD/MM/YYYY")
+          : data.CreatedDate,
       ]),
-    // apiList.data?.Apis.map((data) => [
-    // data.Name,
-    // data.TargetUrl,
-    // data.CreatedDate,
-    // ])
     className: {
-      container: "table-wrapper",
+      container: "table table-bordered table-stripped",
+    },
+    style: {
+      table: {
+        width: "100%",
+        border: "2px solid #ccc",
+      },
+      th: {
+        color: "#000",
+      },
     },
   });
 
@@ -88,7 +93,7 @@ export default function AccessList() {
                 >
                   <div className="accordion-body">
                     <div>
-                      <Grid {...grid.props} />
+                      <Grid {...gridTable.props} />
                     </div>
                   </div>
                 </div>

@@ -23,7 +23,7 @@ function Configurations() {
               <br />
               <Form.Label> Expires :</Form.Label>
               <Form.Select aria-label="Default select example">
-                <option selected>Select an option</option>
+                <option>Select an option</option>
                 <option value="1">Do not expire key</option>
                 <option value="2">1 hour</option>
                 <option value="3">6 hours</option>
