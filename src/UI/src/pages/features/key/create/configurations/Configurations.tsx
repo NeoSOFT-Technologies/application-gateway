@@ -7,13 +7,12 @@ function Configurations() {
       <Accordion defaultActiveKey="0">
         <Accordion.Item eventKey="0">
           <Accordion.Header>
-            <h5>Settings</h5>
+            <span>Settings</span>
           </Accordion.Header>
           <Accordion.Body>
             <div className="align-items-center">
-              <Form.Label>API Status :</Form.Label>
+              <Form.Label>Enabled detailed logging :</Form.Label>
               <Form.Check type="switch" />
-              <br />
               <br />
               <Form.Label> Alias :</Form.Label>
               <Form.Control
@@ -21,7 +20,6 @@ function Configurations() {
                 placeholder="Give your key alias to remember it by "
                 required
               />
-              <br />
               <br />
               <Form.Label> Expires :</Form.Label>
               <Form.Select aria-label="Default select example">
