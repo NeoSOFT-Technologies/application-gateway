@@ -18,7 +18,6 @@ export default function Update() {
   );
   const failure: any = () => ToastAlert(state.error!, "error");
   const dispatch = useAppDispatch();
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -26,6 +25,7 @@ export default function Update() {
   }, []);
 
   const navigate = useNavigate();
+
   async function handleSubmitApiUpdate(event: FormEvent) {
     event.preventDefault();
     let validate: any;
@@ -40,7 +40,6 @@ export default function Update() {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {
         ToastAlert("Api Updated Successfully!!", "success");
-        dispatch(getApiById(id));
       } else {
         ToastAlert("Api Updated request is not fulfilled!!", "error");
       }
@@ -71,22 +70,22 @@ export default function Update() {
                 <div className="align-items-center">
                   <div
                     className="card-header bg-white mt-3 pt-2 pb-4"
-                    style={{ padding: "0.5rem 2.5rem" }}
+                    style={{ padding: "0.5rem 1.5rem" }}
                   >
-                    <button className=" btn  btn-success btn-md d-flex float-right mb-4">
+                    <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-4">
                       {" "}
                       Update
                     </button>
                     <button
-                      className=" btn  btn-light btn-md d-flex float-right mb-4"
+                      className=" btn  btn-sm btn-light btn-md d-flex float-right mb-4"
                       onClick={(e) => NavigateToApisList(e)}
                     >
                       {" "}
                       Cancel
                     </button>
-                    <h5>
+                    <span>
                       <b>UPDATE API</b>
-                    </h5>
+                    </span>
                   </div>
                   <div className="card-body pt-2">
                     <Tabs

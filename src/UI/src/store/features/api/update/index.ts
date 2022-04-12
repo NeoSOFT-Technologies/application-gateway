@@ -29,6 +29,7 @@ export interface IGetApiByIdData {
     Location: string;
     Key: string;
   };
+  IsVersioningDisabled: boolean;
   DefaultVersion: string;
   Versions: [
     {

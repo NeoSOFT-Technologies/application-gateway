@@ -22,6 +22,7 @@ export const initialState: IApiGetByIdState = {
         Location: "",
         Key: "",
       },
+      IsVersioningDisabled: true,
       DefaultVersion: "",
       Versions: [
         {
