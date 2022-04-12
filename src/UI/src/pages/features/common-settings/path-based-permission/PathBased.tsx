@@ -84,7 +84,6 @@ export default function PathBased() {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                  {isActiveApi ? <GlobalLimit /> : " "}
                 </Row>
                 <Row>
                   <Col md="12">
@@ -137,6 +136,7 @@ export default function PathBased() {
                           unless per Api limits and quotas are set here.
                         </Form.Label>
                       </Form.Group>
+                      {isActiveApi ? <GlobalLimit /> : " "}
                     </Col>
                   </Row>
                 </div>

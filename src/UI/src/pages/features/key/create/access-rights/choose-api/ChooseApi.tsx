@@ -1,5 +1,5 @@
 import React from "react";
-import GlobalLimit from "../../../../common-settings-keys/global-limit/GlobalLimit";
+import GlobalLimit from "../../../../common-settings/global-limit/GlobalLimit";
 import AccessList from "./api-access-rights/AccessList";
 import ApiAccess from "./api-access/ApiAccess";
 
