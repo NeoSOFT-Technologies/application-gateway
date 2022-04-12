@@ -16,6 +16,7 @@
         public List<string>? Whitelist { get; set; }
         public VersioningInfo? VersioningInfo { get; set; }
 #nullable disable
+        public bool IsVersioningDisabled { get; set; }
         public string DefaultVersion { get; set; }
         public List<VersionModel> Versions { get; set; }
         public string AuthType { get; set; }
