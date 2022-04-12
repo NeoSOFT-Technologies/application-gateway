@@ -58,7 +58,7 @@ export default function Ipathpermission() {
               name="method"
               onChange={handleAddFormChange}
             >
-              <option>Select Method(s)</option>
+              <option disabled>Select Method(s)</option>
               <option>GET</option>
               <option>POST</option>
               <option>PUT</option>
