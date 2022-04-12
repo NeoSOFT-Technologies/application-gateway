@@ -4,7 +4,12 @@ import VersionSettings from "./version-settings/VersionSettings";
 import { Col, Form } from "react-bootstrap";
 
 export default function Version() {
-  const [check, setDisabledVersioning] = useState(true);
+  const isVersioning: Boolean = true;
+  let [check, setDisabledVersioning] = useState(true);
+
+  if (isVersioning) {
+    check = false;
+  }
 
   return (
     <div>

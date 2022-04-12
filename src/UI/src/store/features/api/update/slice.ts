@@ -10,7 +10,7 @@ import axios, { AxiosError } from "axios";
 
 export const getApiById = createAsyncThunk(
   "api/getApiById",
-  async (Id: string) => {
+  async (Id: any) => {
     try {
       const response = await getApiByIdService(Id);
       return response?.data;
@@ -43,9 +43,11 @@ const slice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
+      console.log("form data : ", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
+      console.log("form error : ", state.data.errors);
     },
   },
   extraReducers(builder): void {

@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import {
+  regexForOverrideTarget,
+  setFormErrors,
+} from "../../../../../../resources/api/api-constants";
 import { setForm } from "../../../../../../store/features/api/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function Versions() {
   const dispatch = useAppDispatch();
+
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
   const [addFormData, setAddFormData] = useState({
@@ -15,6 +20,23 @@ export default function Versions() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+
+    switch (name) {
+      case "OverrideTarget":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForOverrideTarget.test(value)
+              ? ""
+              : "Enter a Valid Override Target Host",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+
     const newFormData: any = { ...addFormData };
     newFormData[name] = value;
     setAddFormData(newFormData);
@@ -34,7 +56,6 @@ export default function Versions() {
         ExtendedPaths: null,
       },
     ];
-
     dispatch(setForm({ ...state.data.form, Versions: list }));
     setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
   };
@@ -59,6 +80,7 @@ export default function Versions() {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const value = event.target.value;
+
     dispatch(setForm({ ...state.data.form, DefaultVersion: value }));
   };
 
@@ -99,11 +121,17 @@ export default function Versions() {
                     <br></br>
                     <Form.Select
                       name="DefaultVersion"
+                      id="defaultVersion"
+                      value={state.data.form?.DefaultVersion}
                       onChange={handleFormSelectChange}
                     >
-                      {state.data.form.Versions.map((item) => {
+                      {state.data.form?.Versions.map((item) => {
                         return (
-                          <option key={item.Name} value={item.Name}>
+                          <option
+                            key={item.Name}
+                            value={item.Name}
+                            id={item.Name}
+                          >
                             {item.Name}
                           </option>
                         );
@@ -145,8 +173,13 @@ export default function Versions() {
                         id="overrideTarget"
                         name="OverrideTarget"
                         value={addFormData.OverrideTarget}
+                        isInvalid={!!state.data.errors?.OverrideTarget}
+                        isValid={!state.data.errors?.OverrideTarget}
                         onChange={handleInputChange}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {state.data.errors?.OverrideTarget}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                   <Col md={3}>
@@ -190,7 +223,7 @@ export default function Versions() {
                             </tr>
                           </thead>
                           <tbody>
-                            {state.data.form.Versions.map(
+                            {state.data.form?.Versions.map(
                               (data: any, index: any) => {
                                 const { Name, OverrideTarget, Expires } = data;
                                 return (

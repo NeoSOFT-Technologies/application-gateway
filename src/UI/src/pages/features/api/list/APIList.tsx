@@ -10,7 +10,6 @@ import { useErrorHandler } from "react-error-boundary";
 // import moment from "moment";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import statusAndDateHelper from "../../../../utils/helper";
-import { getApiById } from "../../../../store/features/api/update/slice";
 import {
   IApiData,
   IApiListState,
@@ -90,8 +89,7 @@ export default function APIList() {
 
   const NavigateUpdate = (val: IApiData) => {
     if (val.Id) {
-      dispatch(getApiById(val.Id));
-      navigate("/api/update");
+      navigate(`/api/update/${val.Id}`);
     }
   };
 

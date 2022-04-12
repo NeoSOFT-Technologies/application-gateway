@@ -19,7 +19,7 @@ export const initialState: IApiGetByIdState = {
       Blacklist: [],
       Whitelist: [],
       VersioningInfo: {
-        Location: 0,
+        Location: "",
         Key: "",
       },
       DefaultVersion: "",
@@ -55,6 +55,7 @@ export const initialState: IApiGetByIdState = {
       defaultVersion: "",
       version: "",
       isQuotaDisabled: "",
+      OverrideTarget: "",
     },
   },
   loading: false,
