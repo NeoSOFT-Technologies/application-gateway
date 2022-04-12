@@ -14,7 +14,7 @@ export const initialState: IKeyCreateState = {
       throttleRetries: 0,
       accessRights: [
         {
-          apiId: null,
+          apiId: "",
           apiName: "",
           versions: [],
           allowedUrls: [
