@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { IGetPolicyByIdData } from ".";
-import { addPolicyService } from "../../../../services/Policy/policy";
+import { addPolicyService } from "../../../../services/policy/policy";
 import error from "../../../../utils/error";
 import { initialState } from "./payload";
 
