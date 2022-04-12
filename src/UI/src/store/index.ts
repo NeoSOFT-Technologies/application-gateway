@@ -9,6 +9,9 @@ import updateTenantReducer from "./features/tenant/update-tenant/slice";
 import addNewUserReducer from "./features/tenant/add-user/slice";
 import apiListReducer from "./features/api/list/slice";
 import policyListReducer from "./features/policy/list/slice";
+import createPolicyReducer from "./features/policy/create/slice";
+import updatePolicyReducer from "./features/policy/update/slice";
+import deletePolicyReducer from "./features/policy/delete/slice";
 import keyListReducer from "./features/key/list/slice";
 import addApiReducer from "./features/api/create/slice";
 import deleteApiReducer from "./features/api/delete/slice";
@@ -27,6 +30,9 @@ const store = configureStore({
     addNewUser: addNewUserReducer,
     apiListState: apiListReducer,
     policyListState: policyListReducer,
+    createPolicyState: createPolicyReducer,
+    updatePolicyState: updatePolicyReducer,
+    deletePolicyState: deletePolicyReducer,
     keyListState: keyListReducer,
     addApiState: addApiReducer,
     deleteApiState: deleteApiReducer,

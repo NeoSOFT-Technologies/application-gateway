@@ -1,5 +1,10 @@
 import React from "react";
+import GlobalLimit from "../../../../../common-settings/global-limit/GlobalLimit";
 
 export default function Policies() {
-  return <div>Policy</div>;
+  return (
+    <div>
+      <GlobalLimit />
+    </div>
+  );
 }

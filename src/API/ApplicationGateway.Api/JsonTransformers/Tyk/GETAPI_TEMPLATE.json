@@ -21,6 +21,7 @@
     "location": "#valueof(definition.location)",
     "key": "#valueof(definition.key)"
   },
+  "isVersioningDisabled": "#valueof(version_data.not_versioned)",
   "defaultVersion": "#valueof(version_data.default_version)",
   "versions": [
     {

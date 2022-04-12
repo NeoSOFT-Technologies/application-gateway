@@ -5,7 +5,6 @@ import PolicyList from "./policy-list/PolicyList";
 export default function ApplyPolicy() {
   return (
     <div>
-      <h4>Apply policy</h4>
       <PolicyList />
       <Policies />
     </div>
