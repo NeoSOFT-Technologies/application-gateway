@@ -58,6 +58,7 @@ export default function Versions() {
     ];
     dispatch(setForm({ ...state.data.form, Versions: list }));
     setAddFormData({ Name: "", Expires: "", OverrideTarget: "" });
+    console.log("version", state.data.form);
   };
 
   const deleteTableRows = (index: number) => {

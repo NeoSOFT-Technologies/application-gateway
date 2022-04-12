@@ -64,5 +64,5 @@ export interface IError {
   defaultVersion: string;
   version: string;
   isQuotaDisabled: string;
-  OverrideTarget: string;
+  LoadBalancingTargets: string;
 }
