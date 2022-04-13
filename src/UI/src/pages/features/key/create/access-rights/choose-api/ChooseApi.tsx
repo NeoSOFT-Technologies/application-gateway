@@ -8,7 +8,10 @@ export default function ChooseApi() {
     <div>
       <h4>Choose Api</h4>
       <AccessList />
-      <GlobalLimit />
+      <GlobalLimit
+        isDisabled={true}
+        policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
+      />
       <ApiAccess />
     </div>
   );

@@ -3,6 +3,7 @@ import GlobalLimit from "../../../common-settings/global-limit/GlobalLimit";
 import AccessList from "./api-access-rights/AccessList";
 import ApiAccess from "./api-access/ApiAccess";
 export default function AccessRights() {
+  // const disabled = false;
   return (
     <div>
       <div>
@@ -10,7 +11,7 @@ export default function AccessRights() {
           <div className="align-items-center">
             <div className="pt-2">
               <AccessList />
-              <GlobalLimit />
+              <GlobalLimit isDisabled={false} />
               <ApiAccess />
             </div>
           </div>
