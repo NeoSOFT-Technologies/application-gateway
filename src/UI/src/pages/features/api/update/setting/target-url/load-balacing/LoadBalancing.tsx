@@ -22,10 +22,8 @@ export default function LoadBalancing() {
       (sum: number, current: any) => (sum = sum + current.weighting),
       0
     );
-    console.log("sum", weightSum);
     const traffic: number = 100 / weightSum;
     const trafficPercentage: number = traffic * weight[index].weighting;
-    console.log("per", trafficPercentage);
     return trafficPercentage;
   };
   const setArrayLength = () => {
