@@ -9,6 +9,7 @@ import {
   useAppSelector,
 } from "../../../../../../../store/hooks";
 import { setForm } from "../../../../../../../store/features/api/update/slice";
+// import { IApiGetByIdState } from "../../../../../../../store/features/api/update";
 
 export default function LoadBalancing() {
   const dispatch = useAppDispatch();
@@ -17,13 +18,16 @@ export default function LoadBalancing() {
   const [addFormData, setAddFormData] = useState<any>({
     LoadBalancingTargets: "",
   });
+  const [loading, setLoading] = useState(true);
   const trafficCalculation = (index: number) => {
     const weightSum: number = weight.reduce(
       (sum: number, current: any) => (sum = sum + current.weighting),
       0
     );
     const traffic: number = 100 / weightSum;
-    const trafficPercentage: number = traffic * weight[index].weighting;
+    const percentage: number = traffic * weight[index].weighting;
+    const trafficPercentage =
+      Math.round((percentage + Number.EPSILON) * 100) / 100;
     return trafficPercentage;
   };
   const setArrayLength = () => {
@@ -36,15 +40,15 @@ export default function LoadBalancing() {
         weight.push(weightObj);
         setWeight(weight);
       }
+      setLoading(false);
       console.log("setarray weight", weight);
+      // return weight;
     }
   };
 
   useEffect(() => {
-    if (state.loading === false) {
-      console.log("useeffect");
-      setArrayLength();
-    }
+    console.log("useeffect");
+    setArrayLength();
   }, []);
   const handleTrafficElement = (index: number) => {
     const weightObj = [...weight];
@@ -146,7 +150,7 @@ export default function LoadBalancing() {
       </Row>
       <div className="container">
         <div className="row">
-          <div className="col-sm-8">
+          <div className="col-sm-11">
             <table className="table table-bordered">
               <thead>
                 <tr>
@@ -155,8 +159,7 @@ export default function LoadBalancing() {
                   <th>Traffic</th>
                 </tr>
               </thead>
-              {weight.length !== 0 &&
-              state.data.form.LoadBalancingTargets.length > 0 ? (
+              {loading === false ? (
                 <tbody>
                   {state.data.form.LoadBalancingTargets.map(
                     (data: any, index: any) => {
@@ -170,11 +173,11 @@ export default function LoadBalancing() {
                           </td>
 
                           <td>
-                            <label>{handleTrafficElement(index)}</label>
+                            <label>{handleTrafficElement(index)} % </label>
                           </td>
                           <td>
                             <button
-                              className="btn btn-outline-dark bi bi-trash-fill"
+                              className="btn btn-default bi bi-trash-fill"
                               onClick={() => deleteTableRows(index)}
                             ></button>
                           </td>

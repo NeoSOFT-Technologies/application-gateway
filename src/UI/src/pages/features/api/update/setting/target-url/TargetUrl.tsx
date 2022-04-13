@@ -122,12 +122,7 @@ export default function TargetUrl() {
                     </Form.Group>
                   </Col>
                   <Col>
-                    {state.data.form.LoadBalancingTargets.length > 0 ||
-                    check === true ? (
-                      <LoadBalancing />
-                    ) : (
-                      <span></span>
-                    )}
+                    {check === true ? <LoadBalancing /> : <span></span>}
                   </Col>
                   <Col md="12">
                     <Form.Group className="mb-3">
