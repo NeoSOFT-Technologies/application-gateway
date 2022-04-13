@@ -26,9 +26,10 @@ export interface IGetApiByIdData {
   Blacklist: [];
   Whitelist: [];
   VersioningInfo: {
-    Location: number;
+    Location: string;
     Key: string;
   };
+  IsVersioningDisabled: boolean;
   DefaultVersion: string;
   Versions: [
     {
@@ -63,4 +64,5 @@ export interface IError {
   defaultVersion: string;
   version: string;
   isQuotaDisabled: string;
+  LoadBalancingTargets: string;
 }

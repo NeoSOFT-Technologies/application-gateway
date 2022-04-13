@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+// import React, { useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import {
   setFormData,
@@ -31,7 +32,22 @@ export default function TargetUrl() {
     }
     setFormData(event, dispatch, state);
   }
+
   const [check, setCheck] = useState(false);
+
+  const fun = () => {
+    if (state.data.form.LoadBalancingTargets.length > 0) {
+      setCheck(true);
+    }
+  };
+  if (state.loading === false) {
+    console.log("stateloading", state.data.form.LoadBalancingTargets.length);
+    fun();
+  }
+  useEffect(() => {
+    console.log("length", state.data.form.LoadBalancingTargets.length);
+    // fun();
+  }, []);
   return (
     <div>
       <div className="accordion" id="accordionTargetUrl">
@@ -103,14 +119,20 @@ export default function TargetUrl() {
                         id="isLoadBalancing"
                         name="isLoadBalancing"
                         label="Enable round-robin load balancing"
-                        // checked={state.data.form?.isLoadBalancing}
-                        // onChange={(e: any) => validateForm(e)}
+                        checked={
+                          state.data.form.LoadBalancingTargets.length > 0
+                        }
+                        // checked={}
                         onChange={(e: any) => setCheck(e.target.checked)}
                       />
                     </Form.Group>
                   </Col>
                   <Col>
-                    {check === true ? <LoadBalancing /> : <span></span>}
+                    {state.data.form.LoadBalancingTargets.length > 0 ? (
+                      <LoadBalancing />
+                    ) : (
+                      <span></span>
+                    )}
                   </Col>
                   <Col md="12">
                     <Form.Group className="mb-3">

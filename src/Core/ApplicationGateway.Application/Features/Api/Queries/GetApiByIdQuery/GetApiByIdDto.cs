@@ -18,6 +18,7 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public List<string>? Whitelist { get; set; }
         public GetVersioningInfo? VersioningInfo { get; set; }
 #nullable disable
+        public bool IsVersioningDisabled { get; set; }
         public string DefaultVersion { get; set; }
         public List<GetVersionModel> Versions { get; set; }
         public string AuthType { get; set; }
