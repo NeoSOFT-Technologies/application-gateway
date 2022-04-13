@@ -1,8 +1,11 @@
 import React from "react";
+import { useAppSelector } from "../../../../../store/hooks";
+// import { useAppSelector } from "../../../../../store/hooks";
 import GlobalLimit from "../../../common-settings/global-limit/GlobalLimit";
 import AccessList from "./api-access-rights/AccessList";
 import ApiAccess from "./api-access/ApiAccess";
 export default function AccessRights() {
+  const state = useAppSelector((RootState) => RootState.createPolicyState);
   return (
     <div>
       <div>
@@ -11,7 +14,8 @@ export default function AccessRights() {
             <div className="pt-2">
               <AccessList />
               <GlobalLimit />
-              <ApiAccess />
+              {/* <ApiAccess /> */}
+              {state.data.form.apIs?.length > 0 ? <ApiAccess /> : <></>}
             </div>
           </div>
         </div>
