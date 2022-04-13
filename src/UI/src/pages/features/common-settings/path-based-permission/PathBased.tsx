@@ -137,7 +137,7 @@ export default function PathBased() {
                             above unless per Api limits and quotas are set here.
                           </Form.Label>
                         </Form.Group>
-                        {isActiveApi ? <GlobalLimit /> : " "}
+                        {isActiveApi ? <GlobalLimit isDisabled={false} /> : " "}
                       </Col>
                     </Row>
                   </div>

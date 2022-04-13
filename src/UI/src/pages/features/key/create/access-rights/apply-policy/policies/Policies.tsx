@@ -17,7 +17,7 @@ export default function Policies() {
               console.log(apiName);
               return (
                 <tr key={index}>
-                  <GlobalLimit />
+                  <GlobalLimit isDisabled={true} />
                 </tr>
               );
             }
@@ -26,6 +26,7 @@ export default function Policies() {
           <></>
         )}
       </>
+      {/* <GlobalLimit isDisabled={true} /> */}
     </div>
   );
 }

@@ -10,7 +10,11 @@ export default function ChooseApi() {
   return (
     <div>
       <AccessList />
-      <GlobalLimit />
+      <GlobalLimit
+        isDisabled={true}
+        policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
+      />
+
       {state.data.form.accessRights?.length! > 0 ? <ApiAccess /> : <></>}
     </div>
   );

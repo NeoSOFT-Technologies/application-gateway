@@ -44,7 +44,7 @@ function AppRoutes() {
         <Route path="/policy/create" element={<CreatePolicy />} />
         <Route path="/registertenant" element={<RegisterTenant />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/api/update" element={<UpdateApi />} />
+        <Route path="/api/update/:id" element={<UpdateApi />} />
         <Route path="/tenantdetail" element={<TenantDetails />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />

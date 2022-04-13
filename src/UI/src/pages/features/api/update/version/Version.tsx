@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import Versions from "./versions/Versions";
 import VersionSettings from "./version-settings/VersionSettings";
 import { Col, Form } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import { setFormData } from "../../../../../resources/api/api-constants";
 
 export default function Version() {
-  const [check, setDisabledVersioning] = useState(true);
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.updateApiState);
+
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    setFormData(event, dispatch, state);
+  }
 
   return (
     <div>
@@ -12,15 +19,15 @@ export default function Version() {
         <Form.Group className="mb-3">
           <Form.Check
             type="switch"
-            id="isEnabledVersioning"
-            name="isEnabledVersioning"
+            id="IsVersioningDisabled"
+            name="IsVersioningDisabled"
             label="Disable Versioning"
-            checked={check}
-            onChange={(e: any) => setDisabledVersioning(e.target.checked)}
+            checked={state.data.form?.IsVersioningDisabled}
+            onChange={(e: any) => validateForm(e)}
           />
         </Form.Group>
       </Col>
-      {check ? (
+      {state.data.form?.IsVersioningDisabled ? (
         <></>
       ) : (
         <div>

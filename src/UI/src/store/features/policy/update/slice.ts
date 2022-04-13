@@ -1,12 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { updatePolicyService } from "../../../../services/policy/policy";
+import {
+  getPolicyByIdService,
+  updatePolicyService,
+} from "../../../../services/policy/policy";
 import error from "../../../../utils/error";
 import { IGetPolicyByIdData } from "../create";
 import { initialState } from "../create/payload";
 
+export const getPolicybyId = createAsyncThunk(
+  "Policy/GetById",
+  async (id: string) => {
+    try {
+      const response = await getPolicyByIdService(id);
+      console.log("response", response.data);
+      return response.data;
+    } catch (err) {
+      const myError = err as Error | AxiosError;
+      if (axios.isAxiosError(myError) && myError.response)
+        throw myError.response.data.Errors[0];
+      else throw myError.message;
+    }
+  }
+);
 export const updatePolicy = createAsyncThunk(
-  "policy",
+  "Policy/Update",
   async (data: IGetPolicyByIdData) => {
     try {
       const response = await updatePolicyService(data);
@@ -20,6 +38,7 @@ export const updatePolicy = createAsyncThunk(
     }
   }
 );
+
 const slice = createSlice({
   name: "policyUpdate",
   initialState,
@@ -32,6 +51,20 @@ const slice = createSlice({
     },
   },
   extraReducers(builder): void {
+    builder.addCase(getPolicybyId.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getPolicybyId.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data.form = action.payload.Data;
+    });
+    builder.addCase(getPolicybyId.rejected, (state, action) => {
+      state.loading = false;
+      // action.payload contains error information
+      action.payload = action.error;
+      state.error = error(action.payload);
+    });
+
     builder.addCase(updatePolicy.pending, (state) => {
       state.loading = true;
     });

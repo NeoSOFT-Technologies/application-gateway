@@ -13,8 +13,7 @@ export default function AccessRights() {
           <div className="align-items-center">
             <div className="pt-2">
               <AccessList />
-              <GlobalLimit />
-              {/* <ApiAccess /> */}
+              <GlobalLimit isDisabled={false} />
               {state.data.form.apIs?.length > 0 ? <ApiAccess /> : <></>}
             </div>
           </div>
