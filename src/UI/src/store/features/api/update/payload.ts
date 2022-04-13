@@ -57,6 +57,7 @@ export const initialState: IApiGetByIdState = {
       version: "",
       isQuotaDisabled: "",
       LoadBalancingTargets: "",
+      OverrideTarget: "",
     },
   },
   loading: false,

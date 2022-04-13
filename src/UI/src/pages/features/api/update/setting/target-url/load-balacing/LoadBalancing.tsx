@@ -164,30 +164,30 @@ export default function LoadBalancing() {
                 <></>
               ) : (
                 <tbody>
-                  {weight.map((index: any) => {
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <label>
-                            {state.data.form.LoadBalancingTargets[index]}
-                          </label>
-                        </td>
-                        <td>
-                          <label>{weight[index].weighting}</label>
-                        </td>
+                  {state.data.form.LoadBalancingTargets.map(
+                    (data: any, index: any) => {
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <label>{data}</label>
+                          </td>
+                          <td>
+                            <label>{weight[index].weighting}</label>
+                          </td>
 
-                        <td>
-                          <label>{handleTrafficElement(index)}</label>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-outline-dark bi bi-trash-fill"
-                            onClick={() => deleteTableRows(index)}
-                          ></button>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                          <td>
+                            <label>{handleTrafficElement(index)}</label>
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-outline-dark bi bi-trash-fill"
+                              onClick={() => deleteTableRows(index)}
+                            ></button>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )}
                 </tbody>
               )}
             </table>
