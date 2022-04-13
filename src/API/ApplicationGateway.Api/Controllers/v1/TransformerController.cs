@@ -1,21 +1,18 @@
-﻿using ApplicationGateway.Application.Contracts.Persistence;
-using ApplicationGateway.Application.Features.Transformers.Commands.CreateTransformerCommand;
+﻿using ApplicationGateway.Application.Features.Transformers.Commands.CreateTransformerCommand;
 using ApplicationGateway.Application.Features.Transformers.Commands.DeleteTransformerCommand;
 using ApplicationGateway.Application.Features.Transformers.Commands.UpdateTransformerCommand;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetAllTransformer;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerById;
 using ApplicationGateway.Application.Features.Transformers.Queries.GetTransformerByName;
-using ApplicationGateway.Application.Helper;
-using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
-using ApplicationGateway.Domain.TykData;
-using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationGateway.Api.Controllers.v1
 {
+    [Authorize]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -24,7 +21,6 @@ namespace ApplicationGateway.Api.Controllers.v1
         private readonly IMediator _mediator;
         private readonly ILogger<TransformerController> _logger;
         
-
         public TransformerController(IMediator mediator, ILogger<TransformerController> logger )
         {
             _logger = logger;
