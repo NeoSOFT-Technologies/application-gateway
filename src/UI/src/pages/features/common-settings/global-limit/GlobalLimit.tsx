@@ -1,7 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-export default function GlobalLimit() {
-  const [rate, setRate] = useState(false);
+import { RootState } from "../../../../store";
+import { IPolicyUpdateState } from "../../../../store/features/policy/update";
+import { getPolicybyId } from "../../../../store/features/policy/update/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+
+interface IProps {
+  isDisabled: boolean;
+  // state: any;
+  policyId?: any;
+}
+export default function GlobalLimit(props: IProps) {
+  const Policy: IPolicyUpdateState = useAppSelector(
+    (state: RootState) => state.updatePolicyState
+  );
+  const dispatch = useAppDispatch();
+  const mainCall = async (id: string) => {
+    dispatch(getPolicybyId(id));
+  };
+  useEffect(() => {
+    mainCall(props.policyId);
+  }, []);
+
+  console.log("mypolicies", Policy);
+  const [rate, setRate] = useState(props.isDisabled);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
   const [throttleRetry, setThrottleRetry] = useState("Disabled throttling");
@@ -9,6 +31,8 @@ export default function GlobalLimit() {
     "Disabled throttling"
   );
   const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
+
+  // const [values, setValues] = useState("");
 
   function handleThrottleChange(evt: any) {
     setThrottle(evt.target.checked);
@@ -66,7 +90,8 @@ export default function GlobalLimit() {
                             id="disableGlobalRate"
                             name="GlobalLimit.IsDisabled"
                             label="Disable rate limiting"
-                            checked={rate}
+                            disabled={props.isDisabled}
+                            // checked={rate}
                             onChange={(e: any) => setRate(e.target.checked)}
                           />
                           <Form.Label className="mt-3">Rate</Form.Label>
@@ -76,6 +101,10 @@ export default function GlobalLimit() {
                             type="text"
                             id="rate"
                             placeholder="Enter Rate"
+                            // value={
+                            //   props.isDisabled ? Policy.data.form.rate : values
+                            // }
+                            // onChange={(e: any) => setValues(e.target.value)}
                             name="RateLimit.Rate"
                             disabled={rate}
                           />
@@ -87,8 +116,12 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="per"
                             placeholder="Enter time"
+                            // value={
+                            //   props.isDisabled ? Policy.data.form.per : values
+                            // }
+                            // onChange={(e: any) => setValues(e.target.value)}
                             name="RateLimit.Per"
                             disabled={rate}
                           />
@@ -105,6 +138,7 @@ export default function GlobalLimit() {
                             id="disableThrottling"
                             name="Throttling.IsDisabled"
                             label="Disable Throttling"
+                            disabled={props.isDisabled}
                             checked={throttle}
                             onChange={(e: any) => handleThrottleChange(e)}
                           />
@@ -115,9 +149,15 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="retry"
                             placeholder={throttleRetry}
                             name="Throttling.Retry"
+                            // value={
+                            //   props.isDisabled
+                            //     ? Policy.data.form.throttleRetries
+                            //     : values
+                            // }
+                            // onChange={(e: any) => setValues(e.target.value)}
                             // value={throttleDefault}
                             disabled={throttle}
                           />
@@ -130,8 +170,14 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="interval"
                             placeholder={throttleInterval}
+                            // value={
+                            //   props.isDisabled
+                            //     ? Policy.data.form.throttleInterval
+                            //     : values
+                            // }
+                            // onChange={(e: any) => setValues(e.target.value)}
                             name="Throttling.Interval"
                             disabled={throttle}
                           />
@@ -147,6 +193,7 @@ export default function GlobalLimit() {
                             id="unlimitedRequests"
                             name="unlimitedRequests.IsDisabled"
                             label="Unlimited requests"
+                            disabled={props.isDisabled}
                             checked={quota}
                             onChange={(e: any) => handleQuotaChange(e)}
                           />
@@ -157,8 +204,14 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="quotaPer"
                             placeholder={quotaPerPeriod}
+                            // value={
+                            //   props.isDisabled
+                            //     ? Policy.data.form.quotaRate
+                            //     : values
+                            // }
+                            // onChange={(e: any) => setValues(e.target.value)}
                             name="Quota.Per"
                             disabled={quota}
                           />
@@ -170,6 +223,12 @@ export default function GlobalLimit() {
                             className="mt-2"
                             style={{ height: 46 }}
                             disabled={quota}
+                            // value={
+                            //   props.isDisabled
+                            //     ? Policy.data.form.maxQuota
+                            //     : values
+                            // }
+                            // onChange={(e: any) => setValues(e.target.value)}
                           >
                             <option>never</option>
                             <option>1 hour</option>

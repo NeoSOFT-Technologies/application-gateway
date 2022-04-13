@@ -19,30 +19,32 @@ export interface IGetKeyByIdData {
   quotaRenewalRate: number;
   throttleInterval: number;
   throttleRetries: number;
-  accessRights?: [
-    {
-      apiId: string | null;
-      apiName: string | null;
-      versions: string[];
-      allowedUrls?: [
+  accessRights?:
+    | [
         {
-          url: string;
-          methods: string[];
-        }
-      ];
-      limit: {
-        rate?: number;
-        throttle_interval?: number;
-        throttle_retry_limit?: number;
-        max_query_depth?: number;
-        quota_max?: number;
-        quota_renews?: number;
-        quota_remaining?: number;
-        quota_renewal_rate?: number;
-      } | null;
-    }
-  ];
-  policies?: string[] | null;
+          apiId: string | null;
+          apiName: string | null;
+          versions: string[];
+          allowedUrls?: [
+            {
+              url: string;
+              methods: string[];
+            }
+          ];
+          limit: {
+            rate?: number;
+            throttle_interval?: number;
+            throttle_retry_limit?: number;
+            max_query_depth?: number;
+            quota_max?: number;
+            quota_renews?: number;
+            quota_remaining?: number;
+            quota_renewal_rate?: number;
+          } | null;
+        } | null
+      ]
+    | [];
+  policies: [];
   tags?: string[];
 }
 export interface IError {

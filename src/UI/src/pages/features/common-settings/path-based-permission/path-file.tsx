@@ -47,46 +47,47 @@ export default function Ipathpermission() {
   };
 
   return (
-    <div>
-      <Row>
-        <Col md={5}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              <b>Paths :</b>
-            </Form.Label>
-            <Form.Control
-              type="text"
-              id="path"
-              placeholder="Enter custom regex"
-              name="path"
-              onChange={handleAddFormChange}
-              // data-testid="name-input"
-              required
-            />
-            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-        <Col md={5}>
-          <Form.Group className="mb-3">
-            <Form.Label>
-              <b> Allowed Methods :</b>
-            </Form.Label>
-            <Form.Select
-              style={{ height: 45 }}
-              name="method"
-              onChange={handleAddFormChange}
-            >
-              <option disabled>Select Method(s)</option>
-              <option>GET</option>
-              <option>POST</option>
-              <option>PUT</option>
-              <option>DELETE</option>
-              <option>PATCH</option>
-              <option>OPTIONS</option>
-              <option>HEAD</option>
-            </Form.Select>
-          </Form.Group>
-        </Col>
+    <>
+      <div>
+        <Row>
+          <Col md={5}>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                <b>Paths :</b>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                id="path"
+                placeholder="Enter custom regex"
+                name="path"
+                onChange={handleAddFormChange}
+                // data-testid="name-input"
+                required
+              />
+              <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+            </Form.Group>
+          </Col>
+          <Col md={5}>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                <b> Allowed Methods :</b>
+              </Form.Label>
+              <Form.Select
+                style={{ height: 45 }}
+                name="method"
+                onChange={handleAddFormChange}
+              >
+                <option disabled>Select Method(s)</option>
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>DELETE</option>
+                <option>PATCH</option>
+                <option>OPTIONS</option>
+                <option>HEAD</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
         <Col md={2} className="pt-2">
           <Form.Label></Form.Label>

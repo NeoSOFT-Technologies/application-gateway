@@ -8,6 +8,9 @@ export const regexForTagetUrl =
 
 export const regexForNumber = /^[0-9]*$/;
 
+export const regexForOverrideTarget =
+  /^(?:(?:https?|ftp|file):\/\/)(?:\([a-zA-Z0-9+&@#\\/%=_|$?!:,.]*\)|[-A-Z0-9+&@#\\/%=_|$?!:,.])*(?:\([-A-Z0-9+&@#\\/%=_|$?!:,.]*\)|[A-Z0-9+&@#\\/%=_|$])*/;
+
 export function setFormData(e: any, dispatch: any, state: any) {
   const newState = setNestedState(e, state);
   dispatch(setForm(newState));

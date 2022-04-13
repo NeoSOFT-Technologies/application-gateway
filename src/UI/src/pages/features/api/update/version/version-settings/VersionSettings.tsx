@@ -1,33 +1,16 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import {
-  setFormData,
-  setFormErrors,
-  regexForName,
-} from "../../../../../../resources/api/api-constants";
+import { setFormData } from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 
 export default function VersionSettings() {
   const dispatch = useAppDispatch();
+
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    switch (name) {
-      case "VersionKey":
-        setFormErrors(
-          {
-            ...state.data.errors,
-            [name]: regexForName.test(value)
-              ? ""
-              : "Enter a Valid Version Key Name",
-          },
-          dispatch
-        );
-        break;
-      default:
-        break;
-    }
+    console.log(name, value);
     setFormData(event, dispatch, state);
   }
 
@@ -66,16 +49,29 @@ export default function VersionSettings() {
                             <Form.Select
                               aria-label="Default select example"
                               name="VersioningInfo.Location"
-                              onClick={(e: any) => validateForm(e)}
+                              value={state.data.form?.VersioningInfo?.Location}
+                              onChange={(e: any) => validateForm(e)}
                             >
-                              <option id="1" value="Header">
+                              <option
+                                id="Header"
+                                //  value="Header"
+                                value="1"
+                              >
                                 Header
                               </option>
-                              <option id="2" value="URL">
-                                URL
+                              <option
+                                id="URL or Form parameter"
+                                // value="URL or Form parameter"
+                                value="2"
+                              >
+                                URL or Form parameter
                               </option>
-                              <option id="3" value="Query URL">
-                                Query URL
+                              <option
+                                id="First part of path"
+                                // value="First part of path"
+                                value="3"
+                              >
+                                First part of path
                               </option>
                             </Form.Select>
                           </Form.Group>
@@ -92,13 +88,8 @@ export default function VersionSettings() {
                               placeholder="Enter Version key Name"
                               name="VersioningInfo.Key"
                               value={state.data.form?.VersioningInfo.Key}
-                              // isInvalid={!!state.data.errors?.VersionKey}
-                              // isValid={!state.data.errors?.VersionKey}
                               onChange={(e: any) => validateForm(e)}
                             />
-                            {/* <Form.Control.Feedback type="invalid">
-                            {state.data.errors?.VersionKey}
-                          </Form.Control.Feedback> */}
                           </Form.Group>
                         </Col>
                       </Row>

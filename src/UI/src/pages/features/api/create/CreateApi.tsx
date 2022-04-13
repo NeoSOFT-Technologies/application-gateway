@@ -90,7 +90,7 @@ function CreateApi() {
         if (valId) {
           await new Promise((resolve) => setTimeout(resolve, 1000));
           await dispatch(getApiById(valId));
-          navigate("/api/update");
+          navigate(`/api/update/${valId}`);
         }
       }
     } else {
