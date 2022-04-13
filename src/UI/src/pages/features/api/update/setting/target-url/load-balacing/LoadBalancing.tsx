@@ -41,9 +41,6 @@ export default function LoadBalancing() {
       console.log("setarray weight", weight);
     }
   };
-  // if (state.loading === false) {
-  //   setArrayLength();
-  // }
 
   useEffect(() => {
     if (state.loading === false) {
@@ -101,10 +98,6 @@ export default function LoadBalancing() {
     row.splice(index, 1);
     dispatch(setForm({ ...state.data.form, LoadBalancingTargets: row }));
   };
-  console.log(
-    "weight",
-    weight.length !== 0 && state.data.form.LoadBalancingTargets.length > 0
-  );
   return (
     <div>
       <Row>
