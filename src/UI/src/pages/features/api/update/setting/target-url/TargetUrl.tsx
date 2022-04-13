@@ -40,13 +40,15 @@ export default function TargetUrl() {
       setCheck(true);
     }
   };
-  if (state.loading === false) {
-    console.log("stateloading", state.data.form.LoadBalancingTargets.length);
-    fun();
-  }
+  // if (state.loading === false) {
+  //   console.log("stateloading", state.data.form.LoadBalancingTargets.length);
+  //   fun();
+  // }
   useEffect(() => {
-    console.log("length", state.data.form.LoadBalancingTargets.length);
-    // fun();
+    if (state.loading === false) {
+      console.log("length", state.data.form.LoadBalancingTargets.length);
+      fun();
+    }
   }, []);
   return (
     <div>
