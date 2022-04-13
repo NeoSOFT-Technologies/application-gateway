@@ -26,12 +26,14 @@ export interface IGetPolicyByIdData {
       id: string | null;
       name: string;
       versions: string[];
-      allowedUrls?: [
-        {
-          url: string;
-          methods: string[];
-        }
-      ];
+      allowedUrls:
+        | [
+            {
+              url: string;
+              methods: string[];
+            }
+          ]
+        | [];
       limit: {
         rate?: number;
         per: number;
