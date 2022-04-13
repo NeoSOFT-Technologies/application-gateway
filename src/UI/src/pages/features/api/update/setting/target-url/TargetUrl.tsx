@@ -35,19 +35,14 @@ export default function TargetUrl() {
 
   const [check, setCheck] = useState(false);
 
-  const fun = () => {
+  const enableLoadBalancing = () => {
     if (state.data.form.LoadBalancingTargets.length > 0) {
       setCheck(true);
-    }
+    } else setCheck(false);
   };
-  // if (state.loading === false) {
-  //   console.log("stateloading", state.data.form.LoadBalancingTargets.length);
-  //   fun();
-  // }
   useEffect(() => {
     if (state.loading === false) {
-      console.log("length", state.data.form.LoadBalancingTargets.length);
-      fun();
+      enableLoadBalancing();
     }
   }, []);
   return (
@@ -121,16 +116,14 @@ export default function TargetUrl() {
                         id="isLoadBalancing"
                         name="isLoadBalancing"
                         label="Enable round-robin load balancing"
-                        checked={
-                          state.data.form.LoadBalancingTargets.length > 0
-                        }
-                        // checked={}
+                        checked={check}
                         onChange={(e: any) => setCheck(e.target.checked)}
                       />
                     </Form.Group>
                   </Col>
                   <Col>
-                    {state.data.form.LoadBalancingTargets.length > 0 ? (
+                    {state.data.form.LoadBalancingTargets.length > 0 ||
+                    check === true ? (
                       <LoadBalancing />
                     ) : (
                       <span></span>

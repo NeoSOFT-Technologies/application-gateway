@@ -28,7 +28,6 @@ export default function LoadBalancing() {
     console.log("per", trafficPercentage);
     return trafficPercentage;
   };
-  console.log("loading", state.loading);
   const setArrayLength = () => {
     if (state.data.form.LoadBalancingTargets.length > 0) {
       for (let i = 0; i < state.data.form.LoadBalancingTargets.length; i++) {
@@ -47,8 +46,10 @@ export default function LoadBalancing() {
   // }
 
   useEffect(() => {
-    console.log("useeffect");
-    setArrayLength();
+    if (state.loading === false) {
+      console.log("useeffect");
+      setArrayLength();
+    }
   }, []);
   const handleTrafficElement = (index: number) => {
     const weightObj = [...weight];
@@ -100,7 +101,10 @@ export default function LoadBalancing() {
     row.splice(index, 1);
     dispatch(setForm({ ...state.data.form, LoadBalancingTargets: row }));
   };
-
+  console.log(
+    "weight",
+    weight.length !== 0 && state.data.form.LoadBalancingTargets.length > 0
+  );
   return (
     <div>
       <Row>
@@ -160,9 +164,8 @@ export default function LoadBalancing() {
                   <th>Traffic</th>
                 </tr>
               </thead>
-              {weight.length === 0 ? (
-                <></>
-              ) : (
+              {weight.length !== 0 &&
+              state.data.form.LoadBalancingTargets.length > 0 ? (
                 <tbody>
                   {state.data.form.LoadBalancingTargets.map(
                     (data: any, index: any) => {
@@ -189,6 +192,8 @@ export default function LoadBalancing() {
                     }
                   )}
                 </tbody>
+              ) : (
+                <></>
               )}
             </table>
           </div>
