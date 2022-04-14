@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { RootState } from "../../../../store";
 import { IPolicyUpdateState } from "../../../../store/features/policy/update";
 import { getPolicybyId } from "../../../../store/features/policy/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -16,7 +15,7 @@ interface IProps {
 
 export default function GlobalLimit(props: IProps) {
   const Policy: IPolicyUpdateState = useAppSelector(
-    (state: RootState) => state.updatePolicyState
+    (state) => state.updatePolicyState
   );
   const dispatch = useAppDispatch();
   const state: IPolicyCreateState = useAppSelector(
@@ -126,7 +125,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder="Enter Rate"
                             value={
                               props.isDisabled
-                                ? Policy.data.form.Rate
+                                ? Policy.data.form.rate
                                 : rateValue
                             }
                             onChange={(e: any) => validateForm(e)}
@@ -144,7 +143,7 @@ export default function GlobalLimit(props: IProps) {
                             id="per"
                             placeholder="Enter time"
                             value={
-                              props.isDisabled ? Policy.data.form.Per : perValue
+                              props.isDisabled ? Policy.data.form.per : perValue
                             }
                             onChange={(e: any) => setPerValue(e.target.value)}
                             name="RateLimit.Per"
@@ -179,7 +178,7 @@ export default function GlobalLimit(props: IProps) {
                             name="Throttling.Retry"
                             value={
                               props.isDisabled
-                                ? Policy.data.form.ThrottleRetries
+                                ? Policy.data.form.throttleRetries
                                 : retryValue
                             }
                             onChange={(e: any) => setRetryValue(e.target.value)}
@@ -199,7 +198,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder={throttleInterval}
                             value={
                               props.isDisabled
-                                ? Policy.data.form.ThrottleInterval
+                                ? Policy.data.form.throttleInterval
                                 : intervalValue
                             }
                             onChange={(e: any) =>
@@ -235,7 +234,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder={quotaPerPeriod}
                             value={
                               props.isDisabled
-                                ? Policy.data.form.MaxQuota
+                                ? Policy.data.form.maxQuota
                                 : maxQuotaValue
                             }
                             onChange={(e: any) =>
@@ -254,7 +253,7 @@ export default function GlobalLimit(props: IProps) {
                             disabled={quota}
                             value={
                               props.isDisabled
-                                ? Policy.data.form.QuotaRate
+                                ? Policy.data.form.quotaRate
                                 : quotaResetValue
                             }
                             onChange={(e: any) =>

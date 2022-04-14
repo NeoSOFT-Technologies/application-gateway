@@ -13,8 +13,8 @@ export default function ApiAccess() {
         Array.isArray(state.data.form.accessRights) ? (
           (state.data.form.accessRights as any[]).map(
             (data: any, index: number) => {
-              const { apiName } = data;
-              console.log(apiName);
+              const { policies } = data;
+              console.log(policies);
               return (
                 <tr key={index}>
                   <PathBased />

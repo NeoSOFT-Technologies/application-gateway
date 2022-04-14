@@ -6,21 +6,16 @@ import ApiAccess from "./api-access/ApiAccess";
 
 export default function ChooseApi() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
-  // console.log(state.data.form.accessRights?.length);
   console.log("parent states", state.data.form);
 
   return (
     <div>
-      <h4>Choose Api</h4>
       <AccessList />
       <GlobalLimit
         isDisabled={false}
 
         // state={state}
       />
-      <ApiAccess />
-      {/* <GlobalLimit /> */}
-      {/* <ApiAccess /> */}
 
       {state.data.form.accessRights?.length! > 0 ? <ApiAccess /> : <></>}
     </div>

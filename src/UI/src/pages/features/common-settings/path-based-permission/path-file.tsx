@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
+import { IPolicyCreateState } from "../../../../store/features/policy/create";
+import { setForm } from "../../../../store/features/policy/create/slice";
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+
 export default function Ipathpermission() {
+  const dispatch = useAppDispatch();
+  const state: IPolicyCreateState = useAppSelector(
+    (RootState) => RootState.createPolicyState
+  );
+
   const [rowsData, setRowsData] = useState<any>([]);
   const [inputData, setInputData] = useState<any>({
     path: "",
@@ -8,9 +17,18 @@ export default function Ipathpermission() {
   });
 
   const handleAddclick = () => {
-    setRowsData([...rowsData, inputData]);
+    console.log("apIs", state.data.form);
+    const list = [
+      ...state.data.form.apIs[0].allowedUrls!,
+      {
+        url: inputData.path,
+        methods: ["get"],
+      },
+    ];
+    dispatch(setForm({ ...state.data.form.apIs[0], allowedUrls: list }));
+    setInputData({ path: "", method: "" });
   };
-
+  console.log("checkhandle", state.data.form);
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
     const rows = [...rowsData];
@@ -27,7 +45,7 @@ export default function Ipathpermission() {
     newFormData[fieldName] = fieldValue;
     setInputData(newFormData);
   };
-  console.log(rowsData);
+
   return (
     <div>
       <Row>
@@ -91,40 +109,29 @@ export default function Ipathpermission() {
                 </tr>
               </thead>
               <tbody>
-                {rowsData.map(
-                  (
-                    data: {
-                      path:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal
-                        | null
-                        | undefined;
-                      method:
-                        | boolean
-                        | React.ReactChild
-                        | React.ReactFragment
-                        | React.ReactPortal
-                        | null
-                        | undefined;
-                      checkbox: boolean | undefined;
-                    },
-                    index: React.Key | null | undefined
-                  ) => {
-                    return (
-                      <tr key={index}>
-                        <td>{data.path}</td>
-                        <td>{data.method}</td>
-                        <td style={{ textAlign: "center" }}>
-                          <i
-                            className="bi bi-trash"
-                            onClick={(e: any) => deleteTableRows(e, index)}
-                          ></i>
-                        </td>
-                      </tr>
-                    );
-                  }
+                {state.data.form.apIs?.length > 0 ? (
+                  (state.data.form.apIs as any[]).map(
+                    (data: any, index: any) => {
+                      return (
+                        state.data.form.apIs[index].allowedUrls as any[]
+                      ).map((data1: any, index1: any) => {
+                        return (
+                          <tr key={index}>
+                            <td>{data1.url}</td>
+                            <td>{data1.methods}</td>
+                            <td style={{ textAlign: "center" }}>
+                              <i
+                                className="bi bi-trash"
+                                onClick={(e: any) => deleteTableRows(e, index)}
+                              ></i>
+                            </td>
+                          </tr>
+                        );
+                      });
+                    }
+                  )
+                ) : (
+                  <></>
                 )}
               </tbody>
             </Table>

@@ -3,30 +3,30 @@ import { IPolicyUpdateState } from "./index";
 export const initialState: IPolicyUpdateState = {
   data: {
     form: {
-      Name: "",
-      Active: true,
-      KeysInactive: true,
-      MaxQuota: 0,
-      QuotaRate: 0,
-      Rate: 0,
-      Per: 0,
-      ThrottleInterval: 0,
-      ThrottleRetries: 0,
-      State: "",
-      KeyExpiresIn: 0,
-      Tags: [],
-      ApIs: [
+      name: "",
+      active: true,
+      keysInactive: true,
+      maxQuota: 0,
+      quotaRate: 0,
+      rate: 0,
+      per: 0,
+      throttleInterval: 0,
+      throttleRetries: 0,
+      state: "",
+      keyExpiresIn: 0,
+      tags: [],
+      apIs: [
         {
-          Id: null,
-          Name: "",
-          Versions: [],
-          AllowedUrls: [
+          id: null,
+          name: "",
+          versions: [],
+          allowedUrls: [
             {
               url: "",
               methods: [],
             },
           ],
-          Limit: {
+          limit: {
             rate: 0,
             per: 0,
             throttle_interval: 0,
@@ -40,7 +40,7 @@ export const initialState: IPolicyUpdateState = {
           },
         },
       ],
-      Partitions: {
+      partitions: {
         quota: false,
         rate_limit: false,
         complexity: false,

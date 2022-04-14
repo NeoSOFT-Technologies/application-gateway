@@ -12,7 +12,7 @@ export default function CreateKey() {
             <Form data-testid="form-input">
               <div className="align-items-center">
                 <div
-                  className="card-header bg-white mt-3 pt-2 pb-2"
+                  className="card-header bg-white mt-3 pt-1 pb-4"
                   style={{ padding: "0.5rem 1.5rem" }}
                 >
                   <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
