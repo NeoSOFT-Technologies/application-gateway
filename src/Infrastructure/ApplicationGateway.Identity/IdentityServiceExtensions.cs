@@ -2,6 +2,7 @@
 using ApplicationGateway.Application.Models.Authentication;
 using ApplicationGateway.Identity.Models;
 using ApplicationGateway.Identity.Services;
+using AuthLibrary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -29,7 +30,7 @@ namespace ApplicationGateway.Identity
                 .AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
-
+            services.AddKeyCloakServices(configuration);
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -37,18 +38,19 @@ namespace ApplicationGateway.Identity
             })
                 .AddJwtBearer(o =>
                 {
+                    o.Authority = configuration["JwtSettings:Issuer"];
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = false;
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = true,
-                        ValidateAudience = true,
+                        ValidateAudience = false,
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero,
                         ValidIssuer = configuration["JwtSettings:Issuer"],
                         ValidAudience = configuration["JwtSettings:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
+                        //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
                     };
 
                     o.Events = new JwtBearerEvents()

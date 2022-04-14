@@ -111,7 +111,7 @@ function CreateApi() {
           <div className="align-items-center">
             <Form onSubmit={handleSubmitApi} data-testid="form-input">
               <div
-                className="card-header bg-white mt-3 pt-2 pb-2"
+                className="card-header bg-white mt-3 pt-1 pb-4"
                 style={{ padding: "0.5rem 1.5rem" }}
               >
                 <Button

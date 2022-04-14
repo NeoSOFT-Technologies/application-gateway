@@ -9,21 +9,24 @@ export default function ApiAccess() {
   console.log("states", state);
   return (
     <>
-      {state.data.form.apIs !== null &&
-      state.data.form.apIs?.length > 0 &&
-      Array.isArray(state.data.form.apIs) ? (
-        (state.data.form.apIs as any[]).map((data: any, index: number) => {
-          const { apIs } = data;
-          console.log(apIs);
-          return (
-            <tr key={index}>
-              <PathBased />
-            </tr>
-          );
-        })
-      ) : (
-        <></>
-      )}
+      <br /> <br />
+      <div className="card col-lg-12 grid-margin stretch-card">
+        {state.data.form.apIs !== null &&
+        state.data.form.apIs?.length > 0 &&
+        Array.isArray(state.data.form.apIs) ? (
+          (state.data.form.apIs as any[]).map((data: any, index: number) => {
+            const { apIs } = data;
+            console.log(apIs);
+            return (
+              <tr key={index}>
+                <PathBased />
+              </tr>
+            );
+          })
+        ) : (
+          <></>
+        )}
+      </div>
     </>
   );
 }
