@@ -45,7 +45,7 @@ export const initialState: IPolicyCreateState = {
         rate_limit: false,
         complexity: false,
         acl: false,
-        per_api: false,
+        per_api: true,
       },
     },
   },

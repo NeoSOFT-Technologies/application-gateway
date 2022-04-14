@@ -23,7 +23,7 @@ export default function Configurations() {
           <Accordion.Body>
             <Form.Label>Policy status : </Form.Label>
             <Form.Select aria-label="Default select example">
-              <option selected>Select an option</option>
+              <option>Select an option</option>
               <option value="1">Active</option>
               <option value="2">Draft</option>
               <option value="3">Access Deneid</option>
@@ -31,7 +31,7 @@ export default function Configurations() {
             <br />
             <Form.Label> Key expires after :</Form.Label>
             <Form.Select aria-label="Default select example">
-              <option selected>Select an option</option>
+              <option>Select an option</option>
               <option value="1">Do not expire key</option>
               <option value="2">1 hour</option>
               <option value="3">6 hours</option>
