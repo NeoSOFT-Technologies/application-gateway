@@ -213,7 +213,10 @@ export default function Versions() {
                 <Row>
                   <div className="container">
                     <div className="row">
-                      <div className="col-sm-8">
+                      <div className="mb-1">
+                        <b>Version List:</b>
+                      </div>
+                      <div className="col-sm-11">
                         <table className="table">
                           <thead>
                             <tr>
@@ -273,7 +276,7 @@ export default function Versions() {
                                     </td>
                                     <td>
                                       <button
-                                        className="btn btn-outline-dark bi bi-trash-fill"
+                                        className="btn bi bi-trash-fill"
                                         onClick={() => deleteTableRows(index)}
                                       ></button>
                                     </td>
