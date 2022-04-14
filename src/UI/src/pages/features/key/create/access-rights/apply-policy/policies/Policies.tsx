@@ -6,27 +6,30 @@ export default function Policies() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
   console.log("states", state.data.form);
   return (
-    <div>
-      <>
+    <>
+      <br />
+      <br /> <br /> <br />
+      <div className="card col-lg-12 grid-margin stretch-card">
         {state.data.form.policies !== null &&
         state.data.form.policies.length > 0 &&
         Array.isArray(state.data.form.policies) ? (
           (state.data.form.policies as any[]).map(
             (data: any, index: number) => {
-              const { apiName } = data;
-              console.log(apiName);
+              // const { policies } = data;
+              console.log(data, index);
               return (
                 <tr key={index}>
-                  <GlobalLimit isDisabled={true} />
+                  <GlobalLimit isDisabled={true} msg={""} />
                 </tr>
               );
             }
           )
         ) : (
           <></>
-        )}
-      </>
+        )}{" "}
+        <br /> <br />
+      </div>{" "}
       {/* <GlobalLimit isDisabled={true} /> */}
-    </div>
+    </>
   );
 }

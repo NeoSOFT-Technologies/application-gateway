@@ -27,6 +27,7 @@ const slice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
+      console.log("state in slice: ", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;

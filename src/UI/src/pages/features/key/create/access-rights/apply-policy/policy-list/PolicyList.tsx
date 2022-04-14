@@ -1,9 +1,8 @@
 import { Grid } from "gridjs-react";
-import React, { useEffect, useState } from "react";
-import { setForm } from "../../../../../../../store/features/policy/create/slice";
+import React, { useEffect } from "react";
+import { setForm } from "../../../../../../../store/features/key/create/slice";
 import { IPolicyListState } from "../../../../../../../store/features/policy/list";
 import { getPolicyList } from "../../../../../../../store/features/policy/list/slice";
-// import { getPolicyById } from "../../../../../../../store/features/policy/update/slice";
 import {
   useAppDispatch,
   useAppSelector,
@@ -21,39 +20,36 @@ export default function PolicyList() {
   useEffect(() => {
     mainCall(1);
   }, []);
-  const [rowInput, setRowInput] = useState<any>({ id: [] });
-
-  const listP: any = [];
-  console.log(accessPolicyList);
-  const handleAddClick = async (Id: string) => {
-    const formobj = { ...rowInput, id: Id };
-    // formobj.id = Id;
-
-    setRowInput(formobj);
-
-    listP.push(Id);
-
-    const list = [
-      ...StateKey.data.form.policies,
-      { policies: rowInput },
-      // listP,
-      // // Id,
-      // // { policies: Id }
-    ];
-    // console.log("listP", State);
-    console.log("newObj", list);
-    console.log("listP", listP);
-    // console.log("list", rowInput);
-
-    dispatch(
-      setForm({
-        ...StateKey.data.form,
-        policies: list[0].policies.id,
-      })
-    );
-    /// setRowInput({ ...rowInput, policies: "" });
-    console.log(StateKey.data);
+  const handleAddClick = (Id: string) => {
+    const list = [...StateKey.data.form.policies, Id];
+    dispatch(setForm({ ...StateKey.data.form, policies: list }));
   };
+  // const handleAddClick = async (Id: string) => {
+  //   const formobj = [...rowInput];
+  //   formobj.push(Id);
+
+  //   // formobj.id = Id;
+
+  //   setRowInput(formobj);
+
+  //   // listP.push(Id);
+
+  //   // setRowInput((prevFormData: any) => [...prevFormData, Id]);
+
+  //   const list = [...StateKey.data.form.policies, rowInput];
+  //   console.log("newObj", list);
+  //   // console.log("listP", rowInput);
+  //   console.log("list", rowInput);
+  //   dispatch(
+  //     setForm({
+  //       ...StateKey.data.form,
+  //       policies: list,
+  //     })
+  //   );
+  //   /// setRowInput({ ...rowInput, policies: "" });
+  //   // console.log(StateKey.data);
+  // };
+  console.log(StateKey.data.form);
   const gridTable = new Grid({
     columns: [
       {
@@ -123,7 +119,7 @@ export default function PolicyList() {
                     aria-expanded="true"
                     aria-controls="collapseOne"
                   >
-                    Policy List
+                    Apply Policy
                   </button>
                 </h2>
                 <div

@@ -11,8 +11,9 @@ export default function ChooseApi() {
     <div>
       <AccessList />
       <GlobalLimit
-        isDisabled={true}
-        policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
+        isDisabled={false}
+        msg={""}
+        // policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
       />
 
       {state.data.form.accessRights?.length! > 0 ? <ApiAccess /> : <></>}
