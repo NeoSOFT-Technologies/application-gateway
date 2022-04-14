@@ -1,19 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import error from "../../../../utils/error";
-import {
-  getApiByIdService,
-  updateApiService,
-} from "../../../../services/api/api";
-import { initialState } from "./payload";
-import { IGetApiByIdData } from ".";
 import axios, { AxiosError } from "axios";
+import {
+  getPolicyByIdService,
+  updatePolicyService,
+} from "../../../../services/policy/policy";
+import error from "../../../../utils/error";
+import { IGetPolicyByIdData } from "../create";
+import { initialState } from "../create/payload";
 
-export const getApiById = createAsyncThunk(
-  "api/getApiById",
-  async (Id: any) => {
+export const getPolicybyId = createAsyncThunk(
+  "Policy/GetById",
+  async (id: string) => {
     try {
-      const response = await getApiByIdService(Id);
-      return response?.data;
+      const response = await getPolicyByIdService(id);
+      console.log("response", response.data);
+      return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
       if (axios.isAxiosError(myError) && myError.response)
@@ -22,11 +23,12 @@ export const getApiById = createAsyncThunk(
     }
   }
 );
-export const updateApi = createAsyncThunk(
-  "api/update",
-  async (data: IGetApiByIdData) => {
+export const updatePolicy = createAsyncThunk(
+  "Policy/Update",
+  async (data: IGetPolicyByIdData) => {
     try {
-      const response = await updateApiService(data);
+      const response = await updatePolicyService(data);
+      console.log(response);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
@@ -38,40 +40,39 @@ export const updateApi = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "apiUpdate",
+  name: "policyUpdate",
   initialState,
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
-      console.log("form data : ", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
-      console.log("form error : ", state.data.errors);
     },
   },
   extraReducers(builder): void {
-    builder.addCase(getApiById.pending, (state) => {
+    builder.addCase(getPolicybyId.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getApiById.fulfilled, (state, action) => {
+    builder.addCase(getPolicybyId.fulfilled, (state, action) => {
       state.loading = false;
       state.data.form = action.payload.Data;
     });
-    builder.addCase(getApiById.rejected, (state, action) => {
+    builder.addCase(getPolicybyId.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       action.payload = action.error;
       state.error = error(action.payload);
     });
-    builder.addCase(updateApi.pending, (state) => {
+
+    builder.addCase(updatePolicy.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updateApi.fulfilled, (state, action) => {
+    builder.addCase(updatePolicy.fulfilled, (state, action) => {
       state.loading = false;
-      // state.data = action.payload;
+      state.data = action.payload;
     });
-    builder.addCase(updateApi.rejected, (state, action) => {
+    builder.addCase(updatePolicy.rejected, (state, action) => {
       state.loading = false;
       // action.payload contains error information
       action.payload = action.error;

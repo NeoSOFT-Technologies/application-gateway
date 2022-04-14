@@ -20,6 +20,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public List<string>? Whitelist { get; set; }
         public UpdateVersioningInfo? VersioningInfo { get; set; }
 #nullable disable
+        public bool IsVersioningDisabled { get; set; }
         public string DefaultVersion { get; set; }
         public List<UpdateVersionModel> Versions { get; set; }
         public string AuthType { get; set; }

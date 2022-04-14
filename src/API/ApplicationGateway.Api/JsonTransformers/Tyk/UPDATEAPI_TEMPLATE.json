@@ -37,7 +37,7 @@
     "strip_path": "#ifcondition(#valueof($.Key),null,#toboolean(false),#toboolean(true))"
   },
   "version_data": {
-    "not_versioned": "#ifcondition(#length(#valueof($.Versions)),0,#toboolean(true),#toboolean(false))",
+    "not_versioned": "#valueof(IsVersioningDisabled)",
     "default_version": "#valueof(DefaultVersion)",
     "versions": {
       "Default": {
