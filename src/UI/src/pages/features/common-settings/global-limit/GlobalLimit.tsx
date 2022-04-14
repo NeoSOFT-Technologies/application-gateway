@@ -4,17 +4,25 @@ import { RootState } from "../../../../store";
 import { IPolicyUpdateState } from "../../../../store/features/policy/update";
 import { getPolicybyId } from "../../../../store/features/policy/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-
+// import { setFormData } from "../../../../resources/api/api-constants";
+import { setForm } from "../../../../store/features/policy/create/slice";
+import { IPolicyCreateState } from "../../../../store/features/policy/create";
+// import statusAndDateHelper from "../../../../utils/helper";
 interface IProps {
   isDisabled: boolean;
   // state: any;
   policyId?: any;
 }
+
 export default function GlobalLimit(props: IProps) {
   const Policy: IPolicyUpdateState = useAppSelector(
     (state: RootState) => state.updatePolicyState
   );
   const dispatch = useAppDispatch();
+  const state: IPolicyCreateState = useAppSelector(
+    (RootStates) => RootStates.createPolicyState
+  );
+
   const mainCall = async (id: string) => {
     dispatch(getPolicybyId(id));
   };
@@ -23,6 +31,7 @@ export default function GlobalLimit(props: IProps) {
   }, []);
 
   console.log("mypolicies", Policy);
+
   const [rate, setRate] = useState(props.isDisabled);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
@@ -32,7 +41,12 @@ export default function GlobalLimit(props: IProps) {
   );
   const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
 
-  // const [values, setValues] = useState("");
+  const [rateValue, setRateValue] = useState("");
+  const [perValue, setPerValue] = useState("");
+  const [retryValue, setRetryValue] = useState("");
+  const [intervalValue, setIntervalValue] = useState("");
+  const [maxQuotaValue, setMaxQuotaValue] = useState("");
+  const [quotaResetValue, setQuotaResetValue] = useState("");
 
   function handleThrottleChange(evt: any) {
     setThrottle(evt.target.checked);
@@ -53,6 +67,15 @@ export default function GlobalLimit(props: IProps) {
       setQuotaPerPeriod("Enter request per period");
     }
   }
+
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    setRateValue(event.target.value);
+    dispatch(setForm({ ...state.data.form, [name]: value }));
+    // setFormData(event, dispatch, state);
+    console.log("key", name, value);
+  }
+  console.log("newvalue", state.data.form);
   return (
     <>
       <div className="card">
@@ -101,11 +124,13 @@ export default function GlobalLimit(props: IProps) {
                             type="text"
                             id="rate"
                             placeholder="Enter Rate"
-                            // value={
-                            //   props.isDisabled ? Policy.data.form.rate : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
-                            name="RateLimit.Rate"
+                            value={
+                              props.isDisabled
+                                ? Policy.data.form.Rate
+                                : rateValue
+                            }
+                            onChange={(e: any) => validateForm(e)}
+                            name="Rate"
                             disabled={rate}
                           />
                           <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
@@ -118,10 +143,10 @@ export default function GlobalLimit(props: IProps) {
                             type="text"
                             id="per"
                             placeholder="Enter time"
-                            // value={
-                            //   props.isDisabled ? Policy.data.form.per : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
+                            value={
+                              props.isDisabled ? Policy.data.form.Per : perValue
+                            }
+                            onChange={(e: any) => setPerValue(e.target.value)}
                             name="RateLimit.Per"
                             disabled={rate}
                           />
@@ -152,12 +177,12 @@ export default function GlobalLimit(props: IProps) {
                             id="retry"
                             placeholder={throttleRetry}
                             name="Throttling.Retry"
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.throttleRetries
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
+                            value={
+                              props.isDisabled
+                                ? Policy.data.form.ThrottleRetries
+                                : retryValue
+                            }
+                            onChange={(e: any) => setRetryValue(e.target.value)}
                             // value={throttleDefault}
                             disabled={throttle}
                           />
@@ -172,12 +197,14 @@ export default function GlobalLimit(props: IProps) {
                             type="text"
                             id="interval"
                             placeholder={throttleInterval}
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.throttleInterval
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
+                            value={
+                              props.isDisabled
+                                ? Policy.data.form.ThrottleInterval
+                                : intervalValue
+                            }
+                            onChange={(e: any) =>
+                              setIntervalValue(e.target.value)
+                            }
                             name="Throttling.Interval"
                             disabled={throttle}
                           />
@@ -206,12 +233,14 @@ export default function GlobalLimit(props: IProps) {
                             type="text"
                             id="quotaPer"
                             placeholder={quotaPerPeriod}
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.quotaRate
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
+                            value={
+                              props.isDisabled
+                                ? Policy.data.form.MaxQuota
+                                : maxQuotaValue
+                            }
+                            onChange={(e: any) =>
+                              setMaxQuotaValue(e.target.value)
+                            }
                             name="Quota.Per"
                             disabled={quota}
                           />
@@ -223,12 +252,14 @@ export default function GlobalLimit(props: IProps) {
                             className="mt-2"
                             style={{ height: 46 }}
                             disabled={quota}
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.maxQuota
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
+                            value={
+                              props.isDisabled
+                                ? Policy.data.form.QuotaRate
+                                : quotaResetValue
+                            }
+                            onChange={(e: any) =>
+                              setQuotaResetValue(e.target.value)
+                            }
                           >
                             <option>never</option>
                             <option>1 hour</option>

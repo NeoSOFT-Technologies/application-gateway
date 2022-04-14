@@ -1,6 +1,6 @@
-import { IPolicyCreateState } from "./index";
+import { IPolicyUpdateState } from "./index";
 
-export const initialState: IPolicyCreateState = {
+export const initialState: IPolicyUpdateState = {
   data: {
     form: {
       Name: "",
