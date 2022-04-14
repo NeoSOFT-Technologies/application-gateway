@@ -10,7 +10,7 @@ export const initialState: IApiGetByIdState = {
       TargetUrl: "",
       IsActive: true,
       IsInternal: false,
-      Protocol: "",
+      Protocol: "http",
       RateLimit: {
         Rate: 0,
         Per: 0,
@@ -19,7 +19,7 @@ export const initialState: IApiGetByIdState = {
       Blacklist: [],
       Whitelist: [],
       VersioningInfo: {
-        Location: "",
+        Location: "1",
         Key: "",
       },
       IsVersioningDisabled: true,
