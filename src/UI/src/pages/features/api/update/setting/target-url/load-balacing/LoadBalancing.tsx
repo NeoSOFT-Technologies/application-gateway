@@ -90,6 +90,7 @@ export default function LoadBalancing() {
     ];
     console.log("newObj", rowObj);
     dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
+    setLoading(false);
     setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
   };
   const deleteTableRows = (index: number) => {
