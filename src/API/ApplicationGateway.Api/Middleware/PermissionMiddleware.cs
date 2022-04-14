@@ -20,7 +20,7 @@ namespace ApplicationGateway.Api.Middleware
                 await _next(context);
             }
             //TODO: Following condition should be based on helper's response
-            if (method == "") 
+            if (controllerName != "Transformer") 
             {
                 
                 await _next(context);
