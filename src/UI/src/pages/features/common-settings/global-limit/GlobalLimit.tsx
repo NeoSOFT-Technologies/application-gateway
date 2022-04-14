@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import { RootState } from "../../../../store";
 import { IPolicyUpdateState } from "../../../../store/features/policy/update";
 import { getPolicybyId } from "../../../../store/features/policy/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-
+// import { setFormData } from "../../../../resources/api/api-constants";
+import { setForm } from "../../../../store/features/policy/create/slice";
+import { IPolicyCreateState } from "../../../../store/features/policy/create";
+// import statusAndDateHelper from "../../../../utils/helper";
 interface IProps {
   isDisabled: boolean;
   // state: any;
   policyId?: any;
+  msg: string;
 }
+
 export default function GlobalLimit(props: IProps) {
   const Policy: IPolicyUpdateState = useAppSelector(
-    (state: RootState) => state.updatePolicyState
+    (state) => state.updatePolicyState
   );
   const dispatch = useAppDispatch();
+  const state: IPolicyCreateState = useAppSelector(
+    (RootStates) => RootStates.createPolicyState
+  );
+
   const mainCall = async (id: string) => {
     dispatch(getPolicybyId(id));
   };
@@ -23,6 +31,7 @@ export default function GlobalLimit(props: IProps) {
   }, []);
 
   console.log("mypolicies", Policy);
+
   const [rate, setRate] = useState(props.isDisabled);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
@@ -32,7 +41,12 @@ export default function GlobalLimit(props: IProps) {
   );
   const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
 
-  // const [values, setValues] = useState("");
+  const [rateValue, setRateValue] = useState("");
+  const [perValue, setPerValue] = useState("");
+  const [retryValue, setRetryValue] = useState("");
+  const [intervalValue, setIntervalValue] = useState("");
+  const [maxQuotaValue, setMaxQuotaValue] = useState("");
+  const [quotaResetValue, setQuotaResetValue] = useState("");
 
   function handleThrottleChange(evt: any) {
     setThrottle(evt.target.checked);
@@ -53,6 +67,15 @@ export default function GlobalLimit(props: IProps) {
       setQuotaPerPeriod("Enter request per period");
     }
   }
+
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    setRateValue(event.target.value);
+    dispatch(setForm({ ...state.data.form, [name]: value }));
+    // setFormData(event, dispatch, state);
+    console.log("key", name, value);
+  }
+  console.log("newvalue", state.data.form);
   return (
     <>
       <div className="card">
@@ -81,165 +104,219 @@ export default function GlobalLimit(props: IProps) {
                   <Row>
                     <Row>
                       <Col md="4">
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Rate Limiting</b>
-                          </Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="disableGlobalRate"
-                            name="GlobalLimit.IsDisabled"
-                            label="Disable rate limiting"
-                            disabled={props.isDisabled}
-                            // checked={rate}
-                            onChange={(e: any) => setRate(e.target.checked)}
-                          />
-                          <Form.Label className="mt-3">Rate</Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="rate"
-                            placeholder="Enter Rate"
-                            // value={
-                            //   props.isDisabled ? Policy.data.form.rate : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
-                            name="RateLimit.Rate"
-                            disabled={rate}
-                          />
-                          <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-                          <Form.Label className="mt-3">
-                            Per (Seconds)
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="per"
-                            placeholder="Enter time"
-                            // value={
-                            //   props.isDisabled ? Policy.data.form.per : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
-                            name="RateLimit.Per"
-                            disabled={rate}
-                          />
-                          <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-                        </Form.Group>
+                        {props.msg !== "" && props.isDisabled === false ? (
+                          <Form.Group className="mb-3">
+                            <Form.Label className="mt-2">
+                              <b>Rate Limiting</b>
+                            </Form.Label>
+                            <div
+                              className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                              style={{ background: "#ADD8E6" }} // #96DED1
+                            >
+                              Rate Limit {props.msg}
+                            </div>
+                          </Form.Group>
+                        ) : (
+                          <Form.Group className="mb-3">
+                            <Form.Label className="mt-2">
+                              <b>Rate Limiting</b>
+                            </Form.Label>
+                            <Form.Check
+                              type="switch"
+                              id="disableGlobalRate"
+                              name="GlobalLimit.IsDisabled"
+                              label="Disable rate limiting"
+                              disabled={props.isDisabled}
+                              // checked={rate}
+                              onChange={(e: any) => setRate(e.target.checked)}
+                            />
+                            <Form.Label className="mt-3">Rate</Form.Label>
+                            <br />
+                            <Form.Control
+                              className="mt-2"
+                              type="text"
+                              id="rate"
+                              placeholder="Enter Rate"
+                              value={
+                                props.isDisabled
+                                  ? Policy.data.form.rate
+                                  : rateValue
+                              }
+                              onChange={(e: any) => validateForm(e)}
+                              name="Rate"
+                              disabled={rate}
+                            />
+                            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+                            <Form.Label className="mt-3">
+                              Per (Seconds)
+                            </Form.Label>
+                            <br />
+                            <Form.Control
+                              className="mt-2"
+                              type="text"
+                              id="per"
+                              placeholder="Enter time"
+                              value={
+                                props.isDisabled
+                                  ? Policy.data.form.per
+                                  : perValue
+                              }
+                              onChange={(e: any) => setPerValue(e.target.value)}
+                              name="RateLimit.Per"
+                              disabled={rate}
+                            />
+                            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+                          </Form.Group>
+                        )}
                       </Col>
                       <Col md="4">
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Throttling</b>
-                          </Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="disableThrottling"
-                            name="Throttling.IsDisabled"
-                            label="Disable Throttling"
-                            disabled={props.isDisabled}
-                            checked={throttle}
-                            onChange={(e: any) => handleThrottleChange(e)}
-                          />
-                          <Form.Label className="mt-3">
-                            Throttle retry limit
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="retry"
-                            placeholder={throttleRetry}
-                            name="Throttling.Retry"
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.throttleRetries
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
-                            // value={throttleDefault}
-                            disabled={throttle}
-                          />
+                        {props.msg !== "" && props.isDisabled === false ? (
+                          <Form.Group className="mb-3">
+                            <Form.Label className="mt-2">
+                              <b>Throttling</b>
+                            </Form.Label>
+                            <div
+                              className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2 "
+                              style={{ background: "#ADD8E6" }}
+                            >
+                              Throttling {props.msg}
+                            </div>
+                          </Form.Group>
+                        ) : (
+                          <Form.Group className="mb-3">
+                            <Form.Label className="mt-2">
+                              <b>Throttling</b>
+                            </Form.Label>
+                            <Form.Check
+                              type="switch"
+                              id="disableThrottling"
+                              name="Throttling.IsDisabled"
+                              label="Disable Throttling"
+                              disabled={props.isDisabled}
+                              checked={throttle}
+                              onChange={(e: any) => handleThrottleChange(e)}
+                            />
+                            <Form.Label className="mt-3">
+                              Throttle retry limit
+                            </Form.Label>
+                            <br />
+                            <Form.Control
+                              className="mt-2"
+                              type="text"
+                              id="retry"
+                              placeholder={throttleRetry}
+                              name="Throttling.Retry"
+                              value={
+                                props.isDisabled
+                                  ? Policy.data.form.throttleRetries
+                                  : retryValue
+                              }
+                              onChange={(e: any) =>
+                                setRetryValue(e.target.value)
+                              }
+                              // value={throttleDefault}
+                              disabled={throttle}
+                            />
 
-                          <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-                          <Form.Label className="mt-3">
-                            Throttle interval
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="interval"
-                            placeholder={throttleInterval}
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.throttleInterval
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
-                            name="Throttling.Interval"
-                            disabled={throttle}
-                          />
-                        </Form.Group>
+                            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+                            <Form.Label className="mt-3">
+                              Throttle interval
+                            </Form.Label>
+                            <br />
+                            <Form.Control
+                              className="mt-2"
+                              type="text"
+                              id="interval"
+                              placeholder={throttleInterval}
+                              value={
+                                props.isDisabled
+                                  ? Policy.data.form.throttleInterval
+                                  : intervalValue
+                              }
+                              onChange={(e: any) =>
+                                setIntervalValue(e.target.value)
+                              }
+                              name="Throttling.Interval"
+                              disabled={throttle}
+                            />
+                          </Form.Group>
+                        )}
                       </Col>
                       <Col md="4">
-                        <Form.Group className="mb-3">
-                          <Form.Label className="mt-2">
-                            <b>Usage Quota</b>
-                          </Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="unlimitedRequests"
-                            name="unlimitedRequests.IsDisabled"
-                            label="Unlimited requests"
-                            disabled={props.isDisabled}
-                            checked={quota}
-                            onChange={(e: any) => handleQuotaChange(e)}
-                          />
-                          <Form.Label className="mt-3">
-                            Max requests per period
-                          </Form.Label>
-                          <br />
-                          <Form.Control
-                            className="mt-2"
-                            type="text"
-                            id="quotaPer"
-                            placeholder={quotaPerPeriod}
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.quotaRate
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
-                            name="Quota.Per"
-                            disabled={quota}
-                          />
-                          <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-                          <Form.Label className="mt-3">
-                            Quota resets every
-                          </Form.Label>
-                          <Form.Select
-                            className="mt-2"
-                            style={{ height: 46 }}
-                            disabled={quota}
-                            // value={
-                            //   props.isDisabled
-                            //     ? Policy.data.form.maxQuota
-                            //     : values
-                            // }
-                            // onChange={(e: any) => setValues(e.target.value)}
-                          >
-                            <option>never</option>
-                            <option>1 hour</option>
-                            <option>6 hour</option>
-                            <option>12 hour</option>
-                            <option>1 week</option>
-                            <option>1 month</option>
-                            <option>6 months</option>
-                            <option>12 months</option>
-                          </Form.Select>
-                        </Form.Group>
+                        {props.msg !== "" && props.isDisabled === false ? (
+                          <Form.Group className="mb-3">
+                            <Form.Label className="mt-2">
+                              <b>Usage Quota</b>
+                            </Form.Label>
+                            <div
+                              className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                              style={{ background: "#ADD8E6" }}
+                            >
+                              Usage Quota {props.msg}
+                            </div>
+                          </Form.Group>
+                        ) : (
+                          <Form.Group className="mb-3">
+                            <Form.Label className="mt-2">
+                              <b>Usage Quota</b>
+                            </Form.Label>
+                            <Form.Check
+                              type="switch"
+                              id="unlimitedRequests"
+                              name="unlimitedRequests.IsDisabled"
+                              label="Unlimited requests"
+                              disabled={props.isDisabled}
+                              checked={quota}
+                              onChange={(e: any) => handleQuotaChange(e)}
+                            />
+                            <Form.Label className="mt-3">
+                              Max requests per period
+                            </Form.Label>
+                            <br />
+                            <Form.Control
+                              className="mt-2"
+                              type="text"
+                              id="quotaPer"
+                              placeholder={quotaPerPeriod}
+                              value={
+                                props.isDisabled
+                                  ? Policy.data.form.maxQuota
+                                  : maxQuotaValue
+                              }
+                              onChange={(e: any) =>
+                                setMaxQuotaValue(e.target.value)
+                              }
+                              name="Quota.Per"
+                              disabled={quota}
+                            />
+                            <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+                            <Form.Label className="mt-3">
+                              Quota resets every
+                            </Form.Label>
+                            <Form.Select
+                              className="mt-2"
+                              style={{ height: 46 }}
+                              disabled={quota}
+                              value={
+                                props.isDisabled
+                                  ? Policy.data.form.quotaRate
+                                  : quotaResetValue
+                              }
+                              onChange={(e: any) =>
+                                setQuotaResetValue(e.target.value)
+                              }
+                            >
+                              <option>never</option>
+                              <option>1 hour</option>
+                              <option>6 hour</option>
+                              <option>12 hour</option>
+                              <option>1 week</option>
+                              <option>1 month</option>
+                              <option>6 months</option>
+                              <option>12 months</option>
+                            </Form.Select>
+                          </Form.Group>
+                        )}
                       </Col>
                     </Row>
                   </Row>

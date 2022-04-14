@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.DataProtection;
 using ApplicationGateway.Persistence;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -137,7 +138,7 @@ IApiVersionDescriptionProvider provider = app.Services.GetRequiredService<IApiVe
 app.UseSwaggerUI(
 options =>
 {
-                // build a swagger endpoint for each discovered API version  
+    // build a swagger endpoint for each discovered API version  
     foreach (var description in provider.ApiVersionDescriptions)
     {
         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
@@ -151,7 +152,11 @@ app.UseCors("Open");
 //Enable CORS
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthorization();
-app.UseAuthorization();
+
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+{
+    appBuilder.UsePermissionMiddleware();
+});
 
 app.MapControllers();
 
