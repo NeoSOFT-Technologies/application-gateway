@@ -13,6 +13,9 @@ export default function AccessList() {
 
   // console.log("datalength ", state.data.form.accessRights?.length);
   const handleAddClick = async (Id: string) => {
+    console.log(Id);
+    console.log(state.data.form.accessRights?.some((x) => x?.apiId !== Id));
+
     const selectedApi = await dispatch(getApiById(Id));
 
     const listV: string[] = [];
@@ -20,8 +23,13 @@ export default function AccessList() {
       // element: { Name: string }
       listV.push(element.Name);
     });
+    // if (state.data.form.accessRights?.some((x) => x?.apiId !== Id)) {
+    //   console.log(state.data.form.accessRights?.some((x) => x?.apiId === Id)); // const x = state.data.form.accessRights?.some((xx) => xx?.apiId !== Id);
+    // if (x === true ) {
+    //   console.log(state.data.form.accessRights);
+
     const list = [
-      ...state.data.form.accessRights!,
+      ...state.data.form.accessRights,
       {
         apiId: selectedApi.payload.Data.ApiId, // "475b8639-6698-4a00-a395-bb80023a2915"
         apiName: selectedApi.payload.Data.Name, // "testApi",
@@ -45,6 +53,8 @@ export default function AccessList() {
       },
     ];
     dispatch(setForm({ ...state.data.form, accessRights: list }));
+    // }
+    console.log(state.data.form.accessRights);
   };
 
   return (
