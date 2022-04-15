@@ -10,7 +10,7 @@ export interface ICreateState {
 
 export interface IGetKeyByIdData {
   keyId?: string;
-  keyName: string | null;
+  keyName: string;
   per: number;
   rate: number;
   quota: number;

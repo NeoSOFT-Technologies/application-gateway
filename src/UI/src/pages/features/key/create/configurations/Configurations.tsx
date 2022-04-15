@@ -1,7 +1,35 @@
 import React from "react";
 import { Form, Accordion } from "react-bootstrap";
+import {
+  setFormErrors,
+  setFormData,
+  regexForName,
+} from "../../../../../resources/key/key-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 function Configurations() {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.createKeyState);
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "keyName":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForName.test(value) ? "" : "Enter a Valid Name",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFormData(event, dispatch, state);
+    console.log("keyId", name, value);
+  }
   return (
     <div>
       <Accordion defaultActiveKey="0">
@@ -18,8 +46,18 @@ function Configurations() {
               <Form.Control
                 type="text"
                 placeholder="Give your key alias to remember it by "
+                name="keyName"
+                id="keyName"
+                data-testid="name-input"
+                value={state.data.form?.keyName}
+                isInvalid={!!state.data.errors?.keyName}
+                isValid={!state.data.errors?.keyName}
+                onChange={(e: any) => validateForm(e)}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                {state.data.errors?.keyName}
+              </Form.Control.Feedback>
               <br />
               <Form.Label> Expires :</Form.Label>
               <Form.Select aria-label="Default select example">
