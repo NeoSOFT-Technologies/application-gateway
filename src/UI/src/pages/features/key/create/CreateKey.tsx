@@ -32,6 +32,7 @@ export default function CreateKey() {
                 </div>
                 <div className="card-body pt-2">
                   <Tabs
+                    // tab-content
                     defaultActiveKey="accessRights"
                     id="uncontrolled-tab"
                     // transition={false}

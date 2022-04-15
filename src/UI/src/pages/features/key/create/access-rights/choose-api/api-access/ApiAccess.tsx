@@ -6,8 +6,9 @@ export default function ApiAccess() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
   console.log("states", state.data.form);
   return (
-    <div>
-      <>
+    <>
+      <br /> <br /> <br />
+      <div className="card col-lg-12 grid-margin stretch-card">
         {state.data.form.accessRights !== null &&
         state.data.form.accessRights?.length! > 0 &&
         Array.isArray(state.data.form.accessRights) ? (
@@ -25,7 +26,7 @@ export default function ApiAccess() {
         ) : (
           <></>
         )}
-      </>
-    </div>
+      </div>
+    </>
   );
 }

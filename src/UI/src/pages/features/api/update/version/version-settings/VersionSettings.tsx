@@ -52,26 +52,15 @@ export default function VersionSettings() {
                               value={state.data.form?.VersioningInfo?.Location}
                               onChange={(e: any) => validateForm(e)}
                             >
-                              <option
-                                id="Header"
-                                //  value="Header"
-                                value="1"
-                              >
+                              <option value="0">Choose a location</option>
+                              <option id="Header" value="1">
                                 Header
                               </option>
-                              <option
-                                id="URL or Form parameter"
-                                // value="URL or Form parameter"
-                                value="2"
-                              >
-                                URL or Form parameter
-                              </option>
-                              <option
-                                id="First part of path"
-                                // value="First part of path"
-                                value="3"
-                              >
+                              <option id="First part of path" value="2">
                                 First part of path
+                              </option>
+                              <option id="URL or Form parameter" value="3">
+                                URL or Form parameter
                               </option>
                             </Form.Select>
                           </Form.Group>

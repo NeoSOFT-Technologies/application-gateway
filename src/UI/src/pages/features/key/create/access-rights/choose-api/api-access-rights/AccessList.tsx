@@ -53,25 +53,25 @@ export default function AccessList() {
         <div className="card mb-3">
           <div>
             <div className="align-items-center justify-content-around">
-              <div className="accordion" id="accordionSetting">
+              <div className="accordion" id="listAccordionSetting">
                 <div className="accordion-item">
                   <h2 className="accordion-header" id="headingOne">
                     <button
                       className="accordion-button"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
+                      data-bs-target="#AccessListcollapseOne"
                       aria-expanded="true"
-                      aria-controls="collapseOne"
+                      aria-controls="AccessListcollapseOne"
                     >
-                      API List
+                      Add API Access Rights
                     </button>
                   </h2>
                   <div
-                    id="collapseOne"
+                    id="AccessListcollapseOne"
                     className="accordion-collapse collapse show"
                     aria-labelledby="headingOne"
-                    data-bs-parent="#accordionSetting"
+                    data-bs-parent="#listAccordionSetting"
                   >
                     <div className="accordion-body">
                       <ApiAccessList
