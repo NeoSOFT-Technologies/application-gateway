@@ -35,7 +35,7 @@ export default function CreatePolicy() {
                     defaultActiveKey="accessRights"
                     id="uncontrolled-tab"
                     // transition={false}
-                    className="mb-2 small"
+                    className="mb-0 small"
                   >
                     <Tab eventKey="accessRights" title="Access Rights">
                       <AccessRights />
