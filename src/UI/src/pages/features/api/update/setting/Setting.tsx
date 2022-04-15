@@ -10,6 +10,7 @@ import {
   setFormErrors,
 } from "../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
+import Authentication from "./authentication/Authentication";
 
 export default function Setting() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
@@ -94,6 +95,9 @@ export default function Setting() {
                     </div>
                     <div>
                       <RateLimit />
+                    </div>
+                    <div>
+                      <Authentication />
                     </div>
                   </div>
                 </div>
