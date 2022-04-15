@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Accordion } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
+import { IKeyCreateState } from "../../../../store/features/key/create";
 import GlobalLimit from "../global-limit/GlobalLimit";
-export default function PathBased() {
+interface IProps {
+  state: IKeyCreateState;
+  apidata?: any;
+  indexdata?: number;
+}
+
+export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
@@ -27,6 +34,10 @@ export default function PathBased() {
       setversion([...versions, value]);
     }
   };
+  // const ind = props.indexdata;
+  // let ApiName = null;
+  // if (props.indexdata !== null)
+  //   ApiName = props.state?.data.form.accessRights[ind].apiName;
 
   const deleteversion = (event: any, index: any) => {
     event.preventDefault();
@@ -37,148 +48,134 @@ export default function PathBased() {
   return (
     <>
       <div className="card mt-4">
-        <div className="accordion " id="accordionExample">
-          <div className="accordion-item">
-            <h2 className="accordion-header " id="headingOne">
-              <button
-                className="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                Your API
-              </button>
-            </h2>
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>
+              {/* {ApiName} */}
+              ApiName
+            </Accordion.Header>
 
-            <div
-              id="collapseOne"
-              className="accordion-item accordion-collapse collapse show"
-              aria-labelledby="headingOne"
-              data-bs-parent="#accordionExample"
-            >
-              <div className="accordion-body">
+            <Accordion.Body>
+              <Row>
+                <Col md="12">
+                  <button
+                    className="btn btn-danger"
+                    style={{ float: "right" }}
+                    type="button"
+                    // onClick={}
+                  >
+                    Remove Access
+                  </button>
+                </Col>
+              </Row>
+              <div>
                 <Row>
                   <Col md="12">
-                    <button
-                      className="btn btn-danger"
-                      style={{ float: "right" }}
-                      type="button"
-                    >
-                      Remove Access
-                    </button>
+                    <Form.Group className="mb-3 mt-3">
+                      <Form.Select
+                        style={{ height: 46 }}
+                        name="method"
+                        onChange={(e: any) => handleversion(e)}
+                      >
+                        <option value="Default">Default</option>
+                        <option value="V1">V1</option>
+                        <option value="V2">V2</option>
+                      </Form.Select>
+                    </Form.Group>
                   </Col>
                 </Row>
-                <div>
+                <Row>
+                  <Col md="12">
+                    {versions.length > 0 ? (
+                      <div
+                        style={{ width: 960 }}
+                        className="float-lg-left border rounded p-4"
+                      >
+                        {versions.map((data: any, index: any) => {
+                          return (
+                            <div key={index} className="border-0">
+                              <i
+                                className="bi bi-x-circle-fill float-left"
+                                style={{ marginLeft: 40 }}
+                                onClick={(e: any) => deleteversion(e, index)}
+                              >
+                                &nbsp;&nbsp;{data}
+                              </i>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </Col>
+                </Row>
+                <div className="w-100 p-3 border rounded mt-3">
                   <Row>
                     <Col md="12">
-                      <Form.Group className="mb-3 mt-3">
-                        <Form.Select
-                          style={{ height: 46 }}
-                          name="method"
-                          onChange={(e: any) => handleversion(e)}
-                        >
-                          <option value="Default">Default</option>
-                          <option value="V1">V1</option>
-                          <option value="V2">V2</option>
-                        </Form.Select>
+                      <Form.Group className="mt-6">
+                        <Form.Label>
+                          <b>Set Per Api Limits and Quota</b>
+                        </Form.Label>
+                        <Form.Check
+                          className="float-lg-end"
+                          type="switch"
+                          name="isActiveApi"
+                          onChange={setPathPermission}
+                          checked={isActiveApi}
+                          id="isActiveApi"
+                        />
                       </Form.Group>
                     </Col>
-                  </Row>
-                  <Row>
                     <Col md="12">
-                      {versions.length > 0 ? (
-                        <div
-                          style={{ width: 960 }}
-                          className="float-lg-left border rounded p-4"
-                        >
-                          {versions.map((data: any, index: any) => {
-                            return (
-                              <div key={index} className="border-0">
-                                <i
-                                  className="bi bi-x-circle-fill float-left"
-                                  style={{ marginLeft: 40 }}
-                                  onClick={(e: any) => deleteversion(e, index)}
-                                >
-                                  &nbsp;&nbsp;{data}
-                                </i>
-                              </div>
-                            );
-                          })}
-                        </div>
+                      <Form.Group className="mt-6">
+                        <Form.Label>
+                          {" "}
+                          This Api with inherit the Global Limit settings above
+                          unless per Api limits and quotas are set here.
+                        </Form.Label>
+                      </Form.Group>
+                      {isActiveApi ? (
+                        <GlobalLimit isDisabled={false} msg={""} />
                       ) : (
-                        ""
+                        " "
                       )}
                     </Col>
                   </Row>
-                  <div className="w-100 p-3 border rounded mt-3">
-                    <Row>
-                      <Col md="12">
-                        <Form.Group className="mt-6">
-                          <Form.Label>
-                            <b>Set Per Api Limits and Quota</b>
-                          </Form.Label>
-                          <Form.Check
-                            className="float-lg-end"
-                            type="switch"
-                            name="isActiveApi"
-                            onChange={setPathPermission}
-                            checked={isActiveApi}
-                            id="isActiveApi"
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md="12">
-                        <Form.Group className="mt-6">
-                          <Form.Label>
-                            {" "}
-                            This Api with inherit the Global Limit settings
-                            above unless per Api limits and quotas are set here.
-                          </Form.Label>
-                        </Form.Group>
-                        {isActiveApi ? (
-                          <GlobalLimit isDisabled={false} msg={""} />
-                        ) : (
-                          " "
-                        )}
-                      </Col>
-                    </Row>
-                  </div>
-                  <div className="w-100 p-3 mt-3 border rounded">
-                    <Row>
-                      <Col md="12">
-                        <Form.Group className="mt-6">
-                          <Form.Label>
-                            <b>Path Based Permission</b>
-                          </Form.Label>
-                          <Form.Check
-                            className="float-lg-end"
-                            type="switch"
-                            name="isActive"
-                            onChange={setPathPermission}
-                            checked={isActive}
-                            id="isActive"
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md="12">
-                        <Form.Group className="mt-6">
-                          <Form.Label>
-                            {" "}
-                            Restrict access on per-path and per method basis to
-                            only allow access to specific portion of the API.
-                          </Form.Label>
-                        </Form.Group>
-                      </Col>
-                      {isActive ? <Ipathpermission /> : " "}
-                    </Row>
-                  </div>
+                </div>
+                <div className="w-100 p-3 mt-3 border rounded">
+                  <Row>
+                    <Col md="12">
+                      <Form.Group className="mt-6">
+                        <Form.Label>
+                          <b>Path Based Permission</b>
+                        </Form.Label>
+                        <Form.Check
+                          className="float-lg-end"
+                          type="switch"
+                          name="isActive"
+                          onChange={setPathPermission}
+                          checked={isActive}
+                          id="isActive"
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md="12">
+                      <Form.Group className="mt-6">
+                        <Form.Label>
+                          {" "}
+                          Restrict access on per-path and per method basis to
+                          only allow access to specific portion of the API.
+                        </Form.Label>
+                      </Form.Group>
+                    </Col>
+                    {isActive ? <Ipathpermission /> : " "}
+                  </Row>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </div>
     </>
   );

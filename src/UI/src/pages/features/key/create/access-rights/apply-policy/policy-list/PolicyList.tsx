@@ -1,4 +1,5 @@
 import { Grid } from "gridjs-react";
+import { h } from "gridjs";
 import React, { useEffect } from "react";
 import { setForm } from "../../../../../../../store/features/key/create/slice";
 import { IPolicyListState } from "../../../../../../../store/features/policy/list";
@@ -54,27 +55,42 @@ export default function PolicyList() {
     columns: [
       {
         name: "Id",
-        attributes: (cell: string) => {
-          if (cell) {
-            return {
-              "data-cell-content": cell,
-              onclick: () => handleAddClick(cell),
-              style: "cursor: pointer",
-            };
-          }
-        },
+        hidden: true,
+        // attributes: (cell: string) => {
+        //   if (cell) {
+        //     return {
+        //       "data-cell-content": cell,
+        //       onclick: () => handleAddClick(cell),
+        //       style: "cursor: pointer",
+        //     };
+        //   }
+        // },
       },
       {
         name: "Name",
+        formatter: (cell: string, row: any) => {
+          return h(
+            "text",
+            {
+              // className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+              // onClick: () =>
+              //   alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`),
+
+              onclick: () => handleAddClick(row.cells[0].data),
+            },
+            `${row.cells[1].data}`
+          );
+        },
         attributes: (cell: string) => {
           if (cell) {
             return {
               "data-cell-content": cell,
-              onclick: () => alert(cell),
+              //  onclick: () => handleAddClick(cell),
               style: "cursor: pointer",
             };
           }
         },
+        // style: "cursor: pointer",
       },
       "State",
       "Access Rights",
@@ -101,6 +117,8 @@ export default function PolicyList() {
       th: {
         color: "#000",
       },
+      // rowSelection: "multiple",
+      // rowMultiSelectWithClick: true,
     },
   });
   return (

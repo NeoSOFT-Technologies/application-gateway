@@ -19,7 +19,7 @@ export interface IGetKeyByIdData {
   quotaRenewalRate: number;
   throttleInterval: number;
   throttleRetries: number;
-  accessRights?:
+  accessRights:
     | [
         {
           apiId: string | null;

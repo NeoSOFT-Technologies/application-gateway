@@ -6,6 +6,7 @@ import { getApiList } from "../../../../store/features/api/list/slice";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { IKeyCreateState } from "../../../../store/features/key/create/index";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
+import { h } from "gridjs";
 
 interface IProps {
   state: IKeyCreateState | IPolicyCreateState;
@@ -29,33 +30,46 @@ export default function ApiAccessList(props: IProps) {
     columns: [
       {
         name: "Id",
-        attributes: (cell: string) => {
-          if (cell) {
-            return {
-              "data-cell-content": cell,
-              onclick: () => handleAddClick(cell),
-              style: "cursor: pointer",
-            };
-          }
-        },
-      },
-      {
-        name: "Name",
+        hidden: true,
         // attributes: (cell: string) => {
         //   if (cell) {
         //     return {
         //       "data-cell-content": cell,
-        //       onclick: () => alert(cell),
+        //       onclick: () => handleAddClick(cell),
         //       style: "cursor: pointer",
         //     };
         //   }
         // },
       },
+      {
+        name: "Name",
+        formatter: (cell: string, row: any) => {
+          return h(
+            "text",
+            {
+              // className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+              // onClick: () =>
+              //   alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`),
+              onclick: () => handleAddClick(row.cells[0].data),
+            },
+            `${row.cells[1].data}`
+          );
+        },
+        attributes: (cell: string) => {
+          if (cell) {
+            return {
+              "data-cell-content": cell,
+              //  onclick: () => handleAddClick(cell),
+              style: "cursor: pointer",
+            };
+          }
+        },
+        // style: "cursor: pointer",
+      },
       "Status",
       "CreatedDate",
     ],
     search: true,
-    // sort: true,
     data: () =>
       accessApiList.data?.Apis.map((data) => [
         data.Id,
@@ -83,40 +97,5 @@ export default function ApiAccessList(props: IProps) {
     <div>
       <Grid {...grid.props} />
     </div>
-
-    // <div>
-    //   <div className="card mb-3">
-    //     <div>
-    //       <div className="align-items-center justify-content-around">
-    //         <div className="accordion" id="accordionSetting">
-    //           <div className="accordion-item">
-    //             <h2 className="accordion-header" id="headingOne">
-    //               <button
-    //                 className="accordion-button"
-    //                 type="button"
-    //                 data-bs-toggle="collapse"
-    //                 data-bs-target="#collapseOne"
-    //                 aria-expanded="true"
-    //                 aria-controls="collapseOne"
-    //               >
-    //                 API List
-    //               </button>
-    //             </h2>
-    //             <div
-    //               id="collapseOne"
-    //               className="accordion-collapse collapse show"
-    //               aria-labelledby="headingOne"
-    //               data-bs-parent="#accordionSetting"
-    //             >
-    //               <div className="accordion-body">
-    //                 <Grid {...grid.props} />
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
