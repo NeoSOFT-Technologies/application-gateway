@@ -4,7 +4,7 @@ import Ipathpermission from "../../../../pages/features/common-settings/path-bas
 import { IKeyCreateState } from "../../../../store/features/key/create";
 import GlobalLimit from "../global-limit/GlobalLimit";
 interface IProps {
-  state: IKeyCreateState;
+  state?: IKeyCreateState;
   apidata?: any;
   indexdata?: number;
 }

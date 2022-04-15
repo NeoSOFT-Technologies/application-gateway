@@ -8,7 +8,7 @@ export default function Policies() {
   return (
     <>
       <br />
-      <br /> <br /> <br />
+      <br /> <br /> <h5>Policies</h5> <br />
       <div className="card col-lg-12 grid-margin stretch-card">
         {state.data.form.policies !== null &&
         state.data.form.policies.length > 0 &&

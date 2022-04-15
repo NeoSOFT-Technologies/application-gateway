@@ -27,7 +27,7 @@ export interface IGetPolicyByIdData {
           id: string | null;
           name: string;
           versions: string[];
-          allowedUrls?:
+          allowedUrls:
             | [
                 {
                   url: string;

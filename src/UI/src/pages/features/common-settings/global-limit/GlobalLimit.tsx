@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
-import { IPolicyUpdateState } from "../../../../store/features/policy/update";
+// import { IPolicyUpdateState } from "../../../../store/features/policy/update";
 import { getPolicybyId } from "../../../../store/features/policy/update/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 // import { setFormData } from "../../../../resources/api/api-constants";
@@ -10,19 +10,21 @@ import { IKeyCreateState } from "../../../../store/features/key/create";
 // import statusAndDateHelper from "../../../../utils/helper";
 interface IProps {
   isDisabled: boolean;
-  state?: IKeyCreateState;
+  state?: IKeyCreateState | IPolicyCreateState;
+  index?: number;
   policyId?: string;
   msg: string;
 }
 
 export default function GlobalLimit(props: IProps) {
-  const Policy: IPolicyUpdateState = useAppSelector(
-    (state) => state.updatePolicyState //
-  );
-  const dispatch = useAppDispatch();
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
+
+  const dispatch = useAppDispatch();
+  // const state: IPolicyCreateState = useAppSelector(
+  //   (RootStates) => RootStates.createPolicyState
+  // );
 
   const mainCall = async (id: string) => {
     dispatch(getPolicybyId(id));
@@ -126,7 +128,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder="Enter Rate"
                             value={
                               props.isDisabled
-                                ? Policy.data.form.rate
+                                ? state.data.form.rate
                                 : rateValue
                             }
                             onChange={(e: any) => validateForm(e)}
@@ -144,7 +146,7 @@ export default function GlobalLimit(props: IProps) {
                             id="per"
                             placeholder="Enter time"
                             value={
-                              props.isDisabled ? Policy.data.form.per : perValue
+                              props.isDisabled ? state.data.form.per : perValue
                             }
                             onChange={(e: any) => setPerValue(e.target.value)}
                             name="RateLimit.Per"
@@ -193,7 +195,7 @@ export default function GlobalLimit(props: IProps) {
                             name="Throttling.Retry"
                             value={
                               props.isDisabled
-                                ? Policy.data.form.throttleRetries
+                                ? state.data.form.throttleRetries
                                 : retryValue
                             }
                             onChange={(e: any) => setRetryValue(e.target.value)}
@@ -213,7 +215,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder={throttleInterval}
                             value={
                               props.isDisabled
-                                ? Policy.data.form.throttleInterval
+                                ? state.data.form.throttleInterval
                                 : intervalValue
                             }
                             onChange={(e: any) =>
@@ -263,7 +265,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder={quotaPerPeriod}
                             value={
                               props.isDisabled
-                                ? Policy.data.form.maxQuota
+                                ? state.data.form.maxQuota
                                 : maxQuotaValue
                             }
                             onChange={(e: any) =>
@@ -282,7 +284,7 @@ export default function GlobalLimit(props: IProps) {
                             disabled={quota}
                             value={
                               props.isDisabled
-                                ? Policy.data.form.quotaRate
+                                ? state.data.form.quotaRate
                                 : quotaResetValue
                             }
                             onChange={(e: any) =>
