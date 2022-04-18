@@ -1,8 +1,16 @@
 import React from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import AccessRights from "./access-rights/AccessRights";
 import Configurations from "./configurations/Configurations";
 export default function CreatePolicy() {
+  const navigate = useNavigate();
+  const NavigateToPolicyList = (
+    val: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    val.preventDefault();
+    navigate("/policy/list");
+  };
   return (
     <div>
       <div className="col-lg-12 grid-margin stretch-card">
@@ -21,7 +29,9 @@ export default function CreatePolicy() {
                   </button>
                   <button
                     className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
-                    // onClick={(e) => NavigateToApisList(e)}
+                    onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+                      NavigateToPolicyList(event)
+                    }
                   >
                     {" "}
                     Cancel
@@ -35,7 +45,7 @@ export default function CreatePolicy() {
                     defaultActiveKey="accessRights"
                     id="uncontrolled-tab"
                     // transition={false}
-                    className="mb-2 small"
+                    className="mb-0 small"
                   >
                     <Tab eventKey="accessRights" title="Access Rights">
                       <AccessRights />

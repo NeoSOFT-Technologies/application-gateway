@@ -7,18 +7,22 @@ export default function ApiAccess() {
   console.log("states", state.data.form);
   return (
     <>
-      <br /> <br /> <br />
+      <br /> <br />
+      <h5>ApiAccess</h5> <br />
       <div className="card col-lg-12 grid-margin stretch-card">
         {state.data.form.accessRights !== null &&
         state.data.form.accessRights?.length! > 0 &&
         Array.isArray(state.data.form.accessRights) ? (
           (state.data.form.accessRights as any[]).map(
             (data: any, index: number) => {
-              const { policies } = data;
-              console.log(policies);
+              console.log("Apiacess", data);
               return (
                 <tr key={index}>
-                  <PathBased />
+                  <PathBased
+                    state={state}
+                    apidata={data[index]}
+                    indexdata={index}
+                  />
                 </tr>
               );
             }

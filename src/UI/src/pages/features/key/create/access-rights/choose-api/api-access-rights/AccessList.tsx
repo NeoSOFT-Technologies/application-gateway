@@ -13,38 +13,54 @@ export default function AccessList() {
 
   // console.log("datalength ", state.data.form.accessRights?.length);
   const handleAddClick = async (Id: string) => {
-    const selectedApi = await dispatch(getApiById(Id));
+    console.log(Id);
+    // console.log(state.data.form.accessRights?.some((x) => x?.apiId !== Id));
+    const data = state.data.form.accessRights?.some((x) => x?.apiId === Id);
+    console.log("accessList check before", data);
 
-    const listV: string[] = [];
-    selectedApi.payload.Data.Versions.forEach((element: any) => {
-      // element: { Name: string }
-      listV.push(element.Name);
-    });
-    const list = [
-      ...state.data.form.accessRights!,
-      {
-        apiId: selectedApi.payload.Data.ApiId, // "475b8639-6698-4a00-a395-bb80023a2915"
-        apiName: selectedApi.payload.Data.Name, // "testApi",
-        versions: listV, // ["Default"],
-        allowedUrls: [
-          {
-            url: "",
-            methods: [],
+    if (!data) {
+      console.log(
+        "accesslist check",
+        state.data.form.accessRights?.some((x) => x?.apiId === Id)
+      );
+
+      const selectedApi = await dispatch(getApiById(Id));
+
+      const listV: string[] = [];
+      selectedApi.payload.Data.Versions.forEach((element: any) => {
+        // element: { Name: string }
+        listV.push(element.Name);
+      });
+
+      //   console.log(state.data.form.accessRights?.some((x) => x?.apiId === Id)); // const x = state.data.form.accessRights?.some((xx) => xx?.apiId !== Id);
+
+      const list = [
+        ...state.data.form.accessRights,
+        {
+          apiId: selectedApi.payload.Data.ApiId, // "475b8639-6698-4a00-a395-bb80023a2915"
+          apiName: selectedApi.payload.Data.Name, // "testApi",
+          versions: listV, // ["Default"],
+          allowedUrls: [
+            {
+              url: "",
+              methods: [],
+            },
+          ],
+          limit: {
+            rate: 0,
+            throttle_interval: 0,
+            throttle_retry_limit: 0,
+            max_query_depth: 0,
+            quota_max: 0,
+            quota_renews: 0,
+            quota_remaining: 0,
+            quota_renewal_rate: 0,
           },
-        ],
-        limit: {
-          rate: 0,
-          throttle_interval: 0,
-          throttle_retry_limit: 0,
-          max_query_depth: 0,
-          quota_max: 0,
-          quota_renews: 0,
-          quota_remaining: 0,
-          quota_renewal_rate: 0,
         },
-      },
-    ];
-    dispatch(setForm({ ...state.data.form, accessRights: list }));
+      ];
+
+      dispatch(setForm({ ...state.data.form, accessRights: list }));
+    }
   };
 
   return (
