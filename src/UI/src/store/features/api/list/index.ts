@@ -1,5 +1,7 @@
 export interface IApiListState {
   data?: ISetApiList | null;
+  TotalApisCount?: number;
+  // pageSize?: number;
   loading?: boolean;
   error?: string | null;
 }

@@ -42,8 +42,8 @@ export default function APIList() {
     fields: [],
   });
 
-  const mainCall = async (currentPage: number) => {
-    dispatch(getApiList({ currentPage }));
+  const mainCall = async (currentPage: number, pageSize: number) => {
+    dispatch(getApiList({ currentPage, pageSize }));
     // handleError(resp.payload);
   };
   useEffect(() => {
@@ -61,11 +61,11 @@ export default function APIList() {
   }, [apiList.data]);
 
   useEffect(() => {
-    mainCall(1);
+    mainCall(1, 4);
   }, []);
 
   const handlePageClick = (pageSelected: number) => {
-    mainCall(pageSelected);
+    mainCall(pageSelected, 4);
     setSelected(pageSelected);
   };
 
@@ -98,9 +98,9 @@ export default function APIList() {
     console.log(newState);
     const pageCount = apiList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
-      mainCall(selected - 1);
+      mainCall(selected - 1, 4);
       setSelected(selected - 1);
-    } else mainCall(selected);
+    } else mainCall(selected, 4);
 
     setDataList({
       list: [...newState],

@@ -19,11 +19,11 @@ export default function ApiAccessList(props: IProps) {
     (State) => State.apiListState
   );
   const dispatch = useAppDispatch();
-  const mainCall = async (currentPage: number) => {
-    dispatch(getApiList({ currentPage }));
+  const mainCall = async (currentPage: number, pageSize: number) => {
+    dispatch(getApiList({ currentPage, pageSize }));
   };
   useEffect(() => {
-    mainCall(1);
+    mainCall(1, 100000);
   }, []);
 
   const grid = new Grid({
@@ -70,8 +70,10 @@ export default function ApiAccessList(props: IProps) {
       "CreatedDate",
     ],
     search: true,
+    sort: true,
+    scrollable: "virtual",
     data: () =>
-      accessApiList.data?.Apis.map((data) => [
+      accessApiList.data?.Apis?.map((data) => [
         data.Id,
         data.Name,
         data.IsActive ? "active" : "Inactive",
@@ -85,6 +87,8 @@ export default function ApiAccessList(props: IProps) {
     style: {
       table: {
         width: "100%",
+        // hight: "20px",
+        scrollY: scroll,
         // border: "2px solid #ccc",
       },
       th: {

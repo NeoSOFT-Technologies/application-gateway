@@ -6,19 +6,25 @@ import axios, { AxiosError } from "axios";
 
 interface IConditions {
   currentPage: number;
+  pageSize: number;
 }
 
 const initialState: IApiListState = {
   data: null,
+  TotalApisCount: 0,
+  // pageSize: 0,
   loading: false,
   error: null,
 };
 export const getApiList = createAsyncThunk(
   "api/list",
   async (conditions: IConditions) => {
-    const { currentPage } = conditions;
+    const { currentPage, pageSize } = conditions;
     try {
-      const response = await apiListService(currentPage);
+      console.log(currentPage, pageSize);
+      const response = await apiListService(currentPage, pageSize);
+      // initialState.pageSize = pageSize;
+      console.log(response);
       return response?.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
@@ -41,8 +47,11 @@ const slice = createSlice({
       state.loading = false;
       state.data = {
         Apis: action.payload.Data.Apis,
-        TotalCount: Math.ceil(action.payload.TotalCount / 3),
+        TotalCount: Math.ceil(
+          action.payload.TotalCount / action.payload.PageSize
+        ),
       };
+      state.TotalApisCount = action.payload.TotalCount;
     });
     builder.addCase(getApiList.rejected, (state, action) => {
       state.loading = false;

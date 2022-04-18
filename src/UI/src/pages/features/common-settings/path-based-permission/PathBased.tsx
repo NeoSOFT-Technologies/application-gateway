@@ -52,7 +52,7 @@ export default function PathBased(props: IProps) {
           <Accordion.Item eventKey="0">
             <Accordion.Header>
               {/* {ApiName} */}
-              ApiName
+              Your Api
             </Accordion.Header>
 
             <Accordion.Body>
@@ -62,7 +62,7 @@ export default function PathBased(props: IProps) {
                     className="btn btn-danger"
                     style={{ float: "right" }}
                     type="button"
-                    // onClick={}
+                    // onClick={() => deleteRow(index)}
                   >
                     Remove Access
                   </button>
