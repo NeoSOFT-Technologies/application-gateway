@@ -58,14 +58,8 @@ export default function Authentication() {
                               // onClick={handleFormSelectChange}
                               onClick={(e: any) => handleFormSelectChange(e)}
                             >
-                              <option id="authToken" value="Standard">
+                              <option id="authToken" value="standard">
                                 Authentication Token
-                              </option>
-                              <option id="basicAuth" value="Basic">
-                                Basic Authentication
-                              </option>
-                              <option id="jwt" value="Json">
-                                Json Web Token
                               </option>
                               <option id="mutualTls" value="Mutual">
                                 Mutual TLS
@@ -82,7 +76,8 @@ export default function Authentication() {
                       </Row>
                     </div>
                     <div>
-                      {state.data.form.AuthType === "Standard" ? (
+                      {state.data.form.AuthType === "standard" ||
+                      state.data.form.AuthType === "" ? (
                         <AuthenticationToken />
                       ) : state.data.form.AuthType === "Basic" ? (
                         <BasicAuthentication />
