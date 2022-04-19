@@ -15,14 +15,32 @@ export default function Ipathpermission() {
     path: "",
     method: "",
   });
-
   const handleAddclick = () => {
     console.log("apIs", state.data.form);
     const list = [
       ...state.data.form.ApIs[0].AllowedUrls!,
       {
-        url: inputData.path,
-        methods: ["get"],
+        id: null,
+        name: "",
+        versions: [],
+        allowedUrls: [
+          {
+            url: "welcome",
+            methods: [],
+          },
+        ],
+        limit: {
+          rate: 0,
+          per: 0,
+          throttle_interval: 0,
+          throttle_retry_limit: 0,
+          max_query_depth: 0,
+          quota_max: 0,
+          quota_renews: 0,
+          quota_remaining: 0,
+          quota_renewal_rate: 0,
+          set_by_policy: false,
+        },
       },
     ];
     dispatch(setForm({ ...state.data.form.ApIs[0], allowedUrls: list }));

@@ -1,19 +1,19 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
-import { deletePolicyService } from "../../../../services/policy/policy";
 import axios, { AxiosError } from "axios";
-import { IDeletePolicyState } from ".";
+import { IDeleteKeyState } from ".";
+import { deleteKeyService } from "../../../../services/key/key";
 
-const initialState: IDeletePolicyState = {
+const initialState: IDeleteKeyState = {
   isDeleted: false,
   loading: false,
   error: null,
 };
-export const deletePolicy = createAsyncThunk(
-  "api/deletepolicy",
+export const deleteKey = createAsyncThunk(
+  "api/deletekey",
   async (Id: string) => {
     try {
-      const response = await deletePolicyService(Id);
+      const response = await deleteKeyService(Id);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
@@ -23,22 +23,21 @@ export const deletePolicy = createAsyncThunk(
     }
   }
 );
-
 const slice = createSlice({
-  name: "deletepolicy",
+  name: "deletekey",
   initialState,
   reducers: {},
   extraReducers(builder): void {
-    builder.addCase(deletePolicy.pending, (state) => {
+    builder.addCase(deleteKey.pending, (state) => {
       state.loading = true;
       state.isDeleted = false;
     });
-    builder.addCase(deletePolicy.fulfilled, (state) => {
+    builder.addCase(deleteKey.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
       console.log("state ", current(state));
     });
-    builder.addCase(deletePolicy.rejected, (state, action) => {
+    builder.addCase(deleteKey.rejected, (state, action) => {
       state.loading = false;
       state.isDeleted = false;
       // action.payload contains error information
@@ -47,5 +46,4 @@ const slice = createSlice({
     });
   },
 });
-
 export default slice.reducer;

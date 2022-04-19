@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row, Col, Accordion } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
 import { IKeyCreateState } from "../../../../store/features/key/create";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
@@ -32,6 +32,10 @@ export default function PathBased(props: IProps) {
       setversion([...versions, value]);
     }
   };
+  // const ind = props.indexdata;
+  // let ApiName = null;
+  // if (props.indexdata !== null)
+  //   ApiName = props.state?.data.form.accessRights[ind].apiName;
 
   const deleteversion = (event: any, index: any) => {
     event.preventDefault();
@@ -42,20 +46,12 @@ export default function PathBased(props: IProps) {
   return (
     <>
       <div className="card mt-4">
-        <div className="accordion " id="accordionExample">
-          <div className="accordion-item">
-            <h2 className="accordion-header " id="headingOne">
-              <button
-                className="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                Your API
-              </button>
-            </h2>
+        <Accordion defaultActiveKey="0">
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>
+              {/* {ApiName} */}
+              Your Api
+            </Accordion.Header>
 
             <div
               id="collapseOne"

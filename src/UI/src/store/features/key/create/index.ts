@@ -10,7 +10,7 @@ export interface ICreateState {
 
 export interface IGetKeyByIdData {
   keyId?: string;
-  keyName: string | null;
+  keyName: string;
   per: number;
   rate: number;
   quota: number;
@@ -19,7 +19,7 @@ export interface IGetKeyByIdData {
   quotaRenewalRate: number;
   throttleInterval: number;
   throttleRetries: number;
-  accessRights?:
+  accessRights:
     | [
         {
           apiId: string | null;

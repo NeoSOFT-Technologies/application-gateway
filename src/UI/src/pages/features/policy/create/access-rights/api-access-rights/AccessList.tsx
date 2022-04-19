@@ -9,7 +9,7 @@ export default function AccessList() {
   const dispatch = useAppDispatch();
 
   // console.log("datalength ", state.data.form.accessRights?.length);
-  const handleAddClickpage = async (Id: string) => {
+  const handleAddClick = async (Id: string) => {
     const selectedApi = await dispatch(getApiById(Id));
 
     const listV: string[] = [];
@@ -76,7 +76,7 @@ export default function AccessList() {
                   <div className="accordion-body">
                     <ApiAccessList
                       state={state}
-                      handleAddClick={handleAddClickpage}
+                      handleAddClick={handleAddClick}
                     />
                   </div>
                 </div>

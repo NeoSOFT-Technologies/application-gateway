@@ -1,7 +1,35 @@
 import React from "react";
 import { Form, Accordion } from "react-bootstrap";
+import {
+  setFormErrors,
+  setFormData,
+  regexForName,
+} from "../../../../../resources/policy/policy-constants";
+import { useAppDispatch, useAppSelector } from "../../../../../store/hooks";
 
 export default function Configurations() {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((RootState) => RootState.createPolicyState);
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "name":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForName.test(value) ? "" : "Enter a Valid Policy name",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFormData(event, dispatch, state);
+    console.log("policyId", name, value);
+  }
   return (
     <div>
       <Accordion defaultActiveKey="0">
@@ -10,7 +38,21 @@ export default function Configurations() {
             <span>Policy Name</span>
           </Accordion.Header>
           <Accordion.Body>
-            <Form.Control type="text" placeholder="DemoPolicy " required />
+            <Form.Control
+              type="text"
+              placeholder="DemoPolicy "
+              name="name"
+              id="policyId"
+              data-testid="name-input"
+              value={state.data.form?.name}
+              isInvalid={!!state.data.errors?.name}
+              isValid={!state.data.errors?.name}
+              onChange={(e: any) => validateForm(e)}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              {state.data.errors?.name}
+            </Form.Control.Feedback>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
