@@ -12,7 +12,7 @@ export default function ApplyPolicy() {
       {state.data.form.policies.length > 0 ? (
         <>
           <GlobalLimit
-            isDisabled={false}
+            isDisabled={true}
             msg={" is being set by each policy"}
             // policyId="e9420aa1-eec5-4dfc-8ddf-2bc989a9a47f"
           />

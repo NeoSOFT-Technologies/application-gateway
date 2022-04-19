@@ -12,7 +12,6 @@ interface IProps {
   apistate?: IApiGetByIdState;
   indexdata?: number;
 }
-
 export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
@@ -30,7 +29,6 @@ export default function PathBased(props: IProps) {
       setisActive(Boolean(value));
     }
   };
-
   const handleversion = (event: any) => {
     const value = event.target.value;
     const mapped = versions;
@@ -57,7 +55,7 @@ export default function PathBased(props: IProps) {
           <Accordion.Item eventKey="0">
             <Accordion.Header>
               {/* {ApiName} */}
-              {props.policystate?.data.form.apIs[props.indexdata!].name}
+              {props.policystate?.data.form.ApIs[props.indexdata!].Name}
             </Accordion.Header>
 
             <Accordion.Body>
@@ -67,7 +65,6 @@ export default function PathBased(props: IProps) {
                     className="btn btn-danger"
                     style={{ float: "right" }}
                     type="button"
-                    // onClick={}
                   >
                     Remove Access
                   </button>
@@ -145,7 +142,12 @@ export default function PathBased(props: IProps) {
                         </Form.Label>
                       </Form.Group>
                       {isActiveApi ? (
-                        <GlobalLimit isDisabled={false} msg={""} />
+                        <GlobalLimit
+                          isDisabled={false}
+                          msg={""}
+                          state={props.state}
+                          index={props.indexdata}
+                        />
                       ) : (
                         " "
                       )}

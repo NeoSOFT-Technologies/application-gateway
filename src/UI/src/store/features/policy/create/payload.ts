@@ -3,30 +3,30 @@ import { IPolicyCreateState } from "./index";
 export const initialState: IPolicyCreateState = {
   data: {
     form: {
-      name: "",
-      active: true,
-      keysInactive: true,
-      maxQuota: 0,
-      quotaRate: 0,
-      rate: 0,
-      per: 0,
-      throttleInterval: 0,
-      throttleRetries: 0,
-      state: "",
-      keyExpiresIn: 0,
-      tags: [],
-      apIs: [
+      Name: "",
+      Active: true,
+      KeysInactive: true,
+      MaxQuota: 0,
+      QuotaRate: 0,
+      Rate: 0,
+      Per: 0,
+      ThrottleInterval: 0,
+      ThrottleRetries: 0,
+      State: "",
+      KeyExpiresIn: 0,
+      Tags: [],
+      ApIs: [
         // {
-        //   id: null,
-        //   name: "",
-        //   versions: [],
-        //   allowedUrls: [
+        //   Id: null,
+        //   Name: "",
+        //   Versions: [],
+        //   AllowedUrls: [
         //     {
         //       url: "",
         //       methods: [],
         //     },
         //   ],
-        //   limit: {
+        //   Limit: {
         //     rate: 0,
         //     per: 0,
         //     throttle_interval: 0,
@@ -40,7 +40,7 @@ export const initialState: IPolicyCreateState = {
         //   },
         // },
       ],
-      partitions: {
+      Partitions: {
         quota: false,
         rate_limit: false,
         complexity: false,

@@ -3,9 +3,9 @@ import { IApiFormData } from "../../store/features/api/create";
 import { IGetApiByIdData } from "../../store/features/api/update";
 import apiFactory from "../../utils/api";
 
-export function apiListService(currentPage: number) {
+export function apiListService(currentPage: number, pageSize: number) {
   return apiFactory().get(
-    `ApplicationGateway?pageNum=${currentPage}&pageSize=3`
+    `ApplicationGateway?pageNum=${currentPage}&pageSize=${pageSize}`
   );
 }
 export function addApiService(data: IApiFormData) {

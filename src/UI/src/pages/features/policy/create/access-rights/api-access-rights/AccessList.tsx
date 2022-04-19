@@ -9,7 +9,7 @@ export default function AccessList() {
   const dispatch = useAppDispatch();
 
   // console.log("datalength ", state.data.form.accessRights?.length);
-  const handleAddClickpage = async (Id: string) => {
+  const handleAddClick = async (Id: string) => {
     const selectedApi = await dispatch(getApiById(Id));
 
     const listV: string[] = [];
@@ -18,18 +18,18 @@ export default function AccessList() {
       listV.push(element.Name);
     });
     const list = [
-      ...state.data.form.apIs,
+      ...state.data.form.ApIs,
       {
-        id: selectedApi.payload.Data.ApiId,
-        name: selectedApi.payload.Data.Name,
-        versions: listV,
-        allowedUrls: [
-          {
-            url: "",
-            methods: [],
-          },
+        Id: selectedApi.payload.Data.ApiId,
+        Name: selectedApi.payload.Data.Name,
+        Versions: listV,
+        AllowedUrls: [
+          // {
+          //   url: "",
+          //   methods: [],
+          // },
         ],
-        limit: {
+        Limit: {
           rate: 0,
           per: 0,
           throttle_interval: 0,
@@ -44,10 +44,9 @@ export default function AccessList() {
       },
     ];
     console.log("list: ", list);
-    dispatch(setForm({ ...state.data.form, apIs: list }));
-    console.log(state.data);
+    dispatch(setForm({ ...state.data.form, ApIs: list }));
   };
-
+  console.log("ACCESSLIST", state.data);
   return (
     <>
       <div>
@@ -76,7 +75,7 @@ export default function AccessList() {
                   <div className="accordion-body">
                     <ApiAccessList
                       state={state}
-                      handleAddClick={handleAddClickpage}
+                      handleAddClick={handleAddClick}
                     />
                   </div>
                 </div>

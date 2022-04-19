@@ -22,8 +22,19 @@ export default function PolicyList() {
     mainCall(1);
   }, []);
   const handleAddClick = (Id: string) => {
-    const list = [...StateKey.data.form.policies, Id];
-    dispatch(setForm({ ...StateKey.data.form, policies: list }));
+    const data = StateKey.data?.form.policies.some((x) => x === Id);
+    console.log("policylist check before", data);
+
+    if (!data) {
+      console.log(
+        "policylist check",
+        StateKey.data?.form.policies.some((x) => x === Id)
+      ); // const x = state.data.form.accessRights?.some((xx) => xx?.apiId !== Id);
+      // if (x === true ) {
+      //   console.log(state.data.form.accessRights);
+      const list = [...StateKey.data.form.policies, Id];
+      dispatch(setForm({ ...StateKey.data.form, policies: list }));
+    }
   };
   // const handleAddClick = async (Id: string) => {
   //   const formobj = [...rowInput];

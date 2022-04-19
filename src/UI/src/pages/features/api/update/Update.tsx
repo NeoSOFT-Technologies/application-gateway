@@ -89,7 +89,7 @@ export default function Update() {
                   </div>
                   <div className="card-body pt-2">
                     <Tabs
-                      // defaultActiveKey="setting"
+                      defaultActiveKey="setting"
                       id="uncontrolled-tab"
                       // transition={false}
                       className="mb-2 small"

@@ -1,10 +1,10 @@
 {
-  "name": "TestApi",
+  "name": "boss16",
   "slug": "",
   "listen_port": 0,
   "protocol": "",
   "enable_proxy_protocol": false,
-  "api_id": "cbae7f2f-17d1-4a76-b8bf-31a49d387b2f",
+  "api_id": "e5951a3d-04d3-4485-a375-a9dba0a9f6e7",
   "org_id": "",
   "use_keyless": true,
   "use_oauth2": false,
@@ -82,16 +82,16 @@
   },
   "base_identity_provided_by": "",
   "definition": {
-    "location": "",
-    "key": "",
+    "location": "header",
+    "key": "x-tyk-api-version",
     "strip_path": true
   },
   "version_data": {
     "not_versioned": false,
-    "default_version": "Default",
+    "default_version": "string",
     "versions": {
-      "Default": {
-        "name": "Default",
+      "string": {
+        "name": "string",
         "expires": "",
         "paths": {
           "ignored": null,
@@ -99,7 +99,31 @@
           "black_list": null
         },
         "use_extended_paths": true,
-        "extended_paths": {},
+        "extended_paths": {
+          "validate_json": [
+            {
+              "path": "/WeatherForecast",
+              "method": "POST",
+              "schema": {
+                "properties": {
+                  "test": {
+                    "type": "string"
+                  },
+                  "test2": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "test",
+                  "test2"
+                ],
+                "title": "weather",
+                "type": "object"
+              },
+              "error_response_code": 422
+            }
+          ]
+        },
         "global_headers": {},
         "global_headers_remove": [
           "Authorization"
@@ -133,7 +157,7 @@
   },
   "proxy": {
     "preserve_host_header": false,
-    "listen_path": "/testapipath/",
+    "listen_path": "/boss16/",
     "target_url": "http://host.docker.internal:5000",
     "disable_strip_slash": false,
     "strip_listen_path": true,
