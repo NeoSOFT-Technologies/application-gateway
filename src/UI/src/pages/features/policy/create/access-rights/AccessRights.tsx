@@ -64,7 +64,7 @@ export default function AccessRights() {
                   </Row>
                 </Row>
               </div>
-              {state.data.form.apIs?.length > 0 ? <ApiAccess /> : <></>}
+              {state.data.form.ApIs?.length > 0 ? <ApiAccess /> : <></>}
             </div>
           </div>
         </div>

@@ -19,13 +19,13 @@ export default function Ipathpermission() {
   const handleAddclick = () => {
     console.log("apIs", state.data.form);
     const list = [
-      ...state.data.form.apIs[0].allowedUrls!,
+      ...state.data.form.ApIs[0].AllowedUrls!,
       {
         url: inputData.path,
         methods: ["get"],
       },
     ];
-    dispatch(setForm({ ...state.data.form.apIs[0], allowedUrls: list }));
+    dispatch(setForm({ ...state.data.form.ApIs[0], allowedUrls: list }));
     setInputData({ path: "", method: "" });
   };
   console.log("checkhandle", state.data.form);
@@ -109,11 +109,11 @@ export default function Ipathpermission() {
                 </tr>
               </thead>
               <tbody>
-                {state.data.form.apIs?.length > 0 ? (
-                  (state.data.form.apIs as any[]).map(
+                {state.data.form.ApIs?.length > 0 ? (
+                  (state.data.form.ApIs as any[]).map(
                     (data: any, index: any) => {
                       return (
-                        state.data.form.apIs[index].allowedUrls as any[]
+                        state.data.form.ApIs[index].AllowedUrls as any[]
                       ).map((data1: any, index1: any) => {
                         return (
                           <tr key={index}>

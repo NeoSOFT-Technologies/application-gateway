@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
+import { IKeyCreateState } from "../../../../store/features/key/create";
+import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import GlobalLimit from "../global-limit/GlobalLimit";
-export default function PathBased() {
+interface IProps {
+  state?: IKeyCreateState | IPolicyCreateState;
+  index?: number;
+}
+export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
@@ -18,7 +24,6 @@ export default function PathBased() {
       setisActive(Boolean(value));
     }
   };
-
   const handleversion = (event: any) => {
     const value = event.target.value;
     const mapped = versions;
@@ -138,7 +143,12 @@ export default function PathBased() {
                           </Form.Label>
                         </Form.Group>
                         {isActiveApi ? (
-                          <GlobalLimit isDisabled={false} msg={""} />
+                          <GlobalLimit
+                            isDisabled={false}
+                            msg={""}
+                            state={props.state}
+                            index={props.index}
+                          />
                         ) : (
                           " "
                         )}

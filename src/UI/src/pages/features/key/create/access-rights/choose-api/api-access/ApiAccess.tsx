@@ -16,9 +16,10 @@ export default function ApiAccess() {
             (data: any, index: number) => {
               const { policies } = data;
               console.log(policies);
+              // console.log("apiacessIndex", index);
               return (
                 <tr key={index}>
-                  <PathBased />
+                  <PathBased state={state} index={index} />
                 </tr>
               );
             }

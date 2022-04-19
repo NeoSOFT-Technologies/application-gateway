@@ -18,7 +18,7 @@ export default function AccessList() {
       listV.push(element.Name);
     });
     const list = [
-      ...state.data.form.apIs,
+      ...state.data.form.ApIs,
       {
         id: selectedApi.payload.Data.ApiId,
         name: selectedApi.payload.Data.Name,

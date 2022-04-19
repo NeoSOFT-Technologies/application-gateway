@@ -11,10 +11,10 @@ export default function ApiAccess() {
     <>
       <br /> <br />
       <div className="card col-lg-12 grid-margin stretch-card">
-        {state.data.form.apIs !== null &&
-        state.data.form.apIs?.length > 0 &&
-        Array.isArray(state.data.form.apIs) ? (
-          (state.data.form.apIs as any[]).map((data: any, index: number) => {
+        {state.data.form.ApIs !== null &&
+        state.data.form.ApIs?.length > 0 &&
+        Array.isArray(state.data.form.ApIs) ? (
+          (state.data.form.ApIs as any[]).map((data: any, index: number) => {
             const { apIs } = data;
             console.log(apIs);
             return (

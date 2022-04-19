@@ -4,7 +4,6 @@ import GlobalLimit from "../../../../../common-settings/global-limit/GlobalLimit
 
 export default function Policies() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
-  console.log("states", state.data.form);
   return (
     <>
       <br />
@@ -16,10 +15,9 @@ export default function Policies() {
           (state.data.form.policies as any[]).map(
             (data: any, index: number) => {
               // const { policies } = data;
-              console.log(data, index);
               return (
                 <tr key={index}>
-                  <GlobalLimit isDisabled={true} msg={""} />
+                  <GlobalLimit isDisabled={true} msg={""} policyId={data} />
                 </tr>
               );
             }
@@ -29,11 +27,6 @@ export default function Policies() {
         )}{" "}
         <br /> <br />
       </div>{" "}
-      <GlobalLimit
-        isDisabled={true}
-        policyId="9f07e3a1-7c9c-4173-a172-a7c37668f9f6"
-        msg={""}
-      />
     </>
   );
 }

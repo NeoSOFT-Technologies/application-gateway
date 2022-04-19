@@ -8,32 +8,32 @@ export interface ICreateState {
   errors?: IError;
 }
 export interface IGetPolicyByIdData {
-  policyId?: string;
-  name: string;
-  active: boolean;
-  keysInactive: boolean;
-  maxQuota: number;
-  quotaRate: number;
-  rate: number;
-  per: number;
-  throttleInterval: number;
-  throttleRetries: number;
-  state: string;
-  keyExpiresIn: number;
-  tags?: string[];
-  apIs: [
+  PolicyId?: string;
+  Name: string;
+  Active: boolean;
+  KeysInactive: boolean;
+  MaxQuota: number;
+  QuotaRate: number;
+  Rate: number;
+  Per: number;
+  ThrottleInterval: number;
+  ThrottleRetries: number;
+  State: string;
+  KeyExpiresIn: number;
+  Tags?: string[];
+  ApIs: [
     {
-      id: string | null;
-      name: string;
-      versions: string[];
-      allowedUrls?:
+      Id: string | null;
+      Name: string;
+      Versions: string[];
+      AllowedUrls?:
         | [
             {
               url: string;
               methods: string[];
             }
           ];
-      limit: {
+      Limit: {
         rate?: number;
         per: number;
         throttle_interval?: number;
@@ -47,7 +47,7 @@ export interface IGetPolicyByIdData {
       } | null;
     }
   ];
-  partitions: {
+  Partitions: {
     quota: boolean;
     rate_limit: boolean;
     complexity: boolean;
