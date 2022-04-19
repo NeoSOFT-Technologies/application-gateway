@@ -44,7 +44,7 @@ export default function Configurations() {
               name="name"
               id="policyId"
               data-testid="name-input"
-              value={state.data.form?.name}
+              value={state.data.form?.Name}
               isInvalid={!!state.data.errors?.name}
               isValid={!state.data.errors?.name}
               onChange={(e: any) => validateForm(e)}

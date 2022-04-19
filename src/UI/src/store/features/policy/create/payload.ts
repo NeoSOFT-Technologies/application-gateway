@@ -16,7 +16,7 @@ export const initialState: IPolicyCreateState = {
       KeyExpiresIn: 0,
       Tags: [],
       ApIs: [
-        //{
+        // {
         //  Id: null,
         //  Name: "",
         //  Versions: [],
@@ -38,7 +38,7 @@ export const initialState: IPolicyCreateState = {
         //    quota_renewal_rate: 0,
         //    set_by_policy: false,
         //  },
-        //},
+        // },
       ],
       Partitions: {
         quota: false,

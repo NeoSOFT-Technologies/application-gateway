@@ -18,7 +18,7 @@ export default function Ipathpermission() {
   const handleAddclick = () => {
     console.log("apIs", state.data.form);
     const list = [
-      ...state.data.form.ApIs[0].AllowedUrls!,
+      ...state?.data.form.ApIs[0]?.AllowedUrls!,
       {
         id: null,
         name: "",
