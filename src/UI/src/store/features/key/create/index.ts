@@ -45,6 +45,7 @@ export interface IGetKeyByIdData {
       ]
     | [];
   policies: [];
+  policyByIds?: [];
   tags?: string[];
 }
 export interface IError {

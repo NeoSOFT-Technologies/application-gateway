@@ -4,6 +4,7 @@ import {
   getPolicybyId,
   setForm,
 } from "../../../../store/features/policy/create/slice";
+import { setForms } from "../../../../store/features/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import { IKeyCreateState } from "../../../../store/features/key/create";
@@ -19,17 +20,49 @@ interface IProps {
 
 export default function GlobalLimit(props: IProps) {
   const dispatch = useAppDispatch();
-  console.log("data", props.policyId);
+  const states = useAppSelector((RootState) => RootState.createKeyState);
+
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
+
+  // const manageState = () => {
+  //   const policyByIdTemp = [...(states.data.form.policyByIds! as any[])];
+  //   const policyState = [{ ...state.data.form }];
+  //   policyByIdTemp.push(policyState);
+
+  //   dispatch(setForms({ ...states.data.form, policyByIds: policyByIdTemp }));
+  // };
+
   const mainCall = async (id: string) => {
-    dispatch(getPolicybyId(id));
+    await dispatch(getPolicybyId(id));
+    // await dispatch(getPolicybyId(id)).then((action) => {
+    //   console.log("actionPayload", action.payload);
+    // });
   };
+
   useEffect(() => {
     mainCall(props.policyId!);
   }, []);
 
+  useEffect(() => {
+    // if (state.loading === false) {
+    //   manageState();
+    // }
+
+    const manageState = async () => {
+      const policyByIdTemp = [...(states.data.form.policyByIds! as any[])];
+      const policyState = [state.data.form];
+      policyByIdTemp.push(policyState);
+
+      await dispatch(
+        setForms({ ...states.data.form, policyByIds: policyByIdTemp })
+      );
+    };
+    manageState();
+  }, [props.policyId]);
+
+  console.log("mainstate", states);
   const [rate, setRate] = useState(props.isDisabled);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
@@ -71,8 +104,10 @@ export default function GlobalLimit(props: IProps) {
     setRateValue(event.target.value);
     dispatch(setForm({ ...state.data.form, [name]: value }));
   }
+
   return (
     <>
+      <p>this is the state of loading {state.loading ? "true" : "false"}</p>
       {state.loading ? (
         <Spinner />
       ) : (

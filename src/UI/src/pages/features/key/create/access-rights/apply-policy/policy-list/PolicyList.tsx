@@ -1,7 +1,7 @@
 import { Grid } from "gridjs-react";
 import { h } from "gridjs";
 import React, { useEffect } from "react";
-import { setForm } from "../../../../../../../store/features/key/create/slice";
+import { setForms } from "../../../../../../../store/features/key/create/slice";
 import { IPolicyListState } from "../../../../../../../store/features/policy/list";
 import { getPolicyList } from "../../../../../../../store/features/policy/list/slice";
 import {
@@ -33,7 +33,7 @@ export default function PolicyList() {
       // if (x === true ) {
       //   console.log(state.data.form.accessRights);
       const list = [...StateKey.data.form.policies, Id];
-      dispatch(setForm({ ...StateKey.data.form, policies: list }));
+      dispatch(setForms({ ...StateKey.data.form, policies: list }));
     }
   };
   // const handleAddClick = async (Id: string) => {

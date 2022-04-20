@@ -1,6 +1,6 @@
 import React from "react";
 import { getApiById } from "../../../../../../../store/features/api/update/slice";
-import { setForm } from "../../../../../../../store/features/key/create/slice";
+import { setForms } from "../../../../../../../store/features/key/create/slice";
 import {
   useAppDispatch,
   useAppSelector,
@@ -59,7 +59,7 @@ export default function AccessList() {
         },
       ];
 
-      dispatch(setForm({ ...state.data.form, accessRights: list }));
+      dispatch(setForms({ ...state.data.form, accessRights: list }));
     }
   };
 

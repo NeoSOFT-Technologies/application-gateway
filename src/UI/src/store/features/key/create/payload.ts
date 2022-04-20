@@ -37,6 +37,7 @@ export const initialState: IKeyCreateState = {
       //   },
       // ],
       policies: [],
+      policyByIds: [],
       tags: [],
     },
     errors: {

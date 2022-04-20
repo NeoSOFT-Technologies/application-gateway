@@ -25,9 +25,8 @@ const slice = createSlice({
   name: "keyCreate",
   initialState,
   reducers: {
-    setForm: (state, action) => {
+    setForms: (state, action) => {
       state.data.form = action.payload;
-      console.log("state in slice: ", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
@@ -50,5 +49,5 @@ const slice = createSlice({
   },
 });
 
-export const { setForm, setFormError } = slice.actions;
+export const { setForms, setFormError } = slice.actions;
 export default slice.reducer;
