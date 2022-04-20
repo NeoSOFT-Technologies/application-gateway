@@ -38,7 +38,17 @@ export const initialState: IApiGetByIdState = {
       ],
       AuthType: "",
       OpenidOptions: {
-        Providers: [],
+        Providers: [
+          {
+            issuer: "",
+            client_ids: [
+              {
+                clientId: "",
+                policy: "",
+              },
+            ],
+          },
+        ],
       },
       LoadBalancingTargets: [],
       IsQuotaDisabled: false,

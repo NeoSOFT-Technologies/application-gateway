@@ -45,7 +45,15 @@ export interface IGetApiByIdData {
   ];
   AuthType: string;
   OpenidOptions: {
-    Providers: [];
+    Providers: [
+      {
+        issuer: string;
+        client_ids: {
+          clientId: string;
+          policy: string;
+        }[];
+      }
+    ];
   };
   LoadBalancingTargets: [];
   IsQuotaDisabled: boolean;
