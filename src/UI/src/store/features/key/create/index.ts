@@ -9,55 +9,58 @@ export interface ICreateState {
 }
 
 export interface IGetKeyByIdData {
-  keyId?: string;
-  keyName: string;
-  per: number;
-  rate: number;
-  quota: number;
-  expires: string | number;
-  isInActive?: boolean;
-  quotaRenewalRate: number;
-  throttleInterval: number;
-  throttleRetries: number;
-  accessRights:
+  KeyId?: string;
+  KeyName: string;
+  Per: number;
+  Rate: number;
+  Quota: number;
+  Expires: number;
+  IsInActive?: boolean;
+  QuotaRenewalRate: number;
+  ThrottleInterval: number;
+  ThrottleRetries: number;
+  AccessRights:
     | [
         {
-          apiId: string | null;
-          apiName: string | null;
-          versions: string[];
-          allowedUrls?: [
-            {
-              url: string;
-              methods: string[];
-            }
-          ];
-          limit: {
-            rate?: number;
-            throttle_interval?: number;
-            throttle_retry_limit?: number;
-            max_query_depth?: number;
-            quota_max?: number;
-            quota_renews?: number;
-            quota_remaining?: number;
-            quota_renewal_rate?: number;
+          ApiId: string | null;
+          ApiName: string | null;
+          Versions: string[];
+          AllowedUrls:
+            | [
+                {
+                  url: string;
+                  methods: string[];
+                }
+              ]
+            | [];
+          Limit: {
+            Rate?: number;
+            Rhrottle_interval?: number;
+            Throttle_retry_limit?: number;
+            Max_query_depth?: number;
+            Quota_max?: number;
+            Quota_renews?: number;
+            Quota_remaining?: number;
+            Quota_renewal_rate?: number;
           } | null;
         } | null
       ]
     | [];
-  policies: [];
-  policyByIds?: [];
-  tags?: string[];
+  Policies: [];
+  PolicyByIds?: [];
+  Tags?: string[];
 }
+
 export interface IError {
-  keyId?: string;
-  keyName: string;
-  accessRights?: string;
-  policy?: string;
-  per?: string;
-  rate?: string;
-  quota?: string;
-  expires?: string;
-  quotaRenewalRate?: string;
-  throttleInterval?: string;
-  throttleRetries?: string;
+  KeyId?: string;
+  KeyName: string;
+  AccessRights?: string;
+  Policies?: string;
+  Per?: string;
+  Rate?: string;
+  Quota?: string;
+  Expires?: string;
+  QuotaRenewalRate?: string;
+  ThrottleInterval?: string;
+  ThrottleRetries?: string;
 }

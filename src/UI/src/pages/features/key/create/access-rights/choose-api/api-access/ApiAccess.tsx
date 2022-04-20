@@ -10,18 +10,16 @@ export default function ApiAccess() {
       <br /> <br />
       <h5>ApiAccess</h5> <br />
       <div className="card col-lg-12 grid-margin stretch-card">
-        {state.data.form.accessRights !== null &&
-        state.data.form.accessRights?.length! > 0 &&
-        Array.isArray(state.data.form.accessRights) ? (
-          (state.data.form.accessRights as any[]).map(
+        {state.data.form.AccessRights !== null &&
+        state.data.form.AccessRights?.length! > 0 &&
+        Array.isArray(state.data.form.AccessRights) ? (
+          (state.data.form.AccessRights as any[]).map(
             (data: any, index: number) => {
-              const { policies } = data;
-              console.log(policies);
-              // console.log("apiacessIndex", index);
+              console.log("apiacessIndex", index, data);
               return (
-                <tr key={index}>
-                  <PathBased state={state} index={index} />
-                </tr>
+                <div key={index}>
+                  <PathBased state={state} indexdata={index} />
+                </div>
               );
             }
           )

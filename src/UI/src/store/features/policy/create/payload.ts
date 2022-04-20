@@ -17,27 +17,27 @@ export const initialState: IPolicyCreateState = {
       Tags: [],
       ApIs: [
         // {
-        //  Id: null,
-        //  Name: "",
-        //  Versions: [],
-        //  AllowedUrls: [
-        //    {
-        //      url: "",
-        //      methods: [],
-        //    },
-        //  ],
-        //  Limit: {
-        //    rate: 0,
-        //    per: 0,
-        //    throttle_interval: 0,
-        //    throttle_retry_limit: 0,
-        //    max_query_depth: 0,
-        //    quota_max: 0,
-        //    quota_renews: 0,
-        //    quota_remaining: 0,
-        //    quota_renewal_rate: 0,
-        //    set_by_policy: false,
-        //  },
+        //   Id: null,
+        //   Name: "",
+        //   Versions: [],
+        //   AllowedUrls: [
+        //     {
+        //       url: "",
+        //       methods: [],
+        //     },
+        //   ],
+        //   Limit: {
+        //     rate: 0,
+        //     per: 0,
+        //     throttle_interval: 0,
+        //     throttle_retry_limit: 0,
+        //     max_query_depth: 0,
+        //     quota_max: 0,
+        //     quota_renews: 0,
+        //     quota_remaining: 0,
+        //     quota_renewal_rate: 0,
+        //     set_by_policy: false,
+        //   },
         // },
       ],
       Partitions: {

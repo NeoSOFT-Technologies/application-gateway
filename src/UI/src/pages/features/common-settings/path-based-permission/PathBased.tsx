@@ -3,16 +3,21 @@ import { Form, Row, Col, Accordion } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
 import { IKeyCreateState } from "../../../../store/features/key/create";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
+import { IApiGetByIdState } from "../../../../store/features/api/update";
 import GlobalLimit from "../global-limit/GlobalLimit";
 interface IProps {
-  state?: IKeyCreateState | IPolicyCreateState;
-  index?: number;
+  state?: IKeyCreateState;
+  policystate?: IPolicyCreateState;
+  apidata?: any;
+  apistate?: IApiGetByIdState;
+  indexdata?: number;
 }
 export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
-
+  const lis = props.apistate?.data.form.Versions;
+  console.log("versionslog", lis);
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value =
       event.target.type === "checkbox"
@@ -50,7 +55,7 @@ export default function PathBased(props: IProps) {
           <Accordion.Item eventKey="0">
             <Accordion.Header>
               {/* {ApiName} */}
-              Your Api
+              {props.policystate?.data.form.ApIs[props.indexdata!].Name}
             </Accordion.Header>
 
             <Accordion.Body>
@@ -74,9 +79,13 @@ export default function PathBased(props: IProps) {
                         name="method"
                         onChange={(e: any) => handleversion(e)}
                       >
-                        <option value="Default">Default</option>
-                        <option value="V1">V1</option>
-                        <option value="V2">V2</option>
+                        {lis?.map((datalist: any, index: any) => {
+                          return (
+                            <option key={index} value={datalist.Name}>
+                              {datalist.Name}
+                            </option>
+                          );
+                        })}
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -137,7 +146,7 @@ export default function PathBased(props: IProps) {
                           isDisabled={false}
                           msg={""}
                           state={props.state}
-                          index={props.index}
+                          index={props.indexdata}
                         />
                       ) : (
                         " "
@@ -171,7 +180,15 @@ export default function PathBased(props: IProps) {
                         </Form.Label>
                       </Form.Group>
                     </Col>
-                    {isActive ? <Ipathpermission /> : " "}
+                    {isActive ? (
+                      <Ipathpermission
+                        policystate={props.policystate}
+                        apidata={props.apidata}
+                        indexdata={props.indexdata}
+                      />
+                    ) : (
+                      " "
+                    )}
                   </Row>
                 </div>
               </div>

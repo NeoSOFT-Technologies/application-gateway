@@ -8,6 +8,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../store/hooks";
+import { ToastAlert } from "../../../../../../../components/ToasterAlert/ToastAlert";
 
 export default function PolicyList() {
   const accessPolicyList: IPolicyListState = useAppSelector(
@@ -22,45 +23,21 @@ export default function PolicyList() {
     mainCall(1);
   }, []);
   const handleAddClick = (Id: string) => {
-    const data = StateKey.data?.form.policies.some((x) => x === Id);
+    const data = StateKey.data?.form.Policies.some((x) => x === Id);
     console.log("policylist check before", data);
 
     if (!data) {
       console.log(
         "policylist check",
-        StateKey.data?.form.policies.some((x) => x === Id)
-      ); // const x = state.data.form.accessRights?.some((xx) => xx?.apiId !== Id);
-      // if (x === true ) {
-      //   console.log(state.data.form.accessRights);
-      const list = [...StateKey.data.form.policies, Id];
-      dispatch(setForms({ ...StateKey.data.form, policies: list }));
+        StateKey.data?.form.Policies.some((x) => x === Id)
+      );
+      const list = [...StateKey.data.form.Policies, Id];
+      dispatch(setForms({ ...StateKey.data.form, Policies: list }));
+    } else {
+      ToastAlert("Already select...", "error");
     }
   };
-  // const handleAddClick = async (Id: string) => {
-  //   const formobj = [...rowInput];
-  //   formobj.push(Id);
 
-  //   // formobj.id = Id;
-
-  //   setRowInput(formobj);
-
-  //   // listP.push(Id);
-
-  //   // setRowInput((prevFormData: any) => [...prevFormData, Id]);
-
-  //   const list = [...StateKey.data.form.policies, rowInput];
-  //   console.log("newObj", list);
-  //   // console.log("listP", rowInput);
-  //   console.log("list", rowInput);
-  //   dispatch(
-  //     setForm({
-  //       ...StateKey.data.form,
-  //       policies: list,
-  //     })
-  //   );
-  //   /// setRowInput({ ...rowInput, policies: "" });
-  //   // console.log(StateKey.data);
-  // };
   console.log(StateKey.data.form);
   const gridTable = new Grid({
     columns: [
@@ -108,14 +85,19 @@ export default function PolicyList() {
       "Auth Type",
     ],
     data: () =>
-      accessPolicyList.data?.Policies.map((data) => [
-        data.Id,
-        data.Name,
-        data.State ? "active" : "Inactive",
-        data.Apis,
-        data.AuthType,
-      ]),
+      accessPolicyList.data !== undefined &&
+      accessPolicyList.data &&
+      accessPolicyList.data?.Policies?.length! > 0
+        ? accessPolicyList.data?.Policies.map((data) => [
+            data.Id,
+            data.Name,
+            data.State ? "active" : "Inactive",
+            data.Apis,
+            data.AuthType,
+          ])
+        : [],
     search: true,
+    sort: true,
     className: {
       container: "table table-responsive table-bordered table-stripped",
     },
@@ -123,7 +105,6 @@ export default function PolicyList() {
       table: {
         width: "100%",
         border: "2px solid #ccc",
-        innerWidth: "100%",
       },
       th: {
         color: "#000",

@@ -9,16 +9,16 @@ export default function Policies() {
       <br />
       <br /> <br /> <h5>Policies</h5> <br />
       <div className="card col-lg-12 grid-margin stretch-card">
-        {state.data.form.policies !== null &&
-        state.data.form.policies.length > 0 &&
-        Array.isArray(state.data.form.policies) ? (
-          (state.data.form.policies as any[]).map(
+        {state.data.form.Policies !== null &&
+        state.data.form.Policies.length > 0 &&
+        Array.isArray(state.data.form.Policies) ? (
+          (state.data.form.Policies as any[]).map(
             (data: any, index: number) => {
               // const { policies } = data;
               return (
-                <tr key={index}>
+                <div key={index}>
                   <GlobalLimit isDisabled={true} msg={""} policyId={data} />
-                </tr>
+                </div>
               );
             }
           )

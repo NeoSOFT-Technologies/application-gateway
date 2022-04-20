@@ -3,65 +3,82 @@ import { Button, Form, Row, Col, Table } from "react-bootstrap";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import { setForm } from "../../../../store/features/policy/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-
-export default function Ipathpermission() {
+interface IProps {
+  policystate?: IPolicyCreateState;
+  apidata?: any;
+  indexdata?: number;
+}
+export default function Ipathpermission(props: IProps) {
   const dispatch = useAppDispatch();
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
-
-  const [rowsData, setRowsData] = useState<any>([]);
+  // const [rowsData, setRowsData] = useState<any>();
   const [inputData, setInputData] = useState<any>({
     path: "",
-    method: "",
+    method: [],
   });
   const handleAddclick = () => {
-    console.log("apIs", state.data.form);
-    const list = [
-      ...state?.data.form.ApIs[0]?.AllowedUrls!,
-      {
-        id: null,
-        name: "",
-        versions: [],
-        allowedUrls: [
-          {
-            url: "welcome",
-            methods: [],
-          },
-        ],
-        limit: {
-          rate: 0,
-          per: 0,
-          throttle_interval: 0,
-          throttle_retry_limit: 0,
-          max_query_depth: 0,
-          quota_max: 0,
-          quota_renews: 0,
-          quota_remaining: 0,
-          quota_renewal_rate: 0,
-          set_by_policy: false,
-        },
-      },
-    ];
-    dispatch(setForm({ ...state.data.form.ApIs[0], allowedUrls: list }));
+    const states = props.policystate;
+    const value = props.indexdata!;
+    const apisList = [...states?.data.form.ApIs!];
+    const allowedList = [...apisList[value].AllowedUrls!];
+    const list = {
+      url: inputData.path,
+      methods: inputData.method,
+    };
+    allowedList.push(list);
+    apisList[value] = {
+      ...apisList[value],
+      AllowedUrls: [...allowedList],
+    };
+    dispatch(setForm({ ...state.data.form, ApIs: apisList }));
     setInputData({ path: "", method: "" });
   };
   console.log("checkhandle", state.data.form);
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
-    const rows = [...rowsData];
-    rows.splice(index, 1);
-    setRowsData(rows);
+    const states = props.policystate;
+    const value = props.indexdata!;
+    const apisList = [...states?.data.form.ApIs!];
+    const allowedList = [...apisList[value].AllowedUrls!];
+    allowedList.splice(index, 1);
+    apisList[value] = {
+      ...apisList[value],
+      AllowedUrls: [...allowedList],
+    };
+    dispatch(setForm({ ...state.data.form, ApIs: apisList }));
   };
 
   const handleAddFormChange = (event: any) => {
     event.preventDefault();
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
-    console.log("fieldName: ", fieldName + " | fieldValue:", fieldValue);
     const newFormData: any = { ...inputData };
-    newFormData[fieldName] = fieldValue;
-    setInputData(newFormData);
+    switch (fieldName) {
+      case "path":
+        newFormData[fieldName] = fieldValue;
+        setInputData(newFormData);
+        break;
+      case "method":
+        if (fieldValue === "All Method") {
+          newFormData[fieldName] = [
+            "GET ",
+            "POST ",
+            "PUT ",
+            "DELETE ",
+            "PATCH ",
+            "OPTIONS ",
+            "HEAD",
+          ];
+          setInputData(newFormData);
+        } else {
+          newFormData[fieldName] = [fieldValue];
+          setInputData(newFormData);
+        }
+        break;
+    }
+    // event.target.getAttribute("name").value = "";
   };
 
   return (
@@ -102,6 +119,7 @@ export default function Ipathpermission() {
               <option>PATCH</option>
               <option>OPTIONS</option>
               <option>HEAD</option>
+              <option>All Method</option>
             </Form.Select>
           </Form.Group>
         </Col>
@@ -127,27 +145,23 @@ export default function Ipathpermission() {
                 </tr>
               </thead>
               <tbody>
-                {state.data.form.ApIs?.length > 0 ? (
-                  (state.data.form.ApIs as any[]).map(
-                    (data: any, index: any) => {
-                      return (
-                        state.data.form.ApIs[index].AllowedUrls as any[]
-                      ).map((data1: any, index1: any) => {
-                        return (
-                          <tr key={index}>
-                            <td>{data1.url}</td>
-                            <td>{data1.methods}</td>
-                            <td style={{ textAlign: "center" }}>
-                              <i
-                                className="bi bi-trash"
-                                onClick={(e: any) => deleteTableRows(e, index)}
-                              ></i>
-                            </td>
-                          </tr>
-                        );
-                      });
-                    }
-                  )
+                {state.data.form.ApIs.length > 0 ? (
+                  (
+                    state.data.form.ApIs[props.indexdata!].AllowedUrls as any[]
+                  ).map((data1: any, index1: any) => {
+                    return (
+                      <tr key={index1}>
+                        <td>{data1.url}</td>
+                        <td>{data1.methods}</td>
+                        <td style={{ textAlign: "center" }}>
+                          <i
+                            className="bi bi-trash"
+                            onClick={(e: any) => deleteTableRows(e, index1)}
+                          ></i>
+                        </td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <></>
                 )}

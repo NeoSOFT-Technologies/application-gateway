@@ -28,12 +28,10 @@ export interface IGetPolicyByIdData {
           Name: string;
           Versions: string[];
           AllowedUrls:
-            | [
-                {
-                  url: string;
-                  methods: string[];
-                }
-              ];
+            | {
+                url: string;
+                methods: string[];
+              }[];
           Limit: {
             rate?: number;
             per: number;
@@ -58,13 +56,13 @@ export interface IGetPolicyByIdData {
   };
 }
 export interface IError {
-  name: string;
-  apIs?: string;
-  partitions?: string;
-  per?: string;
-  rate?: string;
-  quota?: string;
-  expires?: string;
-  throttleInterval?: string;
-  throttleRetries?: string;
+  Name: string;
+  ApIs?: string;
+  Partitions?: string;
+  Per?: string;
+  Rate?: string;
+  Quota?: string;
+  Expires?: string;
+  ThrottleInterval?: string;
+  ThrottleRetries?: string;
 }
