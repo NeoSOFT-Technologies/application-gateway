@@ -4,8 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import AuthenticationToken from "./authentication-token/AuthenticationToken";
 import MutualTLS from "./mutual-tls/MutualTLS";
 import { setFormData } from "../../../../../../resources/api/api-constants";
-import BasicAuthentication from "./basic-authentication/BasicAuthentication";
-import { setForm } from "../../../../../../store/features/api/update/slice";
+import OpenIdConnect from "./open-id-connect/OpenIdConnect";
 
 export default function Authentication() {
   const dispatch = useAppDispatch();
@@ -16,11 +15,6 @@ export default function Authentication() {
   const handleFormSelectChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const { name, value } = event.target;
-    console.log("name and value: ", name, value);
-    if (value === "mutual") {
-      dispatch(setForm({ ...state.data.form, EnableMTLS: true }));
-    }
     setFormData(event, dispatch, state);
   };
   console.log("mutual", state.data.form.EnableMTLS);
@@ -79,13 +73,14 @@ export default function Authentication() {
                         </Col>
                       </Row>
                     </div>
+
                     <div>
-                      {state.data.form.AuthType === "Basic" ? (
-                        <BasicAuthentication />
-                      ) : state.data.form.AuthType === "standard" ? (
+                      {state.data.form.AuthType === "standard" ? (
                         <AuthenticationToken />
                       ) : state.data.form.EnableMTLS === true ? (
                         <MutualTLS />
+                      ) : state.data.form.AuthType === "OpenId" ? (
+                        <OpenIdConnect />
                       ) : (
                         <></>
                       )}

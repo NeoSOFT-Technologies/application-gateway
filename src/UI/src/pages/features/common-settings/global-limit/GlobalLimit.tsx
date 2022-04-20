@@ -22,6 +22,7 @@ export default function GlobalLimit(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
   const [loader, setLoader] = useState(true);
+  const [localState, setLocalState] = useState({} as IPolicyCreateState);
 
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
@@ -67,6 +68,8 @@ export default function GlobalLimit(props: IProps) {
         const policyByIdTemp = [...(states.data.form.PolicyByIds! as any[])];
         const policyState = [state.data.form];
         policyByIdTemp.push(policyState);
+        setLocalState(state);
+        console.log(localState);
 
         await dispatch(
           setForms({ ...states.data.form, PolicyByIds: policyByIdTemp })
@@ -121,9 +124,9 @@ export default function GlobalLimit(props: IProps) {
 
   return (
     <>
-      {loader && state.loading ? (
-        <Spinner />
-      ) : (
+      {loader === false &&
+      state.loading === false &&
+      states.data.form.PolicyByIds.length > 0 ? (
         <div className="card">
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
@@ -168,7 +171,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder="Enter Rate"
                             value={
                               props.isDisabled
-                                ? state.data.form.Rate
+                                ? states.data?.form.PolicyByIds[0].Rate
                                 : rateValue
                             }
                             onChange={(e: any) => validateForm(e)}
@@ -349,6 +352,8 @@ export default function GlobalLimit(props: IProps) {
             </Accordion.Item>
           </Accordion>
         </div>
+      ) : (
+        <Spinner />
       )}
     </>
   );

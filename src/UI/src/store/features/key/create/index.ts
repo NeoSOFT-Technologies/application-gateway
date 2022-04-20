@@ -1,3 +1,5 @@
+import { IGetPolicyByIdData } from "../../policy/create";
+
 export interface IKeyCreateState {
   data: ICreateState;
   loading: boolean;
@@ -44,7 +46,7 @@ export interface IGetKeyByIdData {
       ]
     | [];
   Policies: [];
-  PolicyByIds?: [];
+  PolicyByIds: IGetPolicyByIdData[];
   Tags?: string[];
 }
 
