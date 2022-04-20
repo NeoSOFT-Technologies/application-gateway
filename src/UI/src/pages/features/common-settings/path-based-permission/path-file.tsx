@@ -16,7 +16,7 @@ export default function Ipathpermission(props: IProps) {
   // const [rowsData, setRowsData] = useState<any>();
   const [inputData, setInputData] = useState<any>({
     path: "",
-    method: [],
+    method: ["GET"],
   });
   const handleAddclick = () => {
     const states = props.policystate;
@@ -33,9 +33,9 @@ export default function Ipathpermission(props: IProps) {
       AllowedUrls: [...allowedList],
     };
     dispatch(setForm({ ...state.data.form, ApIs: apisList }));
-    setInputData({ path: "", method: "" });
+    setInputData({ path: "", method: ["GET"] });
   };
-  // console.log("checkhandle", state.data.form);
+
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
     const states = props.policystate;
@@ -78,7 +78,6 @@ export default function Ipathpermission(props: IProps) {
         }
         break;
     }
-    // event.target.getAttribute("name").value = "";
   };
 
   return (
@@ -95,6 +94,7 @@ export default function Ipathpermission(props: IProps) {
               placeholder="Enter custom regex"
               name="path"
               onChange={handleAddFormChange}
+              value={inputData.path}
               // data-testid="name-input"
               required
             />
@@ -110,8 +110,8 @@ export default function Ipathpermission(props: IProps) {
               style={{ height: 45 }}
               name="method"
               onChange={handleAddFormChange}
+              value={inputData.method}
             >
-              <option disabled>Select Method(s)</option>
               <option>GET</option>
               <option>POST</option>
               <option>PUT</option>
@@ -119,7 +119,7 @@ export default function Ipathpermission(props: IProps) {
               <option>PATCH</option>
               <option>OPTIONS</option>
               <option>HEAD</option>
-              <option>All Method</option>
+              <option>AllMethod</option>
             </Form.Select>
           </Form.Group>
         </Col>
