@@ -63,7 +63,7 @@ class App extends Component<IProp, IState> {
   }
 
   onRouteChanged() {
-    console.log("ROUTE CHANGED");
+    // console.log("ROUTE CHANGED");
     window.scrollTo(0, 0);
     const fullPageLayoutRoutes = [
       "/login-page",
@@ -75,7 +75,7 @@ class App extends Component<IProp, IState> {
       "/general-pages/landing-page",
     ];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
-      console.log(this.props.router.location.pathname);
+      // console.log(this.props.router.location.pathname);
       if (this.props.router.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({
           isFullPageLayout: true,

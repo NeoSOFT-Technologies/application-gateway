@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import axios, { AxiosError } from "axios";
 import { IDeleteKeyState } from ".";
@@ -35,7 +35,7 @@ const slice = createSlice({
     builder.addCase(deleteKey.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
-      console.log("state ", current(state));
+      // console.log("state ", current(state));
     });
     builder.addCase(deleteKey.rejected, (state, action) => {
       state.loading = false;

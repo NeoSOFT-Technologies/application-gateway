@@ -38,7 +38,7 @@ export default function KeyList() {
     dispatch(getKeyList({ currentPage }));
   };
   useEffect(() => {
-    console.log("UseEffect", keyList.data);
+    // console.log("UseEffect", keyList.data);
     if (keyList.data && keyList.data?.Keys?.length > 0) {
       const listKey: IKeyData[] = [];
       keyList.data?.Keys.forEach((item) => {
@@ -80,7 +80,7 @@ export default function KeyList() {
 
   function deleteKeyFromState(id: string) {
     const newState = datalist.list.filter((item) => item.Id !== id);
-    console.log(newState);
+    // console.log(newState);
     const pageCount = keyList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
       mainCall(selected - 1);

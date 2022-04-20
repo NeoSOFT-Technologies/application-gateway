@@ -38,7 +38,7 @@ export default function PolicyList() {
     dispatch(getPolicyList({ currentPage }));
   };
   useEffect(() => {
-    console.log("UseEffect", policyList.data);
+    // console.log("UseEffect", policyList.data);
     if (policyList.data && policyList.data?.Policies?.length > 0) {
       setDataList({
         list: [...policyList.data.Policies],
@@ -76,7 +76,7 @@ export default function PolicyList() {
 
   function deletePolicyFromState(id: string) {
     const newState = datalist.list.filter((item) => item.Id !== id);
-    console.log(newState);
+    // console.log(newState);
     const pageCount = policyList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
       mainCall(selected - 1);

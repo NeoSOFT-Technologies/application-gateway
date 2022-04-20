@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import error from "../../../../utils/error";
 import { deletePolicyService } from "../../../../services/policy/policy";
 import axios, { AxiosError } from "axios";
@@ -36,7 +36,7 @@ const slice = createSlice({
     builder.addCase(deletePolicy.fulfilled, (state) => {
       state.loading = false;
       state.isDeleted = true;
-      console.log("state ", current(state));
+      // console.log("state ", current(state));
     });
     builder.addCase(deletePolicy.rejected, (state, action) => {
       state.loading = false;

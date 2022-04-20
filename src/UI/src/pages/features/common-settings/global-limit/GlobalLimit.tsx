@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Col, Form, Row } from "react-bootstrap";
-// import { IPolicyUpdateState } from "../../../../store/features/policy/update";
-import { getPolicybyId } from "../../../../store/features/policy/update/slice";
+import {
+  getPolicybyId,
+  setForm,
+} from "../../../../store/features/policy/create/slice";
+import { setForms } from "../../../../store/features/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-// import { setFormData } from "../../../../resources/api/api-constants";
-import { setForm } from "../../../../store/features/policy/create/slice";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import { IKeyCreateState } from "../../../../store/features/key/create";
-// import statusAndDateHelper from "../../../../utils/helper";
+import Spinner from "../../../../components/loader/Loader";
+
 interface IProps {
   isDisabled: boolean;
   state?: IKeyCreateState | IPolicyCreateState;
@@ -17,26 +19,64 @@ interface IProps {
 }
 
 export default function GlobalLimit(props: IProps) {
+  const dispatch = useAppDispatch();
+  const states = useAppSelector((RootState) => RootState.createKeyState);
+  const [loader, setLoader] = useState(true);
+
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
 
-  const dispatch = useAppDispatch();
-  // const state: IPolicyCreateState = useAppSelector(
-  //   (RootStates) => RootStates.createPolicyState
-  // );
+  // const manageState = () => {
+  //   const policyByIdTemp = [...(states.data.form.policyByIds! as any[])];
+  //   const policyState = [{ ...state.data.form }];
+  //   policyByIdTemp.push(policyState);
+
+  //   dispatch(setForms({ ...states.data.form, policyByIds: policyByIdTemp }));
+  // };
 
   const mainCall = async (id: string) => {
-    dispatch(getPolicybyId(id));
+    if (id !== null && id !== "" && id !== undefined) {
+      await dispatch(getPolicybyId(id));
+      setLoader(false);
+    }
+
+    // await dispatch(getPolicybyId(id)).then((action) => {
+    //   console.log("actionPayload", action.payload);
+    // });
   };
+
   useEffect(() => {
     mainCall(props.policyId!);
   }, []);
 
-  // const cx = `collapseGlobalLimit_${props.policyId}`;
-  // console.log("mypolicies", cx);
-  // console.log("policyId", props.policyId);
+  useEffect(() => {
+    // if (state.loading === false) {
+    //   manageState();
+    // }
+    if (
+      props.policyId !== null &&
+      props.policyId !== "" &&
+      props.policyId !== undefined &&
+      loader === false &&
+      state.loading === false
+    ) {
+      console.log("second use effect - ", loader);
 
+      const manageState = async () => {
+        const policyByIdTemp = [...(states.data.form.PolicyByIds! as any[])];
+        const policyState = [state.data.form];
+        policyByIdTemp.push(policyState);
+
+        await dispatch(
+          setForms({ ...states.data.form, PolicyByIds: policyByIdTemp })
+        );
+      };
+      manageState();
+    }
+  }, [loader]);
+
+  // console.log("mainstate", states);
   const [rate, setRate] = useState(props.isDisabled);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
@@ -77,14 +117,14 @@ export default function GlobalLimit(props: IProps) {
     const { name, value } = event.target;
     setRateValue(event.target.value);
     dispatch(setForm({ ...state.data.form, [name]: value }));
-    // setFormData(event, dispatch, state);
-    console.log("key", name, value);
   }
-  console.log("newvalue", state.data.form);
+
   return (
     <>
-      <div className="card mt-4">
-        <div>
+      {loader && state.loading ? (
+        <Spinner />
+      ) : (
+        <div className="card">
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Global Limits and Quota</Accordion.Header>
@@ -93,7 +133,7 @@ export default function GlobalLimit(props: IProps) {
                 <Row>
                   <Row>
                     <Col md="4">
-                      {props.msg !== "" && props.isDisabled === false ? (
+                      {props.msg !== "" && props.isDisabled === true ? (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Rate Limiting</b>
@@ -128,7 +168,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder="Enter Rate"
                             value={
                               props.isDisabled
-                                ? state.data.form.rate
+                                ? state.data.form.Rate
                                 : rateValue
                             }
                             onChange={(e: any) => validateForm(e)}
@@ -146,7 +186,7 @@ export default function GlobalLimit(props: IProps) {
                             id="per"
                             placeholder="Enter time"
                             value={
-                              props.isDisabled ? state.data.form.per : perValue
+                              props.isDisabled ? state.data.form.Per : perValue
                             }
                             onChange={(e: any) => setPerValue(e.target.value)}
                             name="RateLimit.Per"
@@ -157,7 +197,7 @@ export default function GlobalLimit(props: IProps) {
                       )}
                     </Col>
                     <Col md="4">
-                      {props.msg !== "" && props.isDisabled === false ? (
+                      {props.msg !== "" && props.isDisabled === true ? (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Throttling</b>
@@ -195,7 +235,7 @@ export default function GlobalLimit(props: IProps) {
                             name="Throttling.Retry"
                             value={
                               props.isDisabled
-                                ? state.data.form.throttleRetries
+                                ? state.data.form.ThrottleRetries
                                 : retryValue
                             }
                             onChange={(e: any) => setRetryValue(e.target.value)}
@@ -215,7 +255,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder={throttleInterval}
                             value={
                               props.isDisabled
-                                ? state.data.form.throttleInterval
+                                ? state.data.form.ThrottleInterval
                                 : intervalValue
                             }
                             onChange={(e: any) =>
@@ -228,7 +268,7 @@ export default function GlobalLimit(props: IProps) {
                       )}
                     </Col>
                     <Col md="4">
-                      {props.msg !== "" && props.isDisabled === false ? (
+                      {props.msg !== "" && props.isDisabled === true ? (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Usage Quota</b>
@@ -265,7 +305,7 @@ export default function GlobalLimit(props: IProps) {
                             placeholder={quotaPerPeriod}
                             value={
                               props.isDisabled
-                                ? state.data.form.maxQuota
+                                ? state.data.form.MaxQuota
                                 : maxQuotaValue
                             }
                             onChange={(e: any) =>
@@ -284,7 +324,7 @@ export default function GlobalLimit(props: IProps) {
                             disabled={quota}
                             value={
                               props.isDisabled
-                                ? state.data.form.quotaRate
+                                ? state.data.form.QuotaRate
                                 : quotaResetValue
                             }
                             onChange={(e: any) =>
@@ -309,7 +349,7 @@ export default function GlobalLimit(props: IProps) {
             </Accordion.Item>
           </Accordion>
         </div>
-      </div>
+      )}
     </>
   );
 }
