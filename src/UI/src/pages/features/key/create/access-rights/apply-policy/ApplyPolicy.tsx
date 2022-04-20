@@ -9,7 +9,7 @@ export default function ApplyPolicy() {
   return (
     <div>
       <PolicyList />
-      {state.data.form.Policies.length > 0 ? (
+      {state.data.form.Policies?.length > 0 ? (
         <>
           <GlobalLimit
             isDisabled={true}
