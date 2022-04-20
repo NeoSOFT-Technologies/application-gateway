@@ -21,6 +21,7 @@ interface IProps {
 export default function GlobalLimit(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
+  const [loader, setLoader] = useState(true);
 
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
@@ -35,7 +36,11 @@ export default function GlobalLimit(props: IProps) {
   // };
 
   const mainCall = async (id: string) => {
-    await dispatch(getPolicybyId(id));
+    if (id !== null && id !== "" && id !== undefined) {
+      await dispatch(getPolicybyId(id));
+      setLoader(false);
+    }
+
     // await dispatch(getPolicybyId(id)).then((action) => {
     //   console.log("actionPayload", action.payload);
     // });
@@ -49,20 +54,29 @@ export default function GlobalLimit(props: IProps) {
     // if (state.loading === false) {
     //   manageState();
     // }
+    if (
+      props.policyId !== null &&
+      props.policyId !== "" &&
+      props.policyId !== undefined &&
+      loader === false &&
+      state.loading === false
+    ) {
+      console.log("second use effect - ", loader);
 
-    const manageState = async () => {
-      const policyByIdTemp = [...(states.data.form.PolicyByIds! as any[])];
-      const policyState = [state.data.form];
-      policyByIdTemp.push(policyState);
+      const manageState = async () => {
+        const policyByIdTemp = [...(states.data.form.PolicyByIds! as any[])];
+        const policyState = [state.data.form];
+        policyByIdTemp.push(policyState);
 
-      await dispatch(
-        setForms({ ...states.data.form, PolicyByIds: policyByIdTemp })
-      );
-    };
-    manageState();
-  }, [props.policyId]);
+        await dispatch(
+          setForms({ ...states.data.form, PolicyByIds: policyByIdTemp })
+        );
+      };
+      manageState();
+    }
+  }, [loader]);
 
-  console.log("mainstate", states);
+  // console.log("mainstate", states);
   const [rate, setRate] = useState(props.isDisabled);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
@@ -107,8 +121,7 @@ export default function GlobalLimit(props: IProps) {
 
   return (
     <>
-      <p>this is the state of loading {state.loading ? "true" : "false"}</p>
-      {state.loading ? (
+      {loader && state.loading ? (
         <Spinner />
       ) : (
         <div className="card">
