@@ -14,7 +14,7 @@ export const createPolicy = createAsyncThunk(
   async (data: IGetPolicyByIdData) => {
     try {
       const response = await addPolicyService(data);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
@@ -29,7 +29,7 @@ export const getPolicybyId = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await getPolicyByIdService(id);
-      console.log("response", response.data);
+      // console.log("response", response.data);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
@@ -44,7 +44,7 @@ export const updatePolicy = createAsyncThunk(
   async (data: IGetPolicyByIdData) => {
     try {
       const response = await updatePolicyService(data);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;

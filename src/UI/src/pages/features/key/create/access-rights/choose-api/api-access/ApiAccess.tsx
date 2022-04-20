@@ -4,7 +4,7 @@ import PathBased from "../../../../../common-settings/path-based-permission/Path
 
 export default function ApiAccess() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
-  console.log("states", state.data.form);
+  // console.log("states", state.data.form);
   return (
     <>
       <br /> <br />
@@ -15,7 +15,7 @@ export default function ApiAccess() {
         Array.isArray(state.data.form.AccessRights) ? (
           (state.data.form.AccessRights as any[]).map(
             (data: any, index: number) => {
-              console.log("apiacessIndex", index, data);
+              // console.log("apiacessIndex", index, data);
               return (
                 <div key={index}>
                   <PathBased state={state} indexdata={index} />

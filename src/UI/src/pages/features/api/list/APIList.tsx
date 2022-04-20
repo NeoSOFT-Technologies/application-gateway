@@ -17,7 +17,7 @@ import {
 } from "../../../../store/features/api/list";
 
 function Bomb() {
-  console.log("");
+  // console.log("");
   // throw new Error("Boom");
 }
 
@@ -95,7 +95,7 @@ export default function APIList() {
 
   function deleteApiFromState(id: string) {
     const newState = datalist.list.filter((item) => item.Id !== id);
-    console.log(newState);
+    // console.log(newState);
     const pageCount = apiList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
       mainCall(selected - 1, 4);

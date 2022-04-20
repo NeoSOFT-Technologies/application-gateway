@@ -17,7 +17,7 @@ export default function PathBased(props: IProps) {
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
   const lis = props.apistate?.data.form.Versions;
-  console.log("versionslog", lis);
+  // console.log("versionslog", lis);
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value =
       event.target.type === "checkbox"

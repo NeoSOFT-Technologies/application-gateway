@@ -40,7 +40,7 @@ function Configurations() {
     }
 
     setFormData(event, dispatch, state);
-    console.log("keyId", name, value);
+    // console.log("keyId", name, value);
   }
   return (
     <div>

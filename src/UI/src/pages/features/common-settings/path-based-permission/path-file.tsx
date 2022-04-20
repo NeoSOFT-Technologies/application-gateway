@@ -35,7 +35,7 @@ export default function Ipathpermission(props: IProps) {
     dispatch(setForm({ ...state.data.form, ApIs: apisList }));
     setInputData({ path: "", method: "" });
   };
-  console.log("checkhandle", state.data.form);
+  // console.log("checkhandle", state.data.form);
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
     const states = props.policystate;

@@ -9,8 +9,8 @@ export default function VersionSettings() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    console.log(name, value);
+    // const { name, value } = event.target;
+    // console.log(name, value);
     setFormData(event, dispatch, state);
   }
 

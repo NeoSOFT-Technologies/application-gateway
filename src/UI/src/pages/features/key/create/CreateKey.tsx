@@ -21,7 +21,7 @@ export default function CreateKey() {
       validate = Object.values(state.data.errors).every(
         (x) => x === null || x === ""
       );
-      console.log("error", state.data);
+      // console.log("error", state.data);
     }
     if (validate) {
       const result = await dispatch(createKey(state.data.form));

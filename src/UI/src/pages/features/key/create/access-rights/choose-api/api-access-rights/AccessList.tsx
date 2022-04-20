@@ -14,16 +14,16 @@ export default function AccessList() {
 
   // console.log("datalength ", state.data.form.accessRights?.length);
   const handleAddClick = async (Id: string) => {
-    console.log(Id);
+    // console.log(Id);
     // console.log(state.data.form.accessRights?.some((x) => x?.apiId !== Id));
     const data = state.data.form.AccessRights?.some((x) => x?.ApiId === Id);
-    console.log("accessList check before", data);
+    // console.log("accessList check before", data);
 
     if (!data) {
-      console.log(
-        "accesslist check",
-        state.data.form.AccessRights?.some((x) => x?.ApiId === Id)
-      );
+      // console.log(
+      //   "accesslist check",
+      //   state.data.form.AccessRights?.some((x) => x?.ApiId === Id)
+      // );
 
       const selectedApi = await dispatch(getApiById(Id));
 

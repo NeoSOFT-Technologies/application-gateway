@@ -12,13 +12,13 @@ export default function AccessList() {
   // console.log("datalength ", state.data.form.accessRights?.length);
   const handleAddClick = async (Id: string) => {
     const data = state.data.form.ApIs?.some((x) => x?.Id === Id);
-    console.log("accessList check before", data);
+    // console.log("accessList check before", data);
 
     if (!data) {
-      console.log(
-        "accesslist check",
-        state.data.form.ApIs?.some((x) => x?.Id === Id)
-      );
+      // console.log(
+      //   "accesslist check",
+      //   state.data.form.ApIs?.some((x) => x?.Id === Id)
+      // );
       const selectedApi = await dispatch(getApiById(Id));
 
       const listV: string[] = [];
@@ -52,13 +52,13 @@ export default function AccessList() {
           },
         },
       ];
-      console.log("list: ", list);
+      // console.log("list: ", list);
       dispatch(setForm({ ...state.data.form, ApIs: list }));
     } else {
       ToastAlert("Already select...", "error");
     }
   };
-  console.log("ACCESSLIST", state.data);
+  // console.log("ACCESSLIST", state.data);
   return (
     <>
       <div>

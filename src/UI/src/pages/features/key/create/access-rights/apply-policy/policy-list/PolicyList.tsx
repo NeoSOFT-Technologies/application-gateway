@@ -24,13 +24,13 @@ export default function PolicyList() {
   }, []);
   const handleAddClick = (Id: string) => {
     const data = StateKey.data?.form.Policies.some((x) => x === Id);
-    console.log("policylist check before", data);
+    // console.log("policylist check before", data);
 
     if (!data) {
-      console.log(
-        "policylist check",
-        StateKey.data?.form.Policies.some((x) => x === Id)
-      );
+      // console.log(
+      //   "policylist check",
+      //   StateKey.data?.form.Policies.some((x) => x === Id)
+      // );
       const list = [...StateKey.data.form.Policies, Id];
       dispatch(setForms({ ...StateKey.data.form, Policies: list }));
     } else {
@@ -38,7 +38,7 @@ export default function PolicyList() {
     }
   };
 
-  console.log(StateKey.data.form);
+  // console.log(StateKey.data.form);
   const gridTable = new Grid({
     columns: [
       {

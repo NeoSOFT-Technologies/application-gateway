@@ -41,13 +41,13 @@ export default function LoadBalancing() {
         setWeight(weight);
       }
       setLoading(false);
-      console.log("setarray weight", weight);
+      // console.log("setarray weight", weight);
       // return weight;
     }
   };
 
   useEffect(() => {
-    console.log("useeffect");
+    // console.log("useeffect");
     setArrayLength();
   }, []);
   const handleTrafficElement = (index: number) => {
@@ -88,7 +88,7 @@ export default function LoadBalancing() {
       ...state.data.form.LoadBalancingTargets,
       addFormData.LoadBalancingTargets,
     ];
-    console.log("newObj", rowObj);
+    // console.log("newObj", rowObj);
     dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
     setLoading(false);
     setAddFormData({ ...addFormData, LoadBalancingTargets: "" });

@@ -43,11 +43,11 @@ const slice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
-      console.log("form data : ", state.data.form);
+      // console.log("form data : ", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
-      console.log("form error : ", state.data.errors);
+      // console.log("form error : ", state.data.errors);
     },
   },
   extraReducers(builder): void {

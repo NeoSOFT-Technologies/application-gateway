@@ -28,7 +28,7 @@ export default function Configurations() {
     }
 
     setFormData(event, dispatch, state);
-    console.log("policyId", name, value);
+    // console.log("policyId", name, value);
   }
   return (
     <div>

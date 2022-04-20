@@ -8,8 +8,6 @@ export default function partitions() {
   const dispatch = useAppDispatch();
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    console.log(name, value);
     setFormData(event, dispatch, state);
   }
   return (
