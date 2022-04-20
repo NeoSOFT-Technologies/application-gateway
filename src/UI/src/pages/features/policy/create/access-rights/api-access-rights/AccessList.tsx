@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastAlert } from "../../../../../../components/ToasterAlert/ToastAlert";
 import { getApiById } from "../../../../../../store/features/api/update/slice";
 import { setForm } from "../../../../../../store/features/policy/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
@@ -10,41 +11,52 @@ export default function AccessList() {
 
   // console.log("datalength ", state.data.form.accessRights?.length);
   const handleAddClick = async (Id: string) => {
-    const selectedApi = await dispatch(getApiById(Id));
+    const data = state.data.form.ApIs?.some((x) => x?.Id === Id);
+    console.log("accessList check before", data);
 
-    const listV: string[] = [];
-    selectedApi.payload.Data.Versions.forEach((element: any) => {
-      // element: { Name: string }
-      listV.push(element.Name);
-    });
-    const list = [
-      ...state.data.form.ApIs,
-      {
-        Id: selectedApi.payload.Data.ApiId,
-        Name: selectedApi.payload.Data.Name,
-        Versions: listV,
-        AllowedUrls: [
-          // {
-          //   url: "",
-          //   methods: [],
-          // },
-        ],
-        Limit: {
-          rate: 0,
-          per: 0,
-          throttle_interval: 0,
-          throttle_retry_limit: 0,
-          max_query_depth: 0,
-          quota_max: 0,
-          quota_renews: 0,
-          quota_remaining: 0,
-          quota_renewal_rate: 0,
-          set_by_policy: false,
+    if (!data) {
+      console.log(
+        "accesslist check",
+        state.data.form.ApIs?.some((x) => x?.Id === Id)
+      );
+      const selectedApi = await dispatch(getApiById(Id));
+
+      const listV: string[] = [];
+      selectedApi.payload.Data.Versions.forEach((element: any) => {
+        // element: { Name: string }
+        listV.push(element.Name);
+      });
+      const list = [
+        ...state.data.form.ApIs,
+        {
+          Id: selectedApi.payload.Data.ApiId,
+          Name: selectedApi.payload.Data.Name,
+          Versions: listV,
+          AllowedUrls: [
+            // {
+            //   url: "",
+            //   methods: [],
+            // },
+          ],
+          Limit: {
+            rate: 0,
+            per: 0,
+            throttle_interval: 0,
+            throttle_retry_limit: 0,
+            max_query_depth: 0,
+            quota_max: 0,
+            quota_renews: 0,
+            quota_remaining: 0,
+            quota_renewal_rate: 0,
+            set_by_policy: false,
+          },
         },
-      },
-    ];
-    console.log("list: ", list);
-    dispatch(setForm({ ...state.data.form, ApIs: list }));
+      ];
+      console.log("list: ", list);
+      dispatch(setForm({ ...state.data.form, ApIs: list }));
+    } else {
+      ToastAlert("Already select...", "error");
+    }
   };
   console.log("ACCESSLIST", state.data);
   return (

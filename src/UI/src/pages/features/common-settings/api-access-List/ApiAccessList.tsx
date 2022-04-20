@@ -9,11 +9,11 @@ import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import { h } from "gridjs";
 
 interface IProps {
-  state: IKeyCreateState | IPolicyCreateState;
+  state?: IKeyCreateState | IPolicyCreateState;
   handleAddClick: (val: any) => void;
 }
 export default function ApiAccessList(props: IProps) {
-  const { state, handleAddClick } = props;
+  const { handleAddClick } = props;
 
   const accessApiList: IApiListState = useAppSelector(
     (State) => State.apiListState
@@ -72,15 +72,20 @@ export default function ApiAccessList(props: IProps) {
     search: true,
     sort: true,
     scrollable: "virtual",
-    data: () =>
-      accessApiList.data?.Apis?.map((data) => [
-        data.Id,
-        data.Name,
-        data.IsActive ? "active" : "Inactive",
-        data.CreatedDate !== null
-          ? moment(data.CreatedDate).format("DD/MM/YYYY")
-          : data.CreatedDate,
-      ]),
+    data:
+      accessApiList.data !== undefined &&
+      accessApiList.data &&
+      accessApiList.data?.Apis?.length! > 0
+        ? () =>
+            accessApiList.data?.Apis!.map((data) => [
+              data.Id,
+              data.Name,
+              data.IsActive ? "active" : "Inactive",
+              data.CreatedDate !== null
+                ? moment(data.CreatedDate).format("DD/MM/YYYY")
+                : data.CreatedDate,
+            ])
+        : [],
     className: {
       container: "table table-responsive table-bordered table-stripped",
     },
@@ -88,7 +93,7 @@ export default function ApiAccessList(props: IProps) {
       table: {
         width: "100%",
         // hight: "20px",
-        scrollY: scroll,
+        // scrollY: scroll,
         // border: "2px solid #ccc",
       },
       th: {
@@ -96,7 +101,7 @@ export default function ApiAccessList(props: IProps) {
       },
     },
   });
-  console.log(state);
+  // console.log(props.state);
   return (
     <div>
       <Grid {...grid.props} />

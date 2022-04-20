@@ -19,7 +19,7 @@ interface IProps {
 
 export default function GlobalLimit(props: IProps) {
   const dispatch = useAppDispatch();
-  console.log("data", props.policyId);
+  // console.log("data", props.policyId);
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
@@ -85,7 +85,7 @@ export default function GlobalLimit(props: IProps) {
                 <Row>
                   <Row>
                     <Col md="4">
-                      {props.msg !== "" && props.isDisabled === false ? (
+                      {props.msg !== "" && props.isDisabled === true ? (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Rate Limiting</b>
@@ -149,7 +149,7 @@ export default function GlobalLimit(props: IProps) {
                       )}
                     </Col>
                     <Col md="4">
-                      {props.msg !== "" && props.isDisabled === false ? (
+                      {props.msg !== "" && props.isDisabled === true ? (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Throttling</b>
@@ -220,7 +220,7 @@ export default function GlobalLimit(props: IProps) {
                       )}
                     </Col>
                     <Col md="4">
-                      {props.msg !== "" && props.isDisabled === false ? (
+                      {props.msg !== "" && props.isDisabled === true ? (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Usage Quota</b>
