@@ -9,11 +9,11 @@ export function addPolicyService(data: IGetPolicyByIdData) {
   return apiFactory().post(`Policy`, data);
 }
 export function getPolicyByIdService(id: string) {
-  return apiFactory().get(`Policy?policyId=` + id);
+  return apiFactory().get(`Policy/` + id);
 }
 export function updatePolicyService(data: IGetPolicyByIdData) {
   return apiFactory().put(`Policy`, data);
 }
 export function deletePolicyService(id: string) {
-  return apiFactory().delete(`Policy?policyId=` + id);
+  return apiFactory().delete(`Policy/` + id);
 }

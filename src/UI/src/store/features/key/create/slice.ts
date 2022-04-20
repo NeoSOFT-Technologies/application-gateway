@@ -10,7 +10,7 @@ export const createKey = createAsyncThunk(
   async (data: IGetKeyByIdData) => {
     try {
       const response = await addKeyService(data);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
@@ -25,8 +25,9 @@ const slice = createSlice({
   name: "keyCreate",
   initialState,
   reducers: {
-    setForm: (state, action) => {
+    setForms: (state, action) => {
       state.data.form = action.payload;
+      console.log("Form - ", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
@@ -49,5 +50,5 @@ const slice = createSlice({
   },
 });
 
-export const { setForm, setFormError } = slice.actions;
+export const { setForms, setFormError } = slice.actions;
 export default slice.reducer;

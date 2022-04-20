@@ -4,28 +4,29 @@ import PathBased from "../../../../../common-settings/path-based-permission/Path
 
 export default function ApiAccess() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
-  console.log("states", state.data.form);
+  // console.log("states", state.data.form);
   return (
-    <div>
-      <>
-        {state.data.form.accessRights !== null &&
-        state.data.form.accessRights?.length! > 0 &&
-        Array.isArray(state.data.form.accessRights) ? (
-          (state.data.form.accessRights as any[]).map(
+    <>
+      <br /> <br />
+      <h5>ApiAccess</h5> <br />
+      <div className="card col-lg-12 grid-margin stretch-card">
+        {state.data.form.AccessRights !== null &&
+        state.data.form.AccessRights?.length! > 0 &&
+        Array.isArray(state.data.form.AccessRights) ? (
+          (state.data.form.AccessRights as any[]).map(
             (data: any, index: number) => {
-              const { apiName } = data;
-              console.log(apiName);
+              // console.log("apiacessIndex", index, data);
               return (
-                <tr key={index}>
-                  <PathBased />
-                </tr>
+                <div key={index}>
+                  <PathBased state={state} indexdata={index} />
+                </div>
               );
             }
           )
         ) : (
           <></>
         )}
-      </>
-    </div>
+      </div>
+    </>
   );
 }

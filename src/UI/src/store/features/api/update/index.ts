@@ -29,6 +29,7 @@ export interface IGetApiByIdData {
     Location: string;
     Key: string;
   };
+  IsVersioningDisabled: boolean;
   DefaultVersion: string;
   Versions: [
     {
@@ -43,8 +44,18 @@ export interface IGetApiByIdData {
     }
   ];
   AuthType: string;
+  EnableMTLS: boolean;
+  CertIds: [];
   OpenidOptions: {
-    Providers: [];
+    Providers: [
+      {
+        issuer: string;
+        client_ids: {
+          clientId: string;
+          policy: string;
+        }[];
+      }
+    ];
   };
   LoadBalancingTargets: [];
   IsQuotaDisabled: boolean;
@@ -63,5 +74,6 @@ export interface IError {
   defaultVersion: string;
   version: string;
   isQuotaDisabled: string;
+  LoadBalancingTargets: string;
   OverrideTarget: string;
 }

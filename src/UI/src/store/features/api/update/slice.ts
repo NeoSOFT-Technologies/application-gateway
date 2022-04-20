@@ -43,11 +43,11 @@ const slice = createSlice({
   reducers: {
     setForm: (state, action) => {
       state.data.form = action.payload;
-      console.log("form data : ", state.data.form);
+      // console.log("form data : ", state.data.form);
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
-      console.log("form error : ", state.data.errors);
+      // console.log("form error : ", state.data.errors);
     },
   },
   extraReducers(builder): void {
@@ -69,7 +69,7 @@ const slice = createSlice({
     });
     builder.addCase(updateApi.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      // state.data = action.payload;
     });
     builder.addCase(updateApi.rejected, (state, action) => {
       state.loading = false;

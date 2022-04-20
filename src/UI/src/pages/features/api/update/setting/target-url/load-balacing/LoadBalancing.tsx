@@ -1,50 +1,106 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-// import { setFormData } from "../../../../../../../resources/api/api-constants";
+import {
+  setFormErrors,
+  regexForTagetUrl,
+} from "../../../../../../../resources/api/api-constants";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../../../../store/hooks";
 import { setForm } from "../../../../../../../store/features/api/update/slice";
+// import { IApiGetByIdState } from "../../../../../../../store/features/api/update";
 
 export default function LoadBalancing() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  // const [rowsData, setRowsData] = useState<any>([]);
-  const [rowInput, setRowInput] = useState<any>({
+  const [weight, setWeight] = useState<any>([]);
+  const [addFormData, setAddFormData] = useState<any>({
     LoadBalancingTargets: "",
-    weighting: "",
-    traffic: "",
   });
-  const handleInputChange = (event: any) => {
-    const { name, value } = event.target;
-    const formobj = { ...rowInput };
-    formobj[name] = value;
-    setRowInput(formobj);
+  const [loading, setLoading] = useState(true);
+  const trafficCalculation = (index: number) => {
+    const weightSum: number = weight.reduce(
+      (sum: number, current: any) => (sum = sum + current.weighting),
+      0
+    );
+    const traffic: number = 100 / weightSum;
+    const percentage: number = traffic * weight[index].weighting;
+    const trafficPercentage =
+      Math.round((percentage + Number.EPSILON) * 100) / 100;
+    return trafficPercentage;
   };
-  const handleAddChange = () => {
-    console.log("load", rowInput.LoadBalancingTargets);
-    // setRowsData([...rowsData, rowInput]);
-    const newObj: any = [
+  const setArrayLength = () => {
+    if (state.data.form.LoadBalancingTargets.length > 0) {
+      for (let i = 0; i < state.data.form.LoadBalancingTargets.length; i++) {
+        const weightObj: any = {
+          weighting: 1,
+          traffic: 0,
+        };
+        weight.push(weightObj);
+        setWeight(weight);
+      }
+      setLoading(false);
+      // console.log("setarray weight", weight);
+      // return weight;
+    }
+  };
+
+  useEffect(() => {
+    // console.log("useeffect");
+    setArrayLength();
+  }, []);
+  const handleTrafficElement = (index: number) => {
+    const weightObj = [...weight];
+    weightObj[index] = {
+      ...weightObj[index],
+      traffic: trafficCalculation(index),
+    };
+    return weightObj[index].traffic;
+  };
+  const handleFormInputChange = (event: any) => {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case "LoadBalancingTargets":
+        setFormErrors(
+          {
+            ...state.data.errors,
+            [name]: regexForTagetUrl.test(value) ? "" : "Enter a valid Url ",
+          },
+          dispatch
+        );
+        break;
+      default:
+        break;
+    }
+    const formobj = { ...addFormData };
+    formobj[name] = value;
+    setAddFormData(formobj);
+  };
+  const handleAddClick = () => {
+    const weightObj: any = {
+      weighting: 1,
+      traffic: 0,
+    };
+    setWeight([...weight, weightObj]);
+    const rowObj: any = [
       ...state.data.form.LoadBalancingTargets,
-      rowInput.LoadBalancingTargets,
+      addFormData.LoadBalancingTargets,
     ];
-    console.log("newObj", newObj);
-    dispatch(setForm({ ...state.data.form, LoadBalancingTargets: newObj }));
-    setRowInput({ ...rowInput, LoadBalancingTargets: "" });
+    // console.log("newObj", rowObj);
+    dispatch(setForm({ ...state.data.form, LoadBalancingTargets: rowObj }));
+    setLoading(false);
+    setAddFormData({ ...addFormData, LoadBalancingTargets: "" });
   };
   const deleteTableRows = (index: number) => {
-    const data = [...state.data.form.LoadBalancingTargets];
-    data.splice(index, 1);
-    dispatch(setForm({ ...state.data.form, LoadBalancingTargets: data }));
+    const weightObj = [...weight];
+    weightObj.splice(index, 1);
+    setWeight(weightObj);
+    const row = [...state.data.form.LoadBalancingTargets];
+    row.splice(index, 1);
+    dispatch(setForm({ ...state.data.form, LoadBalancingTargets: row }));
   };
-  const handleChange = (evnt: any, index: number) => {
-    const { name, value } = evnt.target;
-    const list = [...rowInput];
-    list[index][name] = value;
-    setRowInput(list);
-  };
-  console.log("dara", rowInput);
   return (
     <div>
       <Row>
@@ -62,19 +118,28 @@ export default function LoadBalancing() {
               className="mt-2"
               type="text"
               id="LoadBalancingTargets"
-              value={rowInput.LoadBalancingTargets}
+              value={addFormData.LoadBalancingTargets}
               placeholder="Please enter target(s) and hit enter key"
               name="LoadBalancingTargets"
-              onChange={handleInputChange}
+              isInvalid={!!state.data.errors?.LoadBalancingTargets}
+              isValid={!state.data.errors?.LoadBalancingTargets}
+              onChange={handleFormInputChange}
             />
-            {/* <Form.Control.Feedback type="invalid">
-              {state.data.errors?.TargetUrl}
-            </Form.Control.Feedback> */}
+            <Form.Control.Feedback type="invalid">
+              {state.data.errors?.LoadBalancingTargets}
+            </Form.Control.Feedback>
           </Form.Group>
         </Col>
         <Col md="2">
           <Form.Group className="mt-2 mb-3">
-            <Button onClick={handleAddChange} variant="dark">
+            <Button
+              onClick={handleAddClick}
+              variant="dark"
+              disabled={
+                !addFormData.LoadBalancingTargets ||
+                !!state.data.errors?.LoadBalancingTargets
+              }
+            >
               Add
             </Button>{" "}
           </Form.Group>
@@ -86,8 +151,8 @@ export default function LoadBalancing() {
       </Row>
       <div className="container">
         <div className="row">
-          <div className="col-sm-8">
-            <table className="table">
+          <div className="col-sm-11">
+            <table className="table table-bordered">
               <thead>
                 <tr>
                   <th>Upstream Target</th>
@@ -95,58 +160,41 @@ export default function LoadBalancing() {
                   <th>Traffic</th>
                 </tr>
               </thead>
-              <tbody>
-                {state.data.form.LoadBalancingTargets.map(
-                  (data: any, index: any) => {
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <input
-                            value={data}
-                            name="LoadBalancingTargets"
-                            onChange={(evnt) => handleChange(evnt, index)}
-                            className="form-control"
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            min="1"
-                            max="100"
-                            value={data.weighting}
-                            onChange={(evnt) => handleChange(evnt, index)}
-                            name="weighting"
-                            className="form-control"
-                          />{" "}
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            value={data.traffic}
-                            onChange={(evnt) => handleChange(evnt, index)}
-                            name="traffic"
-                            className="form-control"
-                          />{" "}
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-outline-danger"
-                            onClick={() => deleteTableRows(index)}
-                          >
-                            x
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
-              </tbody>
+              {loading === false ? (
+                <tbody>
+                  {state.data.form.LoadBalancingTargets.map(
+                    (data: any, index: any) => {
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <label>{data}</label>
+                          </td>
+                          <td>
+                            <label>{weight[index].weighting}</label>
+                          </td>
+
+                          <td>
+                            <label>{handleTrafficElement(index)} % </label>
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-default bi bi-trash-fill"
+                              onClick={() => deleteTableRows(index)}
+                            ></button>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )}
+                </tbody>
+              ) : (
+                <></>
+              )}
             </table>
           </div>
           <div className="col-sm-4"></div>
         </div>
       </div>
-      )
     </div>
   );
 }

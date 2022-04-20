@@ -1,7 +1,83 @@
-import React, { useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
-export default function GlobalLimit() {
-  const [rate, setRate] = useState(false);
+import React, { useEffect, useState } from "react";
+import { Accordion, Col, Form, Row } from "react-bootstrap";
+import {
+  getPolicybyId,
+  setForm,
+} from "../../../../store/features/policy/create/slice";
+import { setForms } from "../../../../store/features/key/create/slice";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { IPolicyCreateState } from "../../../../store/features/policy/create";
+import { IKeyCreateState } from "../../../../store/features/key/create";
+import Spinner from "../../../../components/loader/Loader";
+
+interface IProps {
+  isDisabled: boolean;
+  state?: IKeyCreateState | IPolicyCreateState;
+  index?: number;
+  policyId?: string;
+  msg: string;
+}
+
+export default function GlobalLimit(props: IProps) {
+  const dispatch = useAppDispatch();
+  const states = useAppSelector((RootState) => RootState.createKeyState);
+  const [loader, setLoader] = useState(true);
+
+  const state: IPolicyCreateState = useAppSelector(
+    (RootStates) => RootStates.createPolicyState
+  );
+
+  // const manageState = () => {
+  //   const policyByIdTemp = [...(states.data.form.policyByIds! as any[])];
+  //   const policyState = [{ ...state.data.form }];
+  //   policyByIdTemp.push(policyState);
+
+  //   dispatch(setForms({ ...states.data.form, policyByIds: policyByIdTemp }));
+  // };
+
+  const mainCall = async (id: string) => {
+    if (id !== null && id !== "" && id !== undefined) {
+      await dispatch(getPolicybyId(id));
+      setLoader(false);
+    }
+
+    // await dispatch(getPolicybyId(id)).then((action) => {
+    //   console.log("actionPayload", action.payload);
+    // });
+  };
+
+  useEffect(() => {
+    mainCall(props.policyId!);
+  }, []);
+
+  useEffect(() => {
+    // if (state.loading === false) {
+    //   manageState();
+    // }
+    if (
+      props.policyId !== null &&
+      props.policyId !== "" &&
+      props.policyId !== undefined &&
+      loader === false &&
+      state.loading === false
+    ) {
+      console.log("second use effect - ", loader);
+
+      const manageState = async () => {
+        const policyByIdTemp = [...(states.data.form.PolicyByIds! as any[])];
+        const policyState = [state.data.form];
+        policyByIdTemp.push(policyState);
+
+        await dispatch(
+          setForms({ ...states.data.form, PolicyByIds: policyByIdTemp })
+        );
+      };
+      manageState();
+    }
+  }, [loader]);
+
+  // console.log("mainstate", states);
+  const [rate, setRate] = useState(props.isDisabled);
   const [throttle, setThrottle] = useState(true);
   const [quota, setQuota] = useState(true);
   const [throttleRetry, setThrottleRetry] = useState("Disabled throttling");
@@ -9,6 +85,13 @@ export default function GlobalLimit() {
     "Disabled throttling"
   );
   const [quotaPerPeriod, setQuotaPerPeriod] = useState("Unlimited");
+
+  const [rateValue, setRateValue] = useState("");
+  const [perValue, setPerValue] = useState("");
+  const [retryValue, setRetryValue] = useState("");
+  const [intervalValue, setIntervalValue] = useState("");
+  const [maxQuotaValue, setMaxQuotaValue] = useState("");
+  const [quotaResetValue, setQuotaResetValue] = useState("");
 
   function handleThrottleChange(evt: any) {
     setThrottle(evt.target.checked);
@@ -29,34 +112,40 @@ export default function GlobalLimit() {
       setQuotaPerPeriod("Enter request per period");
     }
   }
+
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+    setRateValue(event.target.value);
+    dispatch(setForm({ ...state.data.form, [name]: value }));
+  }
+
   return (
     <>
-      <div className="card">
-        <div>
-          <div className="accordion " id="accordionGlobalLimit">
-            <div className="accordion-item ">
-              <h2 className="accordion-header" id="headingGlobalLimit">
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseGlobalLimit"
-                  aria-expanded="true"
-                  aria-controls="collapseGlobalLimit"
-                >
-                  Global Limits and Quota
-                </button>
-              </h2>
-              <div
-                id="collapseGlobalLimit"
-                className="accordion-collapse collapse show "
-                aria-labelledby="headingGlobalLimit"
-                data-bs-parent="#accordionGlobalLimit"
-              >
-                <div className="accordion-body ">
+      {loader && state.loading ? (
+        <Spinner />
+      ) : (
+        <div className="card">
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Global Limits and Quota</Accordion.Header>
+
+              <Accordion.Body>
+                <Row>
                   <Row>
-                    <Row>
-                      <Col md="4">
+                    <Col md="4">
+                      {props.msg !== "" && props.isDisabled === true ? (
+                        <Form.Group className="mb-3">
+                          <Form.Label className="mt-2">
+                            <b>Rate Limiting</b>
+                          </Form.Label>
+                          <div
+                            className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                            style={{ background: "#ADD8E6" }} // #96DED1
+                          >
+                            Rate Limit {props.msg}
+                          </div>
+                        </Form.Group>
+                      ) : (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Rate Limiting</b>
@@ -66,7 +155,8 @@ export default function GlobalLimit() {
                             id="disableGlobalRate"
                             name="GlobalLimit.IsDisabled"
                             label="Disable rate limiting"
-                            checked={rate}
+                            disabled={props.isDisabled}
+                            // checked={rate}
                             onChange={(e: any) => setRate(e.target.checked)}
                           />
                           <Form.Label className="mt-3">Rate</Form.Label>
@@ -76,7 +166,13 @@ export default function GlobalLimit() {
                             type="text"
                             id="rate"
                             placeholder="Enter Rate"
-                            name="RateLimit.Rate"
+                            value={
+                              props.isDisabled
+                                ? state.data.form.Rate
+                                : rateValue
+                            }
+                            onChange={(e: any) => validateForm(e)}
+                            name="Rate"
                             disabled={rate}
                           />
                           <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
@@ -87,15 +183,33 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="per"
                             placeholder="Enter time"
+                            value={
+                              props.isDisabled ? state.data.form.Per : perValue
+                            }
+                            onChange={(e: any) => setPerValue(e.target.value)}
                             name="RateLimit.Per"
                             disabled={rate}
                           />
                           <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
                         </Form.Group>
-                      </Col>
-                      <Col md="4">
+                      )}
+                    </Col>
+                    <Col md="4">
+                      {props.msg !== "" && props.isDisabled === true ? (
+                        <Form.Group className="mb-3">
+                          <Form.Label className="mt-2">
+                            <b>Throttling</b>
+                          </Form.Label>
+                          <div
+                            className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2 "
+                            style={{ background: "#ADD8E6" }}
+                          >
+                            Throttling {props.msg}
+                          </div>
+                        </Form.Group>
+                      ) : (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Throttling</b>
@@ -105,6 +219,7 @@ export default function GlobalLimit() {
                             id="disableThrottling"
                             name="Throttling.IsDisabled"
                             label="Disable Throttling"
+                            disabled={props.isDisabled}
                             checked={throttle}
                             onChange={(e: any) => handleThrottleChange(e)}
                           />
@@ -115,9 +230,15 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="retry"
                             placeholder={throttleRetry}
                             name="Throttling.Retry"
+                            value={
+                              props.isDisabled
+                                ? state.data.form.ThrottleRetries
+                                : retryValue
+                            }
+                            onChange={(e: any) => setRetryValue(e.target.value)}
                             // value={throttleDefault}
                             disabled={throttle}
                           />
@@ -130,14 +251,36 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="interval"
                             placeholder={throttleInterval}
+                            value={
+                              props.isDisabled
+                                ? state.data.form.ThrottleInterval
+                                : intervalValue
+                            }
+                            onChange={(e: any) =>
+                              setIntervalValue(e.target.value)
+                            }
                             name="Throttling.Interval"
                             disabled={throttle}
                           />
                         </Form.Group>
-                      </Col>
-                      <Col md="4">
+                      )}
+                    </Col>
+                    <Col md="4">
+                      {props.msg !== "" && props.isDisabled === true ? (
+                        <Form.Group className="mb-3">
+                          <Form.Label className="mt-2">
+                            <b>Usage Quota</b>
+                          </Form.Label>
+                          <div
+                            className="mr-4 pt-3 pb-3 mt-2 border border-4 rounded-4 pl-2"
+                            style={{ background: "#ADD8E6" }}
+                          >
+                            Usage Quota {props.msg}
+                          </div>
+                        </Form.Group>
+                      ) : (
                         <Form.Group className="mb-3">
                           <Form.Label className="mt-2">
                             <b>Usage Quota</b>
@@ -147,6 +290,7 @@ export default function GlobalLimit() {
                             id="unlimitedRequests"
                             name="unlimitedRequests.IsDisabled"
                             label="Unlimited requests"
+                            disabled={props.isDisabled}
                             checked={quota}
                             onChange={(e: any) => handleQuotaChange(e)}
                           />
@@ -157,8 +301,16 @@ export default function GlobalLimit() {
                           <Form.Control
                             className="mt-2"
                             type="text"
-                            id="rate"
+                            id="quotaPer"
                             placeholder={quotaPerPeriod}
+                            value={
+                              props.isDisabled
+                                ? state.data.form.MaxQuota
+                                : maxQuotaValue
+                            }
+                            onChange={(e: any) =>
+                              setMaxQuotaValue(e.target.value)
+                            }
                             name="Quota.Per"
                             disabled={quota}
                           />
@@ -170,6 +322,14 @@ export default function GlobalLimit() {
                             className="mt-2"
                             style={{ height: 46 }}
                             disabled={quota}
+                            value={
+                              props.isDisabled
+                                ? state.data.form.QuotaRate
+                                : quotaResetValue
+                            }
+                            onChange={(e: any) =>
+                              setQuotaResetValue(e.target.value)
+                            }
                           >
                             <option>never</option>
                             <option>1 hour</option>
@@ -181,15 +341,15 @@ export default function GlobalLimit() {
                             <option>12 months</option>
                           </Form.Select>
                         </Form.Group>
-                      </Col>
-                    </Row>
+                      )}
+                    </Col>
                   </Row>
-                </div>
-              </div>
-            </div>
-          </div>
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
         </div>
-      </div>
+      )}
     </>
   );
 }

@@ -14,6 +14,7 @@ import {
 
 import statusAndDateHelper from "../../../../utils/helper";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { deleteKey } from "../../../../store/features/key/delete/slice";
 
 export default function KeyList() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function KeyList() {
     dispatch(getKeyList({ currentPage }));
   };
   useEffect(() => {
-    console.log("UseEffect", keyList.data);
+    // console.log("UseEffect", keyList.data);
     if (keyList.data && keyList.data?.Keys?.length > 0) {
       const listKey: IKeyData[] = [];
       keyList.data?.Keys.forEach((item) => {
@@ -77,6 +78,34 @@ export default function KeyList() {
   //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
   //   };
 
+  function deleteKeyFromState(id: string) {
+    const newState = datalist.list.filter((item) => item.Id !== id);
+    // console.log(newState);
+    const pageCount = keyList.data?.TotalCount;
+    if (newState.length === 0 && pageCount !== 1) {
+      mainCall(selected - 1);
+      setSelected(selected - 1);
+    } else mainCall(selected);
+
+    setDataList({
+      list: [...newState],
+      fields: ["Id", "KeyName", "Status", "CreatedDateTxt"],
+    });
+  }
+  const deleteKeyFunction = async (val: IKeyData) => {
+    if (val.Id) {
+      if (window.confirm("Are you sure you want to delete this Key ?")) {
+        const result = await dispatch(deleteKey(val.Id));
+
+        if (result.meta.requestStatus === "rejected") {
+          await ToastAlert(result.payload.message, "error");
+        } else {
+          deleteKeyFromState(val.Id);
+          await ToastAlert("Key Deleted Successfully", "success");
+        }
+      }
+    }
+  };
   const headings = [
     { title: "Key ID" },
     { title: "Key Name" },
@@ -88,6 +117,12 @@ export default function KeyList() {
     {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
+    },
+    {
+      className: "btn btn-sm btn-light",
+      iconClassName: "bi bi-trash-fill menu-icon",
+      // buttonFunction: () => setDeleteshow(true),
+      buttonFunction: deleteKeyFunction,
     },
   ];
   return (
