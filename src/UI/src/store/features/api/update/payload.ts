@@ -40,7 +40,17 @@ export const initialState: IApiGetByIdState = {
       EnableMTLS: false,
       CertIds: [],
       OpenidOptions: {
-        Providers: [],
+        Providers: [
+          {
+            issuer: "",
+            client_ids: [
+              {
+                clientId: "",
+                policy: "",
+              },
+            ],
+          },
+        ],
       },
       LoadBalancingTargets: [],
       IsQuotaDisabled: false,
