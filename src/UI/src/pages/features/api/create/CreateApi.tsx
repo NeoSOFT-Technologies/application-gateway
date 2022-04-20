@@ -86,12 +86,11 @@ function CreateApi() {
         ToastAlert(result.payload.message, "error");
       } else {
         const valId: string = result.payload.Data.ApiId;
-        console.log(valId);
         ToastAlert("Api created successfully", "success");
         if (valId) {
-          const res = await dispatch(getApiById(valId));
-          console.log(res);
-          navigate("/api/update");
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await dispatch(getApiById(valId));
+          navigate(`/api/update/${valId}`);
         }
       }
     } else {
@@ -112,18 +111,18 @@ function CreateApi() {
           <div className="align-items-center">
             <Form onSubmit={handleSubmitApi} data-testid="form-input">
               <div
-                className="card-header bg-white mt-3 pt-2 pb-4"
-                style={{ padding: "0.5rem 2.5rem" }}
+                className="card-header bg-white mt-3 pt-1 pb-4"
+                style={{ padding: "0.5rem 1.5rem" }}
               >
                 <Button
-                  className="btn btn-success btn-md d-flex float-right mb-4 mr-3"
+                  className="btn btn-sm btn-success btn-md d-flex float-right mb-3 mr-3"
                   type="submit"
                   data-testid="submit-input"
                 >
                   Save
                 </Button>
                 <Button
-                  className="btn btn-light btn-md d-flex float-right mb-4"
+                  className="btn btn-sm btn-light btn-md d-flex float-right mb-3"
                   type="button"
                   data-testid="cancel-input"
                   onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
@@ -132,11 +131,11 @@ function CreateApi() {
                 >
                   Cancel
                 </Button>
-                <h5>
+                <span>
                   <b>CREATE API</b>
-                </h5>
+                </span>
               </div>
-              <div className="accordion m-2" id="accordionExample">
+              <div className="accordion" id="accordionExample">
                 <div className="card-body pt-2">
                   <h2 className="accordion-header " id="headingOne">
                     <button

@@ -10,15 +10,21 @@ namespace ApplicationGateway.Api.Extensions
     {
         public static IServiceCollection AddHealthcheckExtensionService(this IServiceCollection services, IConfiguration configuration)
         {
+            string tykUrl = configuration["TykConfiguration:Host"] + configuration["API:Tyk"];
             services.AddHealthChecks()
-                        .AddNpgSql(configuration["ConnectionStrings:IdentityConnectionString"], tags: new[] {
+                        .AddNpgSql(configuration["ConnectionStrings:ApplicationConnectionString"], name: "PostgreSQL", tags: new[] {
                             "db",
                             "all"})
-                        .AddUrlGroup(new Uri(configuration["API:WeatertherInfo"]), tags: new[] {
-                            "testdemoUrl",
+                        .AddRedis(configuration["ConnectionStrings:Redis"], name: "Redis")
+                        .AddUrlGroup(new Uri(configuration["TykConfiguration:Host"] + configuration["API:Tyk"]), name:"Gateway", tags: new[] {
+                            "tykGatewayUrl",
+                            "all"
+                        })
+                        .AddUrlGroup(new Uri(configuration["API:KeyCloak"]), name: "KeyCloak", tags: new[] {
+                            "keyCloakUrl",
                             "all"
                         });
-                    services.AddHealthChecksUI(opt =>
+            services.AddHealthChecksUI(opt =>
                     {
                         opt.SetEvaluationTimeInSeconds(15); //time in seconds between check
                         opt.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks

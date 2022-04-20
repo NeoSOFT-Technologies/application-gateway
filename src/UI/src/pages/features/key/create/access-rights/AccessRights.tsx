@@ -5,25 +5,23 @@ import ChooseApi from "./choose-api/ChooseApi";
 export default function AccessRights() {
   return (
     <div>
-      <div className="col-lg-12 grid-margin stretch-card">
+      <div className="align-items-center">
         <div>
-          <div className="align-items-center">
-            <div className="pt-2">
-              <Tabs
-                defaultActiveKey="applyPolicy"
-                id="uncontrolled-tab"
-                // transition={false}
-                className="mb-2 small"
-              >
-                <Tab eventKey="applyPolicy" title="Apply Policy">
-                  <ApplyPolicy />
-                </Tab>
-                <Tab eventKey="chooseApi" title="Choose Api">
-                  <ChooseApi />
-                </Tab>
-              </Tabs>
-            </div>
-          </div>
+          {/* className="pt-2"   style={{ padding: "1rem 0rem" }} */}
+          <Tabs
+            // style={{ padding: "1rem 0rem" }}
+            defaultActiveKey="applyPolicy"
+            id="uncontrolled-tab"
+            // transition={false}
+            className="small" // mb-2
+          >
+            <Tab eventKey="applyPolicy" title="Apply Policy">
+              <ApplyPolicy />
+            </Tab>
+            <Tab eventKey="chooseApi" title="Choose Api">
+              <ChooseApi />
+            </Tab>
+          </Tabs>
         </div>
       </div>
     </div>

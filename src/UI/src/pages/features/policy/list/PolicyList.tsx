@@ -8,10 +8,12 @@ import { getPolicyList } from "../../../../store/features/policy/list/slice";
 import {
   IPolicyListState,
   IPolicyDataList,
+  IPolicyData,
 } from "../../../../store/features/policy/list/index";
 
 import Spinner from "../../../../components/loader/Loader";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
+import { deletePolicy } from "../../../../store/features/policy/delete/slice";
 
 export default function PolicyList() {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ export default function PolicyList() {
     dispatch(getPolicyList({ currentPage }));
   };
   useEffect(() => {
-    console.log("UseEffect", policyList.data);
+    // console.log("UseEffect", policyList.data);
     if (policyList.data && policyList.data?.Policies?.length > 0) {
       setDataList({
         list: [...policyList.data.Policies],
@@ -72,12 +74,34 @@ export default function PolicyList() {
   //     navigate(`/userdetails/${val.id}`, { state: { ...val } });
   //   };
 
-  // const NavigateTenant = (val: IApiDetails) => {
-  //   console.log(val);
-  //   navigate("/tenantdetails", {
-  //     state: { val },
-  //   });
-  // };
+  function deletePolicyFromState(id: string) {
+    const newState = datalist.list.filter((item) => item.Id !== id);
+    // console.log(newState);
+    const pageCount = policyList.data?.TotalCount;
+    if (newState.length === 0 && pageCount !== 1) {
+      mainCall(selected - 1);
+      setSelected(selected - 1);
+    } else mainCall(selected);
+
+    setDataList({
+      list: [...newState],
+      fields: ["Name", "State", "Apis", "AuthType"],
+    });
+  }
+  const deletePolicyFunction = async (val: IPolicyData) => {
+    if (val.Id) {
+      if (window.confirm("Are you sure you want to delete this Policy ?")) {
+        const result = await dispatch(deletePolicy(val.Id));
+
+        if (result.meta.requestStatus === "rejected") {
+          await ToastAlert(result.payload.message, "error");
+        } else {
+          deletePolicyFromState(val.Id);
+          await ToastAlert("Policy Deleted Successfully", "success");
+        }
+      }
+    }
+  };
 
   const headings = [
     { title: "Policy Name" },
@@ -91,10 +115,11 @@ export default function PolicyList() {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
     },
-    // {
-    //   className: "btn btn-sm btn-light",
-    //   iconClassName: "bi bi-trash-fill menu-icon",
-    // },
+    {
+      className: "btn btn-sm btn-light",
+      iconClassName: "bi bi-trash-fill menu-icon",
+      buttonFunction: deletePolicyFunction,
+    },
   ];
   return (
     <>

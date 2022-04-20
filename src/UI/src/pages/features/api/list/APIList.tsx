@@ -10,7 +10,6 @@ import { useErrorHandler } from "react-error-boundary";
 // import moment from "moment";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import statusAndDateHelper from "../../../../utils/helper";
-import { getApiById } from "../../../../store/features/api/update/slice";
 import {
   IApiData,
   IApiListState,
@@ -18,7 +17,7 @@ import {
 } from "../../../../store/features/api/list";
 
 function Bomb() {
-  console.log("");
+  // console.log("");
   // throw new Error("Boom");
 }
 
@@ -43,8 +42,8 @@ export default function APIList() {
     fields: [],
   });
 
-  const mainCall = async (currentPage: number) => {
-    dispatch(getApiList({ currentPage }));
+  const mainCall = async (currentPage: number, pageSize: number) => {
+    dispatch(getApiList({ currentPage, pageSize }));
     // handleError(resp.payload);
   };
   useEffect(() => {
@@ -62,11 +61,11 @@ export default function APIList() {
   }, [apiList.data]);
 
   useEffect(() => {
-    mainCall(1);
+    mainCall(1, 4);
   }, []);
 
   const handlePageClick = (pageSelected: number) => {
-    mainCall(pageSelected);
+    mainCall(pageSelected, 4);
     setSelected(pageSelected);
   };
 
@@ -90,19 +89,18 @@ export default function APIList() {
 
   const NavigateUpdate = (val: IApiData) => {
     if (val.Id) {
-      dispatch(getApiById(val.Id));
-      navigate("/api/update");
+      navigate(`/api/update/${val.Id}`);
     }
   };
 
   function deleteApiFromState(id: string) {
     const newState = datalist.list.filter((item) => item.Id !== id);
-    console.log(newState);
+    // console.log(newState);
     const pageCount = apiList.data?.TotalCount;
     if (newState.length === 0 && pageCount !== 1) {
-      mainCall(selected - 1);
+      mainCall(selected - 1, 4);
       setSelected(selected - 1);
-    } else mainCall(selected);
+    } else mainCall(selected, 4);
 
     setDataList({
       list: [...newState],
@@ -153,21 +151,21 @@ export default function APIList() {
         ) : (
           <div className="card">
             <div
-              className="card-header mt-4 mb-3 bg-white"
-              style={{ padding: "0.5rem 2.5rem" }}
+              className="card-header mt-2 bg-white"
+              style={{ padding: "0.5rem 1.5rem" }}
             >
               <div className="align-items-center">
                 <button
-                  className=" btn  btn-success btn-sm d-flex float-right mb-4"
+                  className=" btn btn-sm btn-success btn-sm d-flex float-right mb-2"
                   onClick={(e) => NavigateCreateApi(e)}
                 >
                   {" "}
                   Create API &nbsp;
                   <span className="bi bi-plus-lg"></span> &nbsp;
                 </button>
-                <h5>
+                <span>
                   <b>API LIST</b>
-                </h5>
+                </span>
               </div>
             </div>
             <div className="card-body pt-4">

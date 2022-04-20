@@ -10,7 +10,7 @@ export const initialState: IApiGetByIdState = {
       TargetUrl: "",
       IsActive: true,
       IsInternal: false,
-      Protocol: "",
+      Protocol: "http",
       RateLimit: {
         Rate: 0,
         Per: 0,
@@ -19,9 +19,10 @@ export const initialState: IApiGetByIdState = {
       Blacklist: [],
       Whitelist: [],
       VersioningInfo: {
-        Location: 0,
+        Location: "1",
         Key: "",
       },
+      IsVersioningDisabled: true,
       DefaultVersion: "",
       Versions: [
         {
@@ -36,8 +37,20 @@ export const initialState: IApiGetByIdState = {
         },
       ],
       AuthType: "",
+      EnableMTLS: false,
+      CertIds: [],
       OpenidOptions: {
-        Providers: [],
+        Providers: [
+          {
+            issuer: "",
+            client_ids: [
+              {
+                clientId: "",
+                policy: "",
+              },
+            ],
+          },
+        ],
       },
       LoadBalancingTargets: [],
       IsQuotaDisabled: false,
@@ -55,6 +68,8 @@ export const initialState: IApiGetByIdState = {
       defaultVersion: "",
       version: "",
       isQuotaDisabled: "",
+      LoadBalancingTargets: "",
+      OverrideTarget: "",
     },
   },
   loading: false,

@@ -2,30 +2,15 @@ import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { setFormData } from "../../../../../../resources/api/api-constants";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
-// import { useAppSelector, useAppDispatch } from "../../../../../../store/hooks";
-// import { setFormData } from "../../../../../../resources/APIS/ApiConstants";
 
 export default function VersionSettings() {
   const dispatch = useAppDispatch();
+
   const state = useAppSelector((RootState) => RootState.updateApiState);
 
   function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     // const { name, value } = event.target;
-    // switch (name) {
-    //   case "VersionKey":
-    //     setFormErrors(
-    //       {
-    //         ...state.data.errors,
-    //         [name]: regexForName.test(value)
-    //           ? ""
-    //           : "Enter a Valid Version Key Name",
-    //       },
-    //       dispatch
-    //     );
-    //     break;
-    //   default:
-    //     break;
-    // }
+    // console.log(name, value);
     setFormData(event, dispatch, state);
   }
 
@@ -59,31 +44,23 @@ export default function VersionSettings() {
                       <Row>
                         <Col md="12">
                           <Form.Group className="mb-3">
-                            <Form.Check
-                              type="switch"
-                              id="EnableVersioning"
-                              name="EnableVersioning"
-                              label="Enable Versioning"
-                            />
-                          </Form.Group>
-                        </Col>
-                        <Col md="12">
-                          <Form.Group className="mb-3">
                             <Form.Label> Version Data Location</Form.Label>
                             <br />
                             <Form.Select
                               aria-label="Default select example"
                               name="VersioningInfo.Location"
-                              onClick={(e: any) => validateForm(e)}
+                              value={state.data.form?.VersioningInfo?.Location}
+                              onChange={(e: any) => validateForm(e)}
                             >
-                              <option id="1" value="1">
-                                1
+                              <option value="0">Choose a location</option>
+                              <option id="Header" value="1">
+                                Header
                               </option>
-                              <option id="2" value="2">
-                                2
+                              <option id="First part of path" value="2">
+                                First part of path
                               </option>
-                              <option id="3" value="3">
-                                3
+                              <option id="URL or Form parameter" value="3">
+                                URL or Form parameter
                               </option>
                             </Form.Select>
                           </Form.Group>
@@ -100,13 +77,8 @@ export default function VersionSettings() {
                               placeholder="Enter Version key Name"
                               name="VersioningInfo.Key"
                               value={state.data.form?.VersioningInfo.Key}
-                              // isInvalid={!!state.data.errors?.VersionKey}
-                              // isValid={!state.data.errors?.VersionKey}
                               onChange={(e: any) => validateForm(e)}
                             />
-                            {/* <Form.Control.Feedback type="invalid">
-                              {state.data.errors?.VersionKey}
-                            </Form.Control.Feedback> */}
                           </Form.Group>
                         </Col>
                       </Row>
