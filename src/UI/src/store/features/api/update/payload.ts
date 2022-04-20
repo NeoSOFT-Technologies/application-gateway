@@ -37,6 +37,8 @@ export const initialState: IApiGetByIdState = {
         },
       ],
       AuthType: "",
+      EnableMTLS: false,
+      CertIds: [],
       OpenidOptions: {
         Providers: [],
       },

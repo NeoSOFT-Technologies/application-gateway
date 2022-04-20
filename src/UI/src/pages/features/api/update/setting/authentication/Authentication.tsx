@@ -2,24 +2,28 @@ import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../../../../../store/hooks";
 import AuthenticationToken from "./authentication-token/AuthenticationToken";
+import MutualTLS from "./mutual-tls/MutualTLS";
 import { setFormData } from "../../../../../../resources/api/api-constants";
 import BasicAuthentication from "./basic-authentication/BasicAuthentication";
+import { setForm } from "../../../../../../store/features/api/update/slice";
 
 export default function Authentication() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
   console.log("state: ", state);
-  console.log("state.data.form.AuthType : ", state.data.form.AuthType);
 
   const handleFormSelectChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
     console.log("name and value: ", name, value);
+    if (value === "mutual") {
+      dispatch(setForm({ ...state.data.form, EnableMTLS: true }));
+    }
     setFormData(event, dispatch, state);
   };
-
+  console.log("mutual", state.data.form.EnableMTLS);
   return (
     <div>
       <div className="card">
@@ -56,12 +60,12 @@ export default function Authentication() {
                               aria-label="Default select example"
                               name="AuthType"
                               // onClick={handleFormSelectChange}
-                              onClick={(e: any) => handleFormSelectChange(e)}
+                              onChange={(e: any) => handleFormSelectChange(e)}
                             >
                               <option id="authToken" value="standard">
                                 Authentication Token
                               </option>
-                              <option id="mutualTls" value="Mutual">
+                              <option id="mutualTls" value="mutual">
                                 Mutual TLS
                               </option>
                               <option id="oidc" value="OpenId">
@@ -76,11 +80,12 @@ export default function Authentication() {
                       </Row>
                     </div>
                     <div>
-                      {state.data.form.AuthType === "standard" ||
-                      state.data.form.AuthType === "" ? (
-                        <AuthenticationToken />
-                      ) : state.data.form.AuthType === "Basic" ? (
+                      {state.data.form.AuthType === "Basic" ? (
                         <BasicAuthentication />
+                      ) : state.data.form.AuthType === "standard" ? (
+                        <AuthenticationToken />
+                      ) : state.data.form.EnableMTLS === true ? (
+                        <MutualTLS />
                       ) : (
                         <></>
                       )}
