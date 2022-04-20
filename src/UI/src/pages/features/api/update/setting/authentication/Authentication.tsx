@@ -75,9 +75,7 @@ export default function Authentication() {
                     </div>
 
                     <div>
-                      {state.data.form.AuthType === "Basic" ? (
-                        <BasicAuthentication />
-                      ) : state.data.form.AuthType === "standard" ? (
+                      {state.data.form.AuthType === "standard" ? (
                         <AuthenticationToken />
                       ) : state.data.form.EnableMTLS === true ? (
                         <MutualTLS />
