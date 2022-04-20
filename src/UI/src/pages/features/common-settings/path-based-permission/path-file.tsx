@@ -110,7 +110,7 @@ export default function Ipathpermission(props: IProps) {
               style={{ height: 45 }}
               name="method"
               onChange={handleAddFormChange}
-              value={inputData.method}
+              value={inputData.method[0]}
             >
               <option>GET</option>
               <option>POST</option>
