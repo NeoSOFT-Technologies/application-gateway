@@ -51,12 +51,12 @@ export default function GlobalLimit(props: IProps) {
     // }
 
     const manageState = async () => {
-      const policyByIdTemp = [...(states.data.form.policyByIds! as any[])];
+      const policyByIdTemp = [...(states.data.form.PolicyByIds! as any[])];
       const policyState = [state.data.form];
       policyByIdTemp.push(policyState);
 
       await dispatch(
-        setForms({ ...states.data.form, policyByIds: policyByIdTemp })
+        setForms({ ...states.data.form, PolicyByIds: policyByIdTemp })
       );
     };
     manageState();
