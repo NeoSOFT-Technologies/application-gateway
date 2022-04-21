@@ -39,7 +39,7 @@ const slice = createSlice({
     });
     builder.addCase(createKey.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      // state.data = action.payload;
     });
     builder.addCase(createKey.rejected, (state, action) => {
       state.loading = false;

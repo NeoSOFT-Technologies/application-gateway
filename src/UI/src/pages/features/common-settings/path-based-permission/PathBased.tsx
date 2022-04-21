@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Accordion } from "react-bootstrap";
+import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
 import { IKeyCreateState } from "../../../../store/features/key/create";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
@@ -54,13 +54,17 @@ export default function PathBased(props: IProps) {
       <div className="card mt-4">
         <Accordion defaultActiveKey="0">
           <Accordion.Item eventKey="0">
-            <Accordion.Header>
-              {/* {ApiName} */}
-              {props.current === "policy"
-                ? props.policystate?.data.form.ApIs[props.indexdata!].Name
-                : props.state?.data.form.AccessRights[props.indexdata!].ApiName}
-            </Accordion.Header>
-
+            <div style={{ display: "inline-flex", width: "100%" }}>
+              <AccordionButton>
+                {props.current === "policy"
+                  ? props.policystate?.data.form.ApIs[props.indexdata!].Name
+                  : props.state?.data.form.AccessRights[props.indexdata!]
+                      .ApiName}
+              </AccordionButton>
+              <button type="button" style={{ width: "5%" }}>
+                <i className="bi bi-trash-fill menu-icon"></i>
+              </button>
+            </div>
             <Accordion.Body>
               <div>
                 <Row>
