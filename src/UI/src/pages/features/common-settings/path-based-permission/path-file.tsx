@@ -1,27 +1,44 @@
 import React, { useState } from "react";
 import { Button, Form, Row, Col, Table } from "react-bootstrap";
+import { IKeyCreateState } from "../../../../store/features/key/create";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import { setForm } from "../../../../store/features/policy/create/slice";
+import { setForms } from "../../../../store/features/key/create/slice";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 interface IProps {
+  state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
   apidata?: any;
   indexdata?: number;
+  current: string;
 }
 export default function Ipathpermission(props: IProps) {
   const dispatch = useAppDispatch();
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
+  const keysstate: IKeyCreateState = useAppSelector(
+    (RootState) => RootState.createKeyState
+  );
   // const [rowsData, setRowsData] = useState<any>();
   const [inputData, setInputData] = useState<any>({
     path: "",
     method: ["GET"],
   });
+
+  const length =
+    props.current === "policy"
+      ? state.data.form.ApIs.length
+      : keysstate.data.form.AccessRights.length;
+
   const handleAddclick = () => {
     const states = props.policystate;
+    const keystate = props.state;
     const value = props.indexdata!;
-    const apisList = [...states?.data.form.ApIs!];
+    const apisList =
+      props.current === "policy"
+        ? [...states?.data.form.ApIs!]
+        : [...keystate?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
     const list = {
       url: inputData.path,
@@ -32,22 +49,30 @@ export default function Ipathpermission(props: IProps) {
       ...apisList[value],
       AllowedUrls: [...allowedList],
     };
-    dispatch(setForm({ ...state.data.form, ApIs: apisList }));
+    props.current === "policy"
+      ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
+      : dispatch(setForms({ ...state.data.form, AccessRights: apisList }));
     setInputData({ path: "", method: ["GET"] });
   };
 
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
     const states = props.policystate;
+    const keystate = props.state;
     const value = props.indexdata!;
-    const apisList = [...states?.data.form.ApIs!];
+    const apisList =
+      props.current === "policy"
+        ? [...states?.data.form.ApIs!]
+        : [...keystate?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
     allowedList.splice(index, 1);
     apisList[value] = {
       ...apisList[value],
       AllowedUrls: [...allowedList],
     };
-    dispatch(setForm({ ...state.data.form, ApIs: apisList }));
+    props.current === "policy"
+      ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
+      : dispatch(setForms({ ...state.data.form, AccessRights: apisList }));
   };
 
   const handleAddFormChange = (event: any) => {
@@ -145,9 +170,12 @@ export default function Ipathpermission(props: IProps) {
                 </tr>
               </thead>
               <tbody>
-                {state.data.form.ApIs.length > 0 ? (
-                  (
-                    state.data.form.ApIs[props.indexdata!].AllowedUrls as any[]
+                {length > 0 ? (
+                  (props.current === "policy"
+                    ? (state.data.form.ApIs[props.indexdata!]
+                        .AllowedUrls as any[])
+                    : keysstate.data.form.AccessRights[props.indexdata!]
+                        .AllowedUrls
                   ).map((data1: any, index1: any) => {
                     return (
                       <tr key={index1}>

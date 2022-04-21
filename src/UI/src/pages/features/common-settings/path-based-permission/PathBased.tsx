@@ -11,6 +11,7 @@ interface IProps {
   apidata?: any;
   apistate?: IApiGetByIdState;
   indexdata?: number;
+  current: string;
 }
 export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
@@ -55,7 +56,9 @@ export default function PathBased(props: IProps) {
           <Accordion.Item eventKey="0">
             <Accordion.Header>
               {/* {ApiName} */}
-              {props.policystate?.data.form.ApIs[props.indexdata!].Name}
+              {props.current === "policy"
+                ? props.policystate?.data.form.ApIs[props.indexdata!].Name
+                : props.state?.data.form.AccessRights[props.indexdata!].ApiName}
             </Accordion.Header>
 
             <Accordion.Body>
@@ -182,9 +185,11 @@ export default function PathBased(props: IProps) {
                     </Col>
                     {isActive ? (
                       <Ipathpermission
+                        state={props.state}
                         policystate={props.policystate}
                         apidata={props.apidata}
                         indexdata={props.indexdata}
+                        current={props.current}
                       />
                     ) : (
                       " "

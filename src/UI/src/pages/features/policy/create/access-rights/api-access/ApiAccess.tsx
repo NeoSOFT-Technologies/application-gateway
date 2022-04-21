@@ -24,6 +24,7 @@ export default function ApiAccess() {
                   apistate={apistate}
                   apidata={data[index]}
                   indexdata={index}
+                  current="policy"
                 />
               </div>
             );
