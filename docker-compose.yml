@@ -1,7 +1,6 @@
 ﻿version: "3.7"
 
 networks:
-  clean-network:
   tyk:
 
 services:
@@ -30,6 +29,8 @@ services:
       - tyk
     ports:
       - 6379:6379
+    volumes:
+        - redis_data:/data
 
   postgres:
     image: postgres
@@ -38,36 +39,35 @@ services:
       POSTGRES_PASSWORD: root
     ports:
       - "5430:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
-      - clean-network
+      - tyk
 
-  downstreamapi1:
-    image: ${DOCKER_REGISTRY-}downstreamapi
+  applicationgateway.api:
+    image: ${DOCKER_REGISTRY-}applicationgatewayapi
     build:
       context: .
-      dockerfile: Downstream/DownstreamApi/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-    ports:
-      - "5000:80"
+      dockerfile: src/API/ApplicationGateway.Api/Dockerfile
+    hostname: webapi
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-
-  downstreamapi2:
-    image: ${DOCKER_REGISTRY-}downstreamapi
-    build:
-      context: .
-      dockerfile: Downstream/DownstreamApi/Dockerfile
+      - policies:/opt/tyk-gateway/policies
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings:ApplicationConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.ApplicationDb;
+      - ConnectionStrings:IdentityConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.IdentityDb;
+      - ConnectionStrings:HealthCheckConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.HealthCheckDb;
+      - ConnectionStrings:Redis=tyk-redis:6379
+      - TykConfiguration:Host=http://tyk-gateway:8080/
+      - TykConfiguration:PoliciesFolderPath=../opt/tyk-gateway/policies
     ports:
-      - "5001:80"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - "5500:80"
+    networks:
+      - tyk
+    depends_on:
+      - tyk-gateway
+      - tyk-redis
+      - postgres
+      - applicationgateway.worker
 
   applicationgateway.worker:
     image: ${DOCKER_REGISTRY-}applicationgatewayworker
@@ -83,8 +83,11 @@ services:
     networks:
       - tyk
     depends_on:
+      - tyk-gateway
       - tyk-redis
 
 
 volumes:
   policies:
+  pgdata:
+  redis_data:
