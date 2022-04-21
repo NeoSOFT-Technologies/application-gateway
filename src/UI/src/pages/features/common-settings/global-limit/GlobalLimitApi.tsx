@@ -78,14 +78,15 @@ export default function GlobalLimitApi(props: IProps) {
     } else {
       fieldValue = event.target.value;
     }
-
+    console.log("ye field values - ", fieldValue);
     const newFormData: any = { ...Limits };
     newFormData[fieldName] = fieldValue;
+    console.log("ye new form data - ", newFormData);
     setLimits(newFormData);
 
     apisList[value] = {
       ...apisList[value],
-      Limit: { ...Limits },
+      Limit: { ...newFormData },
     };
     props.current === "policy"
       ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))

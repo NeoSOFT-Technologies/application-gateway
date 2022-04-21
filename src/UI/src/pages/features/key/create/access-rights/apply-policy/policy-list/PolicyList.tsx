@@ -98,19 +98,11 @@ export default function PolicyList() {
         : [],
     search: true,
     sort: true,
-    className: {
-      container: "table table-responsive table-bordered table-stripped",
-    },
     style: {
       table: {
         width: "100%",
-        border: "2px solid #ccc",
+        fontSize: ".875rem",
       },
-      th: {
-        color: "#000",
-      },
-      // rowSelection: "multiple",
-      // rowMultiSelectWithClick: true,
     },
   });
   return (
