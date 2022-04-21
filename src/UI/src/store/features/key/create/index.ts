@@ -28,13 +28,10 @@ export interface IGetKeyByIdData {
           ApiName: string | null;
           Versions: string[];
           AllowedUrls:
-            | [
-                {
-                  url: string;
-                  methods: string[];
-                }
-              ]
-            | [];
+            | {
+                url: string;
+                methods: string[];
+              }[];
           Limit: {
             Rate?: number;
             Rhrottle_interval?: number;
@@ -45,7 +42,7 @@ export interface IGetKeyByIdData {
             Quota_remaining?: number;
             Quota_renewal_rate?: number;
           } | null;
-        } | null
+        }
       ]
     | [];
   Policies: [];
