@@ -4,7 +4,7 @@ import Ipathpermission from "../../../../pages/features/common-settings/path-bas
 import { IKeyCreateState } from "../../../../store/features/key/create";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import { IApiGetByIdState } from "../../../../store/features/api/update";
-import GlobalLimit from "../global-limit/GlobalLimit";
+import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
@@ -62,17 +62,6 @@ export default function PathBased(props: IProps) {
             </Accordion.Header>
 
             <Accordion.Body>
-              <Row>
-                <Col md="12">
-                  <button
-                    className="btn btn-danger"
-                    style={{ float: "right" }}
-                    type="button"
-                  >
-                    Remove Access
-                  </button>
-                </Col>
-              </Row>
               <div>
                 <Row>
                   <Col md="12">
@@ -145,9 +134,7 @@ export default function PathBased(props: IProps) {
                         </Form.Label>
                       </Form.Group>
                       {isActiveApi ? (
-                        <GlobalLimit
-                          isDisabled={false}
-                          msg={""}
+                        <GlobalLimitApi
                           state={props.state}
                           index={props.indexdata}
                         />
