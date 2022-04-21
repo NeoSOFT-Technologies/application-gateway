@@ -32,13 +32,11 @@ export default function Ipathpermission(props: IProps) {
       : keysstate.data.form.AccessRights.length;
 
   const handleAddclick = () => {
-    const states = props.policystate;
-    const keystate = props.state;
     const value = props.indexdata!;
     const apisList =
       props.current === "policy"
-        ? [...states?.data.form.ApIs!]
-        : [...keystate?.data.form.AccessRights!];
+        ? [...props.policystate?.data.form.ApIs!]
+        : [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
     const list = {
       url: inputData.path,
@@ -51,19 +49,17 @@ export default function Ipathpermission(props: IProps) {
     };
     props.current === "policy"
       ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
-      : dispatch(setForms({ ...state.data.form, AccessRights: apisList }));
+      : dispatch(setForms({ ...keysstate.data.form, AccessRights: apisList }));
     setInputData({ path: "", method: ["GET"] });
   };
 
   const deleteTableRows = (event: any, index: any) => {
     event.preventDefault();
-    const states = props.policystate;
-    const keystate = props.state;
     const value = props.indexdata!;
     const apisList =
       props.current === "policy"
-        ? [...states?.data.form.ApIs!]
-        : [...keystate?.data.form.AccessRights!];
+        ? [...props.policystate?.data.form.ApIs!]
+        : [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
     allowedList.splice(index, 1);
     apisList[value] = {
@@ -72,7 +68,7 @@ export default function Ipathpermission(props: IProps) {
     };
     props.current === "policy"
       ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
-      : dispatch(setForms({ ...state.data.form, AccessRights: apisList }));
+      : dispatch(setForms({ ...keysstate.data.form, AccessRights: apisList }));
   };
 
   const handleAddFormChange = (event: any) => {

@@ -135,8 +135,10 @@ export default function PathBased(props: IProps) {
                       </Form.Group>
                       {isActiveApi ? (
                         <GlobalLimitApi
-                          state={props.state}
+                          state={props.policystate}
+                          keystate={props.state}
                           index={props.indexdata}
+                          current={props.current}
                         />
                       ) : (
                         " "
