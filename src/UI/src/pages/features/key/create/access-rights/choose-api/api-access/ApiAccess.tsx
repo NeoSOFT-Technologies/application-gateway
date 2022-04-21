@@ -4,6 +4,7 @@ import PathBased from "../../../../../common-settings/path-based-permission/Path
 
 export default function ApiAccess() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
+  const apistate = useAppSelector((RootState) => RootState.updateApiState);
   // console.log("states", state.data.form);
   return (
     <>
@@ -18,7 +19,13 @@ export default function ApiAccess() {
               // console.log("apiacessIndex", index, data);
               return (
                 <div key={index}>
-                  <PathBased state={state} indexdata={index} />
+                  <PathBased
+                    state={state}
+                    apistate={apistate}
+                    apidata={data[index]}
+                    indexdata={index}
+                    current="key"
+                  />
                 </div>
               );
             }

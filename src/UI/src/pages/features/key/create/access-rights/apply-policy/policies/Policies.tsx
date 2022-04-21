@@ -17,7 +17,12 @@ export default function Policies() {
               // const { policies } = data;
               return (
                 <div key={index}>
-                  <GlobalLimit isDisabled={true} msg={""} policyId={data} />
+                  <GlobalLimit
+                    isDisabled={true}
+                    msg={""}
+                    policyId={data}
+                    index={index}
+                  />
                 </div>
               );
             }
