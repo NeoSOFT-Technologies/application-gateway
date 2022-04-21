@@ -72,7 +72,7 @@ const slice = createSlice({
     });
     builder.addCase(createPolicy.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      // state.data = action.payload;
     });
     builder.addCase(createPolicy.rejected, (state, action) => {
       state.loading = false;
