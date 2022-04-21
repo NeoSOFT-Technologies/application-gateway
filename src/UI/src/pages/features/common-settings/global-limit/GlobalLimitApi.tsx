@@ -28,23 +28,11 @@ export default function GlobalLimit(props: IProps) {
     (RootStates) => RootStates.createPolicyState
   );
 
-  // const manageState = () => {
-  //   const policyByIdTemp = [...(states.data.form.policyByIds! as any[])];
-  //   const policyState = [{ ...state.data.form }];
-  //   policyByIdTemp.push(policyState);
-
-  //   dispatch(setForms({ ...states.data.form, policyByIds: policyByIdTemp }));
-  // };
-
   const mainCall = async (id: string) => {
     if (id !== null && id !== "" && id !== undefined) {
       await dispatch(getPolicybyId(id));
       setLoader(false);
     }
-
-    // await dispatch(getPolicybyId(id)).then((action) => {
-    //   console.log("actionPayload", action.payload);
-    // });
   };
 
   useEffect(() => {
@@ -52,9 +40,6 @@ export default function GlobalLimit(props: IProps) {
   }, []);
 
   useEffect(() => {
-    // if (state.loading === false) {
-    //   manageState();
-    // }
     if (
       props.policyId !== null &&
       props.policyId !== "" &&
