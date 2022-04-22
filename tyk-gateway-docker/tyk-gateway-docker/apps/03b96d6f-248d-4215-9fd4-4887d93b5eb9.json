@@ -1,10 +1,10 @@
 {
-  "name": "string",
+  "name": "test1",
   "slug": "",
   "listen_port": 0,
   "protocol": "",
   "enable_proxy_protocol": false,
-  "api_id": "cf98a945-fc32-4c5b-8c4b-a100425b9240",
+  "api_id": "03b96d6f-248d-4215-9fd4-4887d93b5eb9",
   "org_id": "",
   "use_keyless": true,
   "use_oauth2": false,
@@ -131,8 +131,8 @@
   },
   "proxy": {
     "preserve_host_header": false,
-    "listen_path": "string",
-    "target_url": "string",
+    "listen_path": "/test1/",
+    "target_url": "http://host.docker.internal:5000",
     "disable_strip_slash": false,
     "strip_listen_path": true,
     "enable_load_balancing": false,

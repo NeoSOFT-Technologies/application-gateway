@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 
 namespace ApplicationGateway.Api.Extensions
 {
@@ -16,20 +17,20 @@ namespace ApplicationGateway.Api.Extensions
                             "db",
                             "all"})
                         .AddRedis(configuration["ConnectionStrings:Redis"], name: "Redis")
-                        .AddUrlGroup(new Uri(configuration["TykConfiguration:Host"] + configuration["API:Tyk"]), name:"Gateway", tags: new[] {
+                        .AddUrlGroup(new Uri(configuration["TykConfiguration:Host"] + configuration["API:Tyk"]), name: "Gateway", tags: new[] {
                             "tykGatewayUrl",
                             "all"
-                        })
-                        .AddUrlGroup(new Uri(configuration["API:KeyCloak"]), name: "KeyCloak", tags: new[] {
-                            "keyCloakUrl",
-                            "all"
                         });
+                        //.AddUrlGroup(new Uri(configuration["API:KeyCloak"]), name: "KeyCloak", tags: new[] {
+                        //    "keyCloakUrl",
+                        //    "all"
+                        //});
             services.AddHealthChecksUI(opt =>
                     {
                         opt.SetEvaluationTimeInSeconds(15); //time in seconds between check
                         opt.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks
                         opt.SetApiMaxActiveRequests(1); //api requests concurrency
-                        opt.AddHealthCheckEndpoint("ready", "http://localhost:5500/health-checks/ready"); //map health check api
+                        opt.AddHealthCheckEndpoint("API", $"http://{Dns.GetHostName()}/healthz"); //map health check api
                     }).AddPostgreSqlStorage(configuration["ConnectionStrings:HealthCheckConnectionString"]);
             return services;
         }
