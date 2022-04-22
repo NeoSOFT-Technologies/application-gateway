@@ -1,4 +1,5 @@
 import React from "react";
+import { Accordion } from "react-bootstrap";
 import { useAppSelector } from "../../../../../../../store/hooks";
 import GlobalLimit from "../../../../../common-settings/global-limit/GlobalLimit";
 
@@ -6,9 +7,8 @@ export default function Policies() {
   const state = useAppSelector((RootState) => RootState.createKeyState);
   return (
     <>
-      <br />
-      <br /> <br /> <h5>Policies</h5> <br />
-      <div className="card col-lg-12 grid-margin stretch-card">
+      <fieldset className="border p-2">
+        <legend className="float-none w-auto p-2">Policies</legend>
         {state.data.form.Policies !== null &&
         state.data.form.Policies.length > 0 &&
         Array.isArray(state.data.form.Policies) ? (
@@ -17,12 +17,19 @@ export default function Policies() {
               // const { policies } = data;
               return (
                 <div key={index}>
-                  <GlobalLimit
-                    isDisabled={true}
-                    msg={""}
-                    policyId={data}
-                    index={index}
-                  />
+                  <Accordion defaultActiveKey="0">
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header>Policy Name</Accordion.Header>
+                      <Accordion.Body>
+                        <GlobalLimit
+                          isDisabled={true}
+                          msg={""}
+                          policyId={data}
+                          index={index}
+                        />
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </Accordion>
                 </div>
               );
             }
@@ -30,8 +37,7 @@ export default function Policies() {
         ) : (
           <></>
         )}{" "}
-        <br /> <br />
-      </div>{" "}
+      </fieldset>
     </>
   );
 }
