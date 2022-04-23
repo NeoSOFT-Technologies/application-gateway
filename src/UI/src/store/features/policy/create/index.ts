@@ -43,7 +43,7 @@ export interface IGetPolicyByIdData {
             quota_remaining?: number;
             quota_renewal_rate?: number;
             set_by_policy: boolean;
-          } | null;
+          };
         }
       ]
     | [];
@@ -69,7 +69,7 @@ export interface IGetPolicyByIdData {
             quota_remaining?: number;
             quota_renewal_rate?: number;
             set_by_policy: boolean;
-          } | null;
+          };
         }
       ]
     | [];

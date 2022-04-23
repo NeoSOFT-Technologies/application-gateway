@@ -2,6 +2,9 @@
 
 networks:
   tyk:
+    driver: bridge
+  es:
+    driver: bridge
 
 services:
   tyk-gateway:
@@ -49,7 +52,6 @@ services:
     build:
       context: .
       dockerfile: src/API/ApplicationGateway.Api/Dockerfile
-    hostname: webapi
     volumes:
       - policies:/opt/tyk-gateway/policies
     environment:
@@ -63,6 +65,7 @@ services:
       - "5500:80"
     networks:
       - tyk
+      - es
     depends_on:
       - tyk-gateway
       - tyk-redis
@@ -85,9 +88,44 @@ services:
     depends_on:
       - tyk-gateway
       - tyk-redis
+  
+  tyk-pump:
+    image: tykio/tyk-pump-docker-pub:v0.8.4
+    volumes:
+      - ./tyk-gateway-docker/tyk-gateway-docker/pump/pump.json:/opt/tyk-pump/pump.conf
+    depends_on:
+      - tyk-redis
+      - elasticsearch
+    networks:
+      - tyk
+      - es
 
+  elasticsearch:
+    image: elasticsearch:7.17.2
+    ports:
+      - 9200:9200
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - es
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.2
+    ports:
+      - 5601:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - es
 
 volumes:
   policies:
   pgdata:
   redis_data:
+  elasticsearch-data:
+    driver: local
