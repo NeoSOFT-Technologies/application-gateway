@@ -25,6 +25,7 @@ export default function Ipathpermission(props: IProps) {
     path: "",
     method: ["GET"],
   });
+  const [spanError, setspanError] = useState("");
 
   const length =
     props.current === "policy"
@@ -33,24 +34,58 @@ export default function Ipathpermission(props: IProps) {
 
   const handleAddclick = () => {
     const value = props.indexdata!;
+    let filtercheck = "false";
     const apisList =
       props.current === "policy"
         ? [...props.policystate?.data.form.ApIs!]
         : [...props.state?.data.form.AccessRights!];
     const allowedList = [...apisList[value].AllowedUrls!];
-    const list = {
-      url: inputData.path,
-      methods: inputData.method,
-    };
-    allowedList.push(list);
-    apisList[value] = {
-      ...apisList[value],
-      AllowedUrls: [...allowedList],
-    };
-    props.current === "policy"
-      ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
-      : dispatch(setForms({ ...keysstate.data.form, AccessRights: apisList }));
-    setInputData({ path: "", method: ["GET"] });
+
+    // validation function to check two array of method
+    function arrayEquals(a: any, b: any) {
+      return (
+        Array.isArray(a) &&
+        Array.isArray(b) &&
+        a.length === b.length &&
+        a.every((val, index) => val === b[index])
+      );
+    }
+    const filteredlist = allowedList.filter((a) => {
+      console.log("aurl", a.url, a.methods);
+      console.log("old", inputData.path, inputData.method);
+      if (a.url === inputData.path) {
+        if (arrayEquals(a.methods, inputData.method)) {
+          filtercheck = "true";
+        } else {
+          filtercheck = "false";
+        }
+      } else {
+        filtercheck = "false";
+      }
+      return filtercheck;
+    });
+    // end of validation from data
+    if (inputData.path !== "" && filtercheck === "false") {
+      setspanError(" ");
+      console.log("filtered", filteredlist);
+      const list = {
+        url: inputData.path,
+        methods: inputData.method,
+      };
+      allowedList.push(list);
+      apisList[value] = {
+        ...apisList[value],
+        AllowedUrls: [...allowedList],
+      };
+      props.current === "policy"
+        ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
+        : dispatch(
+            setForms({ ...keysstate.data.form, AccessRights: apisList })
+          );
+      setInputData({ path: "", method: ["GET"] });
+    } else {
+      setspanError("Input cannot be empty or already exist");
+    }
   };
 
   const deleteTableRows = (event: any, index: any) => {
@@ -82,7 +117,7 @@ export default function Ipathpermission(props: IProps) {
         setInputData(newFormData);
         break;
       case "method":
-        if (fieldValue === "All Method") {
+        if (fieldValue === "AllMethod") {
           newFormData[fieldName] = [
             "GET ",
             "POST ",
@@ -94,13 +129,14 @@ export default function Ipathpermission(props: IProps) {
           ];
           setInputData(newFormData);
         } else {
+          console.log("else", fieldValue);
           newFormData[fieldName] = [fieldValue];
           setInputData(newFormData);
         }
         break;
     }
   };
-
+  console.log("state", inputData);
   return (
     <div>
       <Row>
@@ -119,6 +155,11 @@ export default function Ipathpermission(props: IProps) {
               // data-testid="name-input"
               required
             />
+            {spanError !== "" ? (
+              <span style={{ color: "red" }}>{spanError}</span>
+            ) : (
+              ""
+            )}
             <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -133,6 +174,7 @@ export default function Ipathpermission(props: IProps) {
               onChange={handleAddFormChange}
               value={inputData.method[0]}
             >
+              <option>AllMethod</option>
               <option>GET</option>
               <option>POST</option>
               <option>PUT</option>
@@ -140,7 +182,6 @@ export default function Ipathpermission(props: IProps) {
               <option>PATCH</option>
               <option>OPTIONS</option>
               <option>HEAD</option>
-              <option>AllMethod</option>
             </Form.Select>
           </Form.Group>
         </Col>
