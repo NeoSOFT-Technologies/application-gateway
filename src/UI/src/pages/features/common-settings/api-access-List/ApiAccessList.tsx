@@ -86,19 +86,14 @@ export default function ApiAccessList(props: IProps) {
                 : data.CreatedDate,
             ])
         : [],
-    className: {
-      container: "table table-responsive table-bordered table-stripped",
-    },
     style: {
       table: {
         width: "100%",
-        // hight: "20px",
-        // scrollY: scroll,
-        // border: "2px solid #ccc",
+        fontSize: ".875rem",
       },
-      th: {
-        color: "#000",
-      },
+
+      // rowSelection: "multiple",
+      // rowMultiSelectWithClick: true,
     },
   });
   // console.log(props.state);
