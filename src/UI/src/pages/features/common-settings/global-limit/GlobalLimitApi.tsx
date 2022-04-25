@@ -85,7 +85,7 @@ export default function GlobalLimitApi(props: IProps) {
 
     apisList[value] = {
       ...apisList[value],
-      Limit: { ...Limits },
+      Limit: { ...newFormData },
     };
     props.current === "policy"
       ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
@@ -151,7 +151,6 @@ export default function GlobalLimitApi(props: IProps) {
                           id="rate"
                           placeholder="Enter Request per period"
                           onChange={(e: any) => handlerateclick(e)}
-                          // onBlur={(e: any) => handlerateclick(e)}
                           name="rate"
                           disabled={rate}
                         />
