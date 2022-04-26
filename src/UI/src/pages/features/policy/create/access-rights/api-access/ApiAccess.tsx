@@ -10,8 +10,8 @@ export default function ApiAccess() {
   // console.log("states", state);
   return (
     <>
-      <br /> <br />
-      <div className="card col-lg-12 grid-margin stretch-card">
+      <fieldset className="border p-2">
+        <legend className="float-none w-auto p-2">API Access</legend>
         {state.data.form.ApIs !== null &&
         state.data.form.ApIs?.length > 0 &&
         Array.isArray(state.data.form.ApIs) ? (
@@ -24,6 +24,7 @@ export default function ApiAccess() {
                   apistate={apistate}
                   apidata={data[index]}
                   indexdata={index}
+                  current="policy"
                 />
               </div>
             );
@@ -31,7 +32,7 @@ export default function ApiAccess() {
         ) : (
           <></>
         )}
-      </div>
+      </fieldset>
     </>
   );
 }

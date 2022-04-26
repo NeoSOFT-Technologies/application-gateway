@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Accordion } from "react-bootstrap";
+import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
 import { IKeyCreateState } from "../../../../store/features/key/create";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
 import { IApiGetByIdState } from "../../../../store/features/api/update";
-import GlobalLimit from "../global-limit/GlobalLimit";
+import GlobalLimitApi from "../global-limit/GlobalLimitApi";
 interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
   apidata?: any;
   apistate?: IApiGetByIdState;
   indexdata?: number;
+  current: string;
 }
 export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
@@ -53,23 +54,18 @@ export default function PathBased(props: IProps) {
       <div className="card mt-4">
         <Accordion defaultActiveKey="0">
           <Accordion.Item eventKey="0">
-            <Accordion.Header>
-              {/* {ApiName} */}
-              {props.policystate?.data.form.ApIs[props.indexdata!].Name}
-            </Accordion.Header>
-
+            <div style={{ display: "inline-flex", width: "100%" }}>
+              <AccordionButton>
+                {props.current === "policy"
+                  ? props.policystate?.data.form.ApIs[props.indexdata!].Name
+                  : props.state?.data.form.AccessRights[props.indexdata!]
+                      .ApiName}
+              </AccordionButton>
+              <button type="button" style={{ width: "5%" }}>
+                <i className="bi bi-trash-fill menu-icon"></i>
+              </button>
+            </div>
             <Accordion.Body>
-              <Row>
-                <Col md="12">
-                  <button
-                    className="btn btn-danger"
-                    style={{ float: "right" }}
-                    type="button"
-                  >
-                    Remove Access
-                  </button>
-                </Col>
-              </Row>
               <div>
                 <Row>
                   <Col md="12">
@@ -142,11 +138,11 @@ export default function PathBased(props: IProps) {
                         </Form.Label>
                       </Form.Group>
                       {isActiveApi ? (
-                        <GlobalLimit
-                          isDisabled={false}
-                          msg={""}
-                          state={props.state}
+                        <GlobalLimitApi
+                          state={props.policystate}
+                          keystate={props.state}
                           index={props.indexdata}
+                          current={props.current}
                         />
                       ) : (
                         " "
@@ -182,9 +178,11 @@ export default function PathBased(props: IProps) {
                     </Col>
                     {isActive ? (
                       <Ipathpermission
+                        state={props.state}
                         policystate={props.policystate}
                         apidata={props.apidata}
                         indexdata={props.indexdata}
+                        current={props.current}
                       />
                     ) : (
                       " "

@@ -15,6 +15,7 @@ export const initialState: IPolicyCreateState = {
       State: "",
       KeyExpiresIn: 0,
       Tags: [],
+      APIs: [],
       ApIs: [
         // {
         //   Id: null,
