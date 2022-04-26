@@ -75,8 +75,6 @@ export default function Authentication() {
                     <div>
                       {state.data.form.AuthType === "standard" ? (
                         <AuthenticationToken />
-                      ) : state.data.form.EnableMTLS === true ? (
-                        <MutualTLS />
                       ) : state.data.form.AuthType === "openid" ? (
                         <OpenIdConnect />
                       ) : state.data.form.EnableMTLS === true ||
