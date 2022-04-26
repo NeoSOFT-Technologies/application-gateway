@@ -29,7 +29,7 @@ const slice = createSlice({
       state.data.form = action.payload;
       console.log("Form - ", state.data.form);
     },
-    setFormError: (state, action) => {
+    setFormErrors: (state, action) => {
       state.data.errors = action.payload;
     },
   },
@@ -50,5 +50,5 @@ const slice = createSlice({
   },
 });
 
-export const { setForms, setFormError } = slice.actions;
+export const { setForms, setFormErrors } = slice.actions;
 export default slice.reducer;
