@@ -53,7 +53,7 @@ export default function Authentication() {
                             <Form.Select
                               aria-label="Default select example"
                               name="AuthType"
-                              // onClick={handleFormSelectChange}
+                              value={state.data.form.AuthType}
                               onChange={(e: any) => handleFormSelectChange(e)}
                             >
                               <option id="authToken" value="standard">
@@ -62,10 +62,10 @@ export default function Authentication() {
                               <option id="mutualTls" value="mutual">
                                 Mutual TLS
                               </option>
-                              <option id="oidc" value="OpenId">
+                              <option id="openid" value="openid">
                                 OpenId Connect
                               </option>
-                              <option id="keyless" value="Keyless">
+                              <option id="keyless" value="keyless">
                                 Open (KeyLess)
                               </option>
                             </Form.Select>
@@ -79,7 +79,7 @@ export default function Authentication() {
                         <AuthenticationToken />
                       ) : state.data.form.EnableMTLS === true ? (
                         <MutualTLS />
-                      ) : state.data.form.AuthType === "OpenId" ? (
+                      ) : state.data.form.AuthType === "openid" ? (
                         <OpenIdConnect />
                       ) : (
                         <></>
