@@ -7,12 +7,10 @@ using ApplicationGateway.Application.Features.Transformers.Queries.GetTransforme
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationGateway.Api.Controllers.v1
 {
-    [Authorize]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
