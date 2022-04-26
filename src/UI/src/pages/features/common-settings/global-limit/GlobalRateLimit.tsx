@@ -20,11 +20,10 @@ import {
 interface IProps {
   state?: IPolicyCreateState;
   keystate?: IKeyCreateState;
-  index?: number;
   current: string;
 }
 
-export default function GlobalLimitApi(props: IProps) {
+export default function GlobalRateLimit(props: IProps) {
   const dispatch = useAppDispatch();
   const states = useAppSelector((RootState) => RootState.createKeyState);
   const state: IPolicyCreateState = useAppSelector(
@@ -146,12 +145,8 @@ export default function GlobalLimitApi(props: IProps) {
   const handlerateclick = (event: any) => {
     event.preventDefault();
     validateForm(event);
-    const value = props.index!;
     let fieldValue;
-    const apisList =
-      props.current === "policy"
-        ? [...props.state?.data.form.ApIs!]
-        : [...props.keystate?.data.form.AccessRights!];
+
     const fieldName = event.target.getAttribute("name");
     if (fieldName === "quota_renews") {
       switch (event.target.value) {
@@ -184,16 +179,31 @@ export default function GlobalLimitApi(props: IProps) {
     console.log("ye field values - ", fieldValue);
     const newFormData: any = { ...Limits };
     newFormData[fieldName] = fieldValue;
-    console.log("ye new form data - ", newFormData);
     setLimits(newFormData);
 
-    apisList[value] = {
-      ...apisList[value],
-      Limit: { ...newFormData },
-    };
     props.current === "policy"
-      ? dispatch(setForm({ ...state.data.form, ApIs: apisList }))
-      : dispatch(setForms({ ...states.data.form, AccessRights: apisList }));
+      ? dispatch(
+          setForm({
+            ...state.data.form,
+            Rate: newFormData.rate,
+            Per: newFormData.per,
+            QuotaRate: newFormData.quota_max,
+            MaxQuota: newFormData.quota_renews,
+            ThrottleInterval: newFormData.throttle_interval,
+            ThrottleRetries: newFormData.throttle_retry_limit,
+          })
+        )
+      : dispatch(
+          setForms({
+            ...states.data.form,
+            Rate: newFormData.rate,
+            Per: newFormData.per,
+            QuotaRate: newFormData.quota_max,
+            MaxQuota: newFormData.quota_renews,
+            ThrottleInterval: newFormData.throttle_interval,
+            ThrottleRetries: newFormData.throttle_retry_limit,
+          })
+        );
   };
   console.log("checklimit", state.data.form);
   console.log("checklimit2", states.data.form);
@@ -217,11 +227,6 @@ export default function GlobalLimitApi(props: IProps) {
     }
   }
 
-  // function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
-  //   const { name, value } = event.target;
-  //   setRateValue(event.target.value);
-  //   dispatch(setForm({ ...state.data.form, [name]: value }));
-  // }
   return (
     <>
       {state.loading === false ? (
