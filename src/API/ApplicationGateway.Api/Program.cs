@@ -61,7 +61,7 @@ services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         builder =>
         {
-            builder.WithOrigins(Urls).AllowAnyHeader().AllowAnyMethod();
+            builder.WithOrigins(Urls.Split(',')).AllowAnyHeader().AllowAnyMethod();
         });
 });
 //services.AddCors(c =>
