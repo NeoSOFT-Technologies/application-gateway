@@ -11,6 +11,23 @@
     "providers": null,
     "segregate_by_client": false
   },
+  "auth": {
+    "use_param": false,
+    "param_name": "",
+    "use_cookie": false,
+    "cookie_name": "",
+    "auth_header_name": "gateway-authorization",
+    "use_certificate": false,
+    "validate_signature": false,
+    "signature": {
+      "algorithm": "",
+      "header": "",
+      "secret": "",
+      "allowed_clock_skew": 0,
+      "error_code": 0,
+      "error_message": ""
+    }
+  },
   "active": "#valueof(IsActive)",
   "internal": "#valueof(IsInternal)",
   "protocol": "#valueof(Protocol)",
