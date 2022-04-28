@@ -187,8 +187,8 @@ export default function GlobalRateLimit(props: IProps) {
             ...state.data.form,
             Rate: newFormData.rate,
             Per: newFormData.per,
-            QuotaRate: newFormData.quota_max,
-            MaxQuota: newFormData.quota_renews,
+            MaxQuota: newFormData.quota_max,
+            QuotaRate: newFormData.quota_renews,
             ThrottleInterval: newFormData.throttle_interval,
             ThrottleRetries: newFormData.throttle_retry_limit,
           })
@@ -198,8 +198,8 @@ export default function GlobalRateLimit(props: IProps) {
             ...states.data.form,
             Rate: newFormData.rate,
             Per: newFormData.per,
-            QuotaRate: newFormData.quota_max,
-            MaxQuota: newFormData.quota_renews,
+            Quota: newFormData.quota_max,
+            QuotaRenewalRate: newFormData.quota_renews,
             ThrottleInterval: newFormData.throttle_interval,
             ThrottleRetries: newFormData.throttle_retry_limit,
           })
@@ -259,6 +259,11 @@ export default function GlobalRateLimit(props: IProps) {
                           type="text"
                           id="rate"
                           placeholder="Enter Request per period"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.Rate
+                              : states.data.form.Rate
+                          }
                           // onChange={(e: any) => validateForm(e)}
                           onChange={(e: any) => handlerateclick(e)}
                           name="rate"
@@ -286,6 +291,11 @@ export default function GlobalRateLimit(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="per"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.Per
+                              : states.data.form.Per
+                          }
                           placeholder="Enter time"
                           onChange={(e: any) => handlerateclick(e)}
                           name="per"
@@ -329,6 +339,11 @@ export default function GlobalRateLimit(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="retry"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.ThrottleRetries
+                              : states.data.form.ThrottleRetries
+                          }
                           placeholder={throttleRetry}
                           name="throttle_retry_limit"
                           onChange={(e: any) => handlerateclick(e)}
@@ -359,6 +374,11 @@ export default function GlobalRateLimit(props: IProps) {
                           type="text"
                           id="interval"
                           name="throttle_interval"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.ThrottleInterval
+                              : states.data.form.ThrottleInterval
+                          }
                           placeholder={throttleInterval}
                           onChange={(e: any) => handlerateclick(e)}
                           isInvalid={
@@ -401,6 +421,11 @@ export default function GlobalRateLimit(props: IProps) {
                           className="mt-2"
                           type="text"
                           id="quotaPer"
+                          value={
+                            props.current === "policy"
+                              ? state.data.form.QuotaRate
+                              : states.data.form.Quota
+                          }
                           placeholder={quotaPerPeriod}
                           onChange={(e: any) => handlerateclick(e)}
                           name="quota_max"

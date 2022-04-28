@@ -16,7 +16,7 @@ export default function AccessRights() {
               <AccessList />
               <Partitions />
               <GlobalRateLimit state={state} current="policy" />
-              {state.data.form.ApIs?.length > 0 ? <ApiAccess /> : <></>}
+              {state.data.form.APIs?.length > 0 ? <ApiAccess /> : <></>}
             </div>
           </div>
         </div>

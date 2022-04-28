@@ -27,6 +27,7 @@ export interface IGetKeyByIdData {
           ApiId: string | null;
           ApiName: string | null;
           Versions: string[];
+          MasterVersions: string[];
           AllowedUrls:
             | {
                 url: string;
@@ -34,6 +35,7 @@ export interface IGetKeyByIdData {
               }[];
           Limit: {
             Rate?: number;
+            Per?: number;
             Throttle_interval?: number;
             Throttle_retry_limit?: number;
             Max_query_depth?: number;
