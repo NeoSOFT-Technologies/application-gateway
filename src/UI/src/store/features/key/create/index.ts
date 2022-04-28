@@ -46,7 +46,22 @@ export interface IGetKeyByIdData {
       ]
     | [];
   Policies: [];
-  PolicyByIds?: IGetPolicyByIdData[];
+  PolicyByIds?: [
+    {
+      global?: {
+        Name: string;
+        MaxQuota: number;
+        QuotaRate: number;
+        Rate: number;
+        Per: number;
+        ThrottleInterval: number;
+        ThrottleRetries: number;
+      } | null;
+      perApi?: any[] | null;
+      policyName: string;
+    }
+  ];
+
   Tags?: string[];
 }
 
