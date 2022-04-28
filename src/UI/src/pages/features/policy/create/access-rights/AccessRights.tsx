@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppSelector } from "../../../../../store/hooks";
 // import { useAppSelector } from "../../../../../store/hooks";
-import GlobalLimit from "../../../common-settings/global-limit/GlobalLimit";
+import GlobalRateLimit from "../../../common-settings/global-limit/GlobalRateLimit";
 import AccessList from "./api-access-rights/AccessList";
 import ApiAccess from "./api-access/ApiAccess";
 import Partitions from "./partitions/Partitions";
@@ -14,10 +14,9 @@ export default function AccessRights() {
           <div className="align-items-center">
             <div className="pt-2">
               <AccessList />
-              <GlobalLimit isDisabled={false} msg={""} />
               <Partitions />
-
-              {state.data.form.ApIs?.length > 0 ? <ApiAccess /> : <></>}
+              <GlobalRateLimit state={state} current="policy" />
+              {state.data.form.APIs?.length > 0 ? <ApiAccess /> : <></>}
             </div>
           </div>
         </div>
