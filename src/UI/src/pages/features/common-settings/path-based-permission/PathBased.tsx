@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Accordion, AccordionButton } from "react-bootstrap";
 import Ipathpermission from "../../../../pages/features/common-settings/path-based-permission/path-file";
 import { IKeyCreateState } from "../../../../store/features/key/create";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
-import { IApiGetByIdState } from "../../../../store/features/api/update";
+// import { IApiGetByIdState } from "../../../../store/features/api/update";
+
 import GlobalLimitApi from "../global-limit/GlobalLimitApi";
+
 interface IProps {
   state?: IKeyCreateState;
   policystate?: IPolicyCreateState;
   apidata?: any;
-  apistate?: IApiGetByIdState;
+  apistate?: any;
   indexdata?: number;
   current: string;
 }
@@ -17,8 +19,19 @@ export default function PathBased(props: IProps) {
   const [isActive, setisActive] = useState<boolean>(false);
   const [isActiveApi, setisActiveApi] = useState<boolean>(false);
   const [versions, setversion] = useState<string[]>([]);
-  const lis = props.apistate?.data.form.Versions;
+
   // console.log("versionslog", lis);
+
+  useEffect(() => {
+    props.policystate?.data.form.APIs[props.indexdata!].AllowedUrls !==
+    undefined
+      ? setisActive(true)
+      : setisActive(false);
+
+    props.state?.data.form.AccessRights[props.indexdata!] !== undefined
+      ? setisActiveApi(true)
+      : setisActiveApi(false);
+  }, []);
   const setPathPermission = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value =
       event.target.type === "checkbox"
@@ -49,6 +62,7 @@ export default function PathBased(props: IProps) {
     rows.splice(index, 1);
     setversion(rows);
   };
+  console.log("versions", props.policystate?.data.form);
   return (
     <>
       <div className="card mt-4">
@@ -57,7 +71,7 @@ export default function PathBased(props: IProps) {
             <div style={{ display: "inline-flex", width: "100%" }}>
               <AccordionButton>
                 {props.current === "policy"
-                  ? props.policystate?.data.form.ApIs[props.indexdata!].Name
+                  ? props.policystate?.data.form.APIs[props.indexdata!].Name
                   : props.state?.data.form.AccessRights[props.indexdata!]
                       .ApiName}
               </AccordionButton>
@@ -75,10 +89,12 @@ export default function PathBased(props: IProps) {
                         name="method"
                         onChange={(e: any) => handleversion(e)}
                       >
-                        {lis?.map((datalist: any, index: any) => {
+                        {props.policystate?.data.form.APIs[
+                          props.indexdata!
+                        ].MasterVersions?.map((datalist: any, index: any) => {
                           return (
-                            <option key={index} value={datalist.Name}>
-                              {datalist.Name}
+                            <option key={index} value={datalist}>
+                              {datalist}
                             </option>
                           );
                         })}

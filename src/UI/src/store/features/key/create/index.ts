@@ -27,6 +27,7 @@ export interface IGetKeyByIdData {
           ApiId: string | null;
           ApiName: string | null;
           Versions: string[];
+          MasterVersions: string[];
           AllowedUrls:
             | {
                 url: string;
@@ -34,6 +35,7 @@ export interface IGetKeyByIdData {
               }[];
           Limit: {
             Rate?: number;
+            Per?: number;
             Throttle_interval?: number;
             Throttle_retry_limit?: number;
             Max_query_depth?: number;
@@ -46,7 +48,22 @@ export interface IGetKeyByIdData {
       ]
     | [];
   Policies: [];
-  PolicyByIds?: IGetPolicyByIdData[];
+  PolicyByIds?: [
+    {
+      global?: {
+        Name: string;
+        MaxQuota: number;
+        QuotaRate: number;
+        Rate: number;
+        Per: number;
+        ThrottleInterval: number;
+        ThrottleRetries: number;
+      } | null;
+      perApi?: any[] | null;
+      policyName: string;
+    }
+  ];
+
   Tags?: string[];
 }
 

@@ -27,32 +27,7 @@ export interface IGetPolicyByIdData {
           Id: string | null;
           Name: string;
           Versions: string[];
-          AllowedUrls:
-            | {
-                url: string;
-                methods: string[];
-              }[];
-          Limit: {
-            rate?: number;
-            per: number;
-            throttle_interval?: number;
-            throttle_retry_limit?: number;
-            max_query_depth?: number;
-            quota_max?: number;
-            quota_renews?: number;
-            quota_remaining?: number;
-            quota_renewal_rate?: number;
-            set_by_policy: boolean;
-          };
-        }
-      ]
-    | [];
-  ApIs:
-    | [
-        {
-          Id: string | null;
-          Name: string;
-          Versions: string[];
+          MasterVersions: string[];
           AllowedUrls:
             | {
                 url: string;

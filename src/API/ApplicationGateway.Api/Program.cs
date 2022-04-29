@@ -61,7 +61,7 @@ services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         builder =>
         {
-            builder.WithOrigins(Urls).AllowAnyHeader().AllowAnyMethod();
+            builder.WithOrigins(Urls.Split(',')).AllowAnyHeader().AllowAnyMethod();
         });
 });
 //services.AddCors(c =>
@@ -141,7 +141,7 @@ options =>
     // build a swagger endpoint for each discovered API version  
     foreach (var description in provider.ApiVersionDescriptions)
     {
-        options.SwaggerEndpoint($"/gateway/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
     }
 });
 

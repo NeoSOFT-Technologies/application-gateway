@@ -68,6 +68,12 @@ export default function PolicyList() {
     val.preventDefault();
     navigate("/policy/create");
   };
+
+  const NavigateUpdate = (val: IPolicyData) => {
+    if (val.Id) {
+      navigate(`/policy/update/${val.Id}`);
+    }
+  };
   //   const handleUserDetails = (val: ITenantUserData) => {
   //     console.log(val);
   //     // navigate("/userdetails");
@@ -114,6 +120,7 @@ export default function PolicyList() {
     {
       className: "btn btn-sm btn-light",
       iconClassName: "bi bi-pencil-square menu-icon",
+      buttonFunction: NavigateUpdate,
     },
     {
       className: "btn btn-sm btn-light",
