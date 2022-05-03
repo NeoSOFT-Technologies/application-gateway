@@ -116,8 +116,13 @@ export default function GlobalLimit(props: IProps) {
     const removePolicies = [...states.data.form.Policies];
     removePolicyByIds.splice(index, 1);
     removePolicies.splice(index, 1);
-    dispatch(setForms({ ...states.data.form, PolicyByIds: removePolicyByIds }));
-    dispatch(setForms({ ...states.data.form, Policies: removePolicies }));
+    dispatch(
+      setForms({
+        ...states.data.form,
+        PolicyByIds: removePolicyByIds,
+        Policies: removePolicies,
+      })
+    );
   };
 
   console.log("mainState", states);
