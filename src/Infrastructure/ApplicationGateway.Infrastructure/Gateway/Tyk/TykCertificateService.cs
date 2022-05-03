@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Models.Tyk;
+using ApplicationGateway.Domain.GatewayCommon;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -55,33 +56,45 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation("DeleteCertificate service completed");
         }
 
-        public X509Certificate2 GetCertificateById(Guid certId)
+        public Certificate GetCertificateById(Guid certId)
         {
             _logger.LogInformation("GetCertificateById service initiated");
-
-            //string certPath = $@"{_tykConfiguration.CertsPath}\{certId}.pfx";
             string certPath = $@"{_tykConfiguration.CertsPath}\{certId}.pem";
             if (!File.Exists(certPath))
                 throw new FileNotFoundException();
-            X509Certificate2Collection collection = new();
-            //collection.Import(certPath, certPass, X509KeyStorageFlags.PersistKeySet);
-            collection.ImportFromPemFile(certPath);
-
+            var cert = new X509Certificate2(File.ReadAllBytes(certPath));
+            var certificate = mapCert(cert,certId);
             _logger.LogInformation("GetCertificateById service commpleted");
-            return collection.FirstOrDefault();
+            return certificate;
         }
 
-        public X509Certificate2Collection GetAllCertificates()
+        public List<Certificate> GetAllCertificates()
         {
             _logger.LogInformation("GetAllCertificates service initiated");
             var certPathCollection = Directory.GetFiles(_tykConfiguration.CertsPath);
-
-            X509Certificate2Collection collection = new();
-            foreach(var certPath in certPathCollection)
-                collection.ImportFromPemFile(certPath);
-
+            List<Certificate> certificateCollection = new();
+            foreach (var certPath in certPathCollection)
+            {
+                
+                var cert = new X509Certificate2(File.ReadAllBytes(certPath));
+                var certificate = mapCert(cert, Guid.Parse(Path.GetFileNameWithoutExtension(certPath)));
+                certificateCollection.Add(certificate);
+            }
             _logger.LogInformation("GetAllCertificates service completed");
-            return collection;
+            return certificateCollection;
+        }
+
+        Certificate mapCert(X509Certificate2 cert,Guid certId) 
+        {
+            Certificate certificate = new();
+            certificate.CertId = certId;
+            certificate.Issuer = cert.IssuerName.Name;
+            certificate.Subject = cert.SubjectName.Name;
+            certificate.ValidNotBefore = cert.NotBefore;
+            certificate.ValidNotAfter = cert.NotAfter;
+            certificate.SignatureAlgorithm = cert.SignatureAlgorithm.FriendlyName;
+            certificate.Thumbprint = cert.Thumbprint;
+            return certificate;
         }
     }
 }

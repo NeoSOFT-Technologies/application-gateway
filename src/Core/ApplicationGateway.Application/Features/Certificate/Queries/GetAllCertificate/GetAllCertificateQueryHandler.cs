@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Certificate.Queries.GetAllCertificate
 {
-    public class GetAllCertificateQueryHandler:IRequestHandler<GetAllCertificateQuery, X509Certificate2Collection>
+    public class GetAllCertificateQueryHandler:IRequestHandler<GetAllCertificateQuery, GetAllCertificateDto>
     {
         readonly ILogger<GetAllCertificateQueryHandler> _logger;
         readonly IMapper _mapper;
@@ -24,12 +24,17 @@ namespace ApplicationGateway.Application.Features.Certificate.Queries.GetAllCert
             _certificateService = certificateService;
         }
 
-        public async Task<X509Certificate2Collection> Handle(GetAllCertificateQuery request,CancellationToken cancellationToken)
+        public async Task<GetAllCertificateDto> Handle(GetAllCertificateQuery request,CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllCertificateQueryHandler initiated");
-            X509Certificate2Collection certColl = _certificateService.GetAllCertificates();
+            List<Domain.GatewayCommon.Certificate> certColl = _certificateService.GetAllCertificates();
+            List<CertificateDto> allCert = new();
+            certColl.ForEach(cert => {allCert.Add(_mapper.Map<CertificateDto>(cert)); 
+                
+            });
+
             _logger.LogInformation("GetAllCertificateQueryHandler completed");
-            return certColl;
+            return new GetAllCertificateDto() { CertificateCollection = allCert };
         }
     }
 }

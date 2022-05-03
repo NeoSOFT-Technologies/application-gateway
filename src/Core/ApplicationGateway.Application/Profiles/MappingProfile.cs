@@ -18,6 +18,8 @@ using ApplicationGateway.Application.Features.Transformers.Queries.GetTransforme
 using ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQuery;
 using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
 using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
+using ApplicationGateway.Application.Features.Certificate.Queries.GetCertificateById;
+using ApplicationGateway.Application.Features.Certificate.Queries.GetAllCertificate;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -118,6 +120,8 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<ApiLimit, UpdateKeyLimit>().ReverseMap();
             CreateMap<ApiLimit, UpdateKeyLimitDto>().ReverseMap();
 
+            CreateMap<Certificate, GetCertificateByIdDto>().ReverseMap();
+            CreateMap<Certificate, CertificateDto>().ReverseMap();
 
 
             CreateMap<Domain.Entities.Api, GetAllApiModel>().ReverseMap();
