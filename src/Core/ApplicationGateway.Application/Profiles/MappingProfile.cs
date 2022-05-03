@@ -20,6 +20,7 @@ using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
 using ApplicationGateway.Application.Features.Key.Queries.GetAllKeys;
 using ApplicationGateway.Application.Features.Certificate.Queries.GetCertificateById;
 using ApplicationGateway.Application.Features.Certificate.Queries.GetAllCertificate;
+using ApplicationGateway.Application.Features.Key.Queries.GetKey;
 
 namespace ApplicationGateway.Application.Profiles
 {
@@ -119,6 +120,11 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<AccessRightsModel, UpdateAccessRightsModelDto>().ReverseMap();
             CreateMap<ApiLimit, UpdateKeyLimit>().ReverseMap();
             CreateMap<ApiLimit, UpdateKeyLimitDto>().ReverseMap();
+            CreateMap<Domain.GatewayCommon.AccessRightsModel, GetKeyDto.AccessRightsModel>().ReverseMap();
+            CreateMap<Domain.GatewayCommon.ApiLimit, GetKeyDto.ApiLimit>().ReverseMap();
+            CreateMap<Domain.GatewayCommon.AllowedUrl, GetKeyDto.AllowedUrl>().ReverseMap();
+            CreateMap<Domain.GatewayCommon.Key, GetKeyDto>().ReverseMap();
+
 
             CreateMap<Certificate, GetCertificateByIdDto>().ReverseMap();
             CreateMap<Certificate, CertificateDto>().ReverseMap();

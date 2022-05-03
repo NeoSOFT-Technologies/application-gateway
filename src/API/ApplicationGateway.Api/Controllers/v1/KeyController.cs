@@ -38,7 +38,7 @@ namespace ApplicationGateway.Api.Controllers.v1
         {
 
             _logger.LogInformation("GetKey initiated in controller for {keyId}",keyId);
-            var response = await _mediator.Send(new GetKeyQuery() { keyId = keyId });
+            Response<GetKeyDto> response = await _mediator.Send(new GetKeyQuery() { keyId = keyId });
             _logger.LogInformation("GetKey completed in controller for {keyId}",keyId);
             return Ok(response);
         }
