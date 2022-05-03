@@ -45,6 +45,8 @@ function AppRoutes() {
         <Route path="/registertenant" element={<RegisterTenant />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/api/update/:id" element={<UpdateApi />} />
+        <Route path="/policy/update/:id" element={<CreatePolicy />} />
+        <Route path="/key/update/:id" element={<CreateKey />} />
         <Route path="/tenantdetail" element={<TenantDetails />} />
         {/**********************************************************/}
         <Route path="*" element={<Navigate to="/login-page" />} />
