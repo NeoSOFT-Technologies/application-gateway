@@ -26,10 +26,10 @@ export const createPolicy = createAsyncThunk(
 );
 export const getPolicybyId = createAsyncThunk(
   "Policy/GetById",
-  async (id: string) => {
+  async (id: any) => {
     try {
       const response = await getPolicyByIdService(id);
-      // console.log("response", response.data);
+      console.log("response", response.data);
       return response.data;
     } catch (err) {
       const myError = err as Error | AxiosError;
@@ -65,6 +65,7 @@ const slice = createSlice({
     },
     setFormError: (state, action) => {
       state.data.errors = action.payload;
+      console.log("ERROR", state.data.errors);
     },
   },
   extraReducers(builder): void {
@@ -73,7 +74,7 @@ const slice = createSlice({
     });
     builder.addCase(createPolicy.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      // state.data = action.payload;
     });
     builder.addCase(createPolicy.rejected, (state, action) => {
       state.loading = false;
@@ -98,9 +99,9 @@ const slice = createSlice({
     builder.addCase(updatePolicy.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(updatePolicy.fulfilled, (state, action) => {
+    builder.addCase(updatePolicy.fulfilled, (state) => {
       state.loading = false;
-      state.data = action.payload;
+      // state.data = action.payload;
     });
     builder.addCase(updatePolicy.rejected, (state, action) => {
       state.loading = false;

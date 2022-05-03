@@ -176,9 +176,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                 foreach (JToken version in inputObject["Versions"])
                 {
                     (version as JObject).Add("use_extended_paths", true);
-                    JArray removeGlobalHeaders = new JArray();
-                    removeGlobalHeaders.Add("Authorization");
-                    (version as JObject).Add("global_headers_remove", removeGlobalHeaders);
                     (transformedObject["version_data"]["versions"] as JObject).Add($"{version["Name"]}", version);
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("override_target", version["OverrideTarget"]);
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("OverrideTarget").Remove();
@@ -941,9 +938,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             }
             if (version.Value<JArray>("GlobalRequestHeadersRemove") is not null)
             {
-                (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Property("global_headers_remove").Remove();
                 (transformedObject["version_data"]["versions"][$"{version["Name"]}"] as JObject).Add("global_headers_remove", new JArray());
-                (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["global_headers_remove"] as JArray).Add("Authorization");
                 foreach (var item in version.Value<JArray>("GlobalRequestHeadersRemove"))
                 {
                     (transformedObject["version_data"]["versions"][$"{version["Name"]}"]["global_headers_remove"] as JArray).Add(item);

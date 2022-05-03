@@ -15,6 +15,7 @@ export interface IGetApiByIdData {
   ListenPath: string;
   StripListenPath: boolean;
   TargetUrl: string;
+  SelectedTabIndex: string;
   IsActive: boolean;
   IsInternal: boolean;
   Protocol: string;
@@ -47,15 +48,13 @@ export interface IGetApiByIdData {
   EnableMTLS: boolean;
   CertIds: [];
   OpenidOptions: {
-    Providers: [
-      {
-        issuer: string;
-        client_ids: {
-          clientId: string;
-          policy: string;
-        }[];
-      }
-    ];
+    Providers: {
+      Issuer: string;
+      Client_ids: {
+        ClientId: string;
+        Policy: string;
+      }[];
+    }[];
   };
   LoadBalancingTargets: [];
   IsQuotaDisabled: boolean;

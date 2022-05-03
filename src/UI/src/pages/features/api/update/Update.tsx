@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import {
   updateApi,
   getApiById,
+  setForm,
 } from "../../../../store/features/api/update/slice";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { IApiGetByIdState } from "../../../../store/features/api/update";
@@ -39,6 +40,9 @@ export default function Update() {
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {
+        // if (state.data.form.IsVersioningDisabled === false) {
+        //   <Version />;
+        // }
         ToastAlert("Api Updated Successfully!!", "success");
       } else {
         ToastAlert("Api Updated request is not fulfilled!!", "error");
@@ -53,6 +57,18 @@ export default function Update() {
     val.preventDefault();
     navigate("/api/list");
   };
+
+  async function setKey(a: any) {
+    console.log("selected tab : ", a);
+    // state.data.form.SelectedTabIndex = a;
+    dispatch(
+      setForm({
+        ...state.data.form,
+        SelectedTabIndex: a,
+      })
+    );
+  }
+  console.log("selected tab : ", state.data.form.SelectedTabIndex);
   return (
     <div>
       {state.loading ? (
@@ -89,10 +105,11 @@ export default function Update() {
                   </div>
                   <div className="card-body pt-2">
                     <Tabs
-                      defaultActiveKey="setting"
+                      defaultActiveKey={state.data.form?.SelectedTabIndex}
                       id="uncontrolled-tab"
                       // transition={false}
                       className="mb-2 small"
+                      onSelect={(k) => setKey(k)}
                     >
                       <Tab eventKey="setting" title="Setting">
                         <Setting />

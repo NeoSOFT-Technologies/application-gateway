@@ -8,6 +8,7 @@ export const initialState: IApiGetByIdState = {
       ListenPath: "",
       StripListenPath: false,
       TargetUrl: "",
+      SelectedTabIndex: "",
       IsActive: true,
       IsInternal: false,
       Protocol: "http",
@@ -40,17 +41,7 @@ export const initialState: IApiGetByIdState = {
       EnableMTLS: false,
       CertIds: [],
       OpenidOptions: {
-        Providers: [
-          {
-            issuer: "",
-            client_ids: [
-              {
-                clientId: "",
-                policy: "",
-              },
-            ],
-          },
-        ],
+        Providers: [],
       },
       LoadBalancingTargets: [],
       IsQuotaDisabled: false,

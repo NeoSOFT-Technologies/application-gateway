@@ -5,19 +5,17 @@ import AuthenticationToken from "./authentication-token/AuthenticationToken";
 import MutualTLS from "./mutual-tls/MutualTLS";
 import { setFormData } from "../../../../../../resources/api/api-constants";
 import OpenIdConnect from "./open-id-connect/OpenIdConnect";
+// import { setForm } from "../../../../../../store/features/api/update/slice";
 
 export default function Authentication() {
   const dispatch = useAppDispatch();
 
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  console.log("state: ", state);
-
   const handleFormSelectChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setFormData(event, dispatch, state);
   };
-  console.log("mutual", state.data.form.EnableMTLS);
   return (
     <div>
       <div className="card">
@@ -53,7 +51,7 @@ export default function Authentication() {
                             <Form.Select
                               aria-label="Default select example"
                               name="AuthType"
-                              // onClick={handleFormSelectChange}
+                              value={state.data.form.AuthType}
                               onChange={(e: any) => handleFormSelectChange(e)}
                             >
                               <option id="authToken" value="standard">
@@ -62,10 +60,10 @@ export default function Authentication() {
                               <option id="mutualTls" value="mutual">
                                 Mutual TLS
                               </option>
-                              <option id="oidc" value="OpenId">
+                              <option id="openid" value="openid">
                                 OpenId Connect
                               </option>
-                              <option id="keyless" value="Keyless">
+                              <option id="keyless" value="keyless">
                                 Open (KeyLess)
                               </option>
                             </Form.Select>
@@ -77,10 +75,11 @@ export default function Authentication() {
                     <div>
                       {state.data.form.AuthType === "standard" ? (
                         <AuthenticationToken />
-                      ) : state.data.form.EnableMTLS === true ? (
-                        <MutualTLS />
-                      ) : state.data.form.AuthType === "OpenId" ? (
+                      ) : state.data.form.AuthType === "openid" ? (
                         <OpenIdConnect />
+                      ) : state.data.form.EnableMTLS === true ||
+                        state.data.form.AuthType === "mutual" ? (
+                        <MutualTLS />
                       ) : (
                         <></>
                       )}

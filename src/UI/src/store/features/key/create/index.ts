@@ -27,29 +27,44 @@ export interface IGetKeyByIdData {
           ApiId: string | null;
           ApiName: string | null;
           Versions: string[];
+          MasterVersions: string[];
           AllowedUrls:
-            | [
-                {
-                  url: string;
-                  methods: string[];
-                }
-              ]
-            | [];
+            | {
+                url: string;
+                methods: string[];
+              }[];
           Limit: {
             Rate?: number;
-            Rhrottle_interval?: number;
+            Per?: number;
+            Throttle_interval?: number;
             Throttle_retry_limit?: number;
             Max_query_depth?: number;
             Quota_max?: number;
             Quota_renews?: number;
             Quota_remaining?: number;
             Quota_renewal_rate?: number;
-          } | null;
-        } | null
+          };
+        }
       ]
     | [];
   Policies: [];
-  PolicyByIds: IGetPolicyByIdData[];
+  PolicyByIds?: [
+    {
+      global?: {
+        Name: string;
+        MaxQuota: number;
+        QuotaRate: number;
+        Rate: number;
+        Per: number;
+        ThrottleInterval: number;
+        ThrottleRetries: number;
+      } | null;
+      perApi?: any[] | null;
+      policyName: string;
+    }
+  ];
+
+
   Tags?: string[];
 }
 

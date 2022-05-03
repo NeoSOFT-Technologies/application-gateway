@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import "gridjs/dist/theme/mermaid.css";
 
 ReactDOM.render(
   <BrowserRouter>

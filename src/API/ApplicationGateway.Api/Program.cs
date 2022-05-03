@@ -61,13 +61,13 @@ services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         builder =>
         {
-            builder.WithOrigins(Urls).AllowAnyHeader().AllowAnyMethod();
+            builder.WithOrigins(Urls.Split(',')).AllowAnyHeader().AllowAnyMethod();
         });
 });
-services.AddCors(c =>
-{
-    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-});
+//services.AddCors(c =>
+//{
+//    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+//});
 //Json Serialization
 services.AddControllersWithViews().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
@@ -127,7 +127,7 @@ app.UseHttpsRedirection();
 
 app.UseSerilogRequestLogging();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
 app.UseSwagger();
 
@@ -147,16 +147,16 @@ options =>
 
 app.UseCustomExceptionHandler();
 
-app.UseCors("Open");
+app.UseCors(MyAllowSpecificOrigins);
 
 //Enable CORS
-app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-app.UseAuthorization();
+//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+//app.UseAuthorization();
 
-app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
-{
-    appBuilder.UsePermissionMiddleware();
-});
+//app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+//{
+//    appBuilder.UsePermissionMiddleware();
+//});
 
 app.MapControllers();
 

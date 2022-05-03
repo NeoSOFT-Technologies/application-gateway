@@ -1,9 +1,13 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { Form, Tab, Tabs } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { IPolicyCreateState } from "../../../../store/features/policy/create";
-import { createPolicy } from "../../../../store/features/policy/create/slice";
+import {
+  createPolicy,
+  getPolicybyId,
+  updatePolicy,
+} from "../../../../store/features/policy/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import AccessRights from "./access-rights/AccessRights";
 import Configurations from "./configurations/Configurations";
@@ -14,6 +18,15 @@ export default function CreatePolicy() {
   const state: IPolicyCreateState = useAppSelector(
     (RootState) => RootState.createPolicyState
   );
+
+  const { id } = useParams();
+  console.log("checkid", id);
+  useEffect(() => {
+    if (id !== undefined) {
+      dispatch(getPolicybyId(id));
+    }
+  }, []);
+
   async function handleSubmitPolicy(event: FormEvent) {
     event.preventDefault();
     let validate: any;
@@ -24,11 +37,16 @@ export default function CreatePolicy() {
       // console.log("error", state.data);
     }
     if (validate) {
-      const result = await dispatch(createPolicy(state.data.form));
+      const result =
+        id === undefined
+          ? await dispatch(createPolicy(state.data.form))
+          : await dispatch(updatePolicy(state.data.form));
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {
-        ToastAlert("Policy Created Successfully!!", "success");
+        id === undefined
+          ? ToastAlert("Policy Created Successfully!!", "success")
+          : ToastAlert("Policy Updated Successfully!!", "success");
         navigate("/policy/list");
       } else {
         ToastAlert("policy Created request is not fulfilled!!", "error");
@@ -60,7 +78,7 @@ export default function CreatePolicy() {
                 >
                   <button className=" btn btn-sm btn-success btn-md d-flex float-right mb-3">
                     {" "}
-                    Create
+                    {id === undefined ? "CREATE" : "UPDTAE"}
                   </button>
                   <button
                     className=" btn btn-sm btn-light btn-md d-flex float-right mb-3"
@@ -72,7 +90,7 @@ export default function CreatePolicy() {
                     Cancel
                   </button>
                   <span>
-                    <b>CREATE POLICY</b>
+                    <b>{id === undefined ? "CREATEPOLICY" : "UPDTAE POLICY"}</b>
                   </span>
                 </div>
                 <div className="card-body pt-2">
