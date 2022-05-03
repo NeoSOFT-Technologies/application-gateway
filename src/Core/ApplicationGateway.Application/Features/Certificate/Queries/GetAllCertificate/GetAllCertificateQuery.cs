@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Certificate.Queries.GetAllCertificate
 {
-    public class GetAllCertificateQuery:IRequest<X509Certificate2Collection>
+    public class GetAllCertificateQuery:IRequest<GetAllCertificateDto>
     {
     }
 }

@@ -28,17 +28,9 @@ namespace ApplicationGateway.Application.Features.Certificate.Queries.GetCertifi
         {
             _logger.LogInformation("GetCertificateByIdQueryHandler initiated");
             var cert = _certificateService.GetCertificateById(request.CertId);
-            GetCertificateByIdDto dto = new();
-            dto.CertId = request.CertId;
-            dto.Issuer= cert.IssuerName.Name;
-            dto.Subject = cert.SubjectName.Name;
-            //dto.Email = cert.SubjectName.Name;
-            dto.ValidNotBefore = cert.NotBefore;
-            dto.ValidNotAfter = cert.NotAfter;
-            dto.SignatureAlgorithm = cert.SignatureAlgorithm.FriendlyName;
-            dto.Thumbprint = cert.Thumbprint;
+            GetCertificateByIdDto getCertificateByIdDto = _mapper.Map<GetCertificateByIdDto>(cert);
             _logger.LogInformation("GetCertificateByIdQueryHandler completed");
-            return dto;
+            return getCertificateByIdDto;
         }
     }
 }
