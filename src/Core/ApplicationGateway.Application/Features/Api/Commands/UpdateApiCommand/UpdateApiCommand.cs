@@ -31,7 +31,9 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public List<string>? LoadBalancingTargets { get; set; }
 #nullable disable
         public bool IsQuotaDisabled { get; set; }
-        public UpdateCORS? CORS { get; set; }
+#nullable enable
+        public UpdateCors? CORS { get; set; }
+#nullable disable
     }
 
     public class UpdateRateLimit
@@ -210,7 +212,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
         public string TemplateSource { get; set; }
 
     }
-    public class UpdateCORS
+    public class UpdateCors
     {
         public bool IsEnabled { get; set; }
         public List<string> AllowedOrigins { get; set; }

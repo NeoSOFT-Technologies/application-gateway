@@ -27,7 +27,9 @@
         public List<string>? LoadBalancingTargets { get; set; }
 #nullable disable
         public bool IsQuotaDisabled { get; set; }
-        public CORS? CORS { get; set; }
+#nullable enable
+        public Cors? CORS { get; set; }
+#nullable disable
     }
     public class RateLimit
     {
@@ -213,7 +215,7 @@
         public bool Reverse { get; set; }
     }
 
-    public class CORS
+    public class Cors
     {
         public bool IsEnabled { get; set; }
         public List<string> AllowedOrigins { get; set; }
