@@ -14,22 +14,28 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
     {
         readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
+        readonly IPolicyService _policyService;
         readonly IMapper _mapper;
         readonly ILogger<CreateKeyCommandHandler> _logger;
         readonly IKeyRepository _keyRepository;
 
-        public CreateKeyCommandHandler(IKeyRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, ISnapshotService snapshotService)
+        public CreateKeyCommandHandler(IKeyRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<CreateKeyCommandHandler> logger, ISnapshotService snapshotService, IPolicyService policyService)
         {
             _keyRepository = keyDtoRepository;
             _keyService = keyService;
             _mapper = mapper;
             _logger = logger;
             _snapshotService = snapshotService;
+            _policyService = policyService;
         }
 
         public async Task<Response<Domain.GatewayCommon.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateKeyCommandHandler initiated with {request}",request);
+            if (request.Policies.Any())
+                foreach(var policy in request.Policies)
+                    await _policyService.GetPolicyByIdAsync(Guid.Parse(policy));
+                            
             var keyObj = _mapper.Map<Domain.GatewayCommon.Key>(request);
             var key = await _keyService.CreateKeyAsync(keyObj);
 

@@ -124,7 +124,8 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Domain.GatewayCommon.ApiLimit, GetKeyDto.ApiLimit>().ReverseMap();
             CreateMap<Domain.GatewayCommon.AllowedUrl, GetKeyDto.AllowedUrl>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Key, GetKeyDto>().ReverseMap();
-
+            CreateMap<Domain.GatewayCommon.Policy, GetKeyDto.GlobalPolicy>().ReverseMap();
+            CreateMap<Domain.GatewayCommon.Policy, GetKeyDto.PolicyById>().ReverseMap();
 
             CreateMap<Certificate, GetCertificateByIdDto>().ReverseMap();
             CreateMap<Certificate, CertificateDto>().ReverseMap();

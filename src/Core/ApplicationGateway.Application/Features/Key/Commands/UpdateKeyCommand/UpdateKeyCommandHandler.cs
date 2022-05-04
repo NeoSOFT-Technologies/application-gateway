@@ -14,22 +14,28 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
     {
         readonly ISnapshotService _snapshotService;
         readonly IKeyService _keyService;
+        readonly IPolicyService _policyService;
         readonly IMapper _mapper;
         readonly ILogger<UpdateKeyCommandHandler> _logger;
         readonly IKeyRepository _keyRepository;
 
-        public UpdateKeyCommandHandler(IKeyRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<UpdateKeyCommandHandler> logger, ISnapshotService snapshotService)
+        public UpdateKeyCommandHandler(IKeyRepository keyDtoRepository, IKeyService keyService, IMapper mapper, ILogger<UpdateKeyCommandHandler> logger, ISnapshotService snapshotService, IPolicyService policyService)
         {
             _keyRepository = keyDtoRepository;
             _keyService = keyService;
             _mapper = mapper;
             _logger = logger;
             _snapshotService = snapshotService;
+            _policyService = policyService;
         }
 
         public async Task<Response<UpdateKeyCommandDto>> Handle(UpdateKeyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("UpdateKeyHandler initiated for {request}", request);
+
+            if (request.Policies.Any())
+                foreach (var policy in request.Policies)
+                    await _policyService.GetPolicyByIdAsync(Guid.Parse(policy));
 
             #region Check if Key exists
             await _keyService.GetKeyAsync(request.KeyId);

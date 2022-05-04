@@ -5,6 +5,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using static ApplicationGateway.Application.Features.Key.Queries.GetKey.GetKeyDto;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
 {
@@ -36,15 +37,20 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
                 List<string> allApiVersions = new();
                 Domain.GatewayCommon.Api apiObj = await _apiService.GetApiByIdAsync(api.ApiId);
                 apiObj.Versions.ForEach(v => allApiVersions.Add(v.Name)); 
-                api.AllApiVersions = allApiVersions;
+                api.MasterVersions = allApiVersions;
                 api.AuthType = apiObj.AuthType;
             }
             if (getKeyDto.Policies.Any())
             {
-                List<GetPolicyByIdDto> getPolicyByIdDto = new();
-                foreach(var policy in getKeyDto.Policies)
-                    getPolicyByIdDto.Add(_mapper.Map<GetPolicyByIdDto>(await _policyService.GetPolicyByIdAsync(Guid.Parse(policy))));
-                getKeyDto.PoliciesDto = getPolicyByIdDto;
+                List<PolicyById> policyByIdsList = new();
+                foreach (var policy in getKeyDto.Policies)
+                {
+                    Domain.GatewayCommon.Policy policyObj = await _policyService.GetPolicyByIdAsync(Guid.Parse(policy));
+                    PolicyById policyById = _mapper.Map<PolicyById>(policyObj);
+                    policyById.Global = _mapper.Map<GlobalPolicy>(policyObj);
+                    policyByIdsList.Add(policyById);
+                }
+                getKeyDto.PolicyByIds = policyByIdsList;
             }
             Response<GetKeyDto> response = new Response<GetKeyDto> {Succeeded=true, Data = getKeyDto, Message = "Success" };
             _logger.LogInformation("GetKeyQueryHandler completed for {request}", request);
