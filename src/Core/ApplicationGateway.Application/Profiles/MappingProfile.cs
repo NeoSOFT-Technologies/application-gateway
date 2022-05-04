@@ -55,7 +55,7 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<OpenIdOptions, UpdateOpenIdOptions>().ReverseMap();
             CreateMap<Provider, UpdateProvider>().ReverseMap();
             CreateMap<ClientPolicy, UpdateClientPolicy>().ReverseMap();
-            CreateMap<CORS, UpdateCORS>().ReverseMap();
+            CreateMap<Cors, UpdateCors>().ReverseMap();
 
             CreateMap<Domain.GatewayCommon.Api, GetAllApiModel>().ReverseMap();
           
@@ -79,7 +79,7 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<SessionMetaMatch, GetSessionMetaMatch>().ReverseMap();
             CreateMap<PayloadMatch, GetPayloadMatch>().ReverseMap();
             CreateMap<Culprits, GetCulprits>().ReverseMap();
-            CreateMap<CORS, GetCORS>().ReverseMap();
+            CreateMap<Cors, GetCors>().ReverseMap();
 
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyDto>().ReverseMap();
@@ -153,6 +153,5 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<TemplateData,UpdateTemplateData>().ReverseMap();
             CreateMap<TemplateData, GetTemplateData>().ReverseMap();
         }
-
     }
 }
