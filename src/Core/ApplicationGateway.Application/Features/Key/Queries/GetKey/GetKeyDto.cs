@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQuery;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -21,7 +22,9 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
         public bool IsInActive { get; set; }
         public List<AccessRightsModel> AccessRights { get; set; }
         public List<string> Policies { get; set; }
-       
+#nullable enable
+        public IEnumerable<GetPolicyByIdDto>? PoliciesDto { get; set; }
+#nullable disable
 
         public class AccessRightsModel
         {
