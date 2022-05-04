@@ -32,10 +32,11 @@ namespace ApplicationGateway.Application.Features.Key.Commands.CreateKeyCommand
         public async Task<Response<Domain.GatewayCommon.Key>> Handle(CreateKeyCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateKeyCommandHandler initiated with {request}",request);
+            #region Validate if policies exists, if entered
             if (request.Policies.Any())
                 foreach(var policy in request.Policies)
                     await _policyService.GetPolicyByIdAsync(Guid.Parse(policy));
-                            
+            #endregion
             var keyObj = _mapper.Map<Domain.GatewayCommon.Key>(request);
             var key = await _keyService.CreateKeyAsync(keyObj);
 

@@ -32,7 +32,8 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
             _logger.LogInformation("GetKeyQueryHandler initiated for {request}", request);
             Domain.GatewayCommon.Key key = await _keyService.GetKeyAsync(request.keyId);
             GetKeyDto getKeyDto = _mapper.Map<GetKeyDto>(key);
-            foreach(var api in getKeyDto.AccessRights)
+            #region Add MasterVersions in AccessRights for Dto
+            foreach (var api in getKeyDto.AccessRights)
             {
                 List<string> allApiVersions = new();
                 Domain.GatewayCommon.Api apiObj = await _apiService.GetApiByIdAsync(api.ApiId);
@@ -40,6 +41,9 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
                 api.MasterVersions = allApiVersions;
                 api.AuthType = apiObj.AuthType;
             }
+            #endregion
+
+            #region Add Policy Data in PolicyById, for key for policies
             if (getKeyDto.Policies.Any())
             {
                 List<PolicyById> policyByIdsList = new();
@@ -52,6 +56,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
                 }
                 getKeyDto.PolicyByIds = policyByIdsList;
             }
+            #endregion
             Response<GetKeyDto> response = new Response<GetKeyDto> {Succeeded=true, Data = getKeyDto, Message = "Success" };
             _logger.LogInformation("GetKeyQueryHandler completed for {request}", request);
             return response;

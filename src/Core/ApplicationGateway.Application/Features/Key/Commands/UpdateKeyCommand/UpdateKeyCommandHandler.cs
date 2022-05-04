@@ -33,9 +33,11 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
         {
             _logger.LogInformation("UpdateKeyHandler initiated for {request}", request);
 
+            #region Validate if policies exists, if entered
             if (request.Policies.Any())
                 foreach (var policy in request.Policies)
                     await _policyService.GetPolicyByIdAsync(Guid.Parse(policy));
+            #endregion
 
             #region Check if Key exists
             await _keyService.GetKeyAsync(request.KeyId);
