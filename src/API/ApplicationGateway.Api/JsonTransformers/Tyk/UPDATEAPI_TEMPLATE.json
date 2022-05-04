@@ -65,14 +65,14 @@
     }
   },
   "CORS": {
-    "enable": "#valueof(Enable)",
-    "allowed_origins": "#valueof(Allowed_origins)",
-    "allowed_methods": "#valueof(Allowed_methods)",
-    "allowed_headers": "#valueof(Allowed_headers)",
-    "exposed_headers": "#valueof(Exposed_headers)",
-    "allow_credentials": "#valueof(Allow_credentials)",
-    "max_age": "#valueof(Max_age)",
-    "options_passthrough": "#valueof(Options_passthrough)",
-    "debug": "#valueof(Debug)"
+    "enable": "#valueof(CORS.IsEnabled)",
+    "allowed_origins": "#valueof(CORS.AllowedOrigins)",
+    "allowed_methods": "#valueof(CORS.AllowedMethods)",
+    "allowed_headers": "#valueof(CORS.AllowedHeaders)",
+    "exposed_headers": "#valueof(CORS.ExposedHeaders)",
+    "allow_credentials": "#valueof(CORS.AllowCredentials)",
+    "max_age": "#valueof(CORS.MaxAge)",
+    "options_passthrough": "#valueof(CORS.OptionsPassthrough)",
+    "debug": "#valueof(CORS.Debug)"
   }
 }

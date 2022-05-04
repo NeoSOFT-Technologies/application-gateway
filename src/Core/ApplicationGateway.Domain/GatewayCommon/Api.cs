@@ -27,6 +27,9 @@
         public List<string>? LoadBalancingTargets { get; set; }
 #nullable disable
         public bool IsQuotaDisabled { get; set; }
+#nullable enable
+        public Cors? CORS { get; set; }
+#nullable disable
     }
     public class RateLimit
     {
@@ -212,5 +215,16 @@
         public bool Reverse { get; set; }
     }
 
-    
+    public class Cors
+    {
+        public bool IsEnabled { get; set; }
+        public List<string> AllowedOrigins { get; set; }
+        public List<string> AllowedMethods { get; set; }
+        public List<string> AllowedHeaders { get; set; }
+        public List<string> ExposedHeaders { get; set; }
+        public bool AllowCredentials { get; set; }
+        public int MaxAge { get; set; }
+        public bool OptionsPassthrough { get; set; }
+        public bool Debug { get; set; }
+    } 
 }

@@ -7,6 +7,7 @@
         public string ListenPath { get; set; }
         public bool StripListenPath { get; set; }
         public string TargetUrl { get; set; }
+        public string AuthType { get; set; }
         public bool IsActive { get; set; }
     }
 }

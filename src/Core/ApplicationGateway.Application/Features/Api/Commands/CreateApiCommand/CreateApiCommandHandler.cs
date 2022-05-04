@@ -4,7 +4,6 @@ using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Helper;
 using ApplicationGateway.Application.Responses;
-using ApplicationGateway.Domain.Entities;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -57,6 +56,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand
                 Id = createdApi.ApiId,
                 Name = createdApi.Name,
                 TargetUrl = createdApi.TargetUrl,
+                AuthType = "keyless",
                 Version="",
                 IsActive = createdApi.IsActive
             };

@@ -33,6 +33,7 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<Domain.GatewayCommon.Api, CreateApiDto>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Api, MultipleApiModel>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Api, MultipleApiModelDto>().ReverseMap();
+
             CreateMap<Domain.GatewayCommon.Api, UpdateApiCommand>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Api, UpdateApiDto>().ReverseMap();
             CreateMap<RateLimit, UpdateRateLimit>().ReverseMap();
@@ -54,6 +55,8 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<OpenIdOptions, UpdateOpenIdOptions>().ReverseMap();
             CreateMap<Provider, UpdateProvider>().ReverseMap();
             CreateMap<ClientPolicy, UpdateClientPolicy>().ReverseMap();
+            CreateMap<Cors, UpdateCors>().ReverseMap();
+
             CreateMap<Domain.GatewayCommon.Api, GetAllApiModel>().ReverseMap();
           
             CreateMap<Domain.GatewayCommon.Api, GetApiByIdDto>().ReverseMap();
@@ -76,18 +79,22 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<SessionMetaMatch, GetSessionMetaMatch>().ReverseMap();
             CreateMap<PayloadMatch, GetPayloadMatch>().ReverseMap();
             CreateMap<Culprits, GetCulprits>().ReverseMap();
+            CreateMap<Cors, GetCors>().ReverseMap();
+
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyCommand>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, CreatePolicyDto>().ReverseMap();
             CreateMap<PolicyApi, CreatePolicyApi>().ReverseMap();
             CreateMap<Partition, CreatePartition>().ReverseMap();
             CreateMap<AllowedUrl, CreateAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, CreatePerApiLimit>().ReverseMap();
+
             CreateMap<Domain.GatewayCommon.Policy, UpdatePolicyCommand>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, UpdatePolicyDto>().ReverseMap();
             CreateMap<PolicyApi, UpdatePolicyApi>().ReverseMap();
             CreateMap<Partition, UpdatePartition>().ReverseMap();
             CreateMap<AllowedUrl, UpdateAllowedUrl>().ReverseMap();
             CreateMap<PerApiLimit, UpdatePerApiLimit>().ReverseMap();
+
             CreateMap<Domain.GatewayCommon.Policy, GetAllPoliciesDto>().ReverseMap();
           
             CreateMap<Domain.GatewayCommon.Policy, GetPolicyByIdDto>().ReverseMap();
@@ -120,9 +127,9 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<AccessRightsModel, UpdateAccessRightsModelDto>().ReverseMap();
             CreateMap<ApiLimit, UpdateKeyLimit>().ReverseMap();
             CreateMap<ApiLimit, UpdateKeyLimitDto>().ReverseMap();
-            CreateMap<Domain.GatewayCommon.AccessRightsModel, GetKeyDto.AccessRightsModel>().ReverseMap();
-            CreateMap<Domain.GatewayCommon.ApiLimit, GetKeyDto.ApiLimit>().ReverseMap();
-            CreateMap<Domain.GatewayCommon.AllowedUrl, GetKeyDto.AllowedUrl>().ReverseMap();
+            CreateMap<AccessRightsModel, GetKeyDto.AccessRightsModel>().ReverseMap();
+            CreateMap<ApiLimit, GetKeyDto.ApiLimit>().ReverseMap();
+            CreateMap<AllowedUrl, GetKeyDto.AllowedUrl>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Key, GetKeyDto>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, GetKeyDto.GlobalPolicy>().ReverseMap();
             CreateMap<Domain.GatewayCommon.Policy, GetKeyDto.PolicyById>().ReverseMap();
@@ -146,10 +153,6 @@ namespace ApplicationGateway.Application.Profiles
             CreateMap<TransformResponse, GetTransformResponse>().ReverseMap();
             CreateMap<TemplateData,UpdateTemplateData>().ReverseMap();
             CreateMap<TemplateData, GetTemplateData>().ReverseMap();
-
-
-
         }
-
     }
 }

@@ -12,6 +12,7 @@ namespace ApplicationGateway.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string TargetUrl { get; set; }
+        public string AuthType { get; set; }
         public string Version { get; set; }
         public bool IsActive { get; set; }
     }
