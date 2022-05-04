@@ -33,6 +33,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
                 Domain.GatewayCommon.Api apiObj = await _apiService.GetApiByIdAsync(api.ApiId);
                 apiObj.Versions.ForEach(v => allApiVersions.Add(v.Name)); 
                 api.AllApiVersions = allApiVersions;
+                api.AuthType = apiObj.AuthType;
             }
             Response<GetKeyDto> response = new Response<GetKeyDto> {Succeeded=true, Data = getKeyDto, Message = "Success" };
             _logger.LogInformation("GetKeyQueryHandler completed for {request}", request);

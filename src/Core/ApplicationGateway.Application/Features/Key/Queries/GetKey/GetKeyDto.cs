@@ -21,7 +21,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
         public bool IsInActive { get; set; }
         public List<AccessRightsModel> AccessRights { get; set; }
         public List<string> Policies { get; set; }
-
+       
 
         public class AccessRightsModel
         {
@@ -29,6 +29,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
             public string ApiName { get; set; }
             public List<string> Versions { get; set; }
             public List<string> AllApiVersions { get; set; }
+            public string AuthType { get; set; }
             public List<AllowedUrl> AllowedUrls { get; set; }
             public ApiLimit Limit { get; set; }
         }
