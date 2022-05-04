@@ -29,6 +29,7 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public List<string>? LoadBalancingTargets { get; set; }
 #nullable disable
         public bool IsQuotaDisabled { get; set; }
+        public GetCORS? CORS { get; set; }
     }
 
     public class GetRateLimit
@@ -205,6 +206,17 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetApiByIdQuery
         public string InputType { get; set; }
         public string TemplateMode { get; set; }
         public string TemplateSource { get; set; }
-
+    }
+    public class GetCORS
+    {
+        public bool IsEnabled { get; set; }
+        public List<string> AllowedOrigins { get; set; }
+        public List<string> AllowedMethods { get; set; }
+        public List<string> AllowedHeaders { get; set; }
+        public List<string> ExposedHeaders { get; set; }
+        public bool AllowCredentials { get; set; }
+        public int MaxAge { get; set; }
+        public bool OptionsPassthrough { get; set; }
+        public bool Debug { get; set; }
     }
 }

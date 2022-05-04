@@ -64,10 +64,7 @@ services.AddCors(options =>
             builder.WithOrigins(Urls.Split(',')).AllowAnyHeader().AllowAnyMethod();
         });
 });
-//services.AddCors(c =>
-//{
-//    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-//});
+
 //Json Serialization
 services.AddControllersWithViews().AddNewtonsoftJson(options =>
 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
@@ -149,8 +146,6 @@ app.UseCustomExceptionHandler();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-//Enable CORS
-//app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 //app.UseAuthorization();
 
 //app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>

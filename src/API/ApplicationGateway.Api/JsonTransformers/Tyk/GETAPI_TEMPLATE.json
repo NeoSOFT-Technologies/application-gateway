@@ -34,5 +34,16 @@
   "openidOptions": {
     "providers": null
   },
-  "loadBalancingTargets": "#valueof(proxy.target_list)"
+  "loadBalancingTargets": "#valueof(proxy.target_list)",
+  "CORS": {
+    "IsEnabled": "#valueof(CORS.enable)",
+    "AllowedOrigins": "#valueof(CORS.allowed_origins)",
+    "AllowedMethods": "#valueof(CORS.allowed_methods)",
+    "AllowedHeaders": "#valueof(CORS.allowed_headers)",
+    "ExposedHeaders": "#valueof(CORS.exposed_headers)",
+    "AllowCredentials": "#valueof(CORS.allow_credentials)",
+    "MaxAge": "#valueof(CORS.max_age)",
+    "OptionsPassthrough": "#valueof(CORS.options_passthrough)",
+    "Debug": "#valueof(CORS.debug)"
+  }
 }
