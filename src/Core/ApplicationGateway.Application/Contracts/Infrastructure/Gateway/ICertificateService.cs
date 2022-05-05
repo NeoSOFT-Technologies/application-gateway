@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ApplicationGateway.Domain.GatewayCommon;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace ApplicationGateway.Application.Contracts.Infrastructure.Gateway
     {
         Task<Guid> AddCertificate(IFormFile file);
         void DeleteCertificate(Guid certId);
-        X509Certificate2 GetCertificateById(Guid certId);
-        X509Certificate2Collection GetAllCertificates();
+        Certificate GetCertificateById(Guid certId);
+        List<Certificate> GetAllCertificates();
 
     }
 }

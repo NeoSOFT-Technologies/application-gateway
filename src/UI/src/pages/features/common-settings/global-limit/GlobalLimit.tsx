@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Col, Form, Row } from "react-bootstrap";
+import { Accordion, AccordionButton, Col, Form, Row } from "react-bootstrap";
 import { getPolicybyId } from "../../../../store/features/policy/create/slice";
 import { setForms } from "../../../../store/features/key/create/slice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
@@ -20,7 +20,6 @@ export default function GlobalLimit(props: IProps) {
   const states = useAppSelector((RootState) => RootState.createKeyState);
   const [loader, setLoader] = useState(true);
   // const [localState, setLocalState] = useState({} as IPolicyCreateState);
-  // const globalNames: any[] = [];
   const state: IPolicyCreateState = useAppSelector(
     (RootStates) => RootStates.createPolicyState
   );
@@ -112,6 +111,22 @@ export default function GlobalLimit(props: IProps) {
     }
   }, [loader]);
 
+  const removeAccess = (event: any, index: any) => {
+    event.preventDefault();
+    const removePolicyByIds = [...states.data.form.PolicyByIds!];
+    const removePolicies = [...states.data.form.Policies];
+    removePolicyByIds.splice(index, 1);
+    removePolicies.splice(index, 1);
+    dispatch(
+      setForms({
+        ...states.data.form,
+        PolicyByIds: removePolicyByIds,
+        Policies: removePolicies,
+      })
+    );
+  };
+
+  console.log("mainState", states);
   return (
     <>
       {loader === false &&
@@ -123,11 +138,20 @@ export default function GlobalLimit(props: IProps) {
         <>
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
-              <Accordion.Header>
-                {states.data.form.PolicyByIds![props.index!].policyName}
-              </Accordion.Header>
+              <div style={{ display: "inline-flex", width: "100%" }}>
+                <AccordionButton>
+                  {states.data.form.PolicyByIds![props.index!].policyName}
+                </AccordionButton>
+                <button
+                  type="button"
+                  style={{ width: "5%" }}
+                  onClick={(e: any) => removeAccess(e, props.index)}
+                >
+                  <i className="bi bi-trash-fill menu-icon"></i>
+                </button>
+              </div>
               <Accordion.Body>
-                <Row>
+                {/* <Row>
                   <Col md="12">
                     <button
                       className="btn btn-danger"
@@ -138,7 +162,7 @@ export default function GlobalLimit(props: IProps) {
                     </button>
                   </Col>
                 </Row>
-                <br />
+                <br /> */}
                 {(
                   states.data.form.PolicyByIds![props.index!].perApi as any[]
                 ).map((data: any, index: number) => {
@@ -360,19 +384,10 @@ export default function GlobalLimit(props: IProps) {
                                               ? states.data.form.PolicyByIds![
                                                   props.index!
                                                 ].global!.QuotaRate
-                                              : data.Limit.quota_renews
+                                              : data.Limit.quota_renewal_rate
                                           }
                                           disabled={true}
-                                        >
-                                          <option>never</option>
-                                          <option>1 hour</option>
-                                          <option>6 hour</option>
-                                          <option>12 hour</option>
-                                          <option>1 week</option>
-                                          <option>1 month</option>
-                                          <option>6 months</option>
-                                          <option>12 months</option>
-                                        </Form.Select>
+                                        ></Form.Select>
                                       </Form.Group>
                                     )}
                                   </Col>
