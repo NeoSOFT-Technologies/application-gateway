@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Models.Tyk;
 using ApplicationGateway.Domain.GatewayCommon;
 using Microsoft.AspNetCore.Http;
@@ -61,7 +62,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation("GetCertificateById service initiated");
             string certPath = $@"{_tykConfiguration.CertsPath}\{certId}.pem";
             if (!File.Exists(certPath))
-                throw new FileNotFoundException();
+                throw new NotFoundException("Certificate", certId);
             var cert = new X509Certificate2(File.ReadAllBytes(certPath));
             var certificate = mapCert(cert,certId);
             _logger.LogInformation("GetCertificateById service commpleted");
@@ -82,6 +83,23 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             }
             _logger.LogInformation("GetAllCertificates service completed");
             return certificateCollection;
+        }
+
+        public bool CheckIfCertificateExists(IFormFile file)
+        {
+            X509Certificate2 certificate;
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                certificate = new X509Certificate2(ms.ToArray());
+            }
+            List<Domain.GatewayCommon.Certificate> allCert = GetAllCertificates();
+
+            foreach(var cert in allCert)
+            
+                if (certificate.Thumbprint == cert.Thumbprint)
+                    return true;
+            return false;
         }
 
         Certificate mapCert(X509Certificate2 cert,Guid certId) 
