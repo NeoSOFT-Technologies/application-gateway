@@ -21,11 +21,13 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
     {
         private readonly IMapper _mapper;
         private readonly Mock<IPolicyService> _mockPolicyService;
+        private readonly Mock<IApiService> _mockApiService;
         private readonly Mock<ILogger<GetPolicyByIdQueryHandler>> _mockLogger;
 
         public GetPolicyByIdQueryHandlerTests()
         {
             _mockPolicyService = PolicyServiceMocks.GetPolicyService();
+            _mockApiService = ApiServiceMocks.GetApiService();
             _mockLogger = new Mock<ILogger<GetPolicyByIdQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
@@ -39,13 +41,11 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
         public async Task Handle_GetPolicyById()
         {
             var PolicyId = _mockPolicyService.Object.GetAllPoliciesAsync().Result.FirstOrDefault().PolicyId;
-            var handler = new GetPolicyByIdQueryHandler(_mockPolicyService.Object, _mapper, _mockLogger.Object);
+            var handler = new GetPolicyByIdQueryHandler(_mockPolicyService.Object, _mockApiService.Object, _mapper, _mockLogger.Object);
 
             var result = await handler.Handle(new GetPolicyByIdQuery() { PolicyId= PolicyId }, CancellationToken.None);
 
             result.ShouldBeOfType<Response<GetPolicyByIdDto>>();
-
-
         }
     }
 }
