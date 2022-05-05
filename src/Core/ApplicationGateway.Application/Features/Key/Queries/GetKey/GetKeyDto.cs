@@ -28,6 +28,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
         {
             public Guid PolicyId { get; set; }
             public string Name { get; set; }
+            public string AuthType { get; set; }
             public GlobalPolicy Global { get; set; }
             public List<PolicyApi> APIs{get;set;}
         }
