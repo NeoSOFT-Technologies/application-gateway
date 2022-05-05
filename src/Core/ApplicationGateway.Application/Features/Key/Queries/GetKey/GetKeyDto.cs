@@ -13,6 +13,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
     public class GetKeyDto
     {
         public string KeyId { get; set; }
+        public string KeyName { get; set; }
         public int Rate { get; set; }
         public int Per { get; set; }
         public int Quota { get; set; }
