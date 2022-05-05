@@ -8,19 +8,13 @@ import { setForm } from "../../../../../../../store/features/api/update/slice";
 import { IPolicyListState } from "../../../../../../../store/features/policy/list";
 import { getPolicyList } from "../../../../../../../store/features/policy/list/slice";
 import Spinner from "../../../../../../../components/loader/Loader";
-// import {
-//   regexForName,
-//   setFormErrors,
-// } from "../../../../../../../resources/api/api-constants";
 
 export default function OpenIdConnectAuthentication() {
   const state = useAppSelector((RootState) => RootState.updateApiState);
-  console.log("state", state);
 
   const policyList: IPolicyListState = useAppSelector(
     (RootState) => RootState.policyListState
   );
-  console.log("policyList", policyList);
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -38,27 +32,11 @@ export default function OpenIdConnectAuthentication() {
   });
 
   const [addClientFormData, setClientAddFormData] = useState<any>([]);
-  // console.log("addClientFormData", addClientFormData);
 
   const handleIssuerInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = event.target;
-    // switch (name) {
-    //   case "issuer":
-    //     setFormErrors(
-    //       {
-    //         ...state.data.errors,
-    //         [name]: regexForName.test(value)
-    //           ? ""
-    //           : "Enter a valid issuer Name ",
-    //       },
-    //       dispatch
-    //     );
-    //     break;
-    //   default:
-    //     break;
-    // }
     const newFormData: any = { ...addFormData };
     newFormData[name] = value;
 
@@ -162,8 +140,6 @@ export default function OpenIdConnectAuthentication() {
     );
   };
 
-  // console.log("form", state.data.form);
-
   return (
     <div>
       {policyList.loading ? (
@@ -183,19 +159,7 @@ export default function OpenIdConnectAuthentication() {
             <Col md={8} className="border rounded">
               <div>
                 <h5 className="mt-2">OpenID Connect</h5>
-                {/* <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                name="stripAuthenticationData"
-                label="Enable rate limiting on a per-user / per-client basis"
-              />
-            </Form.Group> */}
               </div>
-
-              {/* <div>
-            Enabling this option will cause a user to be rate limited
-            differently depending on which client they are using.{" "}
-          </div> */}
               <br />
               <b>Add Issuers, clients and policies</b>
               <br />
@@ -246,37 +210,19 @@ export default function OpenIdConnectAuthentication() {
                       ) : (
                         (state.data.form.OpenidOptions.Providers as any[]).map(
                           (data: any, index) => {
-                            // console.log("data", data);
                             const { Issuer, Client_ids } = data;
-                            // console.log(
-                            //   "Issuer: ",
-                            //   Issuer + " ClientIds: ",
-                            //   Client_ids
-                            // );
                             if (Client_ids?.length > 0) {
                               return state.data.form.OpenidOptions.Providers[
                                 index
                               ].Client_ids.map(
                                 (clientData: any, clientIndex: any) => {
-                                  // console.log(clientData, clientIndex);
                                   const { ClientId, Policy } = clientData;
-                                  // console.log("Policy from client : ", Policy);
-                                  // const policyObj =
-                                  //   policyList?.data?.Policies.filter(
-                                  //     (p: any) => p.Id === Policy
-                                  //   );
-                                  // console.log("policyObj", policyObj);
 
                                   if (Policy !== "") {
                                     return policyList?.data?.Policies.filter(
                                       (p: any) => p.Id === Policy
                                     ).map((filteredPolicy) => {
                                       const { Name, Id } = filteredPolicy;
-                                      console.log(
-                                        "policy name and id : ",
-                                        Name,
-                                        Id
-                                      );
                                       return (
                                         <div key={index}>
                                           {clientIndex === 0 ? (
@@ -503,7 +449,6 @@ export default function OpenIdConnectAuthentication() {
                                             <option></option>
                                             {policyList.data?.Policies.map(
                                               (item: any) => {
-                                                // console.log("item", item);
                                                 return (
                                                   <option
                                                     key={item.Name}

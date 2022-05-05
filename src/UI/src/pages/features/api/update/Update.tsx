@@ -12,6 +12,7 @@ import {
 import { ToastAlert } from "../../../../components/ToasterAlert/ToastAlert";
 import { IApiGetByIdState } from "../../../../store/features/api/update";
 import { useNavigate, useParams } from "react-router-dom";
+import AdvancedOptions from "./advanced-options/AdvancedOptions";
 
 export default function Update() {
   const state: IApiGetByIdState = useAppSelector(
@@ -40,9 +41,6 @@ export default function Update() {
       if (result.meta.requestStatus === "rejected") {
         ToastAlert(result.payload.message, "error");
       } else if (result.meta.requestStatus === "fulfilled") {
-        // if (state.data.form.IsVersioningDisabled === false) {
-        //   <Version />;
-        // }
         ToastAlert("Api Updated Successfully!!", "success");
       } else {
         ToastAlert("Api Updated request is not fulfilled!!", "error");
@@ -59,8 +57,6 @@ export default function Update() {
   };
 
   async function setKey(a: any) {
-    console.log("selected tab : ", a);
-    // state.data.form.SelectedTabIndex = a;
     dispatch(
       setForm({
         ...state.data.form,
@@ -68,7 +64,7 @@ export default function Update() {
       })
     );
   }
-  console.log("selected tab : ", state.data.form.SelectedTabIndex);
+
   return (
     <div>
       {state.loading ? (
@@ -116,6 +112,9 @@ export default function Update() {
                       </Tab>
                       <Tab eventKey="version" title="Version">
                         <Version />
+                      </Tab>
+                      <Tab eventKey="advanced-options" title="Advanced Options">
+                        <AdvancedOptions />
                       </Tab>
                     </Tabs>
                   </div>
