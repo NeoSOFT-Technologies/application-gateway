@@ -8,10 +8,6 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,10 +19,14 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
         private readonly IMapper _mapper;
         private readonly Mock<IPolicyRepository> _mockPolicyRepository;
         private readonly Mock<ILogger<GetAllPoliciesQueryHandler>> _mockLogger;
+        private readonly Mock<IPolicyService> _mockPolicyService;
+        private readonly Mock<IApiService> _mockApiService;
 
         public GetAllPoliciesQueryHandlerTests()
         {
             _mockPolicyRepository = PolicyRepositoryMocks.GetPolicyRepository();
+            _mockPolicyService = PolicyServiceMocks.GetPolicyService();
+            _mockApiService = ApiServiceMocks.GetApiService();
             _mockLogger = new Mock<ILogger<GetAllPoliciesQueryHandler>>();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
@@ -39,13 +39,11 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
         [Fact]
         public async Task Handle_GetAllPolicies()
         {
-            var handler = new GetAllPoliciesQueryHandler(_mockPolicyRepository.Object, _mapper, _mockLogger.Object);
+            var handler = new GetAllPoliciesQueryHandler(_mockPolicyRepository.Object, _mapper, _mockLogger.Object, _mockPolicyService.Object, _mockApiService.Object);
             var result = await handler.Handle(new GetAllPoliciesQuery(), CancellationToken.None);
             var allPolicies = await _mockPolicyRepository.Object.ListAllAsync();
             result.ShouldBeOfType<PagedResponse<GetAllPoliciesDto>>();
             allPolicies.Count.ShouldBe(2);
-
-
         }
     }
 }
