@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ApplicationGateway.Api.Middleware
 {
@@ -12,7 +13,13 @@ namespace ApplicationGateway.Api.Middleware
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            var permissionClaims = context.User.Claims.Where(x => x.Type == "permission").ToList();
+            var permissionClaims = context.User.Claims.Where(x => x.Type == "groups").ToList();
+            //var token = context.Request.Headers["Authorization"].ToString();
+            //    token = token.Substring(7);
+            //var handler = new JwtSecurityTokenHandler();
+            //var jwt = handler.ReadJwtToken(token);
+            //var groups = jwt.Claims.First(claim => claim.Type == "groups").Value;
+
             List<string> permissions = new List<string>();
             foreach (var claim in permissionClaims)
             {

@@ -51,6 +51,14 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
                 {
                     Domain.GatewayCommon.Policy policyObj = await _policyService.GetPolicyByIdAsync(Guid.Parse(policy));
                     PolicyById policyById = _mapper.Map<PolicyById>(policyObj);
+                    #region Set isDisabled for RateLimit and Quota
+                    foreach (Domain.GatewayCommon.PolicyApi api in policyById.APIs)
+                    {
+                        Domain.GatewayCommon.Api apiObj = await _apiService.GetApiByIdAsync(api.Id);
+                        api.isRateLimitDisabled = apiObj.RateLimit.IsDisabled;
+                        api.isQuotaDisabled = apiObj.IsQuotaDisabled;
+                    }
+                    #endregion
                     policyById.Global = _mapper.Map<GlobalPolicy>(policyObj);
                     policyByIdsList.Add(policyById);
                 }

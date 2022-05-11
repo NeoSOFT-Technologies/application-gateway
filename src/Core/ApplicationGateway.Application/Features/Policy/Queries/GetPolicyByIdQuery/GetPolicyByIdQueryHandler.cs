@@ -27,7 +27,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQu
             Domain.GatewayCommon.Policy policy = await _policyService.GetPolicyByIdAsync(request.PolicyId);
             GetPolicyByIdDto getPolicyByIdDto = _mapper.Map<GetPolicyByIdDto>(policy);
 
-            #region Add MasterVersions in AccessRights for Dto
+            #region Add MasterVersions in AccessRights for Dto & Set isDisabled for RateLimit & Quota
             foreach (GetPolicyApi api in getPolicyByIdDto.APIs)
             {
                 List<string> masterVersions = new();
@@ -35,6 +35,8 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetPolicyByIdQu
                 apiObj.Versions.ForEach(v => masterVersions.Add(v.Name));
                 api.MasterVersions = masterVersions;
                 api.AuthType = apiObj.AuthType;
+                api.isRateLimitDisabled = apiObj.RateLimit.IsDisabled;
+                api.isQuotaDisbaled = apiObj.IsQuotaDisabled;
             }
             #endregion
 

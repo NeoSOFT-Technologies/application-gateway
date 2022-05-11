@@ -14,14 +14,16 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
     [ExcludeFromCodeCoverage]
     public class TykPolicyService : IPolicyService
     {
+        private readonly IBaseService _baseService;
         private readonly TykConfiguration _tykConfiguration;
         private readonly ILogger<TykPolicyService> _logger;
         private readonly FileOperator _fileOperator;
         private readonly TemplateTransformer _templateTransformer;
         private readonly IRedisService _redisService;
 
-        public TykPolicyService(ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator, TemplateTransformer templateTransformer, IRedisService redisService)
+        public TykPolicyService(IBaseService baseService, ILogger<TykPolicyService> logger, IOptions<TykConfiguration> tykConfiguration, FileOperator fileOperator, TemplateTransformer templateTransformer, IRedisService redisService)
         {
+            _baseService = baseService;
             _logger = logger;
             _tykConfiguration = tykConfiguration.Value;
             _fileOperator = fileOperator;
@@ -86,6 +88,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "create");
             #endregion
 
+            await _baseService.HotReload();
+
             _logger.LogInformation("CreatePolicyAsync Completed: {@Policy}", policy);
             return policy;
         }
@@ -99,6 +103,8 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #region Add Policy to policies.json
             await _redisService.CreateUpdateAsync(policy.PolicyId.ToString(), transformedObject, "update");
             #endregion
+
+            await _baseService.HotReload();
 
             _logger.LogInformation("UpdatePolicyAsync Completed: {@Policy}", policy);
             return policy;
