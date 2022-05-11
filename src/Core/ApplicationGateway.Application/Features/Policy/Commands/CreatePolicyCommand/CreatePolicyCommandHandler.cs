@@ -52,7 +52,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.CreatePolicyCo
             {
                 Id = newPolicy.PolicyId,
                 Name = newPolicy.Name,
-                AuthType = "Auth Token",
+                AuthType = "",
                 State = newPolicy.State,
                 Apis = policyNames
             };
