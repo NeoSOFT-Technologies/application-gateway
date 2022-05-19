@@ -52,7 +52,7 @@ namespace ApplicationGateway.API.UnitTests.Mocks
 
             //key
             mockMediator.Setup(m => m.Send(It.IsAny<GetAllKeysQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new PagedResponse<GetAllKeysDto>());
-            mockMediator.Setup(m => m.Send(It.IsAny<GetKeyQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<Key>());
+            mockMediator.Setup(m => m.Send(It.IsAny<GetKeyQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<GetKeyDto>());
 
             mockMediator.Setup(m => m.Send(It.IsAny<CreateKeyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Response<Key>());
             mockMediator.Setup(m => m.Send(It.IsAny<DeleteKeyCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(new Unit());

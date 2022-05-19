@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ApplicationGateway.Api.Middleware
 {
@@ -12,17 +13,33 @@ namespace ApplicationGateway.Api.Middleware
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            string method = context.Request.Method; // For Scope
-            string actionName = context.Request.RouteValues["action"].ToString();
-            string controllerName = context.Request.RouteValues["controller"].ToString(); // For Resource
-            if (controllerName == "Auth")
+            var permissionClaims = context.User.Claims.Where(x => x.Type == "permission").ToList();
+            List<string> permissions = new();
+            foreach (var claim in permissionClaims)
             {
-                await _next(context);
+                permissions.Add(claim.Value);
             }
-            //TODO: Following condition should be based on helper's response
-            if (controllerName != "Transformer") 
+            var roleClaims = context.User.Claims.Where(x => x.Type == "realm_access").ToList();
+            string requiredPermission = "";
+            switch (context.Request.Method)
             {
-                
+                case "GET":
+                    requiredPermission = "view";
+                    break;
+                case "POST":
+                    requiredPermission = "create";
+                    break;
+                case "PUT":
+                    requiredPermission = "edit";
+                    break;
+                case "DELETE":
+                    requiredPermission = "delete";
+                    break;
+                default:
+                    break;
+            }
+            if (permissions.Contains(requiredPermission) || requiredPermission == "")
+            {
                 await _next(context);
             }
             else

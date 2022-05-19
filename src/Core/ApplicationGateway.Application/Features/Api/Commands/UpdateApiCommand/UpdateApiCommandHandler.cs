@@ -61,6 +61,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
                 Id= updatedApi.ApiId,
                 Name= updatedApi.Name,
                 TargetUrl= updatedApi.TargetUrl,
+                AuthType = updatedApi.AuthType,
                 IsActive=true,
                 Version=""
             };

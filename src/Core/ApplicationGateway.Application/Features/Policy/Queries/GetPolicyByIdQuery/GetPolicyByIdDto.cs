@@ -26,7 +26,11 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public List<string> Versions { get; set; }
+        public List<string> MasterVersions { get; set; }
+        public string AuthType { get; set; }
         public List<GetAllowedUrl> AllowedUrls { get; set; }
+        public bool isRateLimitDisabled { get; set; }
+        public bool isQuotaDisbaled { get; set; }
 #nullable enable
         public GetPerApiLimit? Limit { get; set; }
 #nullable disable

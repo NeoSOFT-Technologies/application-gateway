@@ -22,16 +22,18 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
     public class CreateKeyCommandHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<ISnapshotService> _snapshotService;
+        private readonly Mock<ISnapshotService> _mockSnapshotService;
         private readonly Mock<ILogger<CreateKeyCommandHandler>> _mockLogger;
         private readonly Mock<IKeyRepository> _mockKeyRepository;
         private readonly Mock<IKeyService> _mockKeyService;
+        private readonly Mock<IPolicyService> _mockPolicyService;
 
         public CreateKeyCommandHandlerTests()
         {
             _mockKeyRepository = KeyRepositoryMocks.GetKeyRepository();
             _mockKeyService = KeyServiceMocks.GetKeyService();
-            _snapshotService = new Mock<ISnapshotService>();
+            _mockPolicyService = PolicyServiceMocks.GetPolicyService();
+            _mockSnapshotService = new Mock<ISnapshotService>();
             _mockLogger = new Mock<ILogger<CreateKeyCommandHandler>>();
 
             var configurationProvider = new MapperConfiguration(cfg =>
@@ -45,7 +47,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
         [Fact]
         public async Task Handle_create_Key()
         {
-            var handler = new CreateKeyCommandHandler(_mockKeyRepository.Object, _mockKeyService.Object, _mapper, _mockLogger.Object, _snapshotService.Object);
+            var handler = new CreateKeyCommandHandler(_mockKeyRepository.Object, _mockKeyService.Object, _mapper, _mockLogger.Object, _mockSnapshotService.Object, _mockPolicyService.Object);
             var result = await handler.Handle(new CreateKeyCommand()
             {
                 KeyName = "keyName",

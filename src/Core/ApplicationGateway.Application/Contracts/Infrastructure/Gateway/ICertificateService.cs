@@ -15,6 +15,6 @@ namespace ApplicationGateway.Application.Contracts.Infrastructure.Gateway
         void DeleteCertificate(Guid certId);
         Certificate GetCertificateById(Guid certId);
         List<Certificate> GetAllCertificates();
-
+        bool CheckIfCertificateExists(IFormFile file);
     }
 }

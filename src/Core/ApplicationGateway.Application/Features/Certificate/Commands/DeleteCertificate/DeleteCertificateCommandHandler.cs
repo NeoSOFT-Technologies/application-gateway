@@ -24,6 +24,10 @@ namespace ApplicationGateway.Application.Features.Certificate.Commands.DeleteCer
         public async Task<Unit> Handle(DeleteCertificateCommand command,CancellationToken cancellationToken)
         {
             _logger.LogInformation("DeleteCertificateCommandHandler initiated");
+            #region Validate if certificate exists
+            _certificateService.GetCertificateById(command.CertId);
+            #endregion
+
             _certificateService.DeleteCertificate(command.CertId);
             _logger.LogInformation("DeleteCertificateCommandHandler completed");
 

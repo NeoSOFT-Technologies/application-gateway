@@ -21,16 +21,18 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
     public class UpdateKeyCommandHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<ISnapshotService> _snapshotService;
+        private readonly Mock<ISnapshotService> _mockSnapshotService;
         private readonly Mock<ILogger<UpdateKeyCommandHandler>> _mockLogger;
         private readonly Mock<IKeyRepository> _mockKeyRepository;
         private readonly Mock<IKeyService> _mockKeyService;
+        private readonly Mock<IPolicyService> _mockPolicyService;
 
         public UpdateKeyCommandHandlerTests()
         {
             _mockKeyRepository = KeyRepositoryMocks.GetKeyRepository();
             _mockKeyService = KeyServiceMocks.GetKeyService();
-            _snapshotService = new Mock<ISnapshotService>();
+            _mockPolicyService = PolicyServiceMocks.GetPolicyService();
+            _mockSnapshotService = new Mock<ISnapshotService>();
             _mockLogger = new Mock<ILogger<UpdateKeyCommandHandler>>();
 
             var configurationProvider = new MapperConfiguration(cfg =>
@@ -44,7 +46,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
         [Fact]
         public async Task Handle_Updated_Key()
         {
-            var handler = new UpdateKeyCommandHandler(_mockKeyRepository.Object, _mockKeyService.Object, _mapper, _mockLogger.Object, _snapshotService.Object);
+            var handler = new UpdateKeyCommandHandler(_mockKeyRepository.Object, _mockKeyService.Object, _mapper, _mockLogger.Object, _mockSnapshotService.Object, _mockPolicyService.Object);
             var KeyId = _mockKeyRepository.Object.ListAllAsync().Result.FirstOrDefault().Id;
             await handler.Handle(new UpdateKeyCommand()
             {

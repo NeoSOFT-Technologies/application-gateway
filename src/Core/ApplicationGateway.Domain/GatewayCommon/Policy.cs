@@ -27,6 +27,8 @@
         public string Name { get; set; }
         public List<string> Versions { get; set; }
         public List<AllowedUrl> AllowedUrls { get; set; }
+        public bool isRateLimitDisabled { get; set; }
+        public bool isQuotaDisabled { get; set; }
 #nullable enable
         public PerApiLimit? Limit { get; set; }
 #nullable disable
