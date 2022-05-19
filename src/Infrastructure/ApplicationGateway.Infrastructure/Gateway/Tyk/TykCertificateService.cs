@@ -32,14 +32,12 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             _logger.LogInformation("AddCertificate service initiated");
             if (Path.GetExtension(file.FileName).ToLowerInvariant() != ".pem")
                 throw new FormatException("Only .pem file format is allowed");
-
             string certsPath = _tykConfiguration.CertsPath;
 
             if (!Directory.Exists(certsPath))
                 Directory.CreateDirectory(certsPath);
             var certId = Guid.NewGuid();
-            var filePath = $@"{certsPath}\{certId}.pem";
-
+            var filePath = $@"{certsPath}/{certId}.pem";
             using (var stream = System.IO.File.Create(filePath))
                 await file.CopyToAsync(stream);
             _logger.LogInformation("AddCertificate service completed");
@@ -60,7 +58,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         public Certificate GetCertificateById(Guid certId)
         {
             _logger.LogInformation("GetCertificateById service initiated");
-            string certPath = $@"{_tykConfiguration.CertsPath}\{certId}.pem";
+            string certPath = $@"{_tykConfiguration.CertsPath}/{certId}.pem";
             if (!File.Exists(certPath))
                 throw new NotFoundException("Certificate", certId);
             var cert = new X509Certificate2(File.ReadAllBytes(certPath));
@@ -75,8 +73,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             var certPathCollection = Directory.GetFiles(_tykConfiguration.CertsPath);
             List<Certificate> certificateCollection = new();
             foreach (var certPath in certPathCollection)
-            {
-                
+            {                
                 var cert = new X509Certificate2(File.ReadAllBytes(certPath));
                 var certificate = mapCert(cert, Guid.Parse(Path.GetFileNameWithoutExtension(certPath)));
                 certificateCollection.Add(certificate);

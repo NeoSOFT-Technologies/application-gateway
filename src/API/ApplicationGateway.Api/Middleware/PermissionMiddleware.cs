@@ -13,14 +13,8 @@ namespace ApplicationGateway.Api.Middleware
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            var permissionClaims = context.User.Claims.Where(x => x.Type == "groups").ToList();
-            //var token = context.Request.Headers["Authorization"].ToString();
-            //    token = token.Substring(7);
-            //var handler = new JwtSecurityTokenHandler();
-            //var jwt = handler.ReadJwtToken(token);
-            //var groups = jwt.Claims.First(claim => claim.Type == "groups").Value;
-
-            List<string> permissions = new List<string>();
+            var permissionClaims = context.User.Claims.Where(x => x.Type == "permission").ToList();
+            List<string> permissions = new();
             foreach (var claim in permissionClaims)
             {
                 permissions.Add(claim.Value);

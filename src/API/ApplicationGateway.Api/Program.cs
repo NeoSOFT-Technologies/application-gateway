@@ -19,6 +19,7 @@ using ApplicationGateway.Persistence;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -117,6 +118,7 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    IdentityModelEventSource.ShowPII = true;
 }
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -124,7 +126,7 @@ app.UseHttpsRedirection();
 
 app.UseSerilogRequestLogging();
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
 app.UseSwagger();
 
@@ -146,7 +148,7 @@ app.UseCustomExceptionHandler();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
 //{
