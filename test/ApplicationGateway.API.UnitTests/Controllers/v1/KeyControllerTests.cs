@@ -57,7 +57,7 @@ namespace ApplicationGateway.API.UnitTests.Controllers.v1
             var okObjectResult = result as OkObjectResult;
             okObjectResult.StatusCode.ShouldBe(200);
             okObjectResult.Value.ShouldNotBeNull();
-            okObjectResult.Value.ShouldBeOfType<Response<Key>>();
+            okObjectResult.Value.ShouldBeOfType<Response<GetKeyDto>>();
         }
 
         [Fact]

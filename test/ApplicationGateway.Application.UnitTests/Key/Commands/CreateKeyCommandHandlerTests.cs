@@ -61,7 +61,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
                 AccessRights = new List<KeyAccessRightsModel>
                             {
                                 new KeyAccessRightsModel()
-                                    { ApiId= Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
+                                    { ApiId= Guid.Parse("{e07c7e99-3f5f-4ca3-b377-5b15eecbb0ca}"),
                                       ApiName="apiName",
                                       Versions = new List<string> { "version1","version2"},
                                       AllowedUrls = new List<KeyAllowedUrl>{new KeyAllowedUrl() { Url = "url", Methods = new List<string> { "method1", "method2" } } },
