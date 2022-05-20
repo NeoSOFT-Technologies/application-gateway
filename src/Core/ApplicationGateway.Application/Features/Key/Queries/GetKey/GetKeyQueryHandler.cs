@@ -32,7 +32,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
             _logger.LogInformation("GetKeyQueryHandler initiated for {request}", request);
             Domain.GatewayCommon.Key key = await _keyService.GetKeyAsync(request.keyId);
             GetKeyDto getKeyDto = _mapper.Map<GetKeyDto>(key);
-            #region Add MasterVersions in AccessRights for Dto
+            #region Add data in AccessRights for Dto
             foreach (var api in getKeyDto.AccessRights)
             {
                 List<string> allApiVersions = new();
@@ -40,6 +40,8 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
                 apiObj.Versions.ForEach(v => allApiVersions.Add(v.Name)); 
                 api.MasterVersions = allApiVersions;
                 api.AuthType = apiObj.AuthType;
+                api.isRateLimitDisabled = apiObj.RateLimit.IsDisabled;
+                api.isQuotaDisbaled = apiObj.IsQuotaDisabled;
             }
             #endregion
 
