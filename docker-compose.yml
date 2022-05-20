@@ -10,7 +10,7 @@ services:
   tyk-gateway:
     image: docker.tyk.io/tyk-gateway/tyk-gateway:v3.2.1
     ports:
-      - 8080:8080
+      - 3004:8080
     networks:
       - tyk
     volumes:
@@ -54,8 +54,8 @@ services:
       context: .
       dockerfile: src/API/ApplicationGateway.Api/Dockerfile
     volumes:
-      - policies:/opt/tyk-gateway/policies
-      - certs:/opt/tyk-gateway/certs
+      - ./tyk-gateway-docker/tyk-gateway-docker/policies:/opt/tyk-gateway/policies
+      - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
       - ./tyk-gateway-docker/tyk-gateway-docker/serverCerts:/etc/ssl/certs
     environment:
       - ConnectionStrings:ApplicationConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.ApplicationDb;
@@ -82,7 +82,7 @@ services:
       context: .
       dockerfile: src/Infrastructure/ApplicationGateway.Worker/Dockerfile
     volumes:
-      - policies:/opt/tyk-gateway/policies
+      - ./tyk-gateway-docker/tyk-gateway-docker/policies:/opt/tyk-gateway/policies
     environment:
       - ConnectionStrings:Redis=tyk-redis:6379
       - TykConfiguration:Host=https://tyk-gateway:8080/

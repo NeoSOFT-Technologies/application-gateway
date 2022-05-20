@@ -77,7 +77,7 @@ services.AddScoped<ILoggedInUserService, LoggedInUserService>();
 services.AddInfrastructureServices(Configuration);
 services.AddPersistenceServices(Configuration);
 services.AddIdentityServices(Configuration);
-services.AddPersistenceServices(Configuration);
+//services.AddPersistenceServices(Configuration);
 services.AddSwaggerExtension();
 services.AddSwaggerVersionedApiExplorer();
 services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -126,7 +126,7 @@ app.UseHttpsRedirection();
 
 app.UseSerilogRequestLogging();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
 app.UseSwagger();
 
@@ -148,7 +148,7 @@ app.UseCustomExceptionHandler();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 //app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
 //{

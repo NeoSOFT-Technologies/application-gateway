@@ -54,6 +54,8 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetKey
             public string AuthType { get; set; }
             public List<AllowedUrl> AllowedUrls { get; set; }
             public ApiLimit Limit { get; set; }
+            public bool isRateLimitDisabled { get; set; }
+            public bool isQuotaDisbaled { get; set; }
         }
 
         public class ApiLimit
