@@ -134,7 +134,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
 
             //downstream api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyId);
             for (var k = 0; k < apiName.Count; k++)
             {
                 Url = ApplicationConstants.TYK_BASE_URL + apiName[k].ToString() + "/WeatherForecast";

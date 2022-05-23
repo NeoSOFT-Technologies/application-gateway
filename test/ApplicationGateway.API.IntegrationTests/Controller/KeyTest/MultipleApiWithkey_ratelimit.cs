@@ -129,7 +129,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             foreach (var item in apiName)
             {
                 //var clientkey = HttpClientFactory.Create();
-                //clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+                //clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
                 Url = ApplicationConstants.TYK_BASE_URL + item.ToString() + "/WeatherForecast";
                 for (var i = 0; i < 2; i++)
                 {
@@ -158,7 +158,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             try
             {
                 var clients = HttpClientFactory.Create();
-                clients.DefaultRequestHeaders.Add("Authorization", keyid);
+                clients.DefaultRequestHeaders.Add("gateway-authorization", keyid);
                 var response = await clients.GetAsync(path);
                 return response;
             }

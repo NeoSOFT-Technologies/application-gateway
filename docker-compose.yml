@@ -14,7 +14,7 @@ services:
     networks:
       - tyk
     volumes:
-      - ./tyk-gateway-docker/tyk-gateway-docker/tyk.standalone.tls.conf:/opt/tyk-gateway/tyk.conf
+      - ./tyk-gateway-docker/tyk-gateway-docker/tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
       - ./tyk-gateway-docker/tyk-gateway-docker/apps:/opt/tyk-gateway/apps
       - ./tyk-gateway-docker/tyk-gateway-docker/middleware:/opt/tyk-gateway/middleware
       - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
@@ -48,33 +48,61 @@ services:
     networks:
       - tyk
 
-  applicationgateway.api:
-    image: ${DOCKER_REGISTRY-}applicationgatewayapi
+  downstreamapi1:
+    image: ${DOCKER_REGISTRY-}downstreamapi
     build:
       context: .
-      dockerfile: src/API/ApplicationGateway.Api/Dockerfile
-    volumes:
-      - ./tyk-gateway-docker/tyk-gateway-docker/policies:/opt/tyk-gateway/policies
-      - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
-      - ./tyk-gateway-docker/tyk-gateway-docker/serverCerts:/etc/ssl/certs
+      dockerfile: Downstream/DownstreamApi/Dockerfile
     environment:
-      - ConnectionStrings:ApplicationConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.ApplicationDb;
-      - ConnectionStrings:IdentityConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.IdentityDb;
-      - ConnectionStrings:HealthCheckConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.HealthCheckDb;
-      - ConnectionStrings:Redis=tyk-redis:6379
-      - TykConfiguration:Host=https://tyk-gateway:8080/
-      - TykConfiguration:PoliciesFolderPath=../opt/tyk-gateway/policies
-      - TykConfiguration:CertsPath=../opt/tyk-gateway/certs   
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
     ports:
-      - "5500:80"
-    networks:
-      - tyk
-      - es
-    depends_on:
-      - tyk-gateway
-      - tyk-redis
-      - postgres
-      - applicationgateway.worker
+      - "5000:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  downstreamapi2:
+    image: ${DOCKER_REGISTRY-}downstreamapi
+    build:
+      context: .
+      dockerfile: Downstream/DownstreamApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5001:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  # applicationgateway.api:
+  #   image: ${DOCKER_REGISTRY-}applicationgatewayapi
+  #   build:
+  #     context: .
+  #     dockerfile: src/API/ApplicationGateway.Api/Dockerfile
+  #   volumes:
+  #     - ./tyk-gateway-docker/tyk-gateway-docker/policies:/opt/tyk-gateway/policies
+  #     - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
+  #     - ./tyk-gateway-docker/tyk-gateway-docker/serverCerts:/etc/ssl/certs
+  #   environment:
+  #     - ConnectionStrings:ApplicationConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.ApplicationDb;
+  #     - ConnectionStrings:IdentityConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.IdentityDb;
+  #     - ConnectionStrings:HealthCheckConnectionString=Host=postgres;Port=5432;Username=root;Password=root;Database=ApplicationGateway.HealthCheckDb;
+  #     - ConnectionStrings:Redis=tyk-redis:6379
+  #     - TykConfiguration:Host=http://tyk-gateway:8080/
+  #     - TykConfiguration:PoliciesFolderPath=../opt/tyk-gateway/policies
+  #     - TykConfiguration:CertsPath=../opt/tyk-gateway/certs   
+  #   ports:
+  #     - "5500:80"
+  #   networks:
+  #     - tyk
+  #     - es
+  #   depends_on:
+  #     - tyk-gateway
+  #     - tyk-redis
+  #     - postgres
+  #     - applicationgateway.worker
 
   applicationgateway.worker:
     image: ${DOCKER_REGISTRY-}applicationgatewayworker
@@ -85,7 +113,7 @@ services:
       - ./tyk-gateway-docker/tyk-gateway-docker/policies:/opt/tyk-gateway/policies
     environment:
       - ConnectionStrings:Redis=tyk-redis:6379
-      - TykConfiguration:Host=https://tyk-gateway:8080/
+      - TykConfiguration:Host=http://tyk-gateway:8080/
       - TykConfiguration:PoliciesFolderPath=../opt/tyk-gateway/policies
     networks:
       - tyk

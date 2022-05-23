@@ -1,5 +1,4 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
-using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shouldly;
@@ -10,10 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.Extensions.Logging;
 using ApplicationGateway.API.IntegrationTests.Helper;
 using System.Collections.Generic;
-using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.Features.Api.Commands.CreateMultipleApisCommand;
 using ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand;
@@ -150,11 +147,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
         public static async Task<HttpResponseMessage> DownStream(string path, string keyid)
         {
-
             try
             {
                 var clients = HttpClientFactory.Create();
-                clients.DefaultRequestHeaders.Add("Authorization", keyid);
+                clients.DefaultRequestHeaders.Add("gateway-authorization", keyid);
                 var response = await clients.GetAsync(path);
                 return response;
             }
@@ -163,7 +159,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
                 Console.WriteLine(ex.Message);
                 throw;
             }
-
         }
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)

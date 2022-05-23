@@ -95,13 +95,13 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             for (var i = 0; i < 3; i++)
             {
                 var clientV = HttpClientFactory.Create();
-                clientV.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+                clientV.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
                 var responseV = await clientV.GetAsync(Url);
                 responseV.EnsureSuccessStatusCode();
             }
 
             var client1 = HttpClientFactory.Create();
-            client1.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+            client1.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
             var responseT = await client1.GetAsync(Url);
             responseT.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.TooManyRequests);
 

@@ -33,15 +33,12 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.VersionT
             client = _factory.CreateClient();
         }
 
-
-
         [Fact]
         public async Task Add_policy_with_Api_VersionAccess_returnSuccess()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/createApiData.json");
@@ -114,7 +111,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.VersionT
 
             //downstream api
             /* var clientkey = HttpClientFactory.Create();
-             clientkey.DefaultRequestHeaders.Add("Authorization", keyId.ToString());
+             clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyId.ToString());
  */
             Thread.Sleep(5000);
 
@@ -122,7 +119,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.VersionT
             {
 
                 var clientV = HttpClientFactory.Create();
-                clientV.DefaultRequestHeaders.Add("Authorization", keyId.ToString());
+                clientV.DefaultRequestHeaders.Add("gateway-authorization", keyId.ToString());
                 clientV.DefaultRequestHeaders.Add(data.VersioningInfo.Key, obj.Name);
                 var responseV = await clientV.GetAsync(Url);
                 if (obj.Name == versionPol)

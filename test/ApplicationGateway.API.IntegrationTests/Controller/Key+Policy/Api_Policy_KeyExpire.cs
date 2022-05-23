@@ -118,7 +118,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.AccessCo
 
             //hit api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
             var responseclientkey = await clientkey.GetAsync(Url);
             responseclientkey.EnsureSuccessStatusCode();
 
