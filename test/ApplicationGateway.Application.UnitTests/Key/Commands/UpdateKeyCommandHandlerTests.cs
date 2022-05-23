@@ -3,6 +3,7 @@ using ApplicationGateway.Application.Contracts.Infrastructure.SnapshotWrapper;
 using ApplicationGateway.Application.Contracts.Persistence;
 using ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand;
 using ApplicationGateway.Application.Profiles;
+using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.UnitTests.Mocks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,6 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -48,7 +48,7 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
         {
             var handler = new UpdateKeyCommandHandler(_mockKeyRepository.Object, _mockKeyService.Object, _mapper, _mockLogger.Object, _mockSnapshotService.Object, _mockPolicyService.Object);
             var KeyId = _mockKeyRepository.Object.ListAllAsync().Result.FirstOrDefault().Id;
-            await handler.Handle(new UpdateKeyCommand()
+            var result = await handler.Handle(new UpdateKeyCommand()
             {
                 KeyId = KeyId,
                 KeyName = "newUpdatedKeyName",
@@ -70,11 +70,13 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
                                       Limit = new UpdateKeyLimit(){Rate=10,Per=10,Throttle_interval=10,Throttle_retry_limit=10,Max_query_depth=10,Quota_max=10,Quota_renews = 10,Quota_remaining =10,Quota_renewal_rate=10}
                                      }
                             },
-                Policies = new List<string> { "policy4", "policy10" }
+                Policies = new List<string> { "EE272F8B-6096-4CB6-8625-BB4BB2D89E8B", "7cca2947-221d-4314-971e-911d542622b2" }
             }, CancellationToken.None);
+            result.ShouldBeOfType<Response<UpdateKeyCommandDto>>();
+            result.Succeeded.ShouldBeTrue();
             var allKeys = await _mockKeyRepository.Object.ListAllAsync();
-            allKeys[0].Policies[0].ShouldBeEquivalentTo("policy4");
-            allKeys[0].Policies[1].ShouldBeEquivalentTo("policy10");
+            allKeys[0].Policies[0].ShouldBeEquivalentTo("EE272F8B-6096-4CB6-8625-BB4BB2D89E8B");
+            allKeys[0].Policies[1].ShouldBeEquivalentTo("7cca2947-221d-4314-971e-911d542622b2");
             allKeys.Count.ShouldBe(2);
         }
     }

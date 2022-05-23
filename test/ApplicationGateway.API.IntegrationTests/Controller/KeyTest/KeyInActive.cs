@@ -90,7 +90,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //hit api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
 
             //CHECK IsInActive
             var responseclientkey1 = await clientkey.GetAsync(Url);

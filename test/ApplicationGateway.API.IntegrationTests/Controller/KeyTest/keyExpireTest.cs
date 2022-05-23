@@ -32,7 +32,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         [Fact]
         public async Task ExpireTest()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
@@ -96,7 +95,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //hit api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
             var responseclientkey = await clientkey.GetAsync(Url);
             responseclientkey.EnsureSuccessStatusCode();
 

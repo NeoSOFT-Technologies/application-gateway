@@ -33,16 +33,12 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             client = _factory.CreateClient();
         }
 
-
-
-
         [Fact]
         public async Task Add_policy_with_Quotas_returnSuccess()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/createApiData.json");
@@ -112,7 +108,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
 
             //downstream api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyId);
 
             Thread.Sleep(5000);
             for (int i = 0; i < 5; i++)
@@ -133,16 +129,14 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             var deletekeyResponse = await DeleteKey(keyId);
             deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-
         }
 
         [Fact]
         public async Task Add_policy_with_Api_Quotas_returnSuccess()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
-            string Url = $"http://localhost:8080/" + newid.ToString() + "/WeatherForecast";
+            string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
 
             //read json file 
             var myJsonString = File.ReadAllText(ApplicationConstants.BASE_PATH + "/PolicyData/createApiData.json");
@@ -213,7 +207,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
 
             //downstream api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyId);
 
             Thread.Sleep(5000);
             for (int i = 0; i < 11; i++)

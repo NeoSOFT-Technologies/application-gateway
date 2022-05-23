@@ -94,7 +94,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             Postweatherforecast obj = new Postweatherforecast();
             obj.Test = "test";
             //StringContent stringContent1 = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
             var responseclientkey = await clientkey.GetAsync(Url);
             responseclientkey.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
 

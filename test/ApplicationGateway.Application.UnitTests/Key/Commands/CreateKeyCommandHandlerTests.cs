@@ -11,8 +11,6 @@ using Moq;
 using Shouldly;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -68,16 +66,13 @@ namespace ApplicationGateway.Application.UnitTests.Key.Commands
                                       Limit = new KeyApiLimit(){Rate=10,Per=10,Throttle_interval=10,Throttle_retry_limit=10,Max_query_depth=10,Quota_max=10,Quota_renews = 10,Quota_remaining =10,Quota_renewal_rate=10}
                                      }
                             },
-                Policies = new List<string> { "policy1", "Policy2" }
+                Policies = new List<string> { "EE272F8B-6096-4CB6-8625-BB4BB2D89E8B", "7cca2947-221d-4314-971e-911d542622b2" }
             },
             CancellationToken.None);
             var Keys = await _mockKeyRepository.Object.ListAllAsync();
             result.ShouldBeOfType<Response<Domain.GatewayCommon.Key>>();
             result.Succeeded.ShouldBeTrue();
             Keys.Count.ShouldBe(3);
-
-
-
         }
     }
 }

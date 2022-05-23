@@ -149,7 +149,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.VersionT
                 for (var j = 0; j < versionPol.Count; j++)
                 {
                     var clientkey = HttpClientFactory.Create();
-                    clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
+                    clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyId);
                     Url = ApplicationConstants.TYK_BASE_URL + apiName[k].ToString() + "/WeatherForecast";
                     clientkey.DefaultRequestHeaders.Add(Apidata[j].VersioningInfo.Key, versionPol[j]);
                     var responseV = await clientkey.GetAsync(Url);

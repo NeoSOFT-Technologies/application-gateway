@@ -89,7 +89,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
 
             //hit api
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
             
             for (int i = 1; i < 4; i++)
             {

@@ -1,5 +1,4 @@
 ﻿using ApplicationGateway.API.IntegrationTests.Base;
-using ApplicationGateway.Domain.TykData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shouldly;
@@ -10,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.Extensions.Logging;
 using ApplicationGateway.API.IntegrationTests.Helper;
 using ApplicationGateway.Application.Features.Api.Commands.CreateApiCommand;
 using ApplicationGateway.Application.Responses;
@@ -33,7 +31,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
         [Fact]
         public async Task Key_Versioning_byHeader()
         {
-
             //var client = _factory.CreateClient();
             Guid newid = Guid.NewGuid();
             string Url = ApplicationConstants.TYK_BASE_URL + newid.ToString() + "/WeatherForecast";
@@ -93,7 +90,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             foreach(UpdateVersionModel obj in data.Versions)
             {
                 var clientV = HttpClientFactory.Create();
-                clientV.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+                clientV.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
                 clientV.DefaultRequestHeaders.Add(data.VersioningInfo.Key, obj.Name);
                 if(versioncheck == obj.Name)
                 {

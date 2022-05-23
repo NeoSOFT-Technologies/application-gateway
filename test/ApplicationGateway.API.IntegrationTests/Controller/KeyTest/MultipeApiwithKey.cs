@@ -112,7 +112,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             foreach (var item in apiName)
             {
                 var clientkey = HttpClientFactory.Create();
-                clientkey.DefaultRequestHeaders.Add("Authorization", keyid.ToString());
+                clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyid.ToString());
                 Url = ApplicationConstants.TYK_BASE_URL + item.ToString() + "/WeatherForecast";
                 var responseclientkey = await clientkey.GetAsync(Url);
                 var check = responseclientkey.EnsureSuccessStatusCode();

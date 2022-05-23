@@ -151,7 +151,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller
             try
             {
                 var clients = HttpClientFactory.Create();
-                clients.DefaultRequestHeaders.Add("Authorization", keyid);
+                clients.DefaultRequestHeaders.Add("gateway-authorization", keyid);
                 var response = await clients.GetAsync(path);
                 return response;
             }

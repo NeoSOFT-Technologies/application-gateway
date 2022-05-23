@@ -136,7 +136,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
 
             //downstream
             var clientkey = HttpClientFactory.Create();
-            clientkey.DefaultRequestHeaders.Add("Authorization", keyId);
+            clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyId);
             for (var i = 0; i < apiName.Count; i++)
             {
                 for (var j = 0; j < 4; j++)

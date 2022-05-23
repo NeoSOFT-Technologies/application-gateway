@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace ApplicationGateway.Application.UnitTests.Mocks
 {
     public class PolicyServiceMocks
@@ -57,7 +56,7 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                     Tags=new List<string> { "tag3", "tag4"},
                     APIs=new List<PolicyApi>
                              { new PolicyApi()
-                                { Id = Guid.Parse("{7cca2947-221d-4314-971e-911d542622b2}"),
+                                { Id = Guid.Parse("{d29cd198-03a1-46bc-965e-56d5c6748429}"),
                                  Name = "policyApiName",
                                  Versions = new List<string> { "version3", "version4" },
                                  AllowedUrls = new List<AllowedUrl>{new AllowedUrl() { url = "url", methods = new List<string> { "method1", "method2" } } },
