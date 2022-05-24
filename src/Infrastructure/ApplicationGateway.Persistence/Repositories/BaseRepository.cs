@@ -61,29 +61,5 @@ namespace ApplicationGateway.Persistence.Repositories
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
-
-        //For Read Operation
-        public async Task<IList<T>> StoredProcedureQueryAsync(string storedProcedureName, SqlParameter[] parameters = null)
-        {
-            var parameterNames = GetParameterNames(parameters);
-            return await _dbContext.Set<T>().FromSqlRaw(string.Format("{0} {1}", storedProcedureName, string.Join(",", parameterNames)), parameters).ToListAsync();
-        }
-
-        //For Insert, Update, Delete Operations
-        public async Task<int> StoredProcedureCommandAsync(string storedProcedureName, SqlParameter[] parameters = null)
-        {
-            var parameterNames = GetParameterNames(parameters);
-            return await _dbContext.Database.ExecuteSqlRawAsync(string.Format("{0} {1}", storedProcedureName, string.Join(",", parameterNames)), parameters);
-        }
-
-        private string[] GetParameterNames(SqlParameter[] parameters)
-        {
-            var parameterNames = new string[parameters.Length];
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                parameterNames[i] = parameters[i].ParameterName;
-            }
-            return parameterNames;
-        }
     }
 }
