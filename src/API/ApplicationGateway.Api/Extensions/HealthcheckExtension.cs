@@ -30,7 +30,7 @@ namespace ApplicationGateway.Api.Extensions
                         opt.SetEvaluationTimeInSeconds(15); //time in seconds between check
                         opt.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks
                         opt.SetApiMaxActiveRequests(1); //api requests concurrency
-                        opt.AddHealthCheckEndpoint("API", $"http://{Dns.GetHostName()}/healthz"); //map health check api
+                        opt.AddHealthCheckEndpoint("API", "/healthz"); //map health check api
                     }).AddPostgreSqlStorage(configuration["ConnectionStrings:HealthCheckConnectionString"]);
             return services;
         }
