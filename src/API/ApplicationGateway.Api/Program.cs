@@ -117,7 +117,6 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
     IdentityModelEventSource.ShowPII = true;
 }
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
