@@ -58,7 +58,7 @@ namespace ApplicationGateway.Application.Features.Key.Commands.UpdateKeyCommand
             Domain.Entities.Key keyDto = new Domain.Entities.Key()
             {
                 Id = key.KeyId,
-                KeyName = request.KeyName,
+                KeyName = key.KeyName,
                 IsActive = !key.IsInActive,
                 Policies = key.Policies,
                 Expires = key.Expires == 0 ? null : (global::System.DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime

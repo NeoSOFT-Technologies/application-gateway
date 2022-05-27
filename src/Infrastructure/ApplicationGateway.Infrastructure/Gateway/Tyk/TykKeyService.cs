@@ -40,8 +40,6 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             var listObj = JsonConvert.DeserializeObject<JObject>(await _restClient.GetAsync(null));
             #region Parse in List<string>
             JArray list = JArray.Parse(listObj["keys"].ToString());
-            if (!list.Any())
-                throw new NotFoundException("Any Key","");
             List<string> listKey = new List<string>();
             foreach (var keyId in list)
                 listKey.Add(keyId.ToString());
@@ -194,7 +192,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
         private JObject CreateUpdateKey(Key key, JObject jsonObj)
         {
             #region Add Policies, id exists
-            if (key.Policies.Any())
+            if (key.Policies != null && key.Policies.Count != 0 )
             {
                 JArray policies = new JArray();
                 key.Policies.ForEach(policy => policies.Add(policy));
@@ -203,7 +201,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
             #endregion
 
             #region Add AccessRights, if exists
-            else if (key.AccessRights.Any())
+            else if (key.AccessRights != null && key.AccessRights.Count != 0)
             {
                 foreach (var api in key.AccessRights)
                 {
@@ -221,7 +219,7 @@ namespace ApplicationGateway.Infrastructure.Gateway.Tyk
                     accObj.Add("versions", versions);
 
                     #region Added allowedUrls, if exists
-                    if (api.AllowedUrls.Any())
+                    if (api.AllowedUrls != null && api.AllowedUrls.Count != 0)
                     {
                         JArray allowedUrls = new JArray();
                         foreach (var urlItem in api.AllowedUrls)
