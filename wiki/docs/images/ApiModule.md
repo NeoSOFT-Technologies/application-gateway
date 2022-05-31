@@ -16,3 +16,6 @@
 ![CreateApi](https://user-images.githubusercontent.com/80381121/171158474-42998730-07a0-4dc7-94ab-eb82c634e062.png)
 ![ListenPathValidation](https://user-images.githubusercontent.com/80381121/171159232-2eb847ac-3d05-456b-9a51-e847e19772f7.png)
 ![CreateApiFilled](https://user-images.githubusercontent.com/80381121/171162951-3d38aed0-171c-4794-a790-0b9964c7c085.PNG)
+
+# Update Api
+![SettingDetailsAPI](https://user-images.githubusercontent.com/80381121/171173875-375d5a6a-d317-492b-ac5f-73172bfc703a.png)
