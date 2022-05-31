@@ -1,6 +1,6 @@
 # Home Page
 ![LoginPage](https://user-images.githubusercontent.com/80381121/171158179-34717787-997a-4b51-ae2e-09e153b3c840.png)
-
+![GatewayUsecase](https://user-images.githubusercontent.com/80381121/171169263-70dbf9b9-93a7-4297-b270-9f5d9fc8eec0.png)
 
 # Dashboard
 ![Dashboard](https://user-images.githubusercontent.com/80381121/171159223-ccf94795-c1f8-419d-9542-c8accd43f089.png)
