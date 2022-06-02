@@ -19,13 +19,13 @@ namespace ApplicationGateway.Application.Helper
             {
                 Directory.CreateDirectory(policiesFolderPath);
             }
-            if (!File.Exists($@"{policiesFolderPath}\policies.json"))
+            if (!File.Exists($@"{policiesFolderPath}/policies.json"))
             {
-                StreamWriter sw = File.CreateText($@"{policiesFolderPath}\policies.json");
+                StreamWriter sw = File.CreateText($@"{policiesFolderPath}/policies.json");
                 await sw.WriteLineAsync("{}");
                 sw.Dispose();
             }
-            return await File.ReadAllTextAsync($@"{policiesFolderPath}\policies.json");
+            return await File.ReadAllTextAsync($@"{policiesFolderPath}/policies.json");
         }
 
         public async Task WritePolicies(string policiesFolderPath, string content)

@@ -67,7 +67,7 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.DeletePolicyCo
                                 #region Delete Key Dto
                                 await _keyRepository.DeleteAsync(new Domain.Entities.Key() { Id = keyId });
                                 #endregion
-                                _logger.LogInformation("Delete key because of cascading delete for policy")
+                                _logger.LogInformation("Delete key because of cascading delete for policy");
                             }
                             else
                             {
