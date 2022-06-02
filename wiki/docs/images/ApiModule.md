@@ -1,5 +1,4 @@
 # Home Page
-
 ![LoginPageConsole](https://user-images.githubusercontent.com/80381121/171332311-606ed076-4937-4d62-86de-82883e1ff81d.png)
 ![GatewayUsecase](https://user-images.githubusercontent.com/80381121/171169263-70dbf9b9-93a7-4297-b270-9f5d9fc8eec0.png)
 
@@ -23,7 +22,6 @@
 
 
 # Version
-
 ![Version1](https://user-images.githubusercontent.com/80381121/171401057-cf3ab893-96b3-48ae-ab04-fe016eca70b2.png)
 ![Version2](https://user-images.githubusercontent.com/80381121/171401092-73cf1b56-b4b2-46b3-a49b-5b3d8bf1639e.png)
 ![Version3](https://user-images.githubusercontent.com/80381121/171401108-f1c7ec80-99eb-4e05-b893-bdc4dbf2ccd1.png)
@@ -35,4 +33,27 @@
 ![VersionPathTest2](https://user-images.githubusercontent.com/80381121/171401228-b12d60ea-dfeb-4a40-a684-7af7a7d4d146.png)
 ![VersionURLTest1](https://user-images.githubusercontent.com/80381121/171401261-ddf18277-29b4-4f77-b619-5193bd72403c.png)
 ![VersionURLTest2](https://user-images.githubusercontent.com/80381121/171401281-9136951f-123a-4bea-ad7d-7b4c1c70e372.png)
+
+
+# CORS Options
+
+![Cors1](https://user-images.githubusercontent.com/80381121/171618592-5388327a-4e9d-4ec7-9c97-e731afa1a267.png)
+![Cors2](https://user-images.githubusercontent.com/80381121/171623390-a167956e-55cd-4067-84ef-4838fae4f5eb.png)
+![Cors3](https://user-images.githubusercontent.com/80381121/171623415-3ee5202c-7a29-42a2-99b0-663597b42378.png)
+![Cors4](https://user-images.githubusercontent.com/80381121/171623434-9e7e86dc-ee3f-42e0-8fcb-480ca817b596.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
