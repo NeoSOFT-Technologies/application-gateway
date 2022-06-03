@@ -48,73 +48,68 @@ namespace ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand
             await _apiRepository.DeleteAsync(new Domain.Entities.Api() { Id = request.ApiId });
             #endregion
 
-            #region Cascading delete of Policy
+            #region Cascade delete of Policy
             List<Domain.GatewayCommon.Policy> allPolicies = await _policyService.GetAllPoliciesAsync();
             foreach(Domain.GatewayCommon.Policy policy in allPolicies)
             {
-                foreach(Domain.GatewayCommon.PolicyApi api in policy.APIs)
+                Domain.GatewayCommon.PolicyApi polApi = policy.APIs.Where(polApi => polApi.Id == apiId).FirstOrDefault();
+                if(polApi != null)
                 {
-                    if(apiId == api.Id)
-                    {
-                        policy.APIs.Remove(api);
-                        await _policyService.UpdatePolicyAsync(policy);
-                        _logger.LogInformation($"Cascade delete of api in policy, policyId: {policy.PolicyId}");
+                    policy.APIs.Remove(polApi);
+                    await _policyService.UpdatePolicyAsync(policy);
+                    _logger.LogInformation($"Cascade delete of api in policy, policyId: {policy.PolicyId}");
 
-                        #region Update Policy Dto
-                        List<string> policyNames = new List<string>();
-                        policy.APIs.ForEach(policy => policyNames.Add(policy.Name));
-                        Domain.Entities.Policy policyDto = new Domain.Entities.Policy()
-                        {
-                            Id = policy.PolicyId,
-                            Name = policy.Name,
-                            AuthType = "",
-                            State = policy.State,
-                            Apis = policyNames
-                        };
-                        await _policyRepository.UpdateAsync(policyDto);
-                        break;
-                        #endregion
-                    }
+                    #region Update Policy Entity
+                    List<string> policyNames = new List<string>();
+                    policy.APIs.ForEach(policy => policyNames.Add(policy.Name));
+                    Domain.Entities.Policy policyEntity = new Domain.Entities.Policy()
+                    {
+                        Id = policy.PolicyId,
+                        Name = policy.Name,
+                        AuthType = "",
+                        State = policy.State,
+                        Apis = policyNames
+                    };
+                    await _policyRepository.UpdateAsync(policyEntity);
+                    #endregion
                 }
             }
             #endregion
-            #region Cascading delete of Key
+
+            #region Cascade delete of Key
             List<string> allKeysId = await _keyService.GetAllKeysAsync();
             foreach (string keyId in allKeysId)
             {
                 Domain.GatewayCommon.Key key = await _keyService.GetKeyAsync(keyId);
-                foreach(AccessRightsModel api in key.AccessRights)
+                AccessRightsModel keyApi = key.AccessRights.Where(keyApi => keyApi.ApiId == apiId).FirstOrDefault();
+                if(keyApi != null)
                 {
-                    if(apiId == api.ApiId)
+                    if(key.AccessRights.Count == 1)
                     {
-                        if(key.AccessRights.Count == 1 )
-                        {
-                            await _keyService.DeleteKeyAsync(keyId);
-                            #region Delete Key Dto
-                            await _keyRepository.DeleteAsync(new Domain.Entities.Key() { Id = keyId });
-                            #endregion
+                        await _keyService.DeleteKeyAsync(keyId);
+                        #region Delete Key Entity
+                        await _keyRepository.DeleteAsync(new Domain.Entities.Key() { Id = keyId });
+                        #endregion
 
-                            _logger.LogInformation($"Deletion of key, because of cascade delete");
-                        }
-                        else
-                        {
-                            key.AccessRights.Remove(api);
-                            await _keyService.UpdateKeyAsync(key);
-                            _logger.LogInformation($"Cascade delete of api(access_right) in key, keyId: {key.KeyId}");
+                        _logger.LogInformation($"Deletion of key: {keyId}, because of cascade delete");
+                    }
+                    else
+                    {
+                        key.AccessRights.Remove(keyApi);
+                        await _keyService.UpdateKeyAsync(key);
+                        _logger.LogInformation($"Cascade delete of api(access_right) in key, keyId: {key.KeyId}");
 
-                            #region Update Key Dto
-                            Domain.Entities.Key keyDto = new Domain.Entities.Key()
-                            {
-                                Id = key.KeyId,
-                                KeyName = key.KeyName,
-                                IsActive = !key.IsInActive,
-                                Policies = key.Policies,
-                                Expires = key.Expires == 0 ? null : (global::System.DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
-                            };
-                            await _keyRepository.UpdateAsync(keyDto);
-                            break;
-                            #endregion
-                        }
+                        #region Update Key Entity
+                        Domain.Entities.Key keyEntity = new Domain.Entities.Key()
+                        {
+                            Id = key.KeyId,
+                            KeyName = key.KeyName,
+                            IsActive = !key.IsInActive,
+                            Policies = key.Policies,
+                            Expires = key.Expires == 0 ? null : (global::System.DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
+                        };
+                        await _keyRepository.UpdateAsync(keyEntity);
+                        #endregion
                     }
                 }
             }

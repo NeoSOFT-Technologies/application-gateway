@@ -53,48 +53,40 @@ namespace ApplicationGateway.Application.Features.Policy.Commands.DeletePolicyCo
             foreach (string keyId in allKeysId)
             {
                 Domain.GatewayCommon.Key key = await _keyService.GetKeyAsync(keyId);
-                // Iterate policies in key
-                if (key.Policies != null)
+                // Fetch Policy key with policy to be deleted
+                if (key.Policies != null && key.Policies.Contains(request.PolicyId.ToString()))
                 {
-                    foreach (var policyId in key.Policies)
+                    if (key.Policies.Count == 1)
                     {
-                        // Check deleting policy exists in key
-                        if (Guid.Parse(policyId) == policy.PolicyId)
+                        await _keyService.DeleteKeyAsync(keyId);
+                        #region Delete Key Entity
+                        await _keyRepository.DeleteAsync(new Domain.Entities.Key() { Id = keyId });
+                        #endregion
+                        _logger.LogInformation($"Delete key: {keyId} because of cascading delete for policy");
+                    }
+                    else
+                    {
+                        // Remove all APIs in key which were referenced in deleting policy
+                        foreach (Domain.GatewayCommon.PolicyApi api in policy.APIs)
                         {
-                            if (key.Policies.Count == 1)
-                            {
-                                await _keyService.DeleteKeyAsync(keyId);
-                                #region Delete Key Dto
-                                await _keyRepository.DeleteAsync(new Domain.Entities.Key() { Id = keyId });
-                                #endregion
-                                _logger.LogInformation("Delete key because of cascading delete for policy");
-                            }
-                            else
-                            {
-                                // Remove all APIs in key which were referenced in deleting policy
-                                foreach (Domain.GatewayCommon.PolicyApi api in policy.APIs)
-                                {
-                                    key.AccessRights.RemoveAll(x => x.ApiId == api.Id);
-                                }
-                                key.Policies.Remove(policyId);
-                                await _keyService.UpdateKeyAsync(key);
-
-                                _logger.LogInformation($"Cascade delete of api(access_right) in key, keyId: {key.KeyId}");
-
-                                #region Update Key Dto
-                                Domain.Entities.Key keyDto = new Domain.Entities.Key()
-                                {
-                                    Id = key.KeyId,
-                                    KeyName = key.KeyName,
-                                    IsActive = !key.IsInActive,
-                                    Policies = key.Policies,
-                                    Expires = key.Expires == 0 ? null : (global::System.DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
-                                };
-                                await _keyRepository.UpdateAsync(keyDto);
-                                #endregion
-                            }
-                            break;
+                            key.AccessRights.RemoveAll(x => x.ApiId == api.Id);
                         }
+                        key.Policies.Remove(request.PolicyId.ToString());
+                        await _keyService.UpdateKeyAsync(key);
+
+                        _logger.LogInformation($"Cascade delete of api(access_right) in key, keyId: {keyId}");
+
+                        #region Update Key Entity
+                        Domain.Entities.Key keyEntity = new Domain.Entities.Key()
+                        {
+                            Id = key.KeyId,
+                            KeyName = key.KeyName,
+                            IsActive = !key.IsInActive,
+                            Policies = key.Policies,
+                            Expires = key.Expires == 0 ? null : (global::System.DateTimeOffset.FromUnixTimeSeconds(key.Expires)).UtcDateTime
+                        };
+                        await _keyRepository.UpdateAsync(keyEntity);
+                        #endregion
                     }
                 }
             }
