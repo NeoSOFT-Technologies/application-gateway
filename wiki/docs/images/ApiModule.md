@@ -47,8 +47,17 @@
 ![White Blacklist1](https://user-images.githubusercontent.com/80381121/171647801-02c7df9e-2f9b-49a3-862b-8f7f4dd5bbca.png)
 ![White Blacklist2](https://user-images.githubusercontent.com/80381121/171647849-7e0ea2ba-352b-4fb1-93da-e6337fa1245a.png)
 ![White Blacklist3](https://user-images.githubusercontent.com/80381121/171647897-1f97b4c6-f090-4845-a47c-6f9aa091c8b8.png)
-![White Blacklist4](https://user-images.githubusercontent.com/80381121/171647930-d8005d21-50b3-48c9-b6c8-8ebd8ade1d1c.png)
+![White Blacklist4](https://user-images.githubusercontent.com/80381121/171860375-e088f11d-ab60-4e7c-b8bb-0cf622a624fc.png)
 ![White Blacklist5](https://user-images.githubusercontent.com/80381121/171647972-705ed270-0672-4c09-a834-9590e13e27a2.png)
-![White Blacklist6](https://user-images.githubusercontent.com/80381121/171648006-ab119ebd-6e08-4b8d-9fb4-3d05e70225af.png)
+![White Blacklist6](https://user-images.githubusercontent.com/80381121/171860470-f367568e-df82-43c2-80f1-38d1bc3f19c0.png)
+
+
+
+# Oidc
+
+
+
+
+
 
 
