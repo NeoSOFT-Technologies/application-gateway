@@ -62,7 +62,7 @@ namespace ApplicationGateway.Application.Features.Api.Commands.UpdateApiCommand
                 Name= updatedApi.Name,
                 TargetUrl= updatedApi.TargetUrl,
                 AuthType = updatedApi.AuthType,
-                IsActive=true,
+                IsActive=updatedApi.IsActive,
                 Version=""
             };
             await _apiRepository.UpdateAsync(apiDto);
