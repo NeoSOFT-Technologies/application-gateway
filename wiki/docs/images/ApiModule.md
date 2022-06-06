@@ -54,10 +54,13 @@
 
 
 # Oidc
-
-
-
-
+![OidcWorkflow](https://user-images.githubusercontent.com/80381121/172095993-5bb971aa-47f3-41fa-ba06-fe186172ce2d.png)
+![Oidc1](https://user-images.githubusercontent.com/80381121/172096020-616cd8fe-6542-42be-8ae1-1fd4f971fcb9.png)
+![Oidc2](https://user-images.githubusercontent.com/80381121/172096022-c8539a50-6c47-4a26-b153-7aab8de83ce2.png)
+![Oidc3](https://user-images.githubusercontent.com/80381121/172096023-11211d45-dba9-402c-909e-db1ad11700b0.png)
+![Oidc4](https://user-images.githubusercontent.com/80381121/172096025-ee95db38-8e57-4495-ba36-334ff072490d.png)
+![Oidc5](https://user-images.githubusercontent.com/80381121/172096026-fc29f8bc-497f-4935-a05f-7a454d7c5134.png)
+![Oidc6](https://user-images.githubusercontent.com/80381121/172096017-5557d1db-2b0b-460a-ad0f-9a75e9de51b7.png)
 
 
 
