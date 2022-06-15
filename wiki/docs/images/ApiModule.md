@@ -19,6 +19,8 @@
 
 # Update Api
 ![SettingDetailsAPI](https://user-images.githubusercontent.com/80381121/171173875-375d5a6a-d317-492b-ac5f-73172bfc703a.png)
+![Load](https://user-images.githubusercontent.com/87525401/173761546-ce5bab03-b94c-4500-baa2-9b776338adfa.PNG)
+
 
 
 # Version
