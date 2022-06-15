@@ -20,7 +20,13 @@
 # Update Api
 ![SettingDetailsAPI](https://user-images.githubusercontent.com/80381121/171173875-375d5a6a-d317-492b-ac5f-73172bfc703a.png)
 ![Load](https://user-images.githubusercontent.com/87525401/173761546-ce5bab03-b94c-4500-baa2-9b776338adfa.PNG)
-![AddDisable](https://user-images.githubusercontent.com/87525401/173764267-ab7e0e7b-a42f-4f51-85c1-ad1fc9d29e65.png)
+![AddDisable](https://user-images.githubusercontent.com/87525401/173764678-35788a2b-5ddf-43b5-8e06-6140e8ec2159.png)
+![ValidationUrl](https://user-images.githubusercontent.com/87525401/173765869-a0ce08ca-a080-4558-8a7e-4fa2fb9047db.PNG)
+![addUrl](https://user-images.githubusercontent.com/87525401/173768234-5cab45d8-a99a-4118-930b-695877a7445e.PNG)
+![loadurl](https://user-images.githubusercontent.com/87525401/173767317-40e3657c-0aca-4df3-a3b4-e77bc27a11f3.PNG)
+
+
+
 
 
 
