@@ -24,6 +24,8 @@
 ![ValidationUrl](https://user-images.githubusercontent.com/87525401/173765869-a0ce08ca-a080-4558-8a7e-4fa2fb9047db.PNG)
 ![addUrl](https://user-images.githubusercontent.com/87525401/173768234-5cab45d8-a99a-4118-930b-695877a7445e.PNG)
 ![loadurl](https://user-images.githubusercontent.com/87525401/173767317-40e3657c-0aca-4df3-a3b4-e77bc27a11f3.PNG)
+![deleteicon](https://user-images.githubusercontent.com/87525401/173772915-f33dba6b-8a1f-4eb0-bb8b-4eb084c02c84.PNG)
+
 
 
 
