@@ -26,6 +26,10 @@
 ![loadurl](https://user-images.githubusercontent.com/87525401/173767317-40e3657c-0aca-4df3-a3b4-e77bc27a11f3.PNG)
 ![deleteicon](https://user-images.githubusercontent.com/87525401/173772915-f33dba6b-8a1f-4eb0-bb8b-4eb084c02c84.PNG)
 ![ErrorAddUrl](https://user-images.githubusercontent.com/87525401/174005027-b78b3fc1-0698-4968-b75b-f54c4978816d.PNG)
+![weighting2](https://user-images.githubusercontent.com/87525401/174012828-faad8457-a905-47c1-a193-b10b9a46c5d1.PNG)
+
+
+
 
 
 
