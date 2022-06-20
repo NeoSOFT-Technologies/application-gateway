@@ -20,6 +20,37 @@
 # Update Api
 ![SettingDetailsAPI](https://user-images.githubusercontent.com/80381121/171173875-375d5a6a-d317-492b-ac5f-73172bfc703a.png)
 
+# LoadBalancing
+![Load](https://user-images.githubusercontent.com/87525401/173761546-ce5bab03-b94c-4500-baa2-9b776338adfa.PNG)
+![AddDisable](https://user-images.githubusercontent.com/87525401/173764678-35788a2b-5ddf-43b5-8e06-6140e8ec2159.png)
+![ValidationUrl](https://user-images.githubusercontent.com/87525401/173765869-a0ce08ca-a080-4558-8a7e-4fa2fb9047db.PNG)
+![addUrl](https://user-images.githubusercontent.com/87525401/173768234-5cab45d8-a99a-4118-930b-695877a7445e.PNG)
+![loadurl](https://user-images.githubusercontent.com/87525401/173767317-40e3657c-0aca-4df3-a3b4-e77bc27a11f3.PNG)
+![deleteicon](https://user-images.githubusercontent.com/87525401/173772915-f33dba6b-8a1f-4eb0-bb8b-4eb084c02c84.PNG)
+![ErrorAddUrl](https://user-images.githubusercontent.com/87525401/174005027-b78b3fc1-0698-4968-b75b-f54c4978816d.PNG)
+![weighting2](https://user-images.githubusercontent.com/87525401/174012828-faad8457-a905-47c1-a193-b10b9a46c5d1.PNG)
+
+# RateLimit
+![RateLimit](https://user-images.githubusercontent.com/87525401/174574032-40ce82fd-b5bc-48cc-9563-b31f01a78679.PNG)
+![RateLimit1](https://user-images.githubusercontent.com/87525401/174574440-686b1e8c-294e-4d16-84e7-6a529536bc43.PNG)
+![disablerate](https://user-images.githubusercontent.com/87525401/174578341-ec53f87f-f896-4f73-9b93-df572dba4a4f.PNG)
+![ValidationRate](https://user-images.githubusercontent.com/87525401/174579389-147bc136-1e20-48ce-8d2a-638cd30edf7d.PNG)
+![quota](https://user-images.githubusercontent.com/87525401/174582860-c72c42ec-0ab5-47ba-b06f-d9f77f99b82f.PNG)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Version
 ![Version1](https://user-images.githubusercontent.com/80381121/171401057-cf3ab893-96b3-48ae-ab04-fe016eca70b2.png)
