@@ -36,6 +36,14 @@
 ![disablerate](https://user-images.githubusercontent.com/87525401/174578341-ec53f87f-f896-4f73-9b93-df572dba4a4f.PNG)
 ![ValidationRate](https://user-images.githubusercontent.com/87525401/174579389-147bc136-1e20-48ce-8d2a-638cd30edf7d.PNG)
 ![quota](https://user-images.githubusercontent.com/87525401/174582860-c72c42ec-0ab5-47ba-b06f-d9f77f99b82f.PNG)
+![errorRate](https://user-images.githubusercontent.com/87525401/174730427-2fcfb850-00d2-43c4-8db8-07656439aed5.PNG)
+
+# Authentication
+![Authentication1](https://user-images.githubusercontent.com/87525401/174790647-a7b34924-d3e3-4e84-a204-4638a6f28008.PNG)
+![OpenKey](https://user-images.githubusercontent.com/87525401/174791033-7b647051-ddd0-47e5-ba0e-a516ff098291.PNG)
+
+
+
 
 
 
