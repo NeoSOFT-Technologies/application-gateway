@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
+using ApplicationGateway.Application.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -6,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace ApplicationGateway.Persistence.Repositories
@@ -35,6 +38,22 @@ namespace ApplicationGateway.Persistence.Repositories
         public async virtual Task<IReadOnlyList<T>> GetPagedReponseAsync(int page, int size)
         {
             return await _dbContext.Set<T>().Skip((page - 1) * size).Take(size).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<T>> GetSortedPagedResponseAsync(int page, int size, string param, bool isDesc = false)
+        {
+            if (string.IsNullOrWhiteSpace(param))
+                throw new NotFoundException("Sorting parameter", param);
+            var propertyInfos = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            var objectProperty = propertyInfos.FirstOrDefault(pi => pi.Name.Equals(param, StringComparison.InvariantCultureIgnoreCase));
+            if (objectProperty == null)
+                throw new BadRequestException(param + " doesn't exists");
+            StringBuilder queryBuilder = new();
+            string sortingOrder = isDesc ? "descending" : "ascending";
+            queryBuilder.Append($"{ objectProperty.Name.ToString() } { sortingOrder}");
+
+            return await _dbContext.Set<T>().OrderBy(queryBuilder.ToString()).Skip((page - 1) * size).Take(size).AsNoTracking().ToListAsync();
         }
 
         public async virtual Task<int> GetTotalCount()

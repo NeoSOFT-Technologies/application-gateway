@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Persistence;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
 using AutoMapper;
 using MediatR;
@@ -27,7 +28,16 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
         public async Task<PagedResponse<GetAllPoliciesDto>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<Domain.Entities.Policy> policyList = await _policyRepository.GetPagedReponseAsync(request.pageNum, request.pageSize);
+            IReadOnlyList<Domain.Entities.Policy> policyList;
+            if (request.sort)
+            {
+                if (string.IsNullOrWhiteSpace(request.sortParam.param))
+                    throw new NotFoundException("param", request.sortParam);
+                policyList = await _policyRepository.GetSortedPagedResponseAsync(request.pageNum, request.pageSize, request.sortParam.param, request.sortParam.isDesc);
+            }
+            else
+                policyList = await _policyRepository.GetPagedReponseAsync(request.pageNum, request.pageSize);
+
             int totCount =await _policyRepository.GetTotalCount();
             GetAllPoliciesDto policyDtoList = new GetAllPoliciesDto()
             {

@@ -25,10 +25,10 @@ namespace ApplicationGateway.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetAllPolicies(int pageNum, int pageSize)
+        public async Task<ActionResult> GetAllPolicies(int pageNum, int pageSize, bool sort = false, string param = null, bool isDesc = false)
         {
             _logger.LogInformation("GetAllPolicies Initiated");
-            PagedResponse<GetAllPoliciesDto> response = await _mediator.Send(new GetAllPoliciesQuery() { pageNum = pageNum, pageSize = pageSize});
+            PagedResponse<GetAllPoliciesDto> response = await _mediator.Send(new GetAllPoliciesQuery() { pageNum = pageNum, pageSize = pageSize, sort = sort, sortParam = new() { param = param, isDesc = isDesc } });
             _logger.LogInformation("GetAllPolicies Completed");
             return Ok(response);
         }

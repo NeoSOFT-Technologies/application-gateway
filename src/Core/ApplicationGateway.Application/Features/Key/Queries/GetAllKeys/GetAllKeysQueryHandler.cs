@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Contracts.Persistence;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -28,7 +29,16 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
         public async Task<PagedResponse<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            IReadOnlyList<Domain.Entities.Key> listOfKey = await _keyRepository.GetPagedReponseAsync(request.pageNum,request.pageSize);
+            IReadOnlyList<Domain.Entities.Key> listOfKey;
+            if (request.sort)
+            {
+                if (string.IsNullOrWhiteSpace(request.sortParam.param))
+                    throw new NotFoundException("param", request.sortParam);
+                listOfKey = await _keyRepository.GetSortedPagedResponseAsync(request.pageNum, request.pageSize, request.sortParam.param, request.sortParam.isDesc);
+            }
+            else
+                listOfKey = await _keyRepository.GetPagedReponseAsync(request.pageNum, request.pageSize);
+
             int totCount = await _keyRepository.GetTotalCount();
 
             GetAllKeysDto allKeysDto = new GetAllKeysDto()

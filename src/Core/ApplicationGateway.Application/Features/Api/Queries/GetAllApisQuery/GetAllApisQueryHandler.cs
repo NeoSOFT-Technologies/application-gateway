@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Persistence;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -24,7 +25,17 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
         public async Task<PagedResponse<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<Domain.Entities.Api> apiList = await _apiRepository.GetPagedReponseAsync( request.pageNum, request.pageSize);
+            IReadOnlyList<Domain.Entities.Api> apiList;
+            if (request.sort)
+            {
+                if (string.IsNullOrWhiteSpace(request.sortParam.param))
+                    throw new NotFoundException("param", request.sortParam);
+                apiList = await _apiRepository.GetSortedPagedResponseAsync(request.pageNum, request.pageSize, request.sortParam.param, request.sortParam.isDesc);
+            }
+            else
+                apiList = await _apiRepository.GetPagedReponseAsync( request.pageNum, request.pageSize);
+            
+
             int totCount = await _apiRepository.GetTotalCount();
             GetAllApisDto getAllApisDto = new GetAllApisDto()
             {
