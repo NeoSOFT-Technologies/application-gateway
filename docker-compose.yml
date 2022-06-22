@@ -3,8 +3,8 @@
 networks:
   tyk:
     driver: bridge
-  es:
-    driver: bridge
+  # es:
+  #   driver: bridge
 
 services:
   tyk-gateway:
@@ -82,6 +82,7 @@ services:
   #     context: .
   #     dockerfile: src/API/ApplicationGateway.Api/Dockerfile
   #   volumes:
+  #     - ./gateway-logs:/app/Logs
   #     - ./tyk-gateway-docker/tyk-gateway-docker/policies:/opt/tyk-gateway/policies
   #     - ./tyk-gateway-docker/tyk-gateway-docker/certs:/opt/tyk-gateway/certs
   #     - ./tyk-gateway-docker/tyk-gateway-docker/serverCerts:/etc/ssl/certs
@@ -97,7 +98,7 @@ services:
   #     - "5500:80"
   #   networks:
   #     - tyk
-  #     - es
+  #     # - es
   #   depends_on:
   #     - tyk-gateway
   #     - tyk-redis
@@ -110,6 +111,7 @@ services:
       context: .
       dockerfile: src/Infrastructure/ApplicationGateway.Worker/Dockerfile
     volumes:
+      - ./worker-logs:/app/Logs
       - ./tyk-gateway-docker/tyk-gateway-docker/policies:/opt/tyk-gateway/policies
     environment:
       - ConnectionStrings:Redis=tyk-redis:6379
