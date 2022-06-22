@@ -1,3 +1,8 @@
+# Navigate and Create API
+
+![Navigate and Create API](https://user-images.githubusercontent.com/92164758/165923472-1dd359f7-e207-4496-ae63-d71c3410d670.jpg)
+
+
 # VSIX
 
 ![VSIX](https://user-images.githubusercontent.com/80381121/131610265-7fd6c1b1-42bf-4a48-a036-68e78a50b9d8.png)
@@ -48,6 +53,4 @@
 
 ![IntegrationTestThumbnail](https://user-images.githubusercontent.com/80381121/133378350-a688960f-cc2e-425e-90c0-35a9f9fd2701.png)
 
-# Navigate and Create API
 
-![Navigate and Create API](https://user-images.githubusercontent.com/92164758/165923472-1dd359f7-e207-4496-ae63-d71c3410d670.jpg)
