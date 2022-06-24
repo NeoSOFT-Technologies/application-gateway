@@ -42,15 +42,10 @@ namespace ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand
             await _apiService.GetApiByIdAsync(request.ApiId);
             #endregion
 
-            await _apiService.DeleteApiAsync(apiId);
-
-            #region Delete From ApiDto
-            await _apiRepository.DeleteAsync(new Domain.Entities.Api() { Id = request.ApiId });
-            #endregion
 
             #region Cascade delete of Policy
-            List<Domain.GatewayCommon.Policy> allPolicies = await _policyService.GetAllPoliciesAsync();
-            foreach(Domain.GatewayCommon.Policy policy in allPolicies)
+            IReadOnlyList<Domain.GatewayCommon.Policy> allPolicies = await _policyService.GetAllPoliciesAsync();
+            foreach(Domain.GatewayCommon.Policy policy in allPolicies.ToList())
             {
                 Domain.GatewayCommon.PolicyApi polApi = policy.APIs.Where(polApi => polApi.Id == apiId).FirstOrDefault();
                 if(polApi != null)
@@ -114,6 +109,13 @@ namespace ApplicationGateway.Application.Features.Api.Commands.DeleteApiCommand
                 }
             }
             #endregion
+
+            await _apiService.DeleteApiAsync(apiId);
+
+            #region Delete From ApiDto
+            await _apiRepository.DeleteAsync(new Domain.Entities.Api() { Id = request.ApiId });
+            #endregion
+
             #region Create Snapshot
             await _snapshotService.CreateSnapshot(
                 Enums.Gateway.Tyk,

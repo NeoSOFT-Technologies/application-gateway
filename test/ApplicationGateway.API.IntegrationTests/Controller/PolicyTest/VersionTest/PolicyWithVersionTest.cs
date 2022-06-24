@@ -134,9 +134,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.VersionT
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             var deletePolicyResponse = await DeletePolicy(policyId);
             deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            var deletekeyResponse = await DeleteKey(keyId);
-            deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-
         }
 
 

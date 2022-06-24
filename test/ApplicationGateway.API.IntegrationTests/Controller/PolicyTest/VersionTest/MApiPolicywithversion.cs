@@ -166,8 +166,7 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.VersionT
             {
                 var deleteResponse = await DeleteApi(obj.ApiId);
                 deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            }
-
+            }   
         }
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
