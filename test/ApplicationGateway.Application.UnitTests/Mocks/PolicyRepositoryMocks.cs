@@ -36,8 +36,9 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
 
             var mockPolicyRepository = new Mock<IPolicyRepository>();
 
+            Func<Domain.Entities.Policy, bool> exp = prop => prop.Name.Contains(It.IsAny<string>(), StringComparison.InvariantCultureIgnoreCase);
             mockPolicyRepository.Setup(repo => repo.ListAllAsync()).ReturnsAsync(policies);
-            mockPolicyRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(policies);
+            mockPolicyRepository.Setup(repo => repo.GetPagedListAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), exp));
             mockPolicyRepository.Setup(repo => repo.AddAsync(It.IsAny<Domain.Entities.Policy>())).ReturnsAsync(
                (Domain.Entities.Policy policy) =>
                {

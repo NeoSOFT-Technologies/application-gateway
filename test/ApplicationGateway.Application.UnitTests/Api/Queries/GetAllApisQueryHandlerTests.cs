@@ -5,6 +5,7 @@ using ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery;
 using ApplicationGateway.Application.Profiles;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Application.UnitTests.Mocks;
+using ApplicationGateway.Domain.Common;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -40,16 +41,15 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Api.Commands
         [Fact]
         public async Task Handle_GetAllAPI()
         {
-            var handler = new GetAllApisQueryHandler(_mockApiRepository.Object,_mapper,_mockLogger.Object);
-
-            var result = await handler.Handle(new GetAllApisQuery(),CancellationToken.None);
+            var handler = new GetAllApisQueryHandler(_mockApiRepository.Object, _mapper, _mockLogger.Object);
+            var query = new GetAllApisQuery();
+            query.searchParam = new();
+            query.sortParam = new();
+            var result = await handler.Handle(query, CancellationToken.None);
             var allApis = await _mockApiRepository.Object.ListAllAsync();
             result.ShouldBeOfType<PagedResponse<GetAllApisDto>>();
             allApis.Count.ShouldBe(2);
-            
-
-
         }
-
+            
     }
 }

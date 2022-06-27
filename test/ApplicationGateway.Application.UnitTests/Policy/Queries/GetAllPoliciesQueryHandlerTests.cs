@@ -40,7 +40,10 @@ namespace ApplicationGateway.Application.UnitTests.Gateway.Policy.Queries
         public async Task Handle_GetAllPolicies()
         {
             var handler = new GetAllPoliciesQueryHandler(_mockPolicyRepository.Object, _mapper, _mockLogger.Object, _mockPolicyService.Object, _mockApiService.Object);
-            var result = await handler.Handle(new GetAllPoliciesQuery(), CancellationToken.None);
+            var query = new GetAllPoliciesQuery();
+            query.searchParam = new();
+            query.sortParam = new();
+            var result = await handler.Handle(query, CancellationToken.None);
             var allPolicies = await _mockPolicyRepository.Object.ListAllAsync();
             result.ShouldBeOfType<PagedResponse<GetAllPoliciesDto>>();
             allPolicies.Count.ShouldBe(2);

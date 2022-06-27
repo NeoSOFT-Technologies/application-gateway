@@ -61,7 +61,8 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                    apis[0].Version = api.Version;
                    apis[0].IsActive = api.IsActive;
                });
-            mockApiRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(apis);
+            Func<Domain.Entities.Api, bool> exp = prop => prop.Name.Contains(It.IsAny<string>(), StringComparison.InvariantCultureIgnoreCase);
+            mockApiRepository.Setup(repo => repo.GetPagedListAsync(It.IsAny<int>(), It.IsAny<int>(),It.IsAny<string>(), It.IsAny<bool>(),exp));
 
             return mockApiRepository;
 
