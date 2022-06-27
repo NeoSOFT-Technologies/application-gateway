@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Domain.Common
 {
-    public class SortData
+    public class SortSearchData
     {
         public bool sort { get; set; } = false;
+        public bool search { get; set; } = false;
 
 #nullable enable
         public SortParam? sortParam { get; set; } = null;
+        public SearchParam? searchParam { get; set; } = null;
 #nullable disable
+    }
+    public class SearchParam
+    {
+        public string name { get; set; }
+        public string value { get; set; }
     }
 
     public class SortParam

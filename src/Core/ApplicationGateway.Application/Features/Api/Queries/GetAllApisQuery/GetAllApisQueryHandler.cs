@@ -32,6 +32,12 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
                     throw new NotFoundException("param", request.sortParam);
                 apiList = await _apiRepository.GetSortedPagedResponseAsync(request.pageNum, request.pageSize, request.sortParam.param, request.sortParam.isDesc);
             }
+            else if (request.search)
+            {
+                if (string.IsNullOrWhiteSpace(request.searchParam.name) || string.IsNullOrWhiteSpace(request.searchParam.value))
+                    throw new NotFoundException("param", request.searchParam);
+                apiList = await _apiRepository.GetSearchedResponseAsync(request.pageNum, request.pageSize, request.searchParam.name, request.searchParam.value);
+            }
             else
                 apiList = await _apiRepository.GetPagedReponseAsync( request.pageNum, request.pageSize);
             

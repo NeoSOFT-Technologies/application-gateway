@@ -9,5 +9,6 @@ namespace ApplicationGateway.Application.Contracts.Persistence
 {
     public interface IApiRepository:IAsyncRepository<Api>
     {
+        Task<IReadOnlyList<Api>> GetSearchedResponseAsync(int page, int size, string col, string value);
     }
 }
