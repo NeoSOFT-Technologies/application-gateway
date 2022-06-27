@@ -29,15 +29,23 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
         public async Task<PagedResponse<GetAllKeysDto>> Handle(GetAllKeysQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
-            IReadOnlyList<Domain.Entities.Key> listOfKey;
-            if (request.sort)
+            IEnumerable<Domain.Entities.Key> listOfKey;
+            if (!string.IsNullOrWhiteSpace(request.sortParam.param) && !string.IsNullOrWhiteSpace(request.searchParam.name) && !string.IsNullOrWhiteSpace(request.searchParam.value))
             {
-                if (string.IsNullOrWhiteSpace(request.sortParam.param))
-                    throw new NotFoundException("param", request.sortParam);
-                listOfKey = await _keyRepository.GetSortedPagedResponseAsync(request.pageNum, request.pageSize, request.sortParam.param, request.sortParam.isDesc);
+                listOfKey = await _keyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+            }
+            else if (!string.IsNullOrWhiteSpace(request.sortParam.param))
+            {
+                listOfKey = await _keyRepository.GetPagedListAsync(page: request.pageNum, size: request.pageSize, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+            }
+            else if (!string.IsNullOrWhiteSpace(request.searchParam.name))
+            {
+                if (string.IsNullOrWhiteSpace(request.searchParam.value))
+                    throw new NotFoundException("value param", request.searchParam);
+                listOfKey = await _keyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value);
             }
             else
-                listOfKey = await _keyRepository.GetPagedReponseAsync(request.pageNum, request.pageSize);
+                listOfKey = await _keyRepository.GetPagedListAsync(request.pageNum, request.pageSize);
 
             int totCount = await _keyRepository.GetTotalCount();
 

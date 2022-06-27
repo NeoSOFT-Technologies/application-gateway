@@ -26,10 +26,10 @@ namespace ApplicationGateway.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetAllApis(int pageNum, int pageSize, bool sort = false, string param = null, bool isDesc = false, bool search = false, string name = null, string value = null)
+        public async Task<ActionResult> GetAllApis(int pageNum, int pageSize, string param = null, bool isDesc = false, string name = null, string value = null)
         {
             _logger.LogInformation("GetAllApis Initiated");
-            PagedResponse<GetAllApisDto> response = await _mediator.Send(new GetAllApisQuery() { pageNum = pageNum, pageSize = pageSize, sort = sort, sortParam = new() { param = param, isDesc = isDesc }, search = search, searchParam = new() { name = name, value = value } });
+            PagedResponse<GetAllApisDto> response = await _mediator.Send(new GetAllApisQuery() { pageNum = pageNum, pageSize = pageSize,  sortParam = new() { param = param, isDesc = isDesc }, searchParam = new() { name = name, value = value } });
             _logger.LogInformation("GetAllApis Completed");
             return Ok(response);
         }
