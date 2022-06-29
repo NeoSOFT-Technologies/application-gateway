@@ -46,7 +46,7 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
             else
                 policyList = await _policyRepository.GetPagedListAsync(request.pageNum, request.pageSize);
 
-            int totCount =await _policyRepository.GetTotalCount();
+            int totCount = policyList.Count();
             GetAllPoliciesDto policyDtoList = new GetAllPoliciesDto()
             {
                 Policies = _mapper.Map<List<GetAllPolicyModel>>(policyList),

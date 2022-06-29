@@ -47,7 +47,7 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
             else
                 listOfKey = await _keyRepository.GetPagedListAsync(request.pageNum, request.pageSize);
 
-            int totCount = await _keyRepository.GetTotalCount();
+            int totCount = listOfKey.Count();
 
             GetAllKeysDto allKeysDto = new GetAllKeysDto()
             { 

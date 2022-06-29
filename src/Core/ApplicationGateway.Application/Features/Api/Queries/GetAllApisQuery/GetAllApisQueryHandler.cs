@@ -44,7 +44,7 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
                 apiList = await _apiRepository.GetPagedListAsync( request.pageNum, request.pageSize);
 
 
-                int totCount = await _apiRepository.GetTotalCount();
+            int totCount = apiList.Count();
             GetAllApisDto getAllApisDto = new GetAllApisDto()
             {
                 Apis = _mapper.Map<List<GetAllApiModel>>(apiList)
