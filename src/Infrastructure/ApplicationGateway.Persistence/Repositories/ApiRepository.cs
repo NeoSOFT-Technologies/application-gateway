@@ -19,7 +19,7 @@ namespace ApplicationGateway.Persistence.Repositories.DtoRepositories
         {
         }
 
-        public async Task<IEnumerable<Api>> GetSearchedResponseAsync(int page, int size, string col, string value, string sortParam = null, bool isDesc = false)
+        public async Task<(IEnumerable<Api> list,int count)> GetSearchedResponseAsync(int page, int size, string col, string value, string sortParam = null, bool isDesc = false)
         {
             string name = ValidateParam(col);
             Func<Api, bool> exp = null;
@@ -47,8 +47,8 @@ namespace ApplicationGateway.Persistence.Repositories.DtoRepositories
                 default:
                         throw new BadRequestException($"{name} is invalid");
             }
-            var response = await GetPagedListAsync( page:page,size:size,sortParam:sortParam,isDesc:isDesc,expression:exp);
-            return response;
+            (IEnumerable<Api> response, int count) = await GetPagedListAsync( page:page,size:size,sortParam:sortParam,isDesc:isDesc,expression:exp);
+            return (list:response, count:count);
         }
 
         public override async Task UpdateAsync(Api entity)

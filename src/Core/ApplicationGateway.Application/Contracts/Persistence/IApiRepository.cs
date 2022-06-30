@@ -9,6 +9,6 @@ namespace ApplicationGateway.Application.Contracts.Persistence
 {
     public interface IApiRepository:IAsyncRepository<Api>
     {
-        Task<IEnumerable<Api>> GetSearchedResponseAsync(int page, int size, string col, string value, string sortParam = null, bool isDesc = false);
+        Task<(IEnumerable<Api> list, int count)> GetSearchedResponseAsync(int page, int size, string col, string value, string sortParam = null, bool isDesc = false);
     }
 }

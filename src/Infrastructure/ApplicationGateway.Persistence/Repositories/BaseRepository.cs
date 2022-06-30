@@ -37,36 +37,48 @@ namespace ApplicationGateway.Persistence.Repositories
         }
 
 
-        public async Task<IEnumerable<T>> GetPagedListAsync(int page, int size, string sortParam=null, bool isDesc = false,  Func<T, bool> expression=null)
+        public async Task<(IEnumerable<T> list, int count)> GetPagedListAsync(int page, int size, string sortParam=null, bool isDesc = false,  Func<T, bool> expression=null)
         {
+            var GetPagedList = new Func<IEnumerable<T>, IEnumerable<T>>(list => { return list.Skip((page - 1) * size).Take(size); });
             StringBuilder queryBuilder = new();
+            //retrieve all record if no pagination
             if (size == 0 || page == 0)
             {
                 page = 1;
                 size = await GetTotalCount();
             }
+            //check if => sort then set queryBuiler
             if (!string.IsNullOrWhiteSpace(sortParam))
             {
                 string name = ValidateParam(sortParam);
                 string sortingOrder = isDesc ? "descending" : "ascending";
                 queryBuilder.Append($"{ name } { sortingOrder}");
             }
-
+            //for both search and sort
             if (!string.IsNullOrWhiteSpace(sortParam) && expression != null)
             {
-                  var t =  _dbContext.Set<T>().OrderBy(queryBuilder.ToString()).Where(expression).Skip((page - 1) * size).Take(size).ToList<T>();
-                return t;
+                var list =  _dbContext.Set<T>().OrderBy(queryBuilder.ToString()).Where(expression).ToList();
+                return (list: GetPagedList(list),count: list.Count());
             }
-            
+            //for sort
             else if (!string.IsNullOrWhiteSpace(sortParam))
-                return await _dbContext.Set<T>().OrderBy(queryBuilder.ToString()).Skip((page - 1) * size).Take(size).AsNoTracking().ToListAsync();
-            
+            {
+                var list = await _dbContext.Set<T>().OrderBy(queryBuilder.ToString()).AsNoTracking().ToListAsync();
+                return (list: GetPagedList(list), count: list.Count());
+            }
+            //for search
             else if (expression != null)
-                return await _dbContext.Set<T>().Where(expression).Skip((page - 1) * size).Take(size).ToDynamicListAsync<T>();
-            
-            else
-                return await _dbContext.Set<T>().Skip((page - 1) * size).Take(size).AsNoTracking().ToListAsync();
+            {
+                var list = await _dbContext.Set<T>().Where(expression).ToDynamicListAsync<T>();
+                return (list: GetPagedList(list), count: list.Count());
+            }
 
+            //return all record
+            else
+            {
+                var list = await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+                return (list: GetPagedList(list), count: list.Count());
+            }
         }
 
         //public async virtual Task<IReadOnlyList<T>> GetPagedReponseAsync(int page, int size)

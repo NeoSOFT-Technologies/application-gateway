@@ -30,24 +30,25 @@ namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
         {
             _logger.LogInformation("GetAllKeysQueryHandler initiated");
             IEnumerable<Domain.Entities.Key> listOfKey;
+
+            int totCount;
             if (!string.IsNullOrWhiteSpace(request.sortParam.param) && !string.IsNullOrWhiteSpace(request.searchParam.name) && !string.IsNullOrWhiteSpace(request.searchParam.value))
             {
-                listOfKey = await _keyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+                (listOfKey,totCount) = await _keyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
             }
             else if (!string.IsNullOrWhiteSpace(request.sortParam.param))
             {
-                listOfKey = await _keyRepository.GetPagedListAsync(page: request.pageNum, size: request.pageSize, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+                (listOfKey, totCount) = await _keyRepository.GetPagedListAsync(page: request.pageNum, size: request.pageSize, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
             }
             else if (!string.IsNullOrWhiteSpace(request.searchParam.name))
             {
                 if (string.IsNullOrWhiteSpace(request.searchParam.value))
                     throw new NotFoundException("value param", request.searchParam);
-                listOfKey = await _keyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value);
+                (listOfKey,totCount) = await _keyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value);
             }
             else
-                listOfKey = await _keyRepository.GetPagedListAsync(request.pageNum, request.pageSize);
+                (listOfKey,totCount) = await _keyRepository.GetPagedListAsync(request.pageNum, request.pageSize);
 
-            int totCount = listOfKey.Count();
 
             GetAllKeysDto allKeysDto = new GetAllKeysDto()
             { 

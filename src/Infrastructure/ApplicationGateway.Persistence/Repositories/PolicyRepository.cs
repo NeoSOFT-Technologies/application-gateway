@@ -16,7 +16,7 @@ namespace ApplicationGateway.Persistence.Repositories
         public PolicyRepository(ApplicationDbContext dbContext, ILogger<Policy> logger) : base(dbContext, logger)
         {
         }
-        public async Task<IEnumerable<Policy>> GetSearchedResponseAsync(int page, int size, string col, string value, string sortParam = null, bool isDesc = false)
+        public async Task<(IEnumerable<Policy> list, int count)> GetSearchedResponseAsync(int page, int size, string col, string value, string sortParam = null, bool isDesc = false)
         {
             string name = ValidateParam(col);
             Func<Policy, bool> exp = null;
@@ -37,8 +37,8 @@ namespace ApplicationGateway.Persistence.Repositories
                 default:
                     throw new BadRequestException($"{name} is invalid");
             }
-            var response = await GetPagedListAsync(page: page, size: size, sortParam: sortParam, isDesc: isDesc, expression: exp);
-            return response;
+            (IEnumerable<Policy> response, int count) = await GetPagedListAsync(page: page, size: size, sortParam: sortParam, isDesc: isDesc, expression: exp);
+            return (list: response, count: count);
         }
         public override async Task UpdateAsync(Policy entity)
         {
