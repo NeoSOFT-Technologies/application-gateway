@@ -34,9 +34,10 @@ public class Worker : BackgroundService
     {
         _subscriber.Subscribe("policy").OnMessage(async message =>
         {
-            _logger.LogInformation($"[{DateTime.Now:HH:mm:ss}] policy");
             JObject messageObject = JObject.Parse(message.Message);
-            switch (messageObject["operation"].Value<string>())
+            string operation = messageObject["operation"].Value<string>();
+            _logger.LogInformation($"{operation} operation initiated");
+            switch (operation)
             {
                 case "create":
                     messageObject.Remove("operation");
@@ -54,37 +55,41 @@ public class Worker : BackgroundService
                     break;
             }
             await _restClient.GetAsync(null);
-        }); 
+            _logger.LogInformation($"{operation} operation completed");
+        });
     }
 
     public async Task<string> ReadPolicies(string policiesFolderPath)
     {
-        _logger.LogInformation("{policiesFolderPath}",policiesFolderPath);
+        _logger.LogInformation("ReadPolicies initiated");
         if (!Directory.Exists(policiesFolderPath))
         {
-            _logger.LogInformation($"Folder doesn't exist {Directory.GetCurrentDirectory()}");
+            _logger.LogInformation("Policies folder doesn't exist");
             Directory.CreateDirectory(policiesFolderPath);
+            _logger.LogInformation("Policies folder created");
         }
         if (!File.Exists($@"{policiesFolderPath}/policies.json"))
         {
-            _logger.LogInformation($"File doesn't exist {Directory.GetCurrentDirectory()}");
-            _logger.LogInformation($@"{policiesFolderPath}/policies.json");
+            _logger.LogInformation("policies.json file doesn't exist");
             StreamWriter sw = File.CreateText($@"{policiesFolderPath}/policies.json");
             await sw.WriteLineAsync("{}");
             sw.Dispose();
+            _logger.LogInformation("policies.json file created");
         }
+        _logger.LogInformation("ReadPolicies completed");
         return await File.ReadAllTextAsync($@"{policiesFolderPath}/policies.json");
     }
 
     public async Task WritePolicies(string policiesFolderPath, string content)
     {
-        _logger.LogInformation("{policiesFolderPath}",policiesFolderPath);
-        _logger.LogInformation($"{Directory.GetCurrentDirectory()}");
+        _logger.LogInformation("WritePolicies initiated");
         await File.WriteAllTextAsync($@"{policiesFolderPath}/policies.json", content);
+        _logger.LogInformation("WritePolicies completed");
     }
 
     public async Task CreatePolicy(JObject transformedObject)
     {
+        _logger.LogInformation("CreatePolicy initiated");
         string policiesJson = await ReadPolicies(_tykConfiguration.PoliciesFolderPath);
         JObject policiesObject = JObject.Parse(policiesJson);
         string policyId = transformedObject["policyId"].Value<string>();
@@ -92,10 +97,12 @@ public class Worker : BackgroundService
         policiesObject.Add(policyId, transformedObject);
 
         await WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
+        _logger.LogInformation("CreatePolicy completed");
     }
 
     public async Task UpdateDeletePolicyById(string policyId, JObject transformedObject = null)
     {
+        _logger.LogInformation($"UpdateDeletePolicyById initiated with policyId = {policyId} initiated");
         string policiesJson = await ReadPolicies(_tykConfiguration.PoliciesFolderPath);
         JObject policiesObject = JObject.Parse(policiesJson);
 
@@ -107,19 +114,17 @@ public class Worker : BackgroundService
         policiesObject.Remove(policyId);
         if (transformedObject is not null)
         {
+            _logger.LogInformation($"Policy update with policyId = {policyId} initiated");
             transformedObject.Remove("policyId");
             policiesObject.Add(policyId, transformedObject);
+            _logger.LogInformation($"Policy with policyId = {policyId} updated");
+        }
+        else
+        {
+            _logger.LogInformation($"Policy with policyId = {policyId} deleted");
         }
 
         await WritePolicies(_tykConfiguration.PoliciesFolderPath, policiesObject.ToString());
-    }
-
-    private async Task HotReload()
-    {
-        using (HttpClient client = new HttpClient())
-        {
-            client.DefaultRequestHeaders.Add("x-tyk-authorization", "foo");
-            await client.GetAsync("http://localhost:8080/tyk/reload/group");
-        }
+        _logger.LogInformation($"UpdateDeletePolicyById initiated with policyId = {policyId} completed");
     }
 }

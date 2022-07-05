@@ -65,7 +65,9 @@ namespace ApplicationGateway.Application.UnitTests.Mocks
                 keys[0].IsActive = key.IsActive;
                 keys[0].Policies = key.Policies;
             });
-            mockKeyRepository.Setup(repo => repo.GetPagedReponseAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(keys);
+
+            Func<Domain.Entities.Key, bool> exp = prop => prop.KeyName.Contains(It.IsAny<string>(), StringComparison.InvariantCultureIgnoreCase);
+            mockKeyRepository.Setup(repo => repo.GetPagedListAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), exp));
 
             return mockKeyRepository;
         }

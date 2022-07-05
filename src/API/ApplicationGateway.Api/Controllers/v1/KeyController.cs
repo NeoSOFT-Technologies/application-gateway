@@ -25,10 +25,10 @@ namespace ApplicationGateway.Api.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllKeys(int pageNum, int pageSize)
+        public async Task<ActionResult> GetAllKeys(int pageNum, int pageSize, string param = null, bool isDesc = false, string name = null, string value = null)
         {
             _logger.LogInformation("GetAllKeys initiated in controller");
-            PagedResponse<GetAllKeysDto> response = await _mediator.Send(new GetAllKeysQuery() { pageNum = pageNum, pageSize = pageSize });
+            PagedResponse<GetAllKeysDto> response = await _mediator.Send(new GetAllKeysQuery() { pageNum = pageNum, pageSize = pageSize, sortParam = new() { param = param, isDesc = isDesc }, searchParam = new() { name = name, value = value } });
             _logger.LogInformation("GetAllKeys completed in controller");
             return Ok(response);
         }

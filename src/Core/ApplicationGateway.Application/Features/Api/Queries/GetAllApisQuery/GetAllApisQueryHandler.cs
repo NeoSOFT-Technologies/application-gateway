@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Persistence;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
 using ApplicationGateway.Domain.Entities;
 using AutoMapper;
@@ -24,8 +25,26 @@ namespace ApplicationGateway.Application.Features.Api.Queries.GetAllApisQuery
         public async Task<PagedResponse<GetAllApisDto>> Handle(GetAllApisQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<Domain.Entities.Api> apiList = await _apiRepository.GetPagedReponseAsync( request.pageNum, request.pageSize);
-            int totCount = await _apiRepository.GetTotalCount();
+            IEnumerable<Domain.Entities.Api> apiList;
+            int totCount;
+            if (!string.IsNullOrWhiteSpace(request.sortParam.param) && !string.IsNullOrWhiteSpace(request.searchParam.name) && !string.IsNullOrWhiteSpace(request.searchParam.value))
+            {
+                (apiList,totCount) = await _apiRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+            }
+            else if (!string.IsNullOrWhiteSpace(request.sortParam.param))
+            {
+                (apiList, totCount) = await _apiRepository.GetPagedListAsync(page: request.pageNum, size: request.pageSize, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+            }
+            else if (!string.IsNullOrWhiteSpace(request.searchParam.name))
+            {
+                if (string.IsNullOrWhiteSpace(request.searchParam.value))
+                    throw new NotFoundException("value param", request.searchParam);
+                (apiList, totCount) = await _apiRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value);
+            }
+            else
+                (apiList, totCount) = await _apiRepository.GetPagedListAsync( request.pageNum, request.pageSize);
+
+
             GetAllApisDto getAllApisDto = new GetAllApisDto()
             {
                 Apis = _mapper.Map<List<GetAllApiModel>>(apiList)

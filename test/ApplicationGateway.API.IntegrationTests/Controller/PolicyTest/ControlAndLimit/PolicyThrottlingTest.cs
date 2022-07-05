@@ -127,8 +127,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             var deletePolicyResponse = await DeletePolicy(policyId);
             deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            var deletekeyResponse = await DeleteKey(keyId);
-            deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
         }
 
 
@@ -226,8 +224,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             var deletePolicyResponse = await DeletePolicy(policyId);
             deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            var deletekeyResponse = await DeleteKey(keyId);
-            deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
 
         }
 

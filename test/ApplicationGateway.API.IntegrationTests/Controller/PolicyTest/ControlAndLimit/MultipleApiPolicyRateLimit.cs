@@ -145,19 +145,32 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
                     responseclientkey.EnsureSuccessStatusCode();
                 }
             }
+            //delete Policy
+            foreach(var policy in policyIds)
+            {
+                var deletePolicyResponse = await DeletePolicy(Guid.Parse(policy.ToString()));
+                deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
+            }
 
             //delete Api
             foreach (var obj in responseModel.Data.APIs)
             {
-                var deleteResponse = await DeleteApi(obj.ApiId);
-                deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
+                var deleteApiResponse = await DeleteApi(obj.ApiId);
+                deleteApiResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             }
+
         }
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)
         {
             //var client = _factory.CreateClient();
             var response = await client.DeleteAsync("/api/v1/ApplicationGateway/" + id);
+            return response;
+        }
+        private async Task<HttpResponseMessage> DeletePolicy(Guid id)
+        {
+            //var client = _factory.CreateClient();
+            var response = await client.DeleteAsync("api/v1/Policy/" + id);
             return response;
         }
     }

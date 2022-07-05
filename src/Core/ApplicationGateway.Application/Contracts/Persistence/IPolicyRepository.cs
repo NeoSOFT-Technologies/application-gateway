@@ -9,5 +9,6 @@ namespace ApplicationGateway.Application.Contracts.Persistence
 {
     public interface IPolicyRepository:IAsyncRepository<Policy>
     {
+        Task<(IEnumerable<Policy> list, int count)> GetSearchedResponseAsync(int page, int size, string col, string value, string sortParam = null, bool isDesc = false);
     }
 }

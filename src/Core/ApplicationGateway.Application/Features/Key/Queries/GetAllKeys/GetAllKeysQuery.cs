@@ -1,4 +1,5 @@
 ﻿using ApplicationGateway.Application.Responses;
+using ApplicationGateway.Domain.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace ApplicationGateway.Application.Features.Key.Queries.GetAllKeys
 {
-    public class GetAllKeysQuery:IRequest<PagedResponse<GetAllKeysDto>>
+    public class GetAllKeysQuery: SortSearchData,IRequest<PagedResponse<GetAllKeysDto>>
     {
         public int pageNum { get; set; }
         public int pageSize { get; set; }
+
     }
 }

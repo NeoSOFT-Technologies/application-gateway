@@ -113,22 +113,18 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             Thread.Sleep(5000);
             for (int i = 0; i < 5; i++)
             {
-
                 var responseclientkey = await clientkey.GetAsync(Url);
                 responseclientkey.EnsureSuccessStatusCode();
-
             }
 
             var responseclientkey1 = await clientkey.GetAsync(Url);
-            responseclientkey1.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.OK);
+            responseclientkey1.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.Forbidden);
 
             //delete Api,policy,key
             var deleteResponse = await DeleteApi(id);
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             var deletePolicyResponse = await DeletePolicy(policyId);
             deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            var deletekeyResponse = await DeleteKey(keyId);
-            deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
         }
 
         [Fact]
@@ -210,12 +206,10 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             clientkey.DefaultRequestHeaders.Add("gateway-authorization", keyId);
 
             Thread.Sleep(5000);
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 5; i++)
             {
-
                 var responseclientkey = await clientkey.GetAsync(Url);
                 responseclientkey.EnsureSuccessStatusCode();
-
             }
 
             var responseclientkey1 = await clientkey.GetAsync(Url);
@@ -226,9 +220,6 @@ namespace ApplicationGateway.API.IntegrationTests.Controller.PolicyTest.ControlA
             deleteResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
             var deletePolicyResponse = await DeletePolicy(policyId);
             deletePolicyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-            var deletekeyResponse = await DeleteKey(keyId);
-            deletekeyResponse.StatusCode.ShouldBeEquivalentTo(System.Net.HttpStatusCode.NoContent);
-
         }
 
         private async Task<HttpResponseMessage> DeleteApi(Guid id)

@@ -1,5 +1,6 @@
 ﻿using ApplicationGateway.Application.Contracts.Infrastructure.Gateway;
 using ApplicationGateway.Application.Contracts.Persistence;
+using ApplicationGateway.Application.Exceptions;
 using ApplicationGateway.Application.Responses;
 using AutoMapper;
 using MediatR;
@@ -27,8 +28,25 @@ namespace ApplicationGateway.Application.Features.Policy.Queries.GetAllPoliciesQ
         public async Task<PagedResponse<GetAllPoliciesDto>> Handle(GetAllPoliciesQuery request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Handler Initiated");
-            IReadOnlyList<Domain.Entities.Policy> policyList = await _policyRepository.GetPagedReponseAsync(request.pageNum, request.pageSize);
-            int totCount =await _policyRepository.GetTotalCount();
+            IEnumerable<Domain.Entities.Policy> policyList;
+            int totCount;
+            if (!string.IsNullOrWhiteSpace(request.sortParam.param) && !string.IsNullOrWhiteSpace(request.searchParam.name) && !string.IsNullOrWhiteSpace(request.searchParam.value))
+            {
+                (policyList, totCount) = await _policyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+            }
+            else if (!string.IsNullOrWhiteSpace(request.sortParam.param))
+            {
+                (policyList, totCount) = await _policyRepository.GetPagedListAsync(page: request.pageNum, size: request.pageSize, sortParam: request.sortParam.param, isDesc: request.sortParam.isDesc);
+            }
+            else if (!string.IsNullOrWhiteSpace(request.searchParam.name))
+            {
+                if (string.IsNullOrWhiteSpace(request.searchParam.value))
+                    throw new NotFoundException("value param", request.searchParam);
+                (policyList, totCount) = await _policyRepository.GetSearchedResponseAsync(page: request.pageNum, size: request.pageSize, col: request.searchParam.name, value: request.searchParam.value);
+            }
+            else
+                (policyList, totCount) = await _policyRepository.GetPagedListAsync(request.pageNum, request.pageSize);
+
             GetAllPoliciesDto policyDtoList = new GetAllPoliciesDto()
             {
                 Policies = _mapper.Map<List<GetAllPolicyModel>>(policyList),
